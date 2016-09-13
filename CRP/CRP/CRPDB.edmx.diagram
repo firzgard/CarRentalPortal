@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="aa80952f3e6b4e7fabbd30adcdecbceb" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="CRPDBModel.BookingReceipt" Width="1.5" PointX="3" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Car" Width="1.5" PointX="8.25" PointY="8.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.CarBrand" Width="1.5" PointX="1.5" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.CarEquipment" Width="1.5" PointX="10.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.CarGroup" Width="1.5" PointX="6" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.CarImage" Width="1.5" PointX="10.5" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.CarModel" Width="1.5" PointX="3.75" PointY="13.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.CarSchedulePlan" Width="1.5" PointX="10.5" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.CarVersion" Width="1.5" PointX="6" PointY="14" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Equipment" Width="1.5" PointX="8.25" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Garage" Width="1.5" PointX="6" PointY="9.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Location" Width="1.5" PointX="3.75" PointY="5.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Notification" Width="1.5" PointX="3" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.PriceGroup" Width="1.5" PointX="8.25" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.sysdiagram" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.User" Width="1.5" PointX="0.75" PointY="8.75" IsExpanded="true" />
+        <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_CarSchedulePlan" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Car_CarGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Car_CarVersion" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Car_Store" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_CarEquipment_Car" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_CarImage_Car" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_CarSchedulePlan_Car" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_CarModel_CarBrand" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_CarEquipment_Equipment" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_PriceGroup_CarGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_CarVersion_CarModel" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Store_Location" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Store_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Notification_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Notification_User1" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
