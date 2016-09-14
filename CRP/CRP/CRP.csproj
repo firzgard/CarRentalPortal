@@ -80,6 +80,8 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -198,21 +200,94 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
+    <Compile Include="BookingReceipt.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Car.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarBrand.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarEquipment.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarGroup.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarImage.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarModel.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarSchedulePlan.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CarVersion.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="CRPDB.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CRPDB.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CRPDB.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CRPDB.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CRPDB.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Garage.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Location.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Notification.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PriceGroup.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
+    <Compile Include="User.cs">
+      <DependentUpon>CRPDB.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="CRPDB.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CRPDB.edmx</DependentUpon>
+      <LastGenOutput>CRPDB.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="CRPDB.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CRPDB.edmx</DependentUpon>
+      <LastGenOutput>CRPDB.cs</LastGenOutput>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -227,6 +302,13 @@
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Provider\Views\web.config" />
     <Content Include="Areas\Customer\Views\web.config" />
+    <EntityDeploy Include="CRPDB.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CRPDB.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="CRPDB.edmx.diagram">
+      <DependentUpon>CRPDB.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -293,6 +375,9 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
