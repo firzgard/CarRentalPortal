@@ -5,7 +5,7 @@
 }
 
 .wrapper-content {
-	padding: 5em 15em 5em;
+	padding: 5em 10vw 5em;
 }
 
 #description {
@@ -20,6 +20,7 @@
 .subcription-plan {
 	box-shadow: 0 0 10px 0 hsla(0, 100%, 30%, .5);
 	border-radius: 15px 15px 10px 10px;
+	max-width: 40em;
 }
 
 .plan-header {
@@ -46,6 +47,7 @@
 }
 
 .price {
+	display: inline-block;
 	font-size: 2em;
 }
 
