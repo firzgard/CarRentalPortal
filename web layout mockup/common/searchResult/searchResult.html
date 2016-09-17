@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Search Result</title>
+
+	<link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+	<link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+	<link href="./../../static/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
+
+	<link href="./../../static/css/animate.css" rel="stylesheet">
+
+	<link href="./../../static/css/style.css" rel="stylesheet">
+	<link href="./searchResult.css" rel="stylesheet">
+</head>
+
+<body>
+	<div id="wrapper">
+		<div class="gray-bg">
+			<div class="row border-bottom">
+				<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+
+					<div class="navbar-header">
+						<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">Test</a>
+					</div>
+
+					<ul class="nav navbar-top-links navbar-right">
+						<li class="dropdown">
+							<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+								<i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+							</a>
+							<ul class="dropdown-menu dropdown-alerts">
+								<li>
+									<a href="mailbox.html">
+										<div>
+											<i class="fa fa-envelope fa-fw"></i> You have 16 messages
+											<span class="pull-right text-muted small">4 minutes ago</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="profile.html">
+										<div>
+											<i class="fa fa-twitter fa-fw"></i> 3 New Followers
+											<span class="pull-right text-muted small">12 minutes ago</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="grid_options.html">
+										<div>
+											<i class="fa fa-upload fa-fw"></i> Server Rebooted
+											<span class="pull-right text-muted small">4 minutes ago</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<div class="text-center link-block">
+										<a href="notifications.html">
+											<strong>See All Alerts</strong>
+											<i class="fa fa-angle-right"></i>
+										</a>
+									</div>
+								</li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="login.html">
+								<i class="fa fa-sign-out"></i> Log out
+							</a>
+						</li>
+					</ul>
+
+				</nav>
+			</div>
+
+			<div class="content row">
+				<div class="col-md-10 col-md-offset-1">
+					<div class="row" >
+
+						<!-- filter -->
+						<div class="col-md-3" >
+							<div class="wrapper-content animated fadeInLeft" >
+
+								<form action="index.html" method="get">
+									<div class="ibox float-e-margins">
+
+										<div class="ibox-content filter-header">
+											<div class="result-count" >2,160 results found</div>
+											<div class="input-group">
+												<div class="input-group-btn">
+													<button class="btn btn-md btn-block btn-primary" type="submit" >
+														Apply filter
+													</button>
+													<button class="btn btn-md btn-block btn-default" >
+														Clear all filter
+													</button>
+												</div>
+											</div>
+										</div>
+
+										<div class="ibox-content filters">
+											<div class="panel-group" id="filter">
+												<!-- Time -->
+												<div class="panel panel-default">
+													<a data-toggle="collapse" href="#timeFilter" >
+														<div class="panel-heading">
+															<h4 class="panel-title">Available Time</h4>
+														</div>
+													</a>
+													<div id="timeFilter" class="panel-collapse collapse" >
+														<div class="panel-body">
+															<div id="timerange" >
+																<div class="input-group" >
+																	<span class="input-group-addon" style="min-width: 6em;" ><i class="fa fa-calendar"></i> From:</span>
+																	<input id="startTimeDisplay" class="form-control" />
+																</div>
+																<div class="input-group" >
+																	<span class="input-group-addon" style="min-width: 6em;" ><i class="fa fa-calendar"></i> To:</span>
+																	<input id="endTimeDisplay" class="form-control" />
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- Location -->
+												<div class="panel panel-default">
+													<a data-toggle="collapse" href="#locationFilter">
+														<div class="panel-heading">
+															<h4 class="panel-title">Location</h4>
+														</div>
+													</a>
+													<div id="locationFilter" class="panel-collapse collapse">
+														<div class="panel-body">
+															<select data-placeholder="Please choose a location..." id="locationSelector" class="form-control" multiple >
+																<option value="">Select</option>
+																<option value="1">Hồ Chí Minh</option>
+																<option value="2">Hà Nội</option>
+																<option value="3">Cà Mau</option>
+															</select>
+														</div>
+													</div>
+												</div>
+												<!-- Brand -->
+												<div class="panel panel-default">
+													<a data-toggle="collapse" href="#brandFilter">
+														<div class="panel-heading">
+															<h4 class="panel-title">Brand</h4>
+														</div>
+													</a>
+													<div id="brandFilter" class="panel-collapse collapse" >
+														<div class="panel-body">
+															<div id=brandTree>
+																<ul>
+																	<li>Audi
+																		<ul>
+																			<li>A1</li>
+																			<li>A6</li>
+																			<li>A7</li>
+																			<li>A8</li>
+																			<li>Q3</li>
+																			<li>Q7</li>
+																			<li>TT</li>
+																			<li>TTS</li>
+																		</ul>
+																	</li>
+																	<li>BMW
+																		<ul>
+																			<li>320i</li>
+																			<li>520i</li>
+																			<li>M3</li>
+																			<li>M6</li>
+																			<li>X3</li>
+																			<li>X5</li>
+																			<li>X6</li>
+																			<li>Z4</li>
+																		</ul>
+																	</li>
+																	<li>Toyota
+																		<ul>
+																			<li>Camry</li>
+																			<li>Corolla Altis</li>
+																			<li>Innova</li>
+																			<li>Land Cruiser</li>
+																		</ul>
+																	</li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- Category -->
+												<div class="panel panel-default">
+													<a data-toggle="collapse" href="#categoryFilter">
+														<div class="panel-heading">
+															<h4 class="panel-title">Category</h4>
+														</div>
+													</a>
+													<div id="categoryFilter" class="panel-collapse collapse" >
+														<div class="panel-body">
+															<div id=categoryTree>
+																<ul>
+																	<li>Audi
+																		<ul>
+																			<li>A1</li>
+																			<li>A6</li>
+																			<li>A7</li>
+																			<li>A8</li>
+																			<li>Q3</li>
+																			<li>Q7</li>
+																			<li>TT</li>
+																			<li>TTS</li>
+																		</ul>
+																	</li>
+																	<li>BMW
+																		<ul>
+																			<li>320i</li>
+																			<li>520i</li>
+																			<li>M3</li>
+																			<li>M6</li>
+																			<li>X3</li>
+																			<li>X5</li>
+																			<li>X6</li>
+																			<li>Z4</li>
+																		</ul>
+																	</li>
+																	<li>Toyota
+																		<ul>
+																			<li>Camry</li>
+																			<li>Corolla Altis</li>
+																			<li>Innova</li>
+																			<li>Land Cruiser</li>
+																		</ul>
+																	</li>
+																</ul>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- Transmission -->
+												<div class="panel panel-default">
+													<a data-toggle="collapse" href="#transmissionFilter">
+														<div class="panel-heading">
+															<h4 class="panel-title">Transmission Type</h4>
+														</div>
+													</a>
+													<div id="transmissionFilter" class="panel-collapse collapse" >
+														<div class="panel-body">
+															<div class="input-group" id="transmissionSelector">
+																<div class="checkbox checkbox-success">
+																	<input id="transmissionAutomatic" type="checkbox" />
+																	<label for="transmissionAutomatic">Automatic</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="transmissionManual" type="checkbox" />
+																	<label for="transmissionManual">Manual</label>
+																</div>
+
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- Price -->
+												<div class="panel panel-default">
+													<a data-toggle="collapse" href="#priceFilter">
+														<div class="panel-heading">
+															<h4 class="panel-title">Price</h4>
+														</div>
+													</a>
+													<div id="priceFilter" class="panel-collapse collapse">
+														<div class="panel-body">
+															<div class="input-group" >
+																<span class="input-group-addon" style="min-width: 5em;" >From:</span>
+																<input type="number" min="0" step="1" pattern="^(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$" id="startTimeDisplay" class="form-control" />
+																<span class="input-group-addon" >VND</span>
+															</div>
+															<div class="input-group" >
+																<span class="input-group-addon" style="min-width: 5em;" >To:</span>
+																<input type="number" min="0" step="1" pattern="^(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$" id="endTimeDisplay" class="form-control" />
+																<span class="input-group-addon" >VND</span>
+															</div>
+														</div>
+													</div>
+												</div>
+												<!-- Color -->
+												<div class="panel panel-default">
+													<a data-toggle="collapse" href="#colorFilter">
+														<div class="panel-heading">
+															<h4 class="panel-title">Color</h4>
+														</div>
+													</a>
+													<div id="colorFilter" class="panel-collapse collapse" >
+														<div class="panel-body">
+															<div class="input-group" id="colorSelector">
+																<div class="checkbox checkbox-success">
+																	<input id="colorBeige" type="checkbox" />
+																	<label for="colorBeige"><i class="fa fa-car fa-beige" ></i>&nbsp;&nbsp;Beige</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="colorBlack" type="checkbox" />
+																	<label for="colorBlack"><i class="fa fa-car fa-black" ></i>&nbsp;&nbsp;Black</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="colorBlue" type="checkbox" />
+																	<label for="colorBlue"><i class="fa fa-car fa-blue" ></i>&nbsp;&nbsp;Blue</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="colorBrown" type="checkbox" />
+																	<label for="colorBrown"><i class="fa fa-car fa-brown" ></i>&nbsp;&nbsp;Brown</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="colorRed" type="checkbox" />
+																	<label for="colorRed"><i class="fa fa-car fa-red" ></i>&nbsp;&nbsp;Red</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="colorSilver" type="checkbox" />
+																	<label for="colorSilver"><i class="fa fa-car fa-silver" ></i>&nbsp;&nbsp;Silver</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="colorWhite" type="checkbox" />
+																	<label for="colorWhite"><i class="fa fa-car fa-white" ></i>&nbsp;&nbsp;White</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="colorYellow" type="checkbox" />
+																	<label for="colorYellow"><i class="fa fa-car fa-yellow" ></i>&nbsp;&nbsp;Yellow</label>
+																</div>
+															</div>
+
+														</div>
+													</div>
+												</div>
+												<!-- Fuel -->
+												<div class="panel panel-default">
+													<a data-toggle="collapse" href="#fuelFilter">
+														<div class="panel-heading">
+															<h4 class="panel-title">Fuel Type</h4>
+														</div>
+													</a>
+													<div id="fuelFilter" class="panel-collapse collapse" >
+														<div class="panel-body">
+															<div class="input-group" id="fuelSelector">
+																<div class="checkbox checkbox-success">
+																	<input id="fuelAmmonia" type="checkbox" />
+																	<label for="fuelAmmonia">Ammonia</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelBioalcohol" type="checkbox" />
+																	<label for="fuelBioalcohol">Bioalcohol</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelBiodiesel" type="checkbox" />
+																	<label for="fuelBiodiesel">Biodiesel</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelBiogas" type="checkbox" />
+																	<label for="fuelBiogas">Biogas</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelCNG" type="checkbox" />
+																	<label for="fuelCNG">CNG</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelDiesel" type="checkbox" />
+																	<label for="fuelDiesel">Diesel</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelElectric" type="checkbox" />
+																	<label for="fuelElectric">Full-Electric</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelFlexible" type="checkbox" />
+																	<label for="fuelFlexible">Flexible</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelHybridElectric" type="checkbox" />
+																	<label for="fuelHybridElectric">Hybrid Electric</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelHydrogen" type="checkbox" />
+																	<label for="fuelHydrogen">Hydrogen</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelLiquidNitrogen" type="checkbox" />
+																	<label for="fuelLiquidNitrogen">Liquid Nitrogen</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelLNG" type="checkbox" />
+																	<label for="fuelLNG">LNG</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelLPG" type="checkbox" />
+																	<label for="fuelLPG">LPG</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelPetrol" type="checkbox" />
+																	<label for="fuelPetrol">Petrol</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelPluginHybridElectric" type="checkbox" />
+																	<label for="fuelPluginHybridElectric">Plug-in Hybrid Electric</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelStream" type="checkbox" />
+																	<label for="fuelStream">Stream</label>
+																</div>
+																<div class="checkbox checkbox-success">
+																	<input id="fuelWoodGas" type="checkbox" />
+																	<label for="fuelWoodGas">Wood Gas</label>
+																</div>
+
+															</div>
+														</div>
+													</div>
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<!-- results -->
+						<div class="col-md-9" >
+							<div class="wrapper-content animated fadeInRight" >
+								<div class="ibox float-e-margins">
+									<div class="ibox-content">
+										<div class="search-result">
+											<h3><a href="#">INSPINIA IN+ Admin Theme</a></h3>
+											<a href="#" class="search-link">www.inspinia.com/inspinia</a>
+											<p>
+												Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites
+												still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+											</p>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="search-result">
+											<h3><a href="#">WrapBootstrap - Bootstrap Themes & Templates</a></h3>
+											<a href="#" class="search-link">https://wrapbootstrap.com/‎</a>
+											<p>
+												WrapBootstrap is a marketplace for premium Bootstrap themes and templates. Impress your clients and visitors while using a single, rock-solid foundation.
+											</p>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="search-result">
+											<h3><a href="#">WrapBootstrap | Facebook</a></h3>
+											<a href="#" class="search-link">https://www.facebook.com/wrapbootstrap‎</a>
+											<p>
+												WrapBootstrap. 13672 likes · 508 talking about this. Marketplace for premium Bootstrap themes and templates. https://wrapbootstrap.com/
+											</p>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="search-result">
+											<h3><a href="#">Wrapbootstrap - Quora</a></h3>
+											<a href="#" class="search-link">www.quora.com/Wrapbootstrap‎‎</a>
+											<p>
+												If you are familiar with using any other HTML/CSS themes or WordPress themes then you shouldn't have any problems. If you have some experience using the ...
+											</p>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="search-result">
+											<h3><a href="#">Newspaper Template - Wrapbootstrap Free download ...</a></h3>
+											<a href="#" class="search-link">https://wrapbootstrap.com/‎‎</a>
+											<p>
+												What's black, white and red all over? The answer is Newspaper. A stylish magazine/news style theme inspired by black and white newsprint. The theme is.
+											</p>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="search-result">
+											<h3><a href="#">Admin Themes Wrapbootstrap</a></h3>
+											<a href="#" class="search-link">https://wrapbootstrap.com/themes/admin‎‎</a>
+											<p>
+												It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+											</p>
+										</div>
+										<div class="hr-line-dashed"></div>
+										<div class="text-center">
+											<div class="btn-group">
+												<button class="btn btn-white" type="button"><i class="fa fa-chevron-left"></i></button>
+												<button class="btn btn-white">1</button>
+												<button class="btn btn-white  active">2</button>
+												<button class="btn btn-white">3</button>
+												<button class="btn btn-white">4</button>
+												<button class="btn btn-white">5</button>
+												<button class="btn btn-white">6</button>
+												<button class="btn btn-white">7</button>
+												<button class="btn btn-white" type="button"><i class="fa fa-chevron-right"></i> </button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+				
+			<div class="footer" style="position:initial" >
+				<div class="text-center" >
+					<strong>Copyright</strong> Example Company &copy; 2014-2015
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Main scripts -->
+	<script src="./../../static/js/jquery-2.1.1.js"></script>
+	<script src="./../../static/js/bootstrap.min.js"></script>
+	<script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+	<script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+	<!-- Custom and plugin javascript -->
+	<script src="./../../static/js/inspinia.js"></script>
+	<script src="./../../static/js/plugins/pace/pace.min.js"></script>
+
+	<!-- Date range use moment.js same as full calendar plugin -->
+	<script src="./../../static/js/plugins/fullcalendar/moment.min.js"></script>
+
+	<!-- Date range picker -->
+	<script src="./../../static/js/plugins/daterangepicker/daterangepicker.js"></script>
+
+	<!-- Chosen -->
+	<script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
+
+	<!-- jsTree -->
+	<script src="./../../static/js/plugins/jsTree/jstree.min.js"></script>
+
+	<script src="./searchResult.js" ></script>
+</body>
+</html>

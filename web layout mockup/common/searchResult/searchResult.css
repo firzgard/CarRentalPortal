@@ -1,0 +1,70 @@
+.filters {
+	padding: 0;
+}
+.filters .panel {
+	border-color: #e7eaec;
+	border-image: none;
+	border-style: solid solid none;
+	border-width: 1px 0;
+	border-radius: 0;
+}
+.filters .panel+.panel {
+	margin-top: 0;
+}
+.filters .panel-heading {
+	border-radius: 0;
+	background-color: #B2DFDB;
+	color: black;
+}
+.filters .panel-heading:hover {
+	background-color: #1ab394;
+	color: white;
+}
+
+.input-group-addon {
+	font-weight: bold;
+	text-align: left;
+	background-color: #B2DFDB;
+}
+
+.filters .panel-body {
+	max-height: 30em;
+	overflow-x: hidden;
+}
+
+#colorSelector label {
+	display: flex;
+	align-items: center
+}
+#colorSelector .fa-car {
+	font-size: 1.5em;
+}
+#colorSelector .fa-beige {
+	color: beige;
+}
+#colorSelector .fa-black {
+	color: black;
+}
+#colorSelector .fa-blue {
+	color: blue;
+}
+#colorSelector .fa-brown {
+	color: brown;
+}
+#colorSelector .fa-red {
+	color: red;
+}
+#colorSelector .fa-silver {
+	color: silver;
+}
+#colorSelector .fa-white {
+	color: #F2F2F2;
+}
+#colorSelector .fa-yellow {
+	color: yellow;
+}
+
+.result-count {
+	margin-bottom: 1em;
+}
+
