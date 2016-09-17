@@ -32,6 +32,10 @@
 	overflow-x: hidden;
 }
 
+#locationFilter .panel-body {
+	overflow-x: visible;
+}
+
 #colorSelector label {
 	display: flex;
 	align-items: center

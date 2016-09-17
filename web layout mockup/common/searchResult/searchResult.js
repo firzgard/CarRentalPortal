@@ -18,13 +18,13 @@ $(document).ready(function(){
 	});
 
 	// Time range selector
-	$('#timerange #startTimeDisplay').val(moment().subtract(15, 'days').format('YYYY-MM-DD'));
-	$('#timerange #endTimeDisplay').val(moment().format('YYYY-MM-DD'));
+	$('#timerange #startTimeDisplay').val(moment().format('YYYY-MM-DD'));
+	$('#timerange #endTimeDisplay').val(moment().add(13, 'days').format('YYYY-MM-DD'));
 
 	$('#timerange').daterangepicker({
 		format: 'YYYY-MM-DD',
-		startDate: moment().subtract(15, 'days'),
-		endDate: moment(),
+		startDate: moment(),
+		endDate: moment().add(13, 'days'),
 		showDropdowns: true,
 		ranges: {
 			'Today': [moment(), moment()],
