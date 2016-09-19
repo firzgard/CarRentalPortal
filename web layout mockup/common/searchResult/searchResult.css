@@ -4,6 +4,9 @@
 	background: #1cc09f linear-gradient(0deg, #1cc09f, #138569);
 }
 
+/* ====================================== */
+/* Filters */
+
 .filters {
 	padding: 0;
 }
@@ -78,3 +81,59 @@
 	margin-bottom: 1em;
 }
 
+/* ====================================== */
+/* Search Results */
+
+.search-result {
+	color: black;
+	text-decoration: none;
+	animation-duration 0.5s: 
+}
+.search-result:hover {
+	color: black;
+	text-decoration: none;
+	box-shadow: 0 0 20px 5px white;
+}
+
+.vehicle-img {
+    background-position: center;
+	background-size: cover;
+	padding-top: 75%;
+	position: relative;
+	width: 100%;
+}
+
+.vehicle-info {
+	padding: 10px 15px 5px;
+}
+.vehicle-info hr {
+	margin: 0.5em
+}
+
+.vehicle-price-tag {
+	background-color: #1ab394;
+	bottom: 0;
+	color: #ffffff;
+	font-weight: 600;
+	padding: 0.3em 1em 0.3em 2em;
+	position: absolute;
+	right: 0;
+}
+
+.vehicle-price {
+	font-size: 1.2em;
+}
+
+.vehicle-name {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+.br-theme-fontawesome-stars .br-widget a {
+	font-size: 1.3em;
+}
+
+.license-number {
+	font-weight: bold;
+	text-align: center;
+}

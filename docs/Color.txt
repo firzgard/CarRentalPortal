@@ -1,0 +1,8 @@
+Beige
+Black
+Blue
+Brown
+Red
+Silver
+White
+Yellow
