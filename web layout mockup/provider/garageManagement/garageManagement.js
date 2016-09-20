@@ -1,7 +1,4 @@
 $(document).ready(function() {
-	$('.footable').footable({
-		showToggle: true,
-		toggleColumn: 'first'
-	});
-
+	/* Init DataTables */
+	var oTable = $('#editable').DataTable();
 });
