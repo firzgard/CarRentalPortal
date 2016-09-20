@@ -1,0 +1,14 @@
+{
+	"libs": [
+		"browser",
+		"jquery"
+	],
+	"plugins": {
+		"angular": {},
+		"es_modules": {},
+		"jasmine": {},
+		"node": {},
+		"modules": {},
+		"requirejs": {}
+	}
+}
