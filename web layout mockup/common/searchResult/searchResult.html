@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<title>Search Result</title>
+
+	<link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+	<link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+	<link href="./../../static/css/plugins/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
+
+	<link href="./../../static/css/animate.css" rel="stylesheet">
+
+	<link href="./../../static/css/style.css" rel="stylesheet">
+	<link href="./searchResult.css" rel="stylesheet">
+</head>
+
+<body>
+	<div id="wrapper" class="gray-bg" >
+		<div class="row border-bottom">
+			<nav class="navbar navbar-static-top white-bg" role="navigation" style="margin-bottom: 0">
+
+				<div class="navbar-header">
+					<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#">Test</a>
+				</div>
+
+				<ul class="nav navbar-top-links navbar-right">
+					<li class="dropdown">
+						<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+							<i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+						</a>
+						<ul class="dropdown-menu dropdown-alerts">
+							<li>
+								<a href="mailbox.html">
+									<div>
+										<i class="fa fa-envelope fa-fw"></i> You have 16 messages
+										<span class="pull-right text-muted small">4 minutes ago</span>
+									</div>
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="profile.html">
+									<div>
+										<i class="fa fa-twitter fa-fw"></i> 3 New Followers
+										<span class="pull-right text-muted small">12 minutes ago</span>
+									</div>
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<a href="grid_options.html">
+									<div>
+										<i class="fa fa-upload fa-fw"></i> Server Rebooted
+										<span class="pull-right text-muted small">4 minutes ago</span>
+									</div>
+								</a>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<div class="text-center link-block">
+									<a href="notifications.html">
+										<strong>See All Alerts</strong>
+										<i class="fa fa-angle-right"></i>
+									</a>
+								</div>
+							</li>
+						</ul>
+					</li>
+
+					<li>
+						<a href="login.html">
+							<i class="fa fa-sign-out"></i> Log out
+						</a>
+					</li>
+				</ul>
+
+			</nav>
+		</div>
+
+		<div class="wrapper wrapper-content row">
+			<div class="col-md-10 col-md-offset-1">
+				<div class="row" >
+					<!-- filter -->
+					<div class="col-md-3" >
+						<div class="animated fadeInLeft" >
+
+							<form action="index.html" method="get">
+								<div class="ibox float-e-margins">
+
+									<div class="ibox-content filter-header">
+										<div class="result-count" >2,160 results found</div>
+										<div class="input-group">
+											<div class="input-group-btn">
+												<button class="btn btn-md btn-block btn-primary" type="submit" >
+													<b>Apply filter</b>
+												</button>
+												<button class="btn btn-md btn-block btn-default" >
+													<b>Clear all filter</b>
+												</button>
+											</div>
+										</div>
+									</div>
+
+									<div class="ibox-content filters">
+										<div class="panel-group" id="filter">
+											<!-- Time -->
+											<div class="panel panel-default">
+												<a data-toggle="collapse" href="#timeFilter" >
+													<div class="panel-heading">
+														<h4 class="panel-title">Available Time</h4>
+													</div>
+												</a>
+												<div id="timeFilter" class="panel-collapse collapse" >
+													<div class="panel-body">
+														<div id="timerange" >
+															<div class="input-group" >
+																<span class="input-group-addon" style="min-width: 6em;" ><i class="fa fa-calendar"></i> From:</span>
+																<input id="startTimeDisplay" class="form-control" />
+															</div>
+															<div class="input-group" >
+																<span class="input-group-addon" style="min-width: 6em;" ><i class="fa fa-calendar"></i> To:</span>
+																<input id="endTimeDisplay" class="form-control" />
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- Location -->
+											<div class="panel panel-default">
+												<a data-toggle="collapse" href="#locationFilter">
+													<div class="panel-heading">
+														<h4 class="panel-title">Location</h4>
+													</div>
+												</a>
+												<div id="locationFilter" class="panel-collapse collapse">
+													<div class="panel-body">
+														<select data-placeholder="Please choose a location..." id="locationSelector" class="form-control" multiple >
+															<option value="">Select</option>
+															<option value="1">Hồ Chí Minh</option>
+															<option value="2">Hà Nội</option>
+															<option value="3">Cà Mau</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<!-- Brand -->
+											<div class="panel panel-default">
+												<a data-toggle="collapse" href="#brandFilter">
+													<div class="panel-heading">
+														<h4 class="panel-title">Brand</h4>
+													</div>
+												</a>
+												<div id="brandFilter" class="panel-collapse collapse" >
+													<div class="panel-body">
+														<div id="brandTree">
+															<ul>
+																<li>Audi
+																	<ul>
+																		<li>A1</li>
+																		<li>A6</li>
+																		<li>A7</li>
+																		<li>A8</li>
+																		<li>Q3</li>
+																		<li>Q7</li>
+																		<li>TT</li>
+																		<li>TTS</li>
+																	</ul>
+																</li>
+																<li>BMW
+																	<ul>
+																		<li>320i</li>
+																		<li>520i</li>
+																		<li>M3</li>
+																		<li>M6</li>
+																		<li>X3</li>
+																		<li>X5</li>
+																		<li>X6</li>
+																		<li>Z4</li>
+																	</ul>
+																</li>
+																<li>Toyota
+																	<ul>
+																		<li>Camry</li>
+																		<li>Corolla Altis</li>
+																		<li>Innova</li>
+																		<li>Land Cruiser</li>
+																	</ul>
+																</li>
+															</ul>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- Category -->
+											<div class="panel panel-default">
+												<a data-toggle="collapse" href="#typeFilter">
+													<div class="panel-heading">
+														<h4 class="panel-title">Category</h4>
+													</div>
+												</a>
+												<div id="typeFilter" class="panel-collapse collapse" >
+													<div class="panel-body">
+														<div class="input-group" id="typeTree">
+															<div class="checkbox checkbox-success">
+																<input id="typeMicroCar" type="checkbox" />
+																<label for="fuelAmmonia">Micro Car</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="typeMinivan" type="checkbox" />
+																<label for="fuelAmmonia">Minivan</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="typePickupTruck" type="checkbox" />
+																<label for="fuelBioalcohol">Pickup Truck</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="typeStationWagon" type="checkbox" />
+																<label for="fuelBiodiesel">Station Wagon</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="typeSedan" type="checkbox" />
+																<label for="fuelBiogas">Sedan</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="typeSUV" type="checkbox" />
+																<label for="fuelCNG">SUV</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- NumOfSeat -->
+											<div class="panel panel-default">
+												<a data-toggle="collapse" href="#numbOfSeatFilter">
+													<div class="panel-heading">
+														<h4 class="panel-title">Number of Seat</h4>
+													</div>
+												</a>
+												<div id="numbOfSeatFilter" class="panel-collapse collapse">
+													<div class="panel-body">
+														<div class="input-group" >
+															<span class="input-group-addon" style="min-width: 5em;" >From:</span>
+															<input type="number" min="0" max="99" class="form-control" />
+														</div>
+														<div class="input-group" >
+															<span class="input-group-addon" style="min-width: 5em;" >To:</span>
+															<input type="number" min="0" max="99" class="form-control" />
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- Price -->
+											<div class="panel panel-default">
+												<a data-toggle="collapse" href="#priceFilter">
+													<div class="panel-heading">
+														<h4 class="panel-title">Per-Day Price</h4>
+													</div>
+												</a>
+												<div id="priceFilter" class="panel-collapse collapse">
+													<div class="panel-body">
+														<div class="input-group" >
+															<span class="input-group-addon" style="min-width: 5em;" >From:</span>
+															<input type="number" min="0" step="1" pattern="^(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$" class="form-control" />
+															<span class="input-group-addon" >VND</span>
+														</div>
+														<div class="input-group" >
+															<span class="input-group-addon" style="min-width: 5em;" >To:</span>
+															<input type="number" min="0" step="1" pattern="^(([1-9](\\d*|\\d{0,2}(,\\d{3})*))|0)(\\.\\d{1,2})?$" class="form-control" />
+															<span class="input-group-addon" >VND</span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- Transmission -->
+											<div class="panel panel-default">
+												<a data-toggle="collapse" href="#transmissionFilter">
+													<div class="panel-heading">
+														<h4 class="panel-title">Transmission Type</h4>
+													</div>
+												</a>
+												<div id="transmissionFilter" class="panel-collapse collapse" >
+													<div class="panel-body">
+														<div class="input-group" id="transmissionSelector">
+															<div class="checkbox checkbox-success">
+																<input id="transmissionAutomatic" type="checkbox" />
+																<label for="transmissionAutomatic">Automatic</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="transmissionManual" type="checkbox" />
+																<label for="transmissionManual">Manual</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- Color -->
+											<div class="panel panel-default">
+												<a data-toggle="collapse" href="#colorFilter">
+													<div class="panel-heading">
+														<h4 class="panel-title">Color</h4>
+													</div>
+												</a>
+												<div id="colorFilter" class="panel-collapse collapse" >
+													<div class="panel-body">
+														<div class="input-group" id="colorSelector">
+															<div class="checkbox checkbox-success">
+																<input id="colorBeige" type="checkbox" />
+																<label for="colorBeige"><i class="fa fa-car fa-beige" ></i>&nbsp;&nbsp;Beige</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="colorBlack" type="checkbox" />
+																<label for="colorBlack"><i class="fa fa-car fa-black" ></i>&nbsp;&nbsp;Black</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="colorBlue" type="checkbox" />
+																<label for="colorBlue"><i class="fa fa-car fa-blue" ></i>&nbsp;&nbsp;Blue</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="colorBrown" type="checkbox" />
+																<label for="colorBrown"><i class="fa fa-car fa-brown" ></i>&nbsp;&nbsp;Brown</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="colorRed" type="checkbox" />
+																<label for="colorRed"><i class="fa fa-car fa-red" ></i>&nbsp;&nbsp;Red</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="colorSilver" type="checkbox" />
+																<label for="colorSilver"><i class="fa fa-car fa-silver" ></i>&nbsp;&nbsp;Silver</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="colorWhite" type="checkbox" />
+																<label for="colorWhite"><i class="fa fa-car fa-white" ></i>&nbsp;&nbsp;White</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="colorYellow" type="checkbox" />
+																<label for="colorYellow"><i class="fa fa-car fa-yellow" ></i>&nbsp;&nbsp;Yellow</label>
+															</div>
+														</div>
+
+													</div>
+												</div>
+											</div>
+											<!-- Fuel -->
+											<div class="panel panel-default">
+												<a data-toggle="collapse" href="#fuelFilter">
+													<div class="panel-heading">
+														<h4 class="panel-title">Fuel Type</h4>
+													</div>
+												</a>
+												<div id="fuelFilter" class="panel-collapse collapse" >
+													<div class="panel-body">
+														<div class="input-group" id="fuelSelector">
+															<div class="checkbox checkbox-success">
+																<input id="fuelAmmonia" type="checkbox" />
+																<label for="fuelAmmonia">Ammonia</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelBioalcohol" type="checkbox" />
+																<label for="fuelBioalcohol">Bioalcohol</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelBiodiesel" type="checkbox" />
+																<label for="fuelBiodiesel">Biodiesel</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelBiogas" type="checkbox" />
+																<label for="fuelBiogas">Biogas</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelCNG" type="checkbox" />
+																<label for="fuelCNG">Compressed Natural Gas</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelDiesel" type="checkbox" />
+																<label for="fuelDiesel">Diesel</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelElectric" type="checkbox" />
+																<label for="fuelElectric">Electric</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelFlexible" type="checkbox" />
+																<label for="fuelFlexible">Flexible</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelHybridElectric" type="checkbox" />
+																<label for="fuelHybridElectric">Hybrid Electric</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelHydrogen" type="checkbox" />
+																<label for="fuelHydrogen">Hydrogen</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelLNG" type="checkbox" />
+																<label for="fuelLNG">Liquefied Natural Gas</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelLPG" type="checkbox" />
+																<label for="fuelLPG">Liquefied Petroleum Gas</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelPetrol" type="checkbox" />
+																<label for="fuelPetrol">Petrol</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelPluginHybridElectric" type="checkbox" />
+																<label for="fuelPluginHybridElectric">Plug-in Hybrid Electric</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelStream" type="checkbox" />
+																<label for="fuelStream">Stream</label>
+															</div>
+															<div class="checkbox checkbox-success">
+																<input id="fuelWoodGas" type="checkbox" />
+																<label for="fuelWoodGas">Wood Gas</label>
+															</div>
+
+														</div>
+													</div>
+												</div>
+											</div>
+
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+					<!-- results -->
+					<div id="searchResultList" class="col-md-9" ></div>
+				</div>
+			</div>
+		</div>
+			
+		<div class="footer" >
+			<div class="text-center" >
+				<strong>Copyright</strong> CarRentalPortal &copy; 2014-2015
+			</div>
+		</div>
+	</div>
+
+	<!-- Search result's template -->
+	<script id="searchResultTemplate" type="text/html" >
+		<div class="ibox animated fadeInRight" >
+			<div class="row" >
+			{{#searchResults}}
+				<div class="col-lg-4" >
+					<a href="{{vehicleURL}}">
+						<div data-vehicle-id="{{id}}" class="ibox ibox-content product-box search-result" >
+							<div class="vehicle-img" style="background-image: url('{{imageURL}}');" >
+								<div class="vehicle-price-tag" ><span class="vehicle-price" >{{perDayPrice}} <sup>&#8363;</sup>/<sub>day</sub></span></div>
+							</div>
+							<div class="vehicle-info">
+								<div class="vehicle-name">{{name}}</div>
+								<div>
+									<select class="star-rating">
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+									</select>
+
+								</div>
+								<hr>
+								<div><i class="fa fa-map-marker"></i> {{garageLocation}}</div>
+								<div><i class="fa fa-building"></i> {{garageName}}</div>
+								<hr>
+								<div class="license-number">{{licenseNumber}}</div>
+							</div>
+						</div>
+					</a>
+				</div>
+					
+			{{/searchResults}}
+			</div>
+			<div class="text-center">
+				<ul class="pagination pagination-lg" >
+					<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
+					<li><a href="#">1</a></li>
+					<li class="active" ><a href="#">2</a></li>
+					<li><a href="#">3</a></li>
+					<li><a href="#">4</a></li>
+					<li><a href="#">5</a></li>
+					<li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</script>
+
+	<!-- Main scripts -->
+	<script src="./../../static/js/jquery-2.1.1.js"></script>
+	<script src="./../../static/js/bootstrap.min.js"></script>
+	<script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+	<script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+	<!-- Custom and plugin javascript -->
+	<script src="./../../static/js/inspinia.js"></script>
+
+	<!-- Templating engine. Use mustache -->
+	<script src="./../../static/js/plugins/mustache/mustache.min.js"></script>
+
+	<!-- Date range use moment.js same as full calendar plugin -->
+	<script src="./../../static/js/plugins/moment/moment.js"></script>
+
+	<!-- Date range picker -->
+	<script src="./../../static/js/plugins/daterangepicker/daterangepicker.js"></script>
+
+	<!-- Chosen -->
+	<script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
+
+	<!-- jsTree -->
+	<script src="./../../static/js/plugins/jsTree/jstree.min.js"></script>
+
+	<!-- jquery-bar-rating -->
+	<script src="./../../static/js/plugins/jquery-bar-rating/jquery.barrating.min.js"></script>
+
+	<!-- Page's script -->
+	<script src="./searchResult.js" ></script>
+</body>
+</html>
