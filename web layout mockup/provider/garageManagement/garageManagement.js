@@ -1,5 +1,7 @@
 $(document).ready(function() {
-
-	$('.footable').footable();
+	$('.footable').footable({
+		showToggle: true,
+		toggleColumn: 'first'
+	});
 
 });
