@@ -7,7 +7,9 @@
 	<link href="./../../static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 
 	<link href="./../../static/css/plugins/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet">
-	<link href="./../../static/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+        
+    <link href="./../../static/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+        
 	<link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
 	<link href="./../../static/css/animate.css" rel="stylesheet">
@@ -46,7 +48,7 @@
                 <p>We specialize in CAR</p>
                 <form class="form-inline">
                     
-				    <select class="form-control" data-placeholder="Location" id="locationSelector" multiple>
+				    <select class="my_select_box" style="width: 100px" data-placeholder="Location" id="locationSelector" multiple>
                     <option value="0">All</option>
 				    <option value="1">Ha noi</option>
 				    <option value="2">Ho Chi Minh</option>
@@ -54,7 +56,8 @@
 				    </select>	
                     
                     <select class="my_select_box" data-placeholder="Brand">
-                    <option value="1">All</option>
+                    <option value="1" disabled>Brand</option>
+                    <option value="2" >All</option>
                     <option value="2" >BMW</option>
                     <option value="3">Toyota</option>
                     </select>
@@ -74,9 +77,9 @@
                             <option>>16</option>
                         </select>
                         
-                        <div id="reportrange" class="form-control active">
+                        <div id="reportrange" class="form-control">
                                 <i class="fa fa-calendar"></i>
-                                <span>From Date -->  To Date</span> <b class="caret"></b>
+                                <span>August 23, 2016 - September 21, 2016</span> <b class="caret"></b>
                         </div>
                     </div>
                     
@@ -413,10 +416,56 @@
             </div>
         </div>
    
+        
 											
-									
+       <script>
+        $(document).ready(function(){
+            $('input[name="daterange"]').daterangepicker();
 
-       
+            $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+
+            $('#reportrange').daterangepicker({
+                format: 'MM/DD/YYYY',
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment(),
+                minDate: '01/01/2012',
+                maxDate: '12/31/2015',
+                dateLimit: { days: 60 },
+                showDropdowns: true,
+                showWeekNumbers: true,
+                timePicker: false,
+                timePickerIncrement: 1,
+                timePicker12Hour: true,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                opens: 'right',
+                drops: 'down',
+                buttonClasses: ['btn', 'btn-sm'],
+                applyClass: 'btn-primary',
+                cancelClass: 'btn-default',
+                separator: ' to ',
+                locale: {
+                    applyLabel: 'Submit',
+                    cancelLabel: 'Cancel',
+                    fromLabel: 'From',
+                    toLabel: 'To',
+                    customRangeLabel: 'Custom',
+                    daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
+                    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    firstDay: 1
+                }
+            }, function(start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            });
+        });
+    </script>
     <script src="./../../static/js/jquery-2.1.1.js"></script>
 	<script src="./../../static/js/bootstrap.min.js"></script>
 	<script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -432,7 +481,7 @@
 	<script src="./../../static/js/plugins/fullcalendar/moment.min.js"></script>
 
 	<!-- Date range picker -->
-	<script src="./../../static/js/plugins/daterangepicker/daterangepicker.js"></script>
+    <script src="./../../static/js/plugins/daterangepicker/daterangepicker.js"></script>
 
 	<!-- Chosen -->
 	<script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
