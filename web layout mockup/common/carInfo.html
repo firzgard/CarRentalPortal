@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CRP | Car Infomation</title>
+
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="../static/css/plugins/slick/slick.css" rel="stylesheet">
+    <link href="../static/css/plugins/slick/slick-theme.css" rel="stylesheet">
+
+    <link href="../static/css/animate.css" rel="stylesheet">
+    <link href="../static/css/style.css" rel="stylesheet">
+    <style>
+        .info-tb tr > td:first-child {
+            font-weight: bold;
+        }
+        .float-e-margins .ibox-content {
+            padding: 0px 30px !important;
+        }
+        .image-imitation {
+            padding: 0 !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- Top menu -->
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-home"></i> </a>
+                    <form role="search" class="navbar-form-custom" action="search_results.html">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search for a car..." class="form-control" name="top-search" id="top-search">
+                        </div>
+                    </form>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="img/a7.jpg">
+                                    </a>
+                                    <div class="media-body">
+                                        <small class="pull-right">46h ago</small>
+                                        <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
+                                        <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="img/a4.jpg">
+                                    </a>
+                                    <div class="media-body ">
+                                        <small class="pull-right text-navy">5h ago</small>
+                                        <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
+                                        <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="img/profile.jpg">
+                                    </a>
+                                    <div class="media-body ">
+                                        <small class="pull-right">23h ago</small>
+                                        <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
+                                        <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="mailbox.html">
+                                        <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <li>
+                                <a href="mailbox.html">
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="profile.html">
+                                    <div>
+                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                        <span class="pull-right text-muted small">12 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="grid_options.html">
+                                    <div>
+                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="notifications.html">
+                                        <strong>See All Alerts</strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="login.html">
+                            <i class="fa fa-sign-out"></i> Log out
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    <!-- End top menu -->
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2>Car detail information</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="#">Home</a>
+                    </li>
+                    <li class="active">
+                        <strong>Car infomation</strong>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="ibox product-detail">
+                        <div class="ibox-content">
+
+                            <div class="row">
+                                <div class="col-md-5">
+
+
+                                    <div class="product-images">
+
+                                        <div>
+                                            <div class="image-imitation">
+                                                <img src="../static/img/honda1.jpg" align="middle" height="500" width="471">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="image-imitation">
+                                                <img src="../static/img/honda2.jpg" align="middle" height="500" width="471">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="image-imitation">
+                                                <img src="../static/img/honda3.jpg" align="middle" height="500" width="471">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="image-imitation">
+                                                <img src="../static/img/honda4.jpg" align="middle" height="500" width="471">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row">
+                                        <div class="text-center" style="padding-top: 35px; font-weight: bold; font-size: 22px;">
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star"></i>
+                                            <i class="fa fa-star-half-o"></i>
+                                            <i class="fa fa-star-o"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-7">
+
+                                    <h2 class="font-bold m-b-xs">
+                                        Honda CR-V 2016 New
+                                    </h2>
+                                    <hr>
+                                    <div>
+                                        <button class="btn btn-primary pull-right">Rent this car</button>
+                                        <h1 class="product-main-price">500,000 VND <small class="text-muted">per Day</small> </h1>
+                                    </div>
+                                    <hr>
+                                    <h2>Car description</h2>
+
+                                    <div class="text-muted">
+                                        This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text.
+                                        <br/>
+                                    </div>
+                                    <br/>
+                                    <h2>Honda Quang Trung</h2>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-half-o"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <div class="text-muted">
+                                        12A Quang Trung, Go Vap, Hochiminh City
+                                        <div class="text-muted">
+                                            <i class="fa fa-clock-o"></i> 07:00 am - <i class="fa fa-clock-o"></i> 09:00 pm
+                                        </div>
+                                    </div>
+                                    <div class="m-t-md">
+                                        <div class="btn-group">
+                                            <button class="btn btn-white btn-sm"><i class="fa fa-phone"></i> Contact via phone </button>
+                                            <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i> Contact via email </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="dl-horizontal m-t-md">
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Basic infomation</h5>
+                                                    <div class="ibox-tools">
+                                                        <a class="collapse-link">
+                                                            <i class="fa fa-chevron-up"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="ibox-content">
+
+                                                    <table class="info-tb table">
+                                                        <tr>
+                                                            <td>Engine</td>
+                                                            <td>2.4L</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Fuel type</td>
+                                                            <td>Petrol</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Transmission type</td>
+                                                            <td>Automatic</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Power</td>
+                                                            <td>5000 Hp</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Number of seat</td>
+                                                            <td>5</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Number of door</td>
+                                                            <td>4</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Color</td>
+                                                            <td>Black</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Interior</h5>
+                                                    <div class="ibox-tools">
+                                                        <a class="collapse-link">
+                                                            <i class="fa fa-chevron-up"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="ibox-content">
+
+                                                    <table class="info-tb table">
+                                                        <tr>
+                                                            <td>AM/FM Stereo</td>
+                                                            <td>Yes</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>CD/Audio system</td>
+                                                            <td>Yes</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Air condition</td>
+                                                            <td>Yes</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Driver airbag</td>
+                                                            <td>Yes</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="ibox float-e-margins">
+                                                <div class="ibox-title">
+                                                    <h5>Exterior</h5>
+                                                    <div class="ibox-tools">
+                                                        <a class="collapse-link">
+                                                            <i class="fa fa-chevron-up"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="ibox-content">
+
+                                                    <table class="info-tb table">
+                                                        <tr>
+                                                            <td>Alloy wheels</td>
+                                                            <td>Yes</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Fog lights</td>
+                                                            <td>Yes</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+        </div>
+        <div class="footer text-center" style="position: initial">
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2015
+            </div>
+        </div>
+
+
+
+
+<!-- Mainly scripts -->
+<script src="../static/js/jquery-2.1.1.js"></script>
+<script src="../static/js/bootstrap.min.js"></script>
+<script src="../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="../static/js/inspinia.js"></script>
+<script src="../static/js/plugins/pace/pace.min.js"></script>
+
+<!-- slick carousel-->
+<script src="../static/js/plugins/slick/slick.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+
+
+        $('.product-images').slick({
+            dots: true
+        });
+
+    });
+
+</script>
+
+</body>
+
+</html>
