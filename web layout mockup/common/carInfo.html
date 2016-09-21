@@ -13,18 +13,29 @@
 
     <link href="../static/css/plugins/slick/slick.css" rel="stylesheet">
     <link href="../static/css/plugins/slick/slick-theme.css" rel="stylesheet">
+    <link href="../static/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
 
     <link href="../static/css/animate.css" rel="stylesheet">
     <link href="../static/css/style.css" rel="stylesheet">
     <style>
-        .info-tb tr > td:first-child {
+        .info-tb tr > td:first-child, .info-tb > .col-md-6 > .row > .col-md-6:first-child {
             font-weight: bold;
         }
+        .info-tb > .col-md-6 > .row {
+            border-top: 1px solid #e7eaec;
+            line-height: 1.42857;
+            padding: 8px;
+            vertical-align: top;
+        }
+        
         .float-e-margins .ibox-content {
             padding: 0px 30px !important;
         }
         .image-imitation {
             padding: 0 !important;
+        }
+        .product-images {
+            max-width: 500px;
         }
     </style>
 
@@ -166,191 +177,217 @@
 
             </div>
         </div>
-
-        <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+        <div class="col-md-offset-2 col-md-8 wrapper wrapper-content animated fadeInRight">
 
             <div class="row">
                 <div class="col-lg-12">
 
                     <div class="ibox product-detail">
                         <div class="ibox-content">
-
-                            <div class="row">
-                                <div class="col-md-5">
-
-
-                                    <div class="product-images">
-
-                                        <div>
-                                            <div class="image-imitation">
-                                                <img src="../static/img/honda1.jpg" align="middle" height="500" width="471">
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="image-imitation">
-                                                <img src="../static/img/honda2.jpg" align="middle" height="500" width="471">
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="image-imitation">
-                                                <img src="../static/img/honda3.jpg" align="middle" height="500" width="471">
-                                            </div>
-                                        </div>
-                                        <div>
-                                            <div class="image-imitation">
-                                                <img src="../static/img/honda4.jpg" align="middle" height="500" width="471">
-                                            </div>
-                                        </div>
-
+                                <h1 class="font-bold">
+                                    Honda CR-V 2016 New
+                                </h1>
+                                <!---Star -->
+                                <div class="row">
+                                    <div style="padding-top: 5px; padding-left: 20px; font-weight: bold; font-size: 16px;">
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-half-o"></i>
+                                        <i class="fa fa-star-o"></i>
                                     </div>
-                                    <div class="row">
-                                        <div class="text-center" style="padding-top: 35px; font-weight: bold; font-size: 22px;">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star-half-o"></i>
-                                            <i class="fa fa-star-o"></i>
+                                </div>
+                                <hr>
+                                <div class="row" style="margin-bottom: 50px;">
+                                    <div class="col-md-8">
+                                        <div class="product-images">
+                                            <div>
+                                                <div class="image-imitation">
+                                                    <img src="../static/img/honda1.jpg" align="center" height="500" width="500">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="image-imitation">
+                                                    <img src="../static/img/honda2.jpg" align="middle" height="500" width="500">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="image-imitation">
+                                                    <img src="../static/img/honda3.jpg" align="middle" height="500" width="500">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="image-imitation">
+                                                    <img src="../static/img/honda4.jpg" align="middle" height="500" width="500">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-md-4">
+                                        <h2>Honda Quang Trung</h2>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star"></i>
+                                        <i class="fa fa-star-half-o"></i>
+                                        <i class="fa fa-star-o"></i>
+                                        <div class="text-muted m-b-xs m-t-xs" style="padding: 4px 0; border-bottom: 1px solid #e7eaec; border-top: 1px solid #e7eaec">
+                                            <i class="fa fa-location-arrow"></i> 12A Quang Trung, Go Vap, Hochiminh City
+                                        </div>
+                                        <div class="text-muted">
+                                                <i class="fa fa-clock-o"></i> 07:00 am - <i class="fa fa-clock-o"></i> 09:00 pm
+                                            </div>
+                                        <div class="m-t-md">
+                                            <div class="btn-group">
+                                                <button id="phone-view" class="btn btn-white btn-sm btn-block"><i class="fa fa-phone"></i> Contact via phone </button>
+                                                <button id="email-view" class="btn btn-white btn-sm btn-block"><i class="fa fa-envelope"></i> Contact via email </button>
+                                            </div>
+                                        </div>
+                                        <br/>
+                                        
+                                    </div>
+                                </div>
+                            
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-offset-1 col-md-10">
+                                    <h2>Car description</h2>
+                                        <div class="text-muted">
+                                            This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text.                                            
+                                        </div>
+                                </div>
+                            </div>
+                            <div class="dl-horizontal m-t-md">
+                                <div class="col-md-offset-1 col-md-10 ibox float-e-margins">
+                                        <div class="ibox-title">
+                                            <h5>Basic infomation</h5>
+                                            <div class="ibox-tools">
+                                                <a class="collapse-link">
+                                                    <i class="fa fa-chevron-up"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="ibox-content">
+                                            <div class="row info-tb table">
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">Engine</div>
+                                                        <div class="col-md-6">2.4L</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">Fuel type</div>
+                                                        <div class="col-md-6">Petrol</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">Transmission type</div>
+                                                        <div class="col-md-6">Automatic</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">Power</div>
+                                                        <div class="col-md-6">5000 HP</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">Number of seat</div>
+                                                        <div class="col-md-6">5</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">Number of door</div>
+                                                        <div class="col-md-6">4</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="row">
+                                                        <div class="col-md-6">Color</div>
+                                                        <div class="col-md-6">Black</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <div class="row">
+                                    <div class="col-md-offset-1 col-md-5">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <h5>Interior</h5>
+                                                <div class="ibox-tools">
+                                                    <a class="collapse-link">
+                                                        <i class="fa fa-chevron-up"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="ibox-content">
+
+                                                <table class="info-tb table">
+                                                    <tr>
+                                                        <td>AM/FM Stereo</td>
+                                                        <td>Yes</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>CD/Audio system</td>
+                                                        <td>Yes</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Air condition</td>
+                                                        <td>Yes</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Driver airbag</td>
+                                                        <td>Yes</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="ibox float-e-margins">
+                                            <div class="ibox-title">
+                                                <h5>Exterior</h5>
+                                                <div class="ibox-tools">
+                                                    <a class="collapse-link">
+                                                        <i class="fa fa-chevron-up"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="ibox-content">
+
+                                                <table class="info-tb table">
+                                                    <tr>
+                                                        <td>Alloy wheels</td>
+                                                        <td>Yes</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Fog lights</td>
+                                                        <td>Yes</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="col-md-7">
-
-                                    <h2 class="font-bold m-b-xs">
-                                        Honda CR-V 2016 New
-                                    </h2>
-                                    <hr>
-                                    <div>
-                                        <button class="btn btn-primary pull-right">Rent this car</button>
-                                        <h1 class="product-main-price">500,000 VND <small class="text-muted">per Day</small> </h1>
-                                    </div>
-                                    <hr>
-                                    <h2>Car description</h2>
-
-                                    <div class="text-muted">
-                                        This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text. This is text.
-                                        <br/>
-                                    </div>
-                                    <br/>
-                                    <h2>Honda Quang Trung</h2>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star"></i>
-                                    <i class="fa fa-star-half-o"></i>
-                                    <i class="fa fa-star-o"></i>
-                                    <div class="text-muted">
-                                        12A Quang Trung, Go Vap, Hochiminh City
-                                        <div class="text-muted">
-                                            <i class="fa fa-clock-o"></i> 07:00 am - <i class="fa fa-clock-o"></i> 09:00 pm
-                                        </div>
-                                    </div>
-                                    <div class="m-t-md">
-                                        <div class="btn-group">
-                                            <button class="btn btn-white btn-sm"><i class="fa fa-phone"></i> Contact via phone </button>
-                                            <button class="btn btn-white btn-sm"><i class="fa fa-envelope"></i> Contact via email </button>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="dl-horizontal m-t-md">
-                                            <div class="ibox float-e-margins">
-                                                <div class="ibox-title">
-                                                    <h5>Basic infomation</h5>
-                                                    <div class="ibox-tools">
-                                                        <a class="collapse-link">
-                                                            <i class="fa fa-chevron-up"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="ibox-content">
-
-                                                    <table class="info-tb table">
-                                                        <tr>
-                                                            <td>Engine</td>
-                                                            <td>2.4L</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Fuel type</td>
-                                                            <td>Petrol</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Transmission type</td>
-                                                            <td>Automatic</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Power</td>
-                                                            <td>5000 Hp</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Number of seat</td>
-                                                            <td>5</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Number of door</td>
-                                                            <td>4</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Color</td>
-                                                            <td>Black</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div class="ibox float-e-margins">
-                                                <div class="ibox-title">
-                                                    <h5>Interior</h5>
-                                                    <div class="ibox-tools">
-                                                        <a class="collapse-link">
-                                                            <i class="fa fa-chevron-up"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="ibox-content">
-
-                                                    <table class="info-tb table">
-                                                        <tr>
-                                                            <td>AM/FM Stereo</td>
-                                                            <td>Yes</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>CD/Audio system</td>
-                                                            <td>Yes</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Air condition</td>
-                                                            <td>Yes</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Driver airbag</td>
-                                                            <td>Yes</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div class="ibox float-e-margins">
-                                                <div class="ibox-title">
-                                                    <h5>Exterior</h5>
-                                                    <div class="ibox-tools">
-                                                        <a class="collapse-link">
-                                                            <i class="fa fa-chevron-up"></i>
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <div class="ibox-content">
-
-                                                    <table class="info-tb table">
-                                                        <tr>
-                                                            <td>Alloy wheels</td>
-                                                            <td>Yes</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Fog lights</td>
-                                                            <td>Yes</td>
-                                                        </tr>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                    </div>
-
+                            </div>
+                            
+                            <hr>
+                            <h2 class="font-bold">
+                                Rent this car
+                            </h2>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3 class="text-center">Rent by hour</h3>
+                                    <input id="datetimepicker" type="text" />
+                                </div>
+                                <div class="col-md-6">
+                                    <h3 class="text-center">Rent by Day</h3>
                                 </div>
                             </div>
 
@@ -363,6 +400,7 @@
 
 
 
+        </div>
         </div>
         <div class="footer text-center" style="position: initial">
             <div>
@@ -385,15 +423,39 @@
 
 <!-- slick carousel-->
 <script src="../static/js/plugins/slick/slick.min.js"></script>
+    
+<!-- daterangepicker -->
+<script src="../static/js/plugins/moment/moment.min.js"></script>
+<script src="../static/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
 <script>
     $(document).ready(function(){
-
-
+        
         $('.product-images').slick({
             dots: true
         });
 
+        $('#phone-view').on('click', function() {
+            $('#phone-view').html('<i class="fa fa-phone"></i> ');
+            $('#phone-view').append(' 01687548624');
+            
+        });
+        $('#email-view').on('click', function() {
+            $('#email-view').html('<i class="fa fa-envelope"></i> ');
+            $('#email-view').append(' thanh@gmail.com');
+        });
+        
+        $('.icon-arrow-left').addClass('glyphicon-arrow-left');
+        $('.icon-arrow-right').addClass('glyphicon-arrow-right');
+        $('#datetimepicker').datetimepicker({
+            startDate: new Date(),
+            format: 'd/m/yyyy H:00 p',
+            autoclose: true,
+            minView: 'day',
+            maxView: 'year',
+            viewSelect: 'day',
+            showMeridian: true,
+        });
     });
 
 </script>

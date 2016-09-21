@@ -12,7 +12,7 @@
     <link href="../static/font-awesome/css/font-awesome.css" rel="stylesheet">
 
     <!-- FooTable -->
-    <link href="../static/css/plugins/footable/footable.core.css" rel="stylesheet">
+    <link href="../static/css/plugins/footable/footable.bootstrap.min.css" rel="stylesheet">
     
     <!-- DROPZONE -->
     <link href="../static/css/dropzone.css" rel="stylesheet">
@@ -185,291 +185,27 @@
                             <input type="text" class="form-control input-sm m-b-xs" id="filter"
                                    placeholder="Search in table">
 
-                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8" data-filter=#filter>
+                            <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="8" data-show-toggle="false" data-filter=#filter>
                                 <thead>
                                 <tr>
-                                    <th data-toggle="true">#</th>
+                                    <th data-toggle="true" data-type="html" data-sortable="false">#</th>
                                     <th>License number</th>
                                     <th>Car group</th>
                                     <th>Car brand</th>
                                     <th>Car version</th>
-                                    <th data-hide="all">Image</th>
-                                    <th data-hide="all">Engine</th>
-                                    <th data-hide="all">Fuel type</th>
-                                    <th data-hide="all">Transmission type</th>
-                                    <th data-hide="all">Power</th>
-                                    <th data-hide="all">Number of seat</th>
-                                    <th data-hide="all">Number of door</th>
-                                    <th data-hide="all">Color</th>
-                                    <th>Car rate</th>
-                                    <th>Action</th>
+                                    <th data-breakpoints="all" data-type="html" data-sortable="false">Image</th>
+                                    <th data-breakpoints="all">Engine</th>
+                                    <th data-breakpoints="all">Fuel type</th>
+                                    <th data-breakpoints="all">Transmission type</th>
+                                    <th data-breakpoints="all">Power</th>
+                                    <th data-breakpoints="all">Number of seat</th>
+                                    <th data-breakpoints="all">Number of door</th>
+                                    <th data-breakpoints="all">Color</th>
+                                    <th data-type="html">Car rate</th>
+                                    <th data-type="html">Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
-                                        <td>59H-201.11</td>
-                                        <td>group A</td>
-                                        <td>Honda</td>
-                                        <td>CRV-2016</td>
-                                        <td>
-                                            <img src="../static/img/honda1.jpg" height="100" width="100">
-                                            <img src="../static/img/honda2.jpg" height="100" width="100">
-                                            <img src="../static/img/honda3.jpg" height="100" width="100">
-                                            <img src="../static/img/honda4.jpg" height="100" width="100">
-                                        </td>
-                                        <td>2.4L</td>
-                                        <td>Petrol</td>
-                                        <td>Automatic</td>
-                                        <td>5000HP</td>
-                                        <td>5</td>
-                                        <td>4</td>
-                                        <td>Black</td>
-                                        <td><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-half-o"></i><i class="fa fa-star-o"></i></td>
-                                        <td><a class="btn btn-sm btn-primary btn-edit">edit</a></td>
-                                    </tr>
                                     <tr>
                                         <td><img src="../static/img/honda1.jpg" height="50" width="50"></td>
                                         <td>59H-201.11</td>
@@ -763,7 +499,7 @@
     <script src="../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- FooTable -->
-    <script src="../static/js/plugins/footable/footable.all.min.js"></script>
+    <script src="../static/js/plugins/footable/footable.min.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="../static/js/inspinia.js"></script>
