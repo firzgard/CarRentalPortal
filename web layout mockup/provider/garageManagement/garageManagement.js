@@ -17,8 +17,10 @@ const	fullStar = '<i class="fa fa-star"></i>',
 		emptyStar = '<i class="fa fa-star-o"></i>';
 
 // Parsing mustache templates before-hand
-const actionButtonTemplate = $('#actionButtonTemplate').html();
+const	actionButtonTemplate = $('#actionButtonTemplate').html(),
+		garageEditorTemplate = $('#garageEditorTemplate').html();
 Mustache.parse(actionButtonTemplate);
+Mustache.parse(garageEditorTemplate);
 
 $(document).ready(function() {
 	// Render table
@@ -88,16 +90,35 @@ $(document).ready(function() {
 		// Get the data-garage-id attribute from button
 		let id = $(event.relatedTarget).data('garage-id');
 
-		// fking ajax here. Get the bloody data and throw it into mustache to render the modal body
+		// fking ajax here. Get the bloody data and throw it into mustache to render the modal's content
 		// for now, use mockup data
-		let data = {
+		let openTime = new Date(2000, 1, 1, 6, 0, 0),
+			closeTime = new Date(2000, 1, 1, 20, 0, 0),
+			data = {
 			id: id,
 			name: 'Garage 3k',
 			locationID: 1,
-			address: '666 Nguyen Hue'
-			
+			address: '666 Nguyen Hue',
+			email: 'asdqlwkjd@3krental.com',
+			phone1: '0912312032031',
+			star: 3.2,
+			isActive: true,
+			openTimeMon: openTime,
+			closeTimeMon: closeTime,
+			openTimeTue: openTime,
+			closeTimeTue: closeTime,
+			openTimeWed: openTime,
+			closeTimeWed: closeTime,
+			openTimeThur: openTime,
+			closeTimeThur: closeTime,
+			openTimeFri: openTime,
+			closeTimeFri: closeTime,
+			openTimeSat: openTime,
+			closeTimeSat: closeTime,
+			openTimeSun: openTime,
+			closeTimeSun: closeTime
 		}
 
-		$(this).find('modal-body').html(Mustache.render());
+		$(this).find('.modal-content').html(Mustache.render(garageEditorTemplate, data));
 	})
 });
