@@ -16,7 +16,9 @@ const	fullStar = '<i class="fa fa-star"></i>',
 		halfStar = '<i class="fa fa-star-half-o"></i>',
 		emptyStar = '<i class="fa fa-star-o"></i>';
 
-
+// Parsing mustache templates before-hand
+const actionButtonTemplate = $('#actionButtonTemplate').html();
+Mustache.parse(actionButtonTemplate);
 
 $(document).ready(function() {
 	let oTable = $('#garages').DataTable({
@@ -61,11 +63,7 @@ $(document).ready(function() {
 				// Render action button
 				targets: 4,
 				render: function(data, type, row) {
-					``;
-					let btnGroup = document.craeteElement('div');
-					btnGroup.className += 'btn-group';
-
-					return 
+					return Mustache.render(actionButtonTemplate);
 				}
 			}
 		],
