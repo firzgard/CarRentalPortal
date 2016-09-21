@@ -368,6 +368,9 @@
 				<div class="ibox ibox-content float-e-margins">
 					<table class="table table-striped table-bordered table-hover " id="garages"></table>
 				</div>
+				<button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#garageEditor">
+					Launch demo modal
+				</button>
 			</div>
 			<div class="footer">
 				<div class="text-center">
@@ -377,14 +380,54 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="garageEditor" tabindex="-1" role="dialog">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title">Modal title</h4>
+				</div>
+				<div class="modal-body">
+					<div class="row" >
+						<div class="col-6"></div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- modal's body's template -->
+	<script id="modalBodyTemplate" type="text/html" >
+		<div class="btn-group" >
+			<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
+				<i class="fa fa-gear"></i> Actions <i class="caret"></i>
+			</button>
+			<ul class="dropdown-menu">
+				<div class="row" >
+					<div class="col-6"></div>
+				</div>
+			</ul>
+		</div>
+	</script>
+
+	<!-- action button's template -->
 	<script id="actionButtonTemplate" type="text/html" >
 		<div class="btn-group" >
 			<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
 				<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 			</button>
 			<ul class="dropdown-menu">
-				<li><a href="#">Edit</a></li>
-				<li><a href="#">Deactive</a></li>
+				<li><a href="#" data-garage-id="{{garageID}}" >Edit</a></li>
+				<li><a href="#">
+					{{#isActive}}Deactivate{{/isActive}}
+					{{^isActive}}Activate{{/isActive}}
+				</a></li>
 				<li><a href="#">Delete</a></li>
 			</ul>
 		</div>
@@ -404,7 +447,7 @@
 
 	<!-- jquery-bar-rating -->
 	<script src="./../../static/js/plugins/jquery-bar-rating/jquery.barrating.min.js"></script>
-	
+
 	<!-- Templating engine. Use mustache -->
 
 	<script src="./../../static/js/plugins/mustache/mustache.min.js"></script>

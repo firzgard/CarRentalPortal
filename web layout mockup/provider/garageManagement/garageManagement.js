@@ -1,14 +1,14 @@
 const testData = [
-	['Garage1', 'Ho Chi Minh', 4.7, true],
-	['Garage2', 'Ho Chi Minh', 3.7, false],
-	['Garage3', 'Ho Chi Minh', 1.7, false],
-	['Garage4', 'Ho Chi Minh', 2, false],
-	['Garage5', 'Ho Chi Minh', 3.3, false],
-	['Garage6', 'Ho Chi Minh', 4.4, false],
-	['Garage7', 'Ha Noi', 5, true],
-	['Garage8', 'Ha Noi', 1, true],
-	['Garage9', 'Ha Noi', 2, true],
-	['Garage10', 'Ha Noi', 4.7, true]
+	[1, 'Garage1', 'Ho Chi Minh', 4.7, true],
+	[2, 'Garage2', 'Ho Chi Minh', 3.7, false],
+	[3, 'Garage3', 'Ho Chi Minh', 1.7, false],
+	[4, 'Garage4', 'Ho Chi Minh', 2, false],
+	[5, 'Garage5', 'Ho Chi Minh', 3.3, false],
+	[6, 'Garage6', 'Ho Chi Minh', 4.4, false],
+	[7, 'Garage7', 'Ha Noi', 5, true],
+	[8, 'Garage8', 'Ha Noi', 1, true],
+	[9, 'Garage9', 'Ha Noi', 2, true],
+	[10, 'Garage10', 'Ha Noi', 4.7, true]
 ]
 
 // html star icons
@@ -21,12 +21,13 @@ const actionButtonTemplate = $('#actionButtonTemplate').html();
 Mustache.parse(actionButtonTemplate);
 
 $(document).ready(function() {
-	let oTable = $('#garages').DataTable({
+	// Render table
+	$('#garages').DataTable({
 		data: testData,
 		columnDefs: [
 			{
 				// Render stars
-				targets: 2,
+				targets: 3,
 				render: function(data, type) {
 					if(type === 'display'){
 						for(var html = '', star = data, i = 0; i < 5; i++) {
@@ -47,7 +48,7 @@ $(document).ready(function() {
 			},
 			{
 				// Render status label
-				targets: 3,
+				targets: 4,
 				render: function(data, type) {
 					if(type === 'display'){
 						if(data){
@@ -61,21 +62,42 @@ $(document).ready(function() {
 			},
 			{
 				// Render action button
-				targets: 4,
+				targets: 5,
 				render: function(data, type, row) {
-					return Mustache.render(actionButtonTemplate);
+					return Mustache.render(actionButtonTemplate, {garageID: row[0], isActive: row[4]});
 				}
 			}
 		],
 		columns: [
+			{ visible: false },
 			{ title: 'Name', width: '55%' },
 			{ title: 'Province', width: '15%' },
 			{ title: 'Stars', width: '10%' },
-			{ title: 'Status', width: '10%'},
+			{ title: 'Status', width: '10%' },
 			{
 				title: 'Action',
-				width: '10%'
+				width: '10%',
+				orderable: false,
+				searchable: false
 			}
 		]
 	});
+
+	// Render garageEditor modal on clicking edit button
+	$('#garageEditor').on('show.bs.modal', function(event) {
+		// Get the data-garage-id attribute from button
+		let id = $(event.relatedTarget).data('garage-id');
+
+		// fking ajax here. Get the bloody data and throw it into mustache to render the modal body
+		// for now, use mockup data
+		let data = {
+			id: id,
+			name: 'Garage 3k',
+			locationID: 1,
+			address: '666 Nguyen Hue'
+			
+		}
+
+		$(this).find('modal-body').html(Mustache.render());
+	})
 });
