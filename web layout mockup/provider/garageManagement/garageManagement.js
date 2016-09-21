@@ -1,20 +1,22 @@
 const testData = [
-	['Garage1', 4.7, true],
-	['Garage2', 3.7, false],
-	['Garage3', 1.7, false],
-	['Garage4', 2, false],
-	['Garage5', 3.3, false],
-	['Garage6', 4.4, false],
-	['Garage7', 5, true],
-	['Garage8', 1, true],
-	['Garage9', 2, true],
-	['Garage10', 4.7, true]
+	['Garage1', 'Ho Chi Minh', 4.7, true],
+	['Garage2', 'Ho Chi Minh', 3.7, false],
+	['Garage3', 'Ho Chi Minh', 1.7, false],
+	['Garage4', 'Ho Chi Minh', 2, false],
+	['Garage5', 'Ho Chi Minh', 3.3, false],
+	['Garage6', 'Ho Chi Minh', 4.4, false],
+	['Garage7', 'Ha Noi', 5, true],
+	['Garage8', 'Ha Noi', 1, true],
+	['Garage9', 'Ha Noi', 2, true],
+	['Garage10', 'Ha Noi', 4.7, true]
 ]
 
 // html star icons
 const	fullStar = '<i class="fa fa-star"></i>',
 		halfStar = '<i class="fa fa-star-half-o"></i>',
-		emptyStar = '<i class="fa fa-star-o"></i>'
+		emptyStar = '<i class="fa fa-star-o"></i>';
+
+
 
 $(document).ready(function() {
 	let oTable = $('#garages').DataTable({
@@ -22,57 +24,59 @@ $(document).ready(function() {
 		columnDefs: [
 			{
 				// Render stars
-				targets: 1,
+				targets: 2,
 				render: function(data, type) {
 					if(type === 'display'){
-						for(var html = '', i = 0; i < 5; i++) {
-							if(data >= 1) {
+						for(var html = '', star = data, i = 0; i < 5; i++) {
+							if(star >= 1) {
 								html += fullStar;
-								data--;
-							} else if (data > 0) {
+								star--;
+							} else if (star > 0) {
 								html += halfStar;
-								data--
+								star--;
 							} else {
 								html += emptyStar;
 							}
 						}
-						return html
+						return html += `&nbsp;&nbsp;<span class="badge">${data}</span>`;
 					}
 					return data;
 				}
 			},
 			{
 				// Render status label
-				targets: 2,
+				targets: 3,
 				render: function(data, type) {
 					if(type === 'display'){
 						if(data){
-							return '<div class="label label-primary" >Active</div>';
+							return '<div class="status-label" ><p class="label label-primary">Active</p></div>';
 						} else {
-							return '<div class="label label-danger" >Inactive</div>';
+							return '<div class="status-label" ><p class="label label-danger" >Inactive</p></div>';
 						}
 					}
-					return data
+					return data;
+				}
+			},
+			{
+				// Render action button
+				targets: 4,
+				render: function(data, type, row) {
+					``;
+					let btnGroup = document.craeteElement('div');
+					btnGroup.className += 'btn-group';
+
+					return 
 				}
 			}
 		],
 		columns: [
-			{ title: 'Name', width: '70%' },
+			{ title: 'Name', width: '55%' },
+			{ title: 'Province', width: '15%' },
 			{ title: 'Stars', width: '10%' },
 			{ title: 'Status', width: '10%'},
 			{
 				title: 'Action',
-				width: '10%',
-				defaultContent: `<div class="btn-group" >
-					<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
-						<i class="fa fa-gear"></i> Actions <i class="caret"></i>
-					</button>
-					<ul class="dropdown-menu">
-						<li><a href="#">Edit</a></li>
-						<li><a href="#">Deactive</a></li>
-						<li><a href="#">Delete</a></li>
-					</ul>
-				</div>`
+				width: '10%'
 			}
 		]
 	});
