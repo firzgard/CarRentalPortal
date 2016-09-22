@@ -1,7 +1,7 @@
 let openTime = new Date(2000, 1, 1, 6, 0, 0),
 	closeTime = new Date(2000, 1, 1, 20, 0, 0),
 	data = {
-	id: id,
+	id: 1,
 	name: 'Garage 3k',
 	locationID: 1,
 	address: '666 Nguyen Hue',
@@ -24,3 +24,11 @@ let openTime = new Date(2000, 1, 1, 6, 0, 0),
 	openTimeSun: openTime,
 	closeTimeSun: closeTime
 }
+
+$(document).ready(function(){
+	// Intialize location selector
+	$('#locationID').chosen({
+		width: "100%",
+		no_results_text: "No result!"
+	});
+})
