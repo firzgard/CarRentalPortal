@@ -737,10 +737,10 @@
                                         <span class="icon-next"></span>
                                     </a>
                                 </div>
-                                <div id="my-awesome-dropzone" class="dropzone" action="#">
+                                <form id="my-awesome-dropzone" class="dropzone" action="#">
                                     <div id="preview-template"></div>
                                     <input type="button" name="submit-img" class="btn btn-primary" value="Save" />
-                                </div>
+                                </form>
                                 <a id="edit-img" class="btn btn-warning">Edit image</a>
                             </div>
                         </div>
@@ -775,7 +775,7 @@
     <script>
         $(document).ready(function() {
 
-            //$('.footable').footable();
+            $('.footable').footable();
             
             $('.btn-edit').on('click', function() {
                 $('#edit-car').modal('show');
