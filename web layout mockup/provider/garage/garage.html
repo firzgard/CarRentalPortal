@@ -8,6 +8,7 @@
 	<link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
 	<link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="./../../static/css/animate.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet">
@@ -368,85 +369,90 @@
 			<div class="wrapper wrapper-content animated fadeInRight">
 				<div class="ibox ibox-content float-e-margins">
 					<form action="#">
+						<input type="hidden" value="666" id="garageID" required>
+						<input type="hidden" value="true" id="isActive" required>
 						<div class="row form-group">
-							<div class="col-md-8">
+							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-building-o"></i></span>
-									<input type="text" placeholder="Garage Name" value="Garage 3k" id="name" class="form-control input-lg" style="font-weight:bold;" required>
+									<input type="text" placeholder="Garage Name" value="Garage 3k" id="name" class="form-control input-lg" required>
 								</div>
 							</div>
+							<div data-star-rating="4.4" class="col-md-4" id="starRating" ></div>
 						</div>
-						<div>
-							<input type="hidden" value="666" id="garageID" required>
-							
-							<div class="form-group">
-								<label for="locationID">Location*</label>
-								<select data-placeholder="Please choose a location..." class="form-control" id="locationID" required>
-									<option value></option>
-									<option value="1" selected >Hồ Chí Minh</option>
-									<option value="2">Hà Nội</option>
-									<option value="3">Cà Mau</option>
-								</select>
+						<div class="row form-group">
+							<div class="col-md-8">
+								<div class="form-group">
+									<label for="locationID">Location*</label>
+									<select data-placeholder="Please choose a location..." class="form-control" id="locationID" required>
+										<option value></option>
+										<option value="1" selected >Hồ Chí Minh</option>
+										<option value="2">Hà Nội</option>
+										<option value="3">Cà Mau</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="address">Address*</label>
+									<input type="text" placeholder="Address" value="666 Nguyen Hue" class="form-control" id="address" required>
+								</div>
+								<div class="form-group">
+									<label for="email">Email*</label>
+									<input type="text" placeholder="Email Address" value="asdqlwkjd@3krental.com" class="form-control" id="email" required>
+								</div>
+								<div class="form-group">
+									<label for="phone1">Phone 1*</label>
+									<input type="text" placeholder="Primary Phone Number" value="0912312032031" class="form-control" id="phone1" required>
+								</div>
+								<div class="form-group">
+									<label for="phone2">Phone 2</label>
+									<input type="text" placeholder="Alternative Phone Number" value="" class="form-control" id="phone2">
+								</div>
 							</div>
-							<div class="form-group">
-								<label for="address">Address*</label>
-								<input type="text" placeholder="Address" value="666 Nguyen Hue" class="form-control" id="address" required>
-							</div>
-							<div class="form-group">
-								<label for="email">Email*</label>
-								<input type="text" placeholder="Email Address" value="asdqlwkjd@3krental.com" class="form-control" id="email" required>
-							</div>
-							<div class="form-group">
-								<label for="phone1">Phone 1*</label>
-								<input type="text" placeholder="Primary Phone Number" value="0912312032031" class="form-control" id="phone1" required>
-							</div>
-							<div class="form-group">
-								<label for="phone2">Phone 2</label>
-								<input type="text" placeholder="Alternative Phone Number" value="" class="form-control" id="phone2">
-							</div>
-							<div class="form-group">
-								OpenTime
-								<div class="input-group">
-									<div class="input-group-addon">From</div>
-									<input type="time" value="06:00" class="form-control" id="openTimeMon">
-									<div class="input-group-addon">To</div>
-									<input type="time" value="20:00" class="form-control" id="closeTimeMon">
-								</div>
-								<div class="input-group">
-									<div class="input-group-addon">From</div>
-									<input type="time" value="06:00" class="form-control" id="openTimeTue">
-									<div class="input-group-addon">To</div>
-									<input type="time" value="20:00" class="form-control" id="closeTimeTue">
-								</div>
-								<div class="input-group">
-									<div class="input-group-addon">From</div>
-									<input type="time" value="06:00" class="form-control" id="openTimeWed">
-									<div class="input-group-addon">To</div>
-									<input type="time" value="20:00" class="form-control" id="closeTimeWed">
-								</div>
-								<div class="input-group">
-									<div class="input-group-addon">From</div>
-									<input type="time" value="06:00" class="form-control" id="openTimeThur">
-									<div class="input-group-addon">To</div>
-									<input type="time" value="20:00" class="form-control" id="closeTimeThur">
-								</div>
-								<div class="input-group">
-									<div class="input-group-addon">From</div>
-									<input type="time" value="06:00" class="form-control" id="openTimeFri">
-									<div class="input-group-addon">To</div>
-									<input type="time" value="20:00" class="form-control" id="closeTimeFri">
-								</div>
-								<div class="input-group">
-									<div class="input-group-addon">From</div>
-									<input type="time" class="form-control" id="openTimeSat">
-									<div class="input-group-addon">To</div>
-									<input type="time" class="form-control" id="closeTimeSat">
-								</div>
-								<div class="input-group">
-									<div class="input-group-addon">From</div>
-									<input type="time" class="form-control" id="openTimeSun">
-									<div class="input-group-addon">To</div>
-									<input type="time" class="form-control" id="closeTimeSun">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label>Open Time</label>
+									<div class="input-group">
+										<div class="input-group-addon">From</div>
+										<input type="text" value="6:00" class="form-control" id="openTimeMon">
+										<div class="input-group-addon">To</div>
+										<input type="text" value="20:00" class="form-control" id="closeTimeMon">
+									</div>
+									<div class="input-group">
+										<div class="input-group-addon">From</div>
+										<input type="text" value="6:00" class="form-control" id="openTimeTue">
+										<div class="input-group-addon">To</div>
+										<input type="text" value="20:00" class="form-control" id="closeTimeTue">
+									</div>
+									<div class="input-group">
+										<div class="input-group-addon">From</div>
+										<input type="text" value="6:00" class="form-control" id="openTimeWed">
+										<div class="input-group-addon">To</div>
+										<input type="text" value="20:00" class="form-control" id="closeTimeWed">
+									</div>
+									<div class="input-group">
+										<div class="input-group-addon">From</div>
+										<input type="text" value="6:00" class="form-control" id="openTimeThur">
+										<div class="input-group-addon">To</div>
+										<input type="text" value="20:00" class="form-control" id="closeTimeThur">
+									</div>
+									<div class="input-group">
+										<div class="input-group-addon">From</div>
+										<input type="text" value="6:00" class="form-control" id="openTimeFri">
+										<div class="input-group-addon">To</div>
+										<input type="text" value="20:00" class="form-control" id="closeTimeFri">
+									</div>
+									<div class="input-group">
+										<div class="input-group-addon">From</div>
+										<input type="text" class="form-control" id="openTimeSat">
+										<div class="input-group-addon">To</div>
+										<input type="text" class="form-control" id="closeTimeSat">
+									</div>
+									<div class="input-group">
+										<div class="input-group-addon">From</div>
+										<input type="text" class="form-control" id="openTimeSun">
+										<div class="input-group-addon">To</div>
+										<input type="text" class="form-control" id="closeTimeSun">
+									</div>
 								</div>
 							</div>
 						</div>
@@ -471,6 +477,9 @@
 	<!-- Custom and plugin javascript -->
 	<script src="./../../static/js/inspinia.js"></script>
 	<script src="./../../static/js/plugins/pace/pace.min.js"></script>
+	
+	<!-- bootstrap-timepicker -->
+	<script src="./../../static/js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
 
 	<!-- Chosen -->
 	<script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>

@@ -1,15 +1,15 @@
-const testData = [
-	[1, 'Garage1', 'Ho Chi Minh', 4.7, true],
-	[2, 'Garage2', 'Ho Chi Minh', 3.7, false],
-	[3, 'Garage3', 'Ho Chi Minh', 1.7, false],
-	[4, 'Garage4', 'Ho Chi Minh', 2, false],
-	[5, 'Garage5', 'Ho Chi Minh', 3.3, false],
-	[6, 'Garage6', 'Ho Chi Minh', 4.4, false],
-	[7, 'Garage7', 'Ha Noi', 5, true],
-	[8, 'Garage8', 'Ha Noi', 1, true],
-	[9, 'Garage9', 'Ha Noi', 2, true],
-	[10, 'Garage10', 'Ha Noi', 4.7, true]
-]
+const mockupData = [
+	{ "id": 1, "name": "Garage1", "location": "Ho Chi Minh", "star": 4.7, "isActive": true},
+	{ "id": 2, "name": "Garage2", "location": "Ho Chi Minh", "star": 3.7, "isActive": false},
+	{ "id": 3, "name": "Garage3", "location": "Ho Chi Minh", "star": 1.7, "isActive": false},
+	{ "id": 4, "name": "Garage4", "location": "Ho Chi Minh", "star": 2, "isActive": false},
+	{ "id": 5, "name": "Garage5", "location": "Ho Chi Minh", "star": 3.3, "isActive": false},
+	{ "id": 6, "name": "Garage6", "location": "Ho Chi Minh", "star": 4.4, "isActive": false},
+	{ "id": 7, "name": "Garage7", "location": "Ha Noi", "star": 5, "isActive": true},
+	{ "id": 8, "name": "Garage8", "location": "Ha Noi", "star": 1, "isActive": true},
+	{ "id": 9, "name": "Garage9", "location": "Ha Noi", "star": 2, "isActive": true},
+	{ "id": 10, "name": "Garage10", "location": "Ha Noi", "star": 4.7, "isActive": true}
+];
 
 // html star icons
 const	fullStar = '<i class="fa fa-star"></i>',
@@ -19,7 +19,7 @@ const	fullStar = '<i class="fa fa-star"></i>',
 $(document).ready(function() {
 	// Render table
 	$('#garages').DataTable({
-		data: testData,
+		data: mockupData,
 		columnDefs: [
 			{
 				// Render stars
@@ -76,11 +76,11 @@ $(document).ready(function() {
 			}
 		],
 		columns: [
-			{ visible: false },
-			{ title: 'Name', width: '55%' },
-			{ title: 'Province', width: '15%' },
-			{ title: 'Stars', width: '10%' },
-			{ title: 'Status', width: '10%' },
+			{ data: 'id', visible: false },
+			{ title: 'Name', data: 'name', width: '55%' },
+			{ title: 'Location', data: 'location', width: '15%' },
+			{ title: 'Stars', data: 'star', width: '10%' },
+			{ title: 'Status', data: 'isActive', width: '10%' },
 			{
 				title: 'Action',
 				width: '10%',
