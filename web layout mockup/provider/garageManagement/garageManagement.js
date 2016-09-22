@@ -16,12 +16,6 @@ const	fullStar = '<i class="fa fa-star"></i>',
 		halfStar = '<i class="fa fa-star-half-o"></i>',
 		emptyStar = '<i class="fa fa-star-o"></i>';
 
-// Parsing mustache templates before-hand
-const	actionButtonTemplate = $('#actionButtonTemplate').html(),
-		garageEditorTemplate = $('#garageEditorTemplate').html();
-Mustache.parse(actionButtonTemplate);
-Mustache.parse(garageEditorTemplate);
-
 $(document).ready(function() {
 	// Render table
 	$('#garages').DataTable({
@@ -53,11 +47,9 @@ $(document).ready(function() {
 				targets: 4,
 				render: function(data, type) {
 					if(type === 'display'){
-						if(data){
-							return '<div class="status-label" ><p class="label label-primary">Active</p></div>';
-						} else {
-							return '<div class="status-label" ><p class="label label-danger" >Inactive</p></div>';
-						}
+						return `<div class="status-label" >
+							<p class="label label-${data ? 'primary': 'danger'}">${data ? 'Active': 'Inactive'}</p>
+						</div>`;
 					}
 					return data;
 				}
@@ -66,7 +58,20 @@ $(document).ready(function() {
 				// Render action button
 				targets: 5,
 				render: function(data, type, row) {
-					return Mustache.render(actionButtonTemplate, {garageID: row[0], isActive: row[4]});
+					return `<div class="btn-group" >
+						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
+							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a href="./../garage/garage.html">Edit</a></li>
+							${row[4] ?
+								`<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="deactivate" data-id="${row[0]}" data-name="${row[1]}" >Deactivate</a></li>`
+							:
+								`<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="activate" data-id="${row[0]}" data-name="${row[1]}" >Activate</a></li>`
+							}
+							<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Delete</a></li>
+						</ul>
+					</div>`;
 				}
 			}
 		],
@@ -85,40 +90,27 @@ $(document).ready(function() {
 		]
 	});
 
-	// Render garageEditor modal on clicking edit button
-	$('#garageEditor').on('show.bs.modal', function(event) {
-		// Get the data-garage-id attribute from button
-		let id = $(event.relatedTarget).data('garage-id');
+	// Render confirmation modal for actions
+	$('#confirmModal').on('show.bs.modal', function (event) {
+		let button = $(event.relatedTarget),
+			action = button.data('action')
+			id = button.data('id'),
+			name = button.data('name');
 
-		// fking ajax here. Get the bloody data and throw it into mustache to render the modal's content
-		// for now, use mockup data
-		let openTime = new Date(2000, 1, 1, 6, 0, 0),
-			closeTime = new Date(2000, 1, 1, 20, 0, 0),
-			data = {
-			id: id,
-			name: 'Garage 3k',
-			locationID: 1,
-			address: '666 Nguyen Hue',
-			email: 'asdqlwkjd@3krental.com',
-			phone1: '0912312032031',
-			star: 3.2,
-			isActive: true,
-			openTimeMon: openTime,
-			closeTimeMon: closeTime,
-			openTimeTue: openTime,
-			closeTimeTue: closeTime,
-			openTimeWed: openTime,
-			closeTimeWed: closeTime,
-			openTimeThur: openTime,
-			closeTimeThur: closeTime,
-			openTimeFri: openTime,
-			closeTimeFri: closeTime,
-			openTimeSat: openTime,
-			closeTimeSat: closeTime,
-			openTimeSun: openTime,
-			closeTimeSun: closeTime
-		}
-
-		$(this).find('.modal-content').html(Mustache.render(garageEditorTemplate, data));
+		$(this).find('.modal-content').html(`<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+			<h2 class="modal-title">
+				${action === 'delete' ? 'Deletion' : (action === 'deactivate' ? 'Deactivation': 'Activation')} Confirmation
+			</h2>
+		</div>
+		<div class="modal-body">
+			You are about to <b>${action}</b> garage <b>${name}</b>. Are you sure?
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+			<button type="button" class="btn btn-danger">Yes</button>
+		</div>`);
 	})
 });
