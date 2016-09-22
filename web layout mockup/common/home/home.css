@@ -14,7 +14,30 @@
             color: #f4511e;
         }
 
-       
+        .search {
+             border: 3px solid black;
+             border-radius: 6px;
+             height: 200px;
+             width: 200px;
+             float: left;
+             margin-left: 10px;
+           
+        }
+        .dmm {
+             border: 10px solid #f4511e;
+             float: left;
+             width:10%;
+        }
+       .back {
+           height: 600px;
+       }
+       .cc{
+        border: 3px solid black;
+         border-radius: 6px;
+             height: 200px;
+             width: 500px;
+             
+       }
         .panel-footer {
             background-color: white !important;
         }
