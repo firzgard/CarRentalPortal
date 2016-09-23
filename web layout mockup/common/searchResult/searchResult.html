@@ -435,7 +435,14 @@
 						</div>
 					</div>
 					<!-- results -->
-					<div id="searchResultList" class="col-md-9" ></div>
+					<div class="col-md-9" >
+						<div class="ibox animated fadeInRight" >
+							<div id="searchResultGrid"> class="row" ></div>
+						<div class="text-center">
+							<ul id="paginatior" class="pagination-lg"></ul>
+						</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -505,11 +512,11 @@
 	<!-- Custom and plugin javascript -->
 	<script src="./../../static/js/inspinia.js"></script>
 
-	<!-- Templating engine. Use mustache -->
-	<script src="./../../static/js/plugins/mustache/mustache.min.js"></script>
-
 	<!-- Date range use moment.js same as full calendar plugin -->
-	<script src="./../../static/js/plugins/moment/moment.js"></script>
+	<script src="./../../static/js/plugins/moment/moment.min.js"></script>
+
+	<!-- Paginator -->
+	<script src="./../../static/js/plugins/twbsPagination/jquery.twbsPagination.min.js"></script>
 
 	<!-- Date range picker -->
 	<script src="./../../static/js/plugins/daterangepicker/daterangepicker.js"></script>

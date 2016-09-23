@@ -16,7 +16,22 @@ const	fullStar = '<i class="fa fa-star"></i>',
 		halfStar = '<i class="fa fa-star-half-o"></i>',
 		emptyStar = '<i class="fa fa-star-o"></i>';
 
-$(document).ready(function() {
+function renderStarRating(starRating){
+	for(var html = '', star = starRating, i = 0; i < 5; i++) {
+		if(star >= 1) {
+			html += fullStar;
+			star--;
+		} else if (star > 0) {
+			html += halfStar;
+			star--;
+		} else {
+			html += emptyStar;
+		}
+	}
+	return html += `&nbsp;<span class="badge">${starRating}</span>`
+}
+
+$(document).ready(() => {
 	// Render table
 	$('#garages').DataTable({
 		data: mockupData,
@@ -24,20 +39,9 @@ $(document).ready(function() {
 			{
 				// Render stars
 				targets: 3,
-				render: function(data, type) {
+				render: (data, type) => {
 					if(type === 'display'){
-						for(var html = '', star = data, i = 0; i < 5; i++) {
-							if(star >= 1) {
-								html += fullStar;
-								star--;
-							} else if (star > 0) {
-								html += halfStar;
-								star--;
-							} else {
-								html += emptyStar;
-							}
-						}
-						return html += `&nbsp;&nbsp;<span class="badge">${data}</span>`;
+						return renderStarRating(data);
 					}
 					return data;
 				}
@@ -45,7 +49,7 @@ $(document).ready(function() {
 			{
 				// Render status label
 				targets: 4,
-				render: function(data, type) {
+				render: (data, type) => {
 					if(type === 'display'){
 						return `<div class="status-label" >
 							<p class="label label-${data ? 'primary': 'danger'}">${data ? 'Active': 'Inactive'}</p>
@@ -57,7 +61,7 @@ $(document).ready(function() {
 			{
 				// Render action button
 				targets: 5,
-				render: function(data, type, row) {
+				render: (data, type, row) => {
 					return `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
@@ -91,7 +95,7 @@ $(document).ready(function() {
 	});
 
 	// Render confirmation modal for actions
-	$('#confirmModal').on('show.bs.modal', function (event) {
+	$('#confirmModal').on('show.bs.modal', (event) => {
 		let button = $(event.relatedTarget),
 			action = button.data('action')
 			id = button.data('id'),
