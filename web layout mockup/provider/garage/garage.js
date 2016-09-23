@@ -64,6 +64,7 @@ $(document).ready(function(){
 	// Load vehicles belonging to this garage
 	$('#vehicles').DataTable({
 		data: mockupData,
+		dom: 'ltipr',
 		columnDefs: [
 			{
 				// Render stars
@@ -111,6 +112,7 @@ $(document).ready(function(){
 				orderable: false,
 				searchable: false
 			}
-		]
+		],
+		lengthMenu: [ 10, 25, 50 ]
 	});
 })
