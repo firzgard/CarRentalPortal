@@ -4,15 +4,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Garages</title>
+	<title>User Management</title>
 	<link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
 	<link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
 	<link href="./../../static/css/animate.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet">
 	<link href="./../../static/css/style.css" rel="stylesheet">
-    <!-- Sweet Alert -->
-    <link href="./../../static/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+	<link href="./usermanagement.css" rel="stylesheet">
 </head>
 
 <body>
@@ -363,43 +362,11 @@
 				</nav>
 			</div>
 			<div class="row wrapper border-bottom white-bg page-heading">
-				<h2>User Management</h2>
+				<h2>User management</h2>
 			</div>
 			<div class="wrapper wrapper-content animated fadeInRight">
 				<div class="ibox ibox-content float-e-margins">
-				<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
-                    <thead>
-                    <tr>
-                <th>User Name</th>
-                <th>Full Name</th>
-                <th>Role</th>
-                <th>Phone</th>
-                <th>Sell Description</th>
-                <th>Until Date</th>
-                <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <tr>
-                <td>Tiger Nixon</td>
-                <td>Nong van den1</td>
-                <td>User</td>
-                <td>0166896596</td>
-                <td>eu co gi</td>
-                <td>19/09/1997</td>
-                <td><button class="btn btn-danger btn-sm demo4">DeActive</button></td>
-                </tr>
-                <tr>
-                <td>Tiger Nixon</td>
-                <td>Nong van den</td>
-                <td>Provider</td>
-                <td>0166896596</td>
-                <td>eu co gi</td>
-                <td>19/09/1998</td>
-                <td><button class="btn btn-success btn-sm demo3">Active</button></td>
-                </tr>
-                </tbody>
-                </table>
+					<table class="table table-striped table-bordered table-hover " id="garages"></table>
 				</div>
 			</div>
 			<div class="footer">
@@ -410,7 +377,12 @@
 		</div>
 	</div>
 
-	
+	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
 
 	<!-- Mainly scripts -->
 	<script src="./../../static/js/jquery-2.1.1.js"></script>
@@ -426,69 +398,9 @@
 
 	<!-- jquery-bar-rating -->
 	<script src="./../../static/js/plugins/jquery-bar-rating/jquery.barrating.min.js"></script>
-	
-	<!-- Templating engine. Use mustache -->
 
-	<script src="./../../static/js/plugins/mustache/mustache.min.js"></script>
-    <!-- Sweet alert -->
-    <script src="./../../static/js/plugins/sweetalert/sweetalert.min.js"></script>
-    <script>
-    $(document).ready(function() {
-    $('#example').DataTable();
-    });
-    </script>
-    <script>
-        $(document).ready(function () {
-        $('.demo1').click(function(){
-            swal({
-                title: "Welcome in Alerts",
-                text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
-            });
-        });
-
-        $('.demo2').click(function(){
-            swal({
-                title: "Good job!",
-                text: "You clicked the button!",
-                type: "success"
-            });
-        });
-
-        $('.demo3').click(function () {
-            swal({
-                title: "Do you want DeAvtice this User?",
-                text: "User will be deActived!",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes, I'm Sure!",
-                closeOnConfirm: false
-            }, function () {
-                swal("DeActived!", "User is deActived!", "success");
-            });
-        });
-
-        $('.demo4').click(function () {
-            swal({
-                        title: "Are you sure?",
-                        text: "no se bi activve dmmm",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonColor: "#DD6B55",
-                        confirmButtonText: "Yes, cc quat di",
-                        cancelButtonText: "No, cancel plx!",
-                        closeOnConfirm: false,
-                        closeOnCancel: false },
-                    function (isConfirm) {
-                        if (isConfirm) {
-                            swal("Deleted!", "Your imaginary file has been deleted.", "success");
-                        } else {
-                            swal("Cancelled", "Your imaginary file is safe :)", "error");
-                        }
-                    });
-        });
-    });
- </script>
+	<!-- Page's script -->
+	<script src="./usermanagement.js"></script>
 </body>
 
 </html>
