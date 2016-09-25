@@ -1210,9 +1210,9 @@ button.dim:active:before {
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
 .pagination > .active > span:focus {
-  background-color: #f4f4f4;
-  border-color: #DDDDDD;
-  color: inherit;
+  background-color: #1ab394;
+  border-color: #1ab394;
+  color: white;
   cursor: default;
   z-index: 2;
 }
