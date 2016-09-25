@@ -1,11 +1,11 @@
 const mockupData = [
-	{ "id": 1, "brand": "BMW", "model": "X5", "groupID": 1, "groupName": "BMW Group 1", "type": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel", "star": 4.7,},
-	{ "id": 2, "brand": "BMW", "model": "X6", "groupID": 1, "groupName": "BMW Group 1", "type": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel", "star": 3.7,},
-	{ "id": 3, "brand": "BMW", "model": "X2", "groupID": 1, "groupName": "BMW Group 1", "type": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel", "star": 1.7,},
-	{ "id": 4, "brand": "Audi", "model": "A7", "groupID": 2, "groupName": "Audi Group 1", "type": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel", "star": 2,},
-	{ "id": 5, "brand": "Audi", "model": "A8", "groupID": 2, "groupName": "Audi Group 1", "type": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel", "star": 3.3,},
-	{ "id": 6, "brand": "Audi", "model": "A9", "groupID": 2, "groupName": "Audi Group 1", "type": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel", "star": 4.4,},
-	{ "id": 7, "brand": "Ford", "model": "Fiesta ST", "groupID": 3, "groupName": "Ford Group 1", "type": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel", "star": 5,}
+	{ "id": 1, "name": "BMW X5a", "brandID": 1, "modelID": 1, "modelName": "BMW X5", "groupID": 1, "groupName": "BMW Group 1", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 2, "name": "BMW X6b", "brandID": 1, "modelID": 2, "modelName": "BMW X6", "groupID": 1, "groupName": "BMW Group 1", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 3, "name": "BMW X2c", "brandID": 1, "modelID": 3, "modelName": "BMW X2", "groupID": 1, "groupName": "BMW Group 1", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 4, "name": "Audi A7d", "brandID": 2, "modelID": 4, "modelName": "Audi A7", "groupID": 2, "groupName": "Audi Group 2", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 5, "name": "Audi A8e", "brandID": 2, "modelID": 5, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 6, "name": "Audi A9f", "brandID": 2, "modelID": 6, "modelName": "Audi A9", "groupID": 2, "groupName": "Audi Group 2", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 7, "modelName": "Ford Fiesta ST", "groupID": 3, "groupName": "Ford Group 3", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
 ];
 
 // html star icons
@@ -61,27 +61,52 @@ $(document).ready(function(){
 	$('#openTimeSun').timepicker(timepickerConfig);
 	$('#closeTimeSun').timepicker(timepickerConfig);
 
+	// ============================================
+	// Vehicle table
+
+	// render model-tree selector
+	$('#modelTree').jstree({
+		core: {
+			dblclick_toggle: false,
+			themes: {
+				icons: false,
+				variant: "small"
+			}
+		},
+		plugins: ["checkbox", "wholerow"]
+	});
+
+	// set toogling dropdown event for filter dropdown buttons
+	$('#multiFilter .dropdown-toggle').on('click', function (event) {
+		let dropdownContainer = $(this).parent();
+
+		if(dropdownContainer.hasClass('open')){
+			$('#multiFilter .dropdown-toggle').parent().removeClass('open');
+		} else {
+			$('#multiFilter .dropdown-toggle').parent().removeClass('open');
+			dropdownContainer.addClass('open');
+		}
+		
+		
+	});
+
 	// Load vehicles belonging to this garage
 	$('#vehicles').DataTable({
 		data: mockupData,
 		dom: 'ltipr',
+		lengthMenu: [ 10, 25, 50 ],
+		processing: true,
+		select: {
+			style: 'multi+shift',
+
+		},
 		columnDefs: [
 			{
-				// Render stars
-				targets: 9,
-				render: (data, type) => {
-					if(type === 'display'){
-						return renderStarRating(data);
-					}
-					return data;
-				}
-			},
-			{
 				// Render action button
-				targets: 10,
+				targets: 12,
 				render: (data, type, row) => {
 					return `<div class="btn-group" >
-						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
+						<button data-toggle="dropdown" class="btn btn-info btn-block dropdown-toggle" aria-expanded="false">
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
@@ -97,22 +122,23 @@ $(document).ready(function(){
 		],
 		columns: [
 			{ data: 'id', visible: false },
+			{ data: 'brandID', visible: false },
+			{ data: 'modelID', visible: false },
 			{ data: 'groupID', visible: false },
-			{ title: 'Brand', data: 'brand', width: '15%' },
-			{ title: 'Model', data: 'model', width: '15%' },
-			{ title: 'Group', data: 'groupName', width: '15%' },
-			{ title: 'Type', data: 'type', width: '10%' },
+			{ title: 'Name', data: 'name', width: '20%' },
+			{ title: 'Model', data: 'modelName', width: '15%' },
+			{ title: 'Category', data: 'category', width: '10%' },
+			{ title: 'Year', data: 'year', width: '5%' },
 			{ title: 'Seat', data: 'numOfSeat', width: '5%' },
 			{ title: 'Transmission', data: 'transmission', width: '10%' },
 			{ title: 'Fuel', data: 'fuel', width: '10%' },
-			{ title: 'Rating', data: 'star', width: '10%' },
+			{ title: 'Group', data: 'groupName', width: '15%' },
 			{
 				title: 'Action',
 				width: '10%',
 				orderable: false,
 				searchable: false
 			}
-		],
-		lengthMenu: [ 10, 25, 50 ]
+		]
 	});
 })
