@@ -107,7 +107,8 @@
 	padding: 10px 15px 5px;
 }
 .vehicle-info hr {
-	margin: 0.5em
+	border-color: #BFBFBF;
+	margin: 0.5em;
 }
 
 .vehicle-price-tag {
