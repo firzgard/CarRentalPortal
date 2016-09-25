@@ -1,9 +1,6 @@
-const searchResultTemplate = $('#searchResultTemplate').html();
-Mustache.parse(searchResultTemplate); // Parse template before-hand. speeds up future uses
-
-$(document).ready(function(){
-	// This mockup data is the model for future ajax-loaded searchResult json data.
-	let mockupSearchResult = { searchResults: [
+// This mockup data is the model for future ajax-loaded searchResult json data.
+const mockupSearchResult = {
+	searchResults: [
 		{
 			id: 1,
 			name: 'Koenigsegg Agera R',
@@ -169,23 +166,77 @@ $(document).ready(function(){
 			vehicleURL: '#',
 			star: 5
 		},
-	]};
+	],
+	currentPage: 2,
+	totalPages: 20
+};
 
-	// Render search results
-	$('#searchResultList').html(
-		Mustache.render(searchResultTemplate, mockupSearchResult)
-	);
+// html star icons
+const	fullStar = '<i class="fa fa-star"></i>',
+		halfStar = '<i class="fa fa-star-half-o"></i>',
+		emptyStar = '<i class="fa fa-star-o"></i>';
 
-	// Render star-rating
-	for (searchResult of mockupSearchResult.searchResults) {
-		$(`.search-result[data-vehicle-id="${searchResult.id}"] .star-rating`).barrating({
-			theme: 'fontawesome-stars',
-			initialRating: searchResult.star,
-			readonly: true
-		});
+// Renderers
+//==================================
+
+function renderSearchResultGrid(searchResults){
+	function renderStarRating(starRating){
+		for(var html = '', star = starRating, i = 0; i < 5; i++) {
+			if(star >= 1) {
+				html += fullStar;
+				star--;
+			} else if (star > 0) {
+				html += halfStar;
+				star--;
+			} else {
+				html += emptyStar;
+			}
+		}
+		return html += `&nbsp;<span class="badge">${starRating}</span>`
 	}
 
-	// =========================
+	function renderSearchResult(searchResult){
+		return `<div class="col-lg-4" >
+			<a href="${searchResult.vehicleURL}">
+				<div data-vehicle-id="${searchResult.id}" class="ibox ibox-content product-box search-result" >
+					<div class="vehicle-img" style="background-image: url('${searchResult.imageURL}');" >
+						<div class="vehicle-price-tag" ><span class="vehicle-price" >${searchResult.perDayPrice} <sup>&#8363;</sup>/<sub>day</sub></span></div>
+					</div>
+					<div class="vehicle-info">
+						<div class="vehicle-name">${searchResult.name}</div>
+						<div>${renderStarRating(searchResult.star)}</div>
+						<hr>
+						<div><i class="fa fa-map-marker"></i> ${searchResult.garageLocation}</div>
+						<div><i class="fa fa-building"></i> ${searchResult.garageName}</div>
+						<hr>
+						<div class="license-number">${searchResult.licenseNumber}</div>
+					</div>
+				</div>
+			</a>
+		</div>`
+	}
+
+	return `${searchResults.reduce((html, searchResult) => html + renderSearchResult(searchResult), '')}`;
+}
+//==================================
+
+$(document).ready(() => {
+	// Render search result grid
+	$('#searchResultGrid').html(
+		renderSearchResultGrid(mockupSearchResult.searchResults)
+	);
+
+	// Render search result grid's paginator
+	$('#paginatior').twbsPagination({
+		startPage: mockupSearchResult.currentPage,
+		totalPages: mockupSearchResult.totalPages,
+		visiblePages: 5,
+		onPageClick: function (event, page) {
+			// Ajax here to load the next page's content
+		}
+	});
+
+	// ==================================================
 	// Render filters
 
 	// Brand-tree selector
@@ -237,7 +288,7 @@ $(document).ready(function(){
 			monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 			firstDay: 1
 		}
-	}, function(start, end, label) {
+	}, (start, end, label) => {
 		$('#timerange #startTimeDisplay').val(start.format('YYYY-MM-DD'));
 		$('#timerange #endTimeDisplay').val(end.format('YYYY-MM-DD'));
 	});
