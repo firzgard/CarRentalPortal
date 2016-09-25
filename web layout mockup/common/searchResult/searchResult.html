@@ -151,14 +151,14 @@
 											</div>
 											<!-- Brand -->
 											<div class="panel panel-default">
-												<a data-toggle="collapse" href="#brandFilter">
+												<a data-toggle="collapse" href="#modelFilter">
 													<div class="panel-heading">
-														<h4 class="panel-title">Brand</h4>
+														<h4 class="panel-title">Model</h4>
 													</div>
 												</a>
-												<div id="brandFilter" class="panel-collapse collapse" >
+												<div id="modelFilter" class="panel-collapse collapse" >
 													<div class="panel-body">
-														<div id="brandTree">
+														<div id="modelTree">
 															<ul>
 																<li>Audi
 																	<ul>
@@ -182,6 +182,14 @@
 																		<li>X5</li>
 																		<li>X6</li>
 																		<li>Z4</li>
+																	</ul>
+																</li>
+																<li>Ford
+																	<ul>
+																		<li>Fiesta Mk5</li>
+																		<li>Fiesta Mk6</li>
+																		<li>Focus Mk2</li>
+																		<li>Focus Mk3</li>
 																	</ul>
 																</li>
 																<li>Toyota
@@ -209,27 +217,27 @@
 														<div class="input-group" id="typeTree">
 															<div class="checkbox checkbox-success">
 																<input id="typeMicroCar" type="checkbox" />
-																<label for="fuelAmmonia">Micro Car</label>
+																<label for="typeMicroCar">Micro Car</label>
 															</div>
 															<div class="checkbox checkbox-success">
 																<input id="typeMinivan" type="checkbox" />
-																<label for="fuelAmmonia">Minivan</label>
+																<label for="typeMinivan">Minivan</label>
 															</div>
 															<div class="checkbox checkbox-success">
 																<input id="typePickupTruck" type="checkbox" />
-																<label for="fuelBioalcohol">Pickup Truck</label>
+																<label for="typePickupTruck">Pickup Truck</label>
 															</div>
 															<div class="checkbox checkbox-success">
 																<input id="typeStationWagon" type="checkbox" />
-																<label for="fuelBiodiesel">Station Wagon</label>
+																<label for="typeStationWagon">Station Wagon</label>
 															</div>
 															<div class="checkbox checkbox-success">
 																<input id="typeSedan" type="checkbox" />
-																<label for="fuelBiogas">Sedan</label>
+																<label for="typeSedan">Sedan</label>
 															</div>
 															<div class="checkbox checkbox-success">
 																<input id="typeSUV" type="checkbox" />
-																<label for="fuelCNG">SUV</label>
+																<label for="typeSUV">SUV</label>
 															</div>
 
 														</div>
@@ -453,55 +461,6 @@
 			</div>
 		</div>
 	</div>
-
-	<!-- Search result's template -->
-	<script id="searchResultTemplate" type="text/html" >
-		<div class="ibox animated fadeInRight" >
-			<div class="row" >
-			{{#searchResults}}
-				<div class="col-lg-4" >
-					<a href="{{vehicleURL}}">
-						<div data-vehicle-id="{{id}}" class="ibox ibox-content product-box search-result" >
-							<div class="vehicle-img" style="background-image: url('{{imageURL}}');" >
-								<div class="vehicle-price-tag" ><span class="vehicle-price" >{{perDayPrice}} <sup>&#8363;</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">{{name}}</div>
-								<div>
-									<select class="star-rating">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-									</select>
-
-								</div>
-								<hr>
-								<div><i class="fa fa-map-marker"></i> {{garageLocation}}</div>
-								<div><i class="fa fa-building"></i> {{garageName}}</div>
-								<hr>
-								<div class="license-number">{{licenseNumber}}</div>
-							</div>
-						</div>
-					</a>
-				</div>
-					
-			{{/searchResults}}
-			</div>
-			<div class="text-center">
-				<ul class="pagination pagination-lg" >
-					<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-					<li><a href="#">1</a></li>
-					<li class="active" ><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-				</ul>
-			</div>
-		</div>
-	</script>
 
 	<!-- Main scripts -->
 	<script src="./../../static/js/jquery-2.1.1.js"></script>

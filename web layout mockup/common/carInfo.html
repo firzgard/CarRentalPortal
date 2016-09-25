@@ -62,7 +62,7 @@
                             <li>
                                 <div class="dropdown-messages-box">
                                     <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="img/a7.jpg">
+                                        <img alt="image" class="img-circle" src="./../static/img/a7.jpg">
                                     </a>
                                     <div class="media-body">
                                         <small class="pull-right">46h ago</small>
@@ -75,7 +75,7 @@
                             <li>
                                 <div class="dropdown-messages-box">
                                     <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="img/a4.jpg">
+                                        <img alt="image" class="img-circle" src="./../static/img/a4.jpg">
                                     </a>
                                     <div class="media-body ">
                                         <small class="pull-right text-navy">5h ago</small>
@@ -88,7 +88,7 @@
                             <li>
                                 <div class="dropdown-messages-box">
                                     <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="img/profile.jpg">
+                                        <img alt="image" class="img-circle" src="./../static/img/profile.jpg">
                                     </a>
                                     <div class="media-body ">
                                         <small class="pull-right">23h ago</small>
@@ -632,10 +632,19 @@
         
         // total hour price
         var total = parseInt($('#hour-price').val()) + parseInt($('#h-fee').text().replace(",",""));
+        total = total.toString();
+        if (total.length >= 4) {
+            total = total.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+        }
         $('#h-total-price').text(total);
         
         $('#hour-price').on('change', function() {
             var total = parseInt($('#hour-price').val()) + parseInt($('#h-fee').text().replace(",",""));
+            total = total.toString();
+            if (total.length >= 4) {
+                total = total.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+            }
+            
             $('#h-total-price').text(total);
         });
         
@@ -655,6 +664,10 @@
                     var days = duration.asDays() + 1;
                     days = parseInt(days);
                     var total = parseInt($('#day-price').text().replace(",",""))*days + parseInt($('#d-fee').text().replace(",",""));
+                    total = total.toString();
+                    if (total.length >= 4) {
+                        total = total.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+                    }
                     $('#d-total-price').text(total);
                 }
             }
@@ -663,7 +676,6 @@
         $('#checkout-day').on('click', function() {
             alert();
         });
-        // end test
     });
 </script>
 

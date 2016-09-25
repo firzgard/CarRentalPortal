@@ -239,8 +239,8 @@ $(document).ready(() => {
 	// ==================================================
 	// Render filters
 
-	// Brand-tree selector
-	$('#brandTree').jstree({
+	// model-tree selector
+	$('#modelTree').jstree({
 		core: {
 			dblclick_toggle: false,
 			themes: {
