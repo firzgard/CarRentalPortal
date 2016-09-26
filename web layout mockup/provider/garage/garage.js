@@ -1,11 +1,11 @@
 const mockupData = [
-	{ "id": 1, "name": "BMW X5a", "brandID": 1, "modelID": 1, "modelName": "BMW X5", "groupID": 1, "groupName": "BMW Group 1", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 2, "name": "BMW X6b", "brandID": 1, "modelID": 2, "modelName": "BMW X6", "groupID": 1, "groupName": "BMW Group 1", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 3, "name": "BMW X2c", "brandID": 1, "modelID": 3, "modelName": "BMW X2", "groupID": 1, "groupName": "BMW Group 1", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 4, "name": "Audi A7d", "brandID": 2, "modelID": 4, "modelName": "Audi A7", "groupID": 2, "groupName": "Audi Group 2", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 5, "name": "Audi A8e", "brandID": 2, "modelID": 5, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 6, "name": "Audi A9f", "brandID": 2, "modelID": 6, "modelName": "Audi A9", "groupID": 2, "groupName": "Audi Group 2", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 7, "modelName": "Ford Fiesta ST", "groupID": 3, "groupName": "Ford Group 3", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
+	{ "id": 1, "name": "BMW X5a", "brandID": 1, "modelID": 1, "modelName": "BMW X5", "groupID": 1, "groupName": "BMW Group 1", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 2, "name": "BMW X6b", "brandID": 1, "modelID": 2, "modelName": "BMW X6", "groupID": 1, "groupName": "BMW Group 1", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 3, "name": "BMW X2c", "brandID": 1, "modelID": 3, "modelName": "BMW X2", "groupID": 1, "groupName": "BMW Group 1", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 4, "name": "Audi A7d", "brandID": 2, "modelID": 4, "modelName": "Audi A7", "groupID": 2, "groupName": "Audi Group 2", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 5, "name": "Audi A8e", "brandID": 2, "modelID": 5, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 6, "name": "Audi A9f", "brandID": 2, "modelID": 6, "modelName": "Audi A9", "groupID": 2, "groupName": "Audi Group 2", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 7, "modelName": "Ford Fiesta ST", "groupID": 3, "groupName": "Ford Group 3", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
 ];
 
 // html star icons
@@ -26,6 +26,63 @@ function renderStarRating(starRating){
 		}
 	}
 	return html += `&nbsp;<span class="badge">${starRating}</span>`
+}
+
+// Custom Filters Utils
+// For checkbox-like
+function createCheckboxFilter(table, filterNode, filterCol){
+	let selectedCategories = [];
+
+	$.fn.dataTable.ext.search.push((settings, data) => {
+		if(selectedCategories.length !== 0)
+			return selectedCategories.includes(data[filterCol]);
+
+		return true;
+	});
+
+	// filter button clicked
+	filterNode.find('.dropdown-menu button').click((event) => {
+		selectedCategories = filterNode.find('input:checked').toArray().map((checkbox) => {
+			return checkbox.value;
+		});
+		table.draw();
+		filterNode.find('.filter-toggle').addClass('btn-success');
+	});
+
+	// clear filter event
+	filterNode.find('.filter-remove').click((event) => {
+		selectedCategories = [];
+		table.draw();
+		filterNode.find('.filter-toggle').removeClass('btn-success');
+		filterNode.removeClass('open');
+	});
+}
+
+// For range-like with int data
+function createIntRangeFilter(table, filterNode, filterCol){
+	let min, max;
+
+	$.fn.dataTable.ext.search.push((settings, data) => {
+		return ( min ? ( data[filterCol] >= min ) : true )
+			&& ( max ? ( data[filterCol] <= max ) : true );
+	});
+
+	// filter button clicked
+	filterNode.find('.dropdown-menu button').click((event) => {
+		min = Number.parseInt(filterNode.find('.from-input').val());
+		max = Number.parseInt(filterNode.find('.to-input').val());
+		console.log(filterNode.find('.to-input'));
+		table.draw();
+		filterNode.find('.filter-toggle').addClass('btn-success');
+	});
+
+	// clear filter event
+	filterNode.find('.filter-remove').click((event) => {
+		min = max = false;
+		table.draw();
+		filterNode.find('.filter-toggle').removeClass('btn-success');
+		filterNode.removeClass('open');
+	});
 }
 
 $(document).ready(function(){
@@ -108,10 +165,10 @@ $(document).ready(function(){
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" data-id="${row[0]}" >Change Garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" data-id="${row[0]}" >Change Group</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#smModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Delete</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row[0]}" >Duplicate</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" data-id="${row.id}" >Change Garage</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" data-id="${row.id}" >Change Group</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#smModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row.id}" >Duplicate</a></li>
 							<li><a href="./../car/car.html">Edit</a></li>
 						</ul>
 					</div>`;
@@ -119,19 +176,20 @@ $(document).ready(function(){
 			}
 		],
 		columns: [
-			{ data: 'id', visible: false },
-			{ data: 'brandID', visible: false },
-			{ data: 'modelID', visible: false },
-			{ data: 'groupID', visible: false },
-			{ title: 'Name', data: 'name', width: '20%' },
-			{ title: 'Model', data: 'modelName', width: '15%' },
-			{ title: 'Category', data: 'category', width: '10%' },
-			{ title: 'Year', data: 'year', width: '5%' },
-			{ title: 'Seat', data: 'numOfSeat', width: '5%' },
-			{ title: 'Transmission', data: 'transmission', width: '10%' },
-			{ title: 'Fuel', data: 'fuel', width: '10%' },
-			{ title: 'Group', data: 'groupName', width: '15%' },
+			{ name: 'ID', data: 'id', visible: false },
+			{ name: 'BrandID', data: 'brandID', visible: false },
+			{ name: 'ModelID', data: 'modelID', visible: false },
+			{ name: 'GroupID', data: 'groupID', visible: false },
+			{ name: 'Name', title: 'Name', data: 'name', width: '20%' },
+			{ name: 'Model', title: 'Model', data: 'modelName', width: '15%' },
+			{ name: 'Category', title: 'Category', data: 'category', width: '10%' },
+			{ name: 'Year', title: 'Year', data: 'year', width: '5%' },
+			{ name: 'Seat', title: 'Seat', data: 'numOfSeat', width: '5%' },
+			{ name: 'Transmission', title: 'Transmission', data: 'transmission', width: '10%' },
+			{ name: 'Fuel', title: 'Fuel', data: 'fuel', width: '10%' },
+			{ name: 'Group', title: 'Group', data: 'groupName', width: '15%' },
 			{
+				name: 'Action', 
 				title: 'Action',
 				width: '10%',
 				orderable: false,
@@ -141,19 +199,56 @@ $(document).ready(function(){
 	});
 
 	// Bind the filters with table
-	table.columns().every(function(colID){
-		let col = this;
-		switch(colID){
-			case 4:
-				let filter = $('#vehicleNameFilter');
-				filter.find('button').click((event) => {
-					event.stopPropagation();
 
-					let searchString = filter.find('input').val();
-					col.search(searchString).draw();
-				});
-				
-				break;
-		}
-	} );
-})
+	// =======================================
+	// Vehicle's name filter
+	{
+		let vehicleNameCol = table.column('Name:name'),
+			filter = $('#vehicleNameFilter');
+
+		// filter button clicked
+		filter.find('.dropdown-menu button').click((event) => {
+			vehicleNameCol.search(filter.find('.dropdown-menu input').val()).draw();
+			filter.find('.filter-toggle').addClass('btn-success');
+		});
+
+		// enter pressed
+		$(".dropdown-menu input").keyup((event) => {
+			if (event.keyCode == 13) {
+				vehicleNameCol.search(event.target.value).draw();
+				filter.find('.filter-toggle').addClass('btn-success');
+			}
+		});
+
+		// clear filter event
+		filter.find('.filter-remove').click((event) => {
+			vehicleNameCol.search('').draw();
+			filter.find('.filter-toggle').removeClass('btn-success');
+			filter.removeClass('open');
+		});
+	}
+
+	// =======================================
+	// Category filter
+	createCheckboxFilter(table, $('#categoryFilter'), 6);
+	
+	// =======================================
+	// Year filter
+	createIntRangeFilter(table, $('#yearFilter'), 7);
+
+	// =======================================
+	// Seat filter
+	createIntRangeFilter(table, $('#seatFilter'), 8);
+
+	// =======================================
+	// Transmission filter
+	createCheckboxFilter(table, $('#transmissionFilter'), 9);
+
+	// =======================================
+	// Fuel filter
+	createCheckboxFilter(table, $('#fuelFilter'), 10);
+
+	// =======================================
+	// Vehicle Group filter
+	createCheckboxFilter(table, $('#groupFilter'), 3);
+});

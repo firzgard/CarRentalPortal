@@ -249,12 +249,12 @@
 							<th></th>
 							<th></th>
 							<!-- Vehicle's name filter -->
-							<th><div class="btn-group" >
+							<th><div id="vehicleNameFilter" class="btn-group" >
 								<button class="btn btn-primary filter-toggle">
 									<i class="fa fa-search"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
-									<div id="vehicleNameFilter" class="input-group">
+									<div class="input-group">
 										<input type="text" class="form-control" placeholder="Vehicle Name...">
 										<span class="input-group-btn">
 											<button class="btn btn-primary"><i class="fa fa-search"></i></button>
@@ -266,7 +266,7 @@
 								</button>
 							</div></th>
 							<!-- Model filter -->
-							<th><div class="btn-group" >
+							<th><div id="modelFilter" class="btn-group" >
 								<button class="btn btn-primary filter-toggle">
 									<i class="fa fa-search"></i>
 								</button>
@@ -324,7 +324,7 @@
 								</button>
 							</div></th>
 							<!-- Category filter -->
-							<th><div class="btn-group" >
+							<th><div id="categoryFilter" class="btn-group" >
 								<button class="btn btn-primary filter-toggle">
 									<i class="fa fa-search"></i>
 								</button>
@@ -333,28 +333,28 @@
 									<div class="scroller">
 										<div class="input-group" id="typeTree">
 											<div class="checkbox checkbox-success">
-												<input id="typeMicroCar" type="checkbox" />
-												<label for="typeMicroCar">Micro Car</label>
+												<input value="Micro Car" id="categoryMicroCar" type="checkbox" />
+												<label for="categoryMicroCar">Micro Car</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typeMinivan" type="checkbox" />
-												<label for="typeMinivan">Minivan</label>
+												<input value="Minicar" id="categoryMinivan" type="checkbox" />
+												<label for="categoryMinivan">Minivan</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typePickupTruck" type="checkbox" />
-												<label for="typePickupTruck">Pickup Truck</label>
+												<input value="Pickup Truck" id="categoryPickupTruck" type="checkbox" />
+												<label for="categoryPickupTruck">Pickup Truck</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typeStationWagon" type="checkbox" />
-												<label for="typeStationWagon">Station Wagon</label>
+												<input value="Station Wagon" id="categoryStationWagon" type="checkbox" />
+												<label for="categoryStationWagon">Station Wagon</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typeSedan" type="checkbox" />
-												<label for="typeSedan">Sedan</label>
+												<input value="Sedan" id="categorySedan" type="checkbox" />
+												<label for="categorySedan">Sedan</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typeSUV" type="checkbox" />
-												<label for="typeSUV">SUV</label>
+												<input value="SUV" id="categorySUV" type="checkbox" />
+												<label for="categorySUV">SUV</label>
 											</div>
 
 										</div>
@@ -365,16 +365,16 @@
 								</button>
 							</div></th>
 							<!-- Year filter -->
-							<th><div class="btn-group" >
+							<th><div id="yearFilter" class="btn-group" >
 								<button class="btn btn-primary filter-toggle">
 									<i class="fa fa-search"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
 									<div class="input-group">
 										<span class="input-group-addon"><b>From</b></span>
-										<input type="number" min="1900" max="2016" class="form-control">
+										<input type="number" min="1900" max="2016" class="form-control from-input">
 										<span class="input-group-addon"><b>To</b></span>
-										<input type="number" min="1900" max="2016" class="form-control">
+										<input type="number" min="1900" max="2016" class="form-control to-input">
 										<span class="input-group-btn">
 											<button class="btn btn-primary" ><i class="fa fa-search"></i></button>
 										</span>
@@ -385,7 +385,7 @@
 								</button>
 							</div></th>
 							<!-- Seat filter -->
-							<th><div class="btn-group" >
+							<th><div id="seatFilter" class="btn-group" >
 								<button class="btn btn-primary filter-toggle">
 									<i class="fa fa-search"></i>
 								</button>
@@ -393,9 +393,9 @@
 									<div class="input-group">
 										<div class="input-group">
 										<span class="input-group-addon"><b>From</b></span>
-										<input type="number" min="1" max="1000" class="form-control">
+										<input type="number" min="1" max="1000" class="form-control from-input">
 										<span class="input-group-addon"><b>To</b></span>
-										<input type="number" min="1" max="1000" class="form-control">
+										<input type="number" min="1" max="1000" class="form-control to-input">
 										<span class="input-group-btn">
 											<button class="btn btn-primary" ><i class="fa fa-search"></i></button>
 										</span>
@@ -407,7 +407,7 @@
 								</button>
 							</div></th>
 							<!-- Transmission filter -->
-							<th><div class="btn-group" >
+							<th><div id="transmissionFilter" class="btn-group" >
 								<button class="btn btn-primary filter-toggle">
 									<i class="fa fa-search"></i>
 								</button>
@@ -416,11 +416,11 @@
 									<div class="scroller">
 										<div class="input-group" id="transmissionSelector">
 											<div class="checkbox checkbox-success">
-												<input id="transmissionAutomatic" type="checkbox" />
+												<input value="Automatic" id="transmissionAutomatic" type="checkbox" />
 												<label for="transmissionAutomatic">Automatic</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="transmissionManual" type="checkbox" />
+												<input value="Manual" id="transmissionManual" type="checkbox" />
 												<label for="transmissionManual">Manual</label>
 											</div>
 										</div>
@@ -431,7 +431,7 @@
 								</button>
 							</div></th>
 							<!-- Fuel filter -->
-							<th><div class="btn-group" >
+							<th><div id="fuelFilter" class="btn-group" >
 								<button class="btn btn-primary filter-toggle">
 									<i class="fa fa-search"></i>
 								</button>
@@ -440,67 +440,67 @@
 									<div class="scroller">
 										<div class="input-group" id="fuelSelector">
 											<div class="checkbox checkbox-success">
-												<input id="fuelAmmonia" type="checkbox" />
+												<input value="Ammonia" id="fuelAmmonia" type="checkbox" />
 												<label for="fuelAmmonia">Ammonia</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelBioalcohol" type="checkbox" />
+												<input value="Bioalcohol" id="fuelBioalcohol" type="checkbox" />
 												<label for="fuelBioalcohol">Bioalcohol</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelBiodiesel" type="checkbox" />
+												<input value="Biodiesel" id="fuelBiodiesel" type="checkbox" />
 												<label for="fuelBiodiesel">Biodiesel</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelBiogas" type="checkbox" />
+												<input value="Biogas" id="fuelBiogas" type="checkbox" />
 												<label for="fuelBiogas">Biogas</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelCNG" type="checkbox" />
+												<input value="Compressed Natural Gas" id="fuelCNG" type="checkbox" />
 												<label for="fuelCNG">Compressed Natural Gas</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelDiesel" type="checkbox" />
+												<input value="Diesel" id="fuelDiesel" type="checkbox" />
 												<label for="fuelDiesel">Diesel</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelElectric" type="checkbox" />
+												<input value="Electric" id="fuelElectric" type="checkbox" />
 												<label for="fuelElectric">Electric</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelFlexible" type="checkbox" />
+												<input value="Flexible" id="fuelFlexible" type="checkbox" />
 												<label for="fuelFlexible">Flexible</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelHybridElectric" type="checkbox" />
+												<input value="Hybrid Electric" id="fuelHybridElectric" type="checkbox" />
 												<label for="fuelHybridElectric">Hybrid Electric</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelHydrogen" type="checkbox" />
+												<input value="Hydrogen" id="fuelHydrogen" type="checkbox" />
 												<label for="fuelHydrogen">Hydrogen</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelLNG" type="checkbox" />
+												<input value="Liquefied Natural Gas" id="fuelLNG" type="checkbox" />
 												<label for="fuelLNG">Liquefied Natural Gas</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelLPG" type="checkbox" />
+												<input value="Liquefied Petroleum Gas" id="fuelLPG" type="checkbox" />
 												<label for="fuelLPG">Liquefied Petroleum Gas</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelPetrol" type="checkbox" />
+												<input value="Petrol" id="fuelPetrol" type="checkbox" />
 												<label for="fuelPetrol">Petrol</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelPluginHybridElectric" type="checkbox" />
+												<input value="Plug-in Hybrid Electric" id="fuelPluginHybridElectric" type="checkbox" />
 												<label for="fuelPluginHybridElectric">Plug-in Hybrid Electric</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelStream" type="checkbox" />
+												<input value="Stream" id="fuelStream" type="checkbox" />
 												<label for="fuelStream">Stream</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelWoodGas" type="checkbox" />
+												<input value="Wood Gas" id="fuelWoodGas" type="checkbox" />
 												<label for="fuelWoodGas">Wood Gas</label>
 											</div>
 
@@ -512,7 +512,7 @@
 								</button>
 							</div></th>
 							<!-- Group filter -->
-							<th><div class="btn-group" >
+							<th><div id="groupFilter" class="btn-group" >
 								<button class="btn btn-primary filter-toggle">
 									<i class="fa fa-search"></i>
 								</button>
@@ -521,15 +521,15 @@
 									<div class="scroller">
 										<div class="input-group" id="GroupSelector">
 											<div class="checkbox checkbox-success">
-												<input data-group-id="1" id="group1" type="checkbox" />
+												<input value="1" id="group1" type="checkbox" />
 												<label for="transmissionAutomatic">BMW Group 1</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="group2" data-group-id="2" type="checkbox" />
+												<input value="2" id="group2" type="checkbox" />
 												<label for="transmissionManual">Audi Group 2</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="group2" data-group-id="3" type="checkbox" />
+												<input value="3"id="group2" type="checkbox" />
 												<label for="transmissionManual">Ford Group 3</label>
 											</div>
 										</div>
@@ -541,7 +541,7 @@
 							</div></th>
 							<!-- Action buttons for multi-select -->
 							<th><div class="btn-group" >
-								<button class="btn btn-primary btn-block">
+								<button class="btn btn-primary btn-block dropdown-toggle">
 									<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 								</button>
 								<ul class="dropdown-menu">
