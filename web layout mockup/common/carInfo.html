@@ -13,11 +13,14 @@
 
     <link href="../static/css/plugins/slick/slick.css" rel="stylesheet">
     <link href="../static/css/plugins/slick/slick-theme.css" rel="stylesheet">
-    <link href="../static/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<!--    <link href="../static/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">-->
 
     <link href="../static/css/animate.css" rel="stylesheet">
     <link href="../static/css/style.css" rel="stylesheet">
+    
+    <link href="../static/css/bootstrap-datetimepicker.css" rel="stylesheet">
     <style>
+        @import "";
         .info-tb tr > td:first-child, .info-tb > .col-md-6 > .row > .col-md-6:first-child {
             font-weight: bold;
         }
@@ -497,6 +500,7 @@
                             </div>
                             <hr>
                             <div class=" text-muted text-center">
+                                <input id="time" type="text" />
                                 This car was provided by Honda Quang Trung Garage
                             </div>
                             <div class="text-center m-t" style="font-size: 20px;">
@@ -538,7 +542,10 @@
     
 <!-- daterangepicker -->
 <script src="../static/js/plugins/moment/moment.min.js"></script>
-<script src="../static/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="../static/js/plugins/datetimepicker/temp/transition.js"></script>
+<script src="../static/js/plugins/datetimepicker/temp/collapse.js"></script>
+<script src="../static/js/plugins/datetimepicker/temp/bootstrap-datetimepicker.js"></script>
+<!--<script src="../static/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>-->
 
 <script type="text/javascript">
     /* rent by hour */
@@ -551,44 +558,44 @@
         ]
     });
     $('#rent-time').datetimepicker({
-        format: 'yyyy-m-d h:00',
-//        defaultDate: new Date(),
-        startDate: new Date(),
-        //endDate: '',
-//        initialDate: new Date(),
-        pickerReferer: 'input',
-        autoclose: true,
-        startView: 'month',
-        minView: 'day',
-        maxView: 'year',
-        viewSelect: 'month',
-        showMeridian: true,
+//        format: 'yyyy-m-d h:00',
+////        defaultDate: new Date(),
+//        //startDate: new Date(),
+//        //endDate: '',
+////        initialDate: new Date(),
+//        pickerReferer: 'input',
+//        autoclose: true,
+//        startView: 'month',
+//        minView: 'day',
+//        maxView: 'year',
+//        viewSelect: 'month',
+//        showMeridian: true,
     });
     
     /* rent by day */
     // start
     $('#start-time').datetimepicker({
-        startDate: new Date(),
-        //endDate: '',
-        disableDates: ["2016-09-24"],
-        initialDate: new Date(),
-        format: 'yyyy-m-d h:00',
-        autoclose: true,
-        minView: 'day',
-        maxView: 'year',
-        viewSelect: 'month',
-        showMeridian: true,
+//        //startDate: new Date(),
+//        //endDate: '',
+//        disableDates: ["2016-09-24"],
+//        initialDate: new Date(),
+//        format: 'yyyy-m-d h:00',
+//        autoclose: true,
+//        minView: 'day',
+//        maxView: 'year',
+//        viewSelect: 'month',
+//        showMeridian: true,
     });
     // end
     $('#end-time').datetimepicker({
-        startDate: new Date(),
-        //endDate: '',
-        format: 'yyyy-m-d h:00',
-        autoclose: true,
-        minView: 'day',
-        maxView: 'year',
-        viewSelect: 'month',
-        showMeridian: true,
+//        //startDate: new Date(),
+//        //endDate: '',
+//        format: 'yyyy-m-d h:00',
+//        autoclose: true,
+//        minView: 'day',
+//        maxView: 'year',
+//        viewSelect: 'month',
+//        showMeridian: true,
     });
     
     $(document).ready(function(){

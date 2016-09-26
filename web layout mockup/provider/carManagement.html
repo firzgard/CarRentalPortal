@@ -411,13 +411,14 @@
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         <div class="ibox-content">
-                            <div class="btn-group pull-right m-r">
-                                <a id="add-car" class="btn btn-success"><span><i class="fa fa-car"></i></span><span> Add car</span></a>
+                            <div class="pull-right m-r">
                                 <div class="btn-group" >
                                     <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">
                                         <i class="fa fa-gear"></i> Actions <i class="caret"></i>
                                     </button>
                                     <ul class="dropdown-menu">
+                                        <li><a id="add-car" data-toggle="modal"><i class="fa fa-plus"></i> Add car</a></li>
+                                        <hr>
                                         <li><a href="#" data-toggle="modal" data-target="#changeModal" data-name="group">Change group</a></li>
                                         <li><a href="#" data-toggle="modal" data-target="#changeModal" data-name="garage">Change garage</a></li>
                                     </ul>
@@ -732,20 +733,31 @@
             ];
         $(document).ready(function() {
             
-            $('#table-magmt').DataTable({
+//            $('#table-magmt tfoot th').each( function (i) {
+//                var title = $('#table-magmt tfoot th').eq( $(this).index() ).text();
+//                $(this).html( '<input type="text" placeholder="Search '+title+'" data-index="'+i+'" />' );
+//            } );
+            
+//            $('#table-magmt tfoot th').each( function () {
+//                var title = $(this).text();
+//                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
+//            } );
+            
+            var table = $('#table-magmt').dataTable({
                 "dom" : 'lrtip',
+                //"sDom": '<"top"if>rt<"bottom"lp><"clear">',
                 "data" : data,
                 //"bSort": false,
-                "bRetrieve": true,
+                "retrieve": true,
                 //"bServerSide": true,
-                "bScrollCollapse": true,
-                "bProcessing": true,
+                "scrollCollapse": true,
+                "processing": true,
                 "select": {
                     style: 'multi'
                 },
                 //"iDisplayLength": 10,
                 //"aLengthMenu": [10, 25, 50],
-                "aoColumns" : [
+                "columns" : [
                     { visible: false },
                     { title: "License"},
                     { title: "Garage"},
@@ -760,14 +772,14 @@
                     { title: "Rate"},
                     { title: "Action"},
                 ],
-                "aoColumnDefs": [
+                "columnDefs": [
 //                    {
 //                        "aTargets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
 //                        //"bSortable": false
 //                    },
                     {
-                        "aTargets": [11],
-                        "mRender": function(data, type, o) {
+                        "targets": [11],
+                        "render": function(data, type, o) {
                             if(type === 'display'){
                                 for(var html = '', star = data, i = 0; i < 5; i++) {
                                     if(star >= 1) {
@@ -786,31 +798,36 @@
                         }
                     },
                     {
-                        "aTargets": [12],
-                        "mRender": function (data, type, o) {
+                        "targets": [12],
+                        "render": function (data, type, o) {
                             var action = `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" aria-expanded="false">
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-                            <li><a href="#" data-toggle="modal" class="font-bold gray-bg" data-target="#car-detail">Duplicate</a></li>
-							<li><a href="./car.html" class="font-bold gray-bg">Edit</a></li>
+                            <li><a href="#" data-toggle="modal" class="font-bold" data-target="#car-detail">Duplicate</a></li>
+							<li><a href="./car.html" class="font-bold">Edit</a></li>
 							
-							<li><a href="#" data-toggle="modal" class="font-bold gray-bg" data-target="#confirmModal" data-action="delete" data-name="${o[1]}" data-id="${o[0]}">Delete</a></li>
+							<li><a href="#" data-toggle="modal" class="font-bold" data-target="#confirmModal" data-action="delete" data-name="${o[1]}" data-id="${o[0]}">Delete</a></li>
 						</ul>
 					</div>`;
                             var edit='<a class="btn btn-edit btn-primary btn-sm">Edit</a>'
                             var del='<a class="btn btn-edit btn-danger btn-sm">Delete</a>'
                             return action;
                         },
-                        "bSortable": false,
+                        "sortable": false,
                     },
                 ],
             });
             
-            $('.btn-edit').on('click', function() {
-                $('#edit-car').modal('show');
-            });
+//            table.columns().every(function() {
+//                var that = this;
+//                $('input', this.footer()).on( 'keyup change', function() {
+//                if(that.search() !== this.value) {
+//                    that.search( this.value ).draw();
+//                    }
+//                });
+//            });
             
             $('#car-color').css("color", $('#color-name').text());
             
@@ -864,11 +881,11 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-4 text-right">
                                 <label>Select a ${name}</label>
                             </div>
                             <div class="col-md-8">
-                                <select>
+                                <select class="form-control">
                                     <option value="1">a</option>
                                     <option value="2">b</option>
                                     <option value="3">c</option>
