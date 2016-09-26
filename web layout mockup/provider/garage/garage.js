@@ -77,28 +77,26 @@ $(document).ready(function(){
 	});
 
 	// set toogling dropdown event for filter dropdown buttons
-	$('#multiFilter .dropdown-toggle').on('click', function (event) {
+	$('#multiFilter .filter-toggle').on('click', function (event) {
 		let dropdownContainer = $(this).parent();
 
 		if(dropdownContainer.hasClass('open')){
-			$('#multiFilter .dropdown-toggle').parent().removeClass('open');
+			$('#multiFilter .filter-toggle').parent().removeClass('open');
 		} else {
-			$('#multiFilter .dropdown-toggle').parent().removeClass('open');
+			$('#multiFilter .filter-toggle').parent().removeClass('open');
 			dropdownContainer.addClass('open');
 		}
-		
-		
 	});
 
 	// Load vehicles belonging to this garage
-	$('#vehicles').DataTable({
+	let table = $('#vehicles').DataTable({
 		data: mockupData,
 		dom: 'ltipr',
 		lengthMenu: [ 10, 25, 50 ],
 		processing: true,
 		select: {
-			style: 'multi+shift',
-
+			selector: 'td:not(:last-child)',
+			style: 'multi+shift'
 		},
 		columnDefs: [
 			{
@@ -141,4 +139,21 @@ $(document).ready(function(){
 			}
 		]
 	});
+
+	// Bind the filters with table
+	table.columns().every(function(colID){
+		let col = this;
+		switch(colID){
+			case 4:
+				let filter = $('#vehicleNameFilter');
+				filter.find('button').click((event) => {
+					event.stopPropagation();
+
+					let searchString = filter.find('input').val();
+					col.search(searchString).draw();
+				});
+				
+				break;
+		}
+	} );
 })
