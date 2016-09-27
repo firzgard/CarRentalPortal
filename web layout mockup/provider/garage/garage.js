@@ -81,8 +81,10 @@ function createTreeFilter(table, filterNode, filterCol, tree){
 			console.log(item.data);
 			return item.data;
 		});
-		table.draw();
-		filterNode.find('.filter-toggle').addClass('btn-success');
+		if(selectedItem.length !== 0){
+			table.draw();
+			filterNode.find('.filter-toggle').addClass('btn-success');
+		}
 	});
 
 	// clear filter event
@@ -96,12 +98,14 @@ function createTreeFilter(table, filterNode, filterCol, tree){
 
 // For checkbox-like
 function createCheckboxFilter(table, filterNode, filterCol){
-	let selectedItem;
+	let selectedItem = [];
 
 	$.fn.dataTable.ext.search.push((settings, data) => {
-		if(selectedItem)
-			return selectedItem.includes(data[filterCol]);
-
+		if(selectedItem.length !== 0){
+			return selectedItem.find((item) => {
+				return data[filterCol] == item
+			});
+		}
 		return true;
 	});
 
@@ -110,13 +114,15 @@ function createCheckboxFilter(table, filterNode, filterCol){
 		selectedItem = filterNode.find('input:checked').toArray().map((checkbox) => {
 			return checkbox.value;
 		});
-		table.draw();
-		filterNode.find('.filter-toggle').addClass('btn-success');
+		if(selectedItem.length !== 0){
+			table.draw();
+			filterNode.find('.filter-toggle').addClass('btn-success');
+		}
 	});
 
 	// clear filter event
 	filterNode.find('.filter-remove').click((event) => {
-		selectedItem = null;
+		selectedItem = [];
 		table.draw();
 		filterNode.find('.filter-toggle').removeClass('btn-success');
 		filterNode.removeClass('open');
