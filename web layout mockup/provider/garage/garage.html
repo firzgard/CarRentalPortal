@@ -193,42 +193,49 @@
 								<div class="form-group">
 									<label><h2><b>Open Time</b></h2></label>
 									<div class="input-group">
+										<div class="input-group-addon gray-bg">Monday</div>
 										<div class="input-group-addon">From</div>
 										<input type="text" value="6:00" class="form-control" id="openTimeMon">
 										<div class="input-group-addon">To</div>
 										<input type="text" value="20:00" class="form-control" id="closeTimeMon">
 									</div>
 									<div class="input-group">
+										<div class="input-group-addon gray-bg">Tuesday</div>
 										<div class="input-group-addon">From</div>
 										<input type="text" value="6:00" class="form-control" id="openTimeTue">
 										<div class="input-group-addon">To</div>
 										<input type="text" value="20:00" class="form-control" id="closeTimeTue">
 									</div>
 									<div class="input-group">
+										<div class="input-group-addon gray-bg">Wednesday</div>
 										<div class="input-group-addon">From</div>
 										<input type="text" value="6:00" class="form-control" id="openTimeWed">
 										<div class="input-group-addon">To</div>
 										<input type="text" value="20:00" class="form-control" id="closeTimeWed">
 									</div>
 									<div class="input-group">
+										<div class="input-group-addon gray-bg">Thursday</div>
 										<div class="input-group-addon">From</div>
 										<input type="text" value="6:00" class="form-control" id="openTimeThur">
 										<div class="input-group-addon">To</div>
 										<input type="text" value="20:00" class="form-control" id="closeTimeThur">
 									</div>
 									<div class="input-group">
+										<div class="input-group-addon gray-bg">Friday</div>
 										<div class="input-group-addon">From</div>
 										<input type="text" value="6:00" class="form-control" id="openTimeFri">
 										<div class="input-group-addon">To</div>
 										<input type="text" value="20:00" class="form-control" id="closeTimeFri">
 									</div>
 									<div class="input-group">
+										<div class="input-group-addon gray-bg">Saturday</div>
 										<div class="input-group-addon">From</div>
 										<input type="text" class="form-control" id="openTimeSat">
 										<div class="input-group-addon">To</div>
 										<input type="text" class="form-control" id="closeTimeSat">
 									</div>
 									<div class="input-group">
+										<div class="input-group-addon gray-bg">Sunday</div>
 										<div class="input-group-addon">From</div>
 										<input type="text" class="form-control" id="openTimeSun">
 										<div class="input-group-addon">To</div>
@@ -541,7 +548,7 @@
 							</div></th>
 							<!-- Action buttons for multi-select -->
 							<th><div class="btn-group" >
-								<button data-toggle="dropdown" class="btn btn-primary btn-block dropdown-toggle" aria-expanded="fal>
+								<button data-toggle="dropdown" class="btn btn-primary btn-block dropdown-toggle" aria-expanded="false" >
 									<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 								</button>
 								<ul class="dropdown-menu">
@@ -585,6 +592,10 @@
 
 	<!-- jsTree -->
 	<script src="./../../static/js/plugins/jsTree/jstree.min.js"></script>
+
+	<!-- custom utils -->
+	<script src="./../../static/js/utils/generateUIElements.js"></script>
+	<script src="./../../static/js/utils/generateCustomDataTablesFilters.js"></script>
 
 	<!-- Page's script -->
 	<script src="./garage.js"></script>
