@@ -171,30 +171,10 @@ const mockupSearchResult = {
 	totalPages: 20
 };
 
-// html star icons
-const	fullStar = '<i class="fa fa-star"></i>',
-		halfStar = '<i class="fa fa-star-half-o"></i>',
-		emptyStar = '<i class="fa fa-star-o"></i>';
-
 // Renderers
 //==================================
 
 function renderSearchResultGrid(searchResults){
-	function renderStarRating(starRating){
-		for(var html = '', star = starRating, i = 0; i < 5; i++) {
-			if(star >= 1) {
-				html += fullStar;
-				star--;
-			} else if (star > 0) {
-				html += halfStar;
-				star--;
-			} else {
-				html += emptyStar;
-			}
-		}
-		return html += `&nbsp;<span class="badge">${starRating}</span>`
-	}
-
 	function renderSearchResult(searchResult){
 		return `<div class="col-lg-4" >
 			<a href="${searchResult.vehicleURL}">
@@ -239,8 +219,8 @@ $(document).ready(() => {
 	// ==================================================
 	// Render filters
 
-	// Brand-tree selector
-	$('#brandTree').jstree({
+	// model-tree selector
+	let modelTree = $.jstree.create('#modelTree', {
 		core: {
 			dblclick_toggle: false,
 			themes: {

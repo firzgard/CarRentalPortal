@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Car Rental Port | Edit Profile</title>
+    <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="./../../static/css/animate.css" rel="stylesheet">
+    <link href="./../../static/css/style.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <!-- DROPZONE -->
+    <link href="./../../static/css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+</head>
+<style>
+    .chosen-container.chosen-container-single {
+        width: 300px !important;
+        /* or any value that fits your needs */
+    }
+    /*
+    #my-awesome-dropzone {
+        display: none;
+        height: 300px;
+        max-height: 300px;
+    }
+*/
+</style>
+
+<body>
+    <div id="page-wrapper" class="gray-bg">
+        <!--   Main     -->
+        <div class="wrapper wrapper-content animated fadeInLeft">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div>
+                        <button class="btn btn-danger" id="btnAddCar" onclick="addCar()">Add car</button>
+                    </div>
+                </div>
+            </div>
+            <!--                    </form>-->
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header modal-header-popup">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add vehicle</h4> </div>
+                <div class="modal-body">
+                    <h3>Vehicle's name</h3>
+                    <div class="boxForm">
+                        <input type="text" class="form-control required input-lg"> </div>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <h3>Vehicle model</h3>
+                            <div class="input-group">
+                                <select data-placeholder="Choose a model..." class="chosen-select" style="width:350px;">
+                                    <option></option>
+                                    <optgroup label="Audi">
+                                        <option value="A1">A1</option>
+                                        <option value="A1">A4</option>
+                                        <option value="A1">A5</option>
+                                        <option value="A1">A6</option>
+                                        <option value="Q5">Q5</option>
+                                        <option value="Q7">Q7</option>
+                                        <option value="TT">TT</option>
+                                    </optgroup>
+                                    <optgroup label="BMW">
+                                        <option value="318i">318i</option>
+                                        <option value="320i">320i</option>
+                                        <option value="325i">325i</option>
+                                        <option value="328i">328i</option>
+                                        <option value="328i">328i</option>
+                                        <option value="520i">520i</option>
+                                        <option value="528i">528i</option>
+                                        <option value="750Li">750Li</option>
+                                        <option value="X4">X4</option>
+                                        <option value="X5">X5</option>
+                                        <option value="X6">X6</option>
+                                    </optgroup>
+                                    <optgroup label="Chervolet">
+                                        <option value="Aveo">Aveo</option>
+                                        <option value="Captiva">Captiva</option>
+                                        <option value="Colorado">Colorado</option>
+                                        <option value="Cruze">Cruze</option>
+                                        <option value="Orlando">Orlando</option>
+                                        <option value="Spark">Spark</option>
+                                        <option value="Vivant">Vivant</option>
+                                    </optgroup>
+                                    <optgroup label="Mercedes Benz">
+                                        <option value="C200">C200</option>
+                                        <option value="C300">C300</option>
+                                        <option value="C250">C250</option>
+                                        <option value="GL550">GL550</option>
+                                        <option value="GLK">GLK</option>
+                                        <option value="E200">E200</option>
+                                        <option value="E250">E250</option>
+                                        <option value="E300">E300</option>
+                                        <option value="S350">S350</option>
+                                        <option value="Sprinter">Sprinter</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <h3>License numbers</h3>
+                            <div class="boxForm">
+                                <input type="text" class="form-control required "> </div>
+                            <h3>Fuel type</h3>
+                            <div class="input-group">
+                                <select data-placeholder="Choose a fuel type..." class="chosen-select" style="width:350px;">
+                                    <option></option>
+                                    <option value="Gasoline">Gasoline</option>
+                                    <option value="Diesel">Diesel</option>
+                                    <option value="Gas">Gas</option>
+                                    <option value="Electric">Electric</option>
+                                    <option value="Gasoline-Electric">Gasoline-Electric</option>
+                                </select>
+                            </div>
+                            <h3>Traveled distances</h3>
+                            <div class="input-group m-b boxForm text-center">
+                                <input type="number" class="form-control"> <span class="input-group-addon">Km</span></div>
+                        </div>
+                        <div class="col-xs-6">
+                            <h3>Select year</h3>
+                            <div class="boxForm">
+                                <select class="form-control m-b required">
+                                    <option value="2017">2017</option>
+                                    <option value="2016">2016</option>
+                                    <option value="2015">2015</option>
+                                    <option value="2014">2014</option>
+                                    <option value="2013">2013</option>
+                                    <option value="2012">2012</option>
+                                    <option value="2011">2011</option>
+                                    <option value="2010">2010</option>
+                                    <option value="2009">2009</option>
+                                    <option value="2008">2008</option>
+                                    <option value="2007">2007</option>
+                                    <option value="2006">2006</option>
+                                    <option value="2005">2005</option>
+                                    <option value="2004">2004</option>
+                                    <option value="2003">2003</option>
+                                    <option value="2002">2002</option>
+                                    <option value="2001">2001</option>
+                                    <option value="2000">2000</option>
+                                </select>
+                            </div>
+                            <h3>Transmission type</h3>
+                            <div class="btn-group boxForm" style="text-align:center" data-toggle="buttons">
+                                <label class="btn btn-primary">
+                                    <input type="radio" name="options" id="option1"> Automatic </label>
+                                <label class="btn btn-primary">
+                                    <input type="radio" name="options" id="option2"> Manual </label>
+                            </div>
+                            <h3>Engine capacity</h3>
+                            <div class="input-group m-b boxForm text-center">
+                                <input type="number" class="form-control"> <span class="input-group-addon">L</span></div>
+                            <h3>Engine power</h3>
+                            <div class="input-group m-b boxForm text-center">
+                                <input type="number" class="form-control"> <span class="input-group-addon">HP</span></div>
+                        </div>
+                    </div>
+                    <h3 class="m-b">Choose your car's color</h3>
+                    <div class="text-center">
+                        <div id="current-color" class="text-center" style="font-size: 30px;"> <span><i class="fa fa-lg fa-car"></i></span> </div>
+                        <div id="color-name"></div>
+                        <div class="panel-body">
+                            <a title="Beige" class="btn btn-lg btn-color" style="background-color: beige"></a>
+                            <a title="Black" class="btn btn-lg btn-color" style="background-color: black"></a>
+                            <a title="Blue" class="btn btn-lg btn-color" style="background-color: blue"></a>
+                            <a title="Brown" class="btn btn-lg btn-color" style="background-color: brown"></a>
+                            <a title="Gold" class="btn btn-lg btn-color" style="background-color: Gold"></a>
+                            <a title="Green" class="btn btn-lg btn-color" style="background-color: Green"></a>
+                            <a title="Orange" class="btn btn-lg btn-color" style="background-color: Orange"></a>
+                            <a title="Purple" class="btn btn-lg btn-color" style="background-color: Purple"></a>
+                            <a title="Red" class="btn btn-lg btn-color" style="background-color: Red"></a>
+                            <a title="Silver" class="btn btn-lg btn-color" style="background-color: Silver"></a>
+                            <a title="White" class="btn btn-lg btn-color" style="background-color: White"></a>
+                            <a title="Yellow" class="btn btn-lg btn-color" style="background-color: Yellow"></a>
+                        </div>
+                    </div>
+                    <h3>Car pictures</h3>
+                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                        <div class="dropzone-previews"> </div>
+                    </form>
+                    <h3>Describe your car</h3>
+                    <textarea rows="5" type="text" class="form-control input-lg"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="./../../static/js/jquery-2.1.1.js"></script>
+    <script src="./../../static/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="./../../static/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- Select2 -->
+    <script src="./../../static/js/plugins/select2/select2.full.min.js"></script>
+    <!-- Custom and plugin javascript -->
+<!--
+    <script src="./../../static/js/inspinia.js"></script>
+    <script src="./../../static/js/plugins/pace/pace.min.js"></script>
+-->
+    <!-- Chosen -->
+    <script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
+    <!-- DROPZONE -->
+    <script src="./../../static/js/plugins/dropzone/dropzone.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green'
+                , radioClass: 'iradio_square-green'
+            , });
+            $('#change-color').on('click', function () {
+                $('#panel-color').show();
+            });
+            $('.btn-color').on('click', function () {
+                $('#current-color').css('color', this.title);
+                if (this.title === 'Beige' || this.title === 'Silver' || this.title === 'White') {
+                    $('#current-color').css('background-color', '#1a001a');
+                }
+                else {
+                    $('#current-color').css('background-color', 'transparent');
+                }
+                $('#color-name').text(this.title);
+            });
+            Dropzone.options.myAwesomeDropzone = {
+                autoProcessQueue: false
+                , uploadMultiple: true
+                , acceptedFiles: "image/jpeg,image/png,image/gif"
+                , parallelUploads: 20
+                , maxFiles: 5
+                , maxFilesize: 1
+                , dictDefaultMessage: "Drop files here to upload (or click)"
+                , dictInvalidFileType: "Accept image only"
+                , addRemoveLinks: "dictRemoveFile"
+                , init: function () {
+                    var myDropzone = this;
+                    this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        myDropzone.processQueue();
+                    });
+                    this.on("sendingmultiple", function () {
+                        alert("sending");
+                    });
+                    this.on("successmultiple", function (files, response) {
+                        alert("success");
+                    });
+                    this.on("errormultiple", function (files, response) {
+                        alert("fail");
+                    });
+                }
+            }
+        });
+
+        function addCar() {
+            $('#myModal').modal('show');
+        }
+        var config = {
+            '.chosen-select': {}
+            , '.chosen-select-deselect': {
+                allow_single_deselect: true
+            }
+            , '.chosen-select-no-single': {
+                disable_search_threshold: 10
+            }
+            , '.chosen-select-no-results': {
+                no_results_text: 'Oops, nothing found!'
+            }
+            , '.chosen-select-width': {
+                width: "100%"
+            }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
+</body>
+
+</html>
