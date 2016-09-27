@@ -33,7 +33,7 @@
 	padding: 5px;
 }
 .scroller {
-	max-height: 20em;
+	max-height: 30em;
     overflow-x: hidden;
 }
 .filter-dropdown input[type=text] {

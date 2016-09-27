@@ -57,41 +57,37 @@ function createTextFilter(table, filterNode, colName){
 
 // For tree checkbox-like
 function createTreeFilter(table, filterNode, filterCol, tree){
-	let selectedItemLv1 = [], selectedItemLv2 = [];
+	let selectedItem = [];
 
 	$.fn.dataTable.ext.search.push((settings, data) => {
-		if(!(selectedItemLv1.length === 0 && selectedItemLv2.length === 0)){
-			console.log(selectedItemLv1);
-			console.log(selectedItemLv2);
-			return selectedItemLv1.includes(data[filterCol[0]])
-				|| selectedItemLv2.includes(data[filterCol[1]]);
+		if(!(selectedItem.length === 0)){
+			return selectedItem.find((item) => {
+				if(item.nodeLvl == 1){
+					console.log(data[filterCol[0]], item.nodeI);
+					return data[filterCol[0]] == item.nodeId;
+				} else if(item.nodeLvl == 2){
+					console.log(data[filterCol[1]], item.nodeI);
+					return data[filterCol[1]] == item.nodeId;
+				}
+				return false;
+			});
 		}
 		return true;
 	});
 
 	// filter button clicked
 	filterNode.find('.dropdown-menu button').click((event) => {
-		let selectedItems = tree.get_top_selected(true);
-
-		selectedItemLv1 = selectedItems.reduce((result, item) => {
-			if(item.data.nodeLvl === '1'){
-				return Number.parseInt(item.data.nodeId);
-			}
-		}, [])
-		selectedItemLv2 = selectedItems.reduce((result, item) => {
-			if(item.data.nodeLvl === '2'){
-				return Number.parseInt(item.data.nodeId);
-			}
-		}, [])
-
+		selectedItem = tree.get_top_selected(true).map((item) => {
+			console.log(item.data);
+			return item.data;
+		});
 		table.draw();
 		filterNode.find('.filter-toggle').addClass('btn-success');
 	});
 
 	// clear filter event
 	filterNode.find('.filter-remove').click((event) => {
-		selectedItemLv1 = [];
-		selectedItemLv2 = [];
+		selectedItem = [];
 		table.draw();
 		filterNode.find('.filter-toggle').removeClass('btn-success');
 		filterNode.removeClass('open');
@@ -244,10 +240,10 @@ $(document).ready(function(){
 			}
 		],
 		columns: [
-			{ name: 'ID', data: 'id', visible: false },
-			{ name: 'BrandID', data: 'brandID', visible: false },
-			{ name: 'ModelID', data: 'modelID', visible: false },
-			{ name: 'GroupID', data: 'groupID', visible: false },
+			{ name: 'ID', data: 'id', type: 'num', visible: false },
+			{ name: 'BrandID', data: 'brandID', type: 'num', visible: false },
+			{ name: 'ModelID', data: 'modelID', type: 'num', visible: false },
+			{ name: 'GroupID', data: 'groupID', type: 'num', visible: false },
 			{ name: 'Name', title: 'Name', data: 'name', width: '20%' },
 			{ name: 'Model', title: 'Model', data: 'modelName', width: '15%' },
 			{ name: 'Category', title: 'Category', data: 'category', width: '10%' },
