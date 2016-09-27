@@ -75,7 +75,7 @@ $(document).ready(() => {
 	});
 
 	// Render confirmation modal for actions
-	$('#confirmModal').on('show.bs.modal', (event) => {
+	$('#confirmModal').on('show.bs.modal', function(event) {
 		let button = $(event.relatedTarget),
 			action = button.data('action')
 			id = button.data('id'),

@@ -11,6 +11,11 @@
 	font-size: 2em;
 }
 
+#workingTime .input-group-addon:first-of-type  {
+	font-weight: bold;
+	width: 8em;
+}
+
 #multiFilter {
 	display: table-header-group;
 }
