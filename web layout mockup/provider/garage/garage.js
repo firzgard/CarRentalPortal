@@ -1,11 +1,11 @@
 const mockupData = [
-	{ "id": 1, "name": "BMW X5a", "brandID": 1, "modelID": 1, "modelName": "BMW X5", "groupID": 1, "groupName": "BMW Group 1", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 2, "name": "BMW X6b", "brandID": 1, "modelID": 2, "modelName": "BMW X6", "groupID": 1, "groupName": "BMW Group 1", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 3, "name": "BMW X2c", "brandID": 1, "modelID": 3, "modelName": "BMW X2", "groupID": 1, "groupName": "BMW Group 1", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 4, "name": "Audi A7d", "brandID": 2, "modelID": 4, "modelName": "Audi A7", "groupID": 2, "groupName": "Audi Group 2", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 5, "name": "Audi A8e", "brandID": 2, "modelID": 5, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 6, "name": "Audi A9f", "brandID": 2, "modelID": 6, "modelName": "Audi A9", "groupID": 2, "groupName": "Audi Group 2", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 7, "modelName": "Ford Fiesta ST", "groupID": 3, "groupName": "Ford Group 3", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
+	{ "id": 1, "name": "BMW X5a", "brandID": 2, "modelID": 14, "modelName": "BMW X5", "groupID": 1, "groupName": "BMW Group 1", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 2, "name": "BMW X6b", "brandID": 2, "modelID": 15, "modelName": "BMW X6", "groupID": 1, "groupName": "BMW Group 1", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 3, "name": "BMW X3c", "brandID": 2, "modelID": 13, "modelName": "BMW X3", "groupID": 1, "groupName": "BMW Group 1", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 4, "name": "Audi A7d", "brandID": 1, "modelID": 3, "modelName": "Audi A7", "groupID": 2, "groupName": "Audi Group 2", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 5, "name": "Audi A8e", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 6, "name": "Audi A8f", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 18, "modelName": "Ford Fiesta Mk6", "groupID": 3, "groupName": "Ford Group 3", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
 ];
 
 // html star icons
@@ -29,20 +29,89 @@ function renderStarRating(starRating){
 }
 
 // Custom Filters Utils
-// For checkbox-like
-function createCheckboxFilter(table, filterNode, filterCol){
-	let selectedCategories = [];
+// For simple text search
+function createTextFilter(table, filterNode, colName){
+	let col = table.column(`${colName}:name`);
+
+	// filter button clicked
+	filterNode.find('.dropdown-menu button').click((event) => {
+		col.search(filterNode.find('.dropdown-menu input').val()).draw();
+		filterNode.find('.filter-toggle').addClass('btn-success');
+	});
+
+	// enter pressed
+	$(".dropdown-menu input").keyup((event) => {
+		if (event.keyCode == 13) {
+			col.search(event.target.value).draw();
+			filterNode.find('.filter-toggle').addClass('btn-success');
+		}
+	});
+
+	// clear filter event
+	filterNode.find('.filter-remove').click((event) => {
+		col.search('').draw();
+		filterNode.find('.filter-toggle').removeClass('btn-success');
+		filterNode.removeClass('open');
+	});
+}
+
+// For tree checkbox-like
+function createTreeFilter(table, filterNode, filterCol, tree){
+	let selectedItemLv1 = [], selectedItemLv2 = [];
 
 	$.fn.dataTable.ext.search.push((settings, data) => {
-		if(selectedCategories.length !== 0)
-			return selectedCategories.includes(data[filterCol]);
+		if(!(selectedItemLv1.length === 0 && selectedItemLv2.length === 0)){
+			console.log(selectedItemLv1);
+			console.log(selectedItemLv2);
+			return selectedItemLv1.includes(data[filterCol[0]])
+				|| selectedItemLv2.includes(data[filterCol[1]]);
+		}
+		return true;
+	});
+
+	// filter button clicked
+	filterNode.find('.dropdown-menu button').click((event) => {
+		let selectedItems = tree.get_top_selected(true);
+
+		selectedItemLv1 = selectedItems.reduce((result, item) => {
+			if(item.data.nodeLvl === '1'){
+				return Number.parseInt(item.data.nodeId);
+			}
+		}, [])
+		selectedItemLv2 = selectedItems.reduce((result, item) => {
+			if(item.data.nodeLvl === '2'){
+				return Number.parseInt(item.data.nodeId);
+			}
+		}, [])
+
+		table.draw();
+		filterNode.find('.filter-toggle').addClass('btn-success');
+	});
+
+	// clear filter event
+	filterNode.find('.filter-remove').click((event) => {
+		selectedItemLv1 = [];
+		selectedItemLv2 = [];
+		table.draw();
+		filterNode.find('.filter-toggle').removeClass('btn-success');
+		filterNode.removeClass('open');
+	});
+}
+
+// For checkbox-like
+function createCheckboxFilter(table, filterNode, filterCol){
+	let selectedItem;
+
+	$.fn.dataTable.ext.search.push((settings, data) => {
+		if(selectedItem)
+			return selectedItem.includes(data[filterCol]);
 
 		return true;
 	});
 
 	// filter button clicked
 	filterNode.find('.dropdown-menu button').click((event) => {
-		selectedCategories = filterNode.find('input:checked').toArray().map((checkbox) => {
+		selectedItem = filterNode.find('input:checked').toArray().map((checkbox) => {
 			return checkbox.value;
 		});
 		table.draw();
@@ -51,7 +120,7 @@ function createCheckboxFilter(table, filterNode, filterCol){
 
 	// clear filter event
 	filterNode.find('.filter-remove').click((event) => {
-		selectedCategories = [];
+		selectedItem = null;
 		table.draw();
 		filterNode.find('.filter-toggle').removeClass('btn-success');
 		filterNode.removeClass('open');
@@ -71,14 +140,13 @@ function createIntRangeFilter(table, filterNode, filterCol){
 	filterNode.find('.dropdown-menu button').click((event) => {
 		min = Number.parseInt(filterNode.find('.from-input').val());
 		max = Number.parseInt(filterNode.find('.to-input').val());
-		console.log(filterNode.find('.to-input'));
 		table.draw();
 		filterNode.find('.filter-toggle').addClass('btn-success');
 	});
 
 	// clear filter event
 	filterNode.find('.filter-remove').click((event) => {
-		min = max = false;
+		min = max = null;
 		table.draw();
 		filterNode.find('.filter-toggle').removeClass('btn-success');
 		filterNode.removeClass('open');
@@ -122,7 +190,7 @@ $(document).ready(function(){
 	// Vehicle table
 
 	// render model-tree selector
-	$('#modelTree').jstree({
+	let modelTree = $.jstree.create('#modelTree', {
 		core: {
 			dblclick_toggle: false,
 			themes: {
@@ -200,55 +268,20 @@ $(document).ready(function(){
 
 	// Bind the filters with table
 
-	// =======================================
 	// Vehicle's name filter
-	{
-		let vehicleNameCol = table.column('Name:name'),
-			filter = $('#vehicleNameFilter');
-
-		// filter button clicked
-		filter.find('.dropdown-menu button').click((event) => {
-			vehicleNameCol.search(filter.find('.dropdown-menu input').val()).draw();
-			filter.find('.filter-toggle').addClass('btn-success');
-		});
-
-		// enter pressed
-		$(".dropdown-menu input").keyup((event) => {
-			if (event.keyCode == 13) {
-				vehicleNameCol.search(event.target.value).draw();
-				filter.find('.filter-toggle').addClass('btn-success');
-			}
-		});
-
-		// clear filter event
-		filter.find('.filter-remove').click((event) => {
-			vehicleNameCol.search('').draw();
-			filter.find('.filter-toggle').removeClass('btn-success');
-			filter.removeClass('open');
-		});
-	}
-
-	// =======================================
+	createTextFilter(table, $('#vehicleNameFilter'), 'Name');
+	// Model filter
+	createTreeFilter(table, $('#modelFilter'), [1, 2], modelTree);
 	// Category filter
 	createCheckboxFilter(table, $('#categoryFilter'), 6);
-	
-	// =======================================
 	// Year filter
 	createIntRangeFilter(table, $('#yearFilter'), 7);
-
-	// =======================================
 	// Seat filter
 	createIntRangeFilter(table, $('#seatFilter'), 8);
-
-	// =======================================
 	// Transmission filter
 	createCheckboxFilter(table, $('#transmissionFilter'), 9);
-
-	// =======================================
 	// Fuel filter
 	createCheckboxFilter(table, $('#fuelFilter'), 10);
-
-	// =======================================
 	// Vehicle Group filter
 	createCheckboxFilter(table, $('#groupFilter'), 3);
 });
