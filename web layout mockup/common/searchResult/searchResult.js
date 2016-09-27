@@ -240,7 +240,7 @@ $(document).ready(() => {
 	// Render filters
 
 	// model-tree selector
-	$('#modelTree').jstree({
+	let modelTree = $.jstree.create('#modelTree', {
 		core: {
 			dblclick_toggle: false,
 			themes: {
