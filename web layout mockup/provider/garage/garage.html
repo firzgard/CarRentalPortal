@@ -249,12 +249,9 @@
 							<th></th>
 							<th></th>
 							<!-- Vehicle's name filter -->
-							<th><div class="btn-group" >
-								<button class="btn btn-default dropdown-toggle filter-toggle" aria-expanded="false">
+							<th><div id="vehicleNameFilter" class="btn-group" >
+								<button class="btn btn-primary filter-toggle">
 									<i class="fa fa-search"></i>
-								</button>
-								<button class="btn btn-warning filter-remove">
-									<i class="fa fa-times"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
 									<div class="input-group">
@@ -264,284 +261,287 @@
 										</span>
 									</div>
 								</div>
-							</div></th>
-							<!-- Model filter -->
-							<th><div class="btn-group" >
-								<button class="btn btn-default dropdown-toggle filter-toggle" aria-expanded="false">
-									<i class="fa fa-search"></i>
-								</button>
 								<button class="btn btn-warning filter-remove">
 									<i class="fa fa-times"></i>
+								</button>
+							</div></th>
+							<!-- Model filter -->
+							<th><div id="modelFilter" class="btn-group" >
+								<button class="btn btn-primary filter-toggle">
+									<i class="fa fa-search"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
 									<button class="btn btn-primary btn-block" >Filter <i class="fa fa-search"></i></button>
 									<div class="scroller">
 										<div id="modelTree">
 											<ul>
-												<li>Audi
+												<li data-node-lvl="1" data-node-id="1" >Audi
 													<ul>
-														<li>A1</li>
-														<li>A6</li>
-														<li>A7</li>
-														<li>A8</li>
-														<li>Q3</li>
-														<li>Q7</li>
-														<li>TT</li>
-														<li>TTS</li>
+														<li data-node-lvl="2" data-node-id="1" >A1</li>
+														<li data-node-lvl="2" data-node-id="2" >A6</li>
+														<li data-node-lvl="2" data-node-id="3" >A7</li>
+														<li data-node-lvl="2" data-node-id="4" >A8</li>
+														<li data-node-lvl="2" data-node-id="5" >Q3</li>
+														<li data-node-lvl="2" data-node-id="6" >Q7</li>
+														<li data-node-lvl="2" data-node-id="7" >TT</li>
+														<li data-node-lvl="2" data-node-id="8" >TTS</li>
 													</ul>
 												</li>
-												<li>BMW
+												<li data-node-lvl="1" data-node-id="2" >BMW
 													<ul>
-														<li>320i</li>
-														<li>520i</li>
-														<li>M3</li>
-														<li>M6</li>
-														<li>X3</li>
-														<li>X5</li>
-														<li>X6</li>
-														<li>Z4</li>
+														<li data-node-lvl="2" data-node-id="9" >320i</li>
+														<li data-node-lvl="2" data-node-id="10" >520i</li>
+														<li data-node-lvl="2" data-node-id="11" >M3</li>
+														<li data-node-lvl="2" data-node-id="12" >M6</li>
+														<li data-node-lvl="2" data-node-id="13" >X3</li>
+														<li data-node-lvl="2" data-node-id="14" >X5</li>
+														<li data-node-lvl="2" data-node-id="15" >X6</li>
+														<li data-node-lvl="2" data-node-id="16" >Z4</li>
 													</ul>
 												</li>
-												<li>Ford
+												<li data-node-lvl="1" data-node-id="3" >Ford
 													<ul>
-														<li>Fiesta Mk5</li>
-														<li>Fiesta Mk6</li>
-														<li>Focus Mk2</li>
-														<li>Focus Mk3</li>
+														<li data-node-lvl="2" data-node-id="17" >Fiesta Mk5</li>
+														<li data-node-lvl="2" data-node-id="18" >Fiesta Mk6</li>
+														<li data-node-lvl="2" data-node-id="19" >Focus Mk2</li>
+														<li data-node-lvl="2" data-node-id="20" >Focus Mk3</li>
 													</ul>
 												</li>
-												<li>Toyota
+												<li data-node-lvl="1" data-node-id="4" >Toyota
 													<ul>
-														<li>Camry</li>
-														<li>Corolla Altis</li>
-														<li>Innova</li>
-														<li>Land Cruiser</li>
+														<li data-node-lvl="2" data-node-id="21" >Camry</li>
+														<li data-node-lvl="2" data-node-id="22" >Corolla Altis</li>
+														<li data-node-lvl="2" data-node-id="23" >Innova</li>
+														<li data-node-lvl="2" data-node-id="24" >Land Cruiser</li>
 													</ul>
 												</li>
 											</ul>
 										</div>
 									</div>
 								</div>
-							</div></th>
-							<!-- Category filter -->
-							<th><div class="btn-group" >
-								<button class="btn btn-default dropdown-toggle filter-toggle" aria-expanded="false">
-									<i class="fa fa-search"></i>
-								</button>
 								<button class="btn btn-warning filter-remove">
 									<i class="fa fa-times"></i>
+								</button>
+							</div></th>
+							<!-- Category filter -->
+							<th><div id="categoryFilter" class="btn-group" >
+								<button class="btn btn-primary filter-toggle">
+									<i class="fa fa-search"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
 									<button class="btn btn-primary btn-block" >Filter <i class="fa fa-search"></i></button>
 									<div class="scroller">
 										<div class="input-group" id="typeTree">
 											<div class="checkbox checkbox-success">
-												<input id="typeMicroCar" type="checkbox" />
-												<label for="typeMicroCar">Micro Car</label>
+												<input value="Micro Car" id="categoryMicroCar" type="checkbox" />
+												<label for="categoryMicroCar">Micro Car</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typeMinivan" type="checkbox" />
-												<label for="typeMinivan">Minivan</label>
+												<input value="Minicar" id="categoryMinivan" type="checkbox" />
+												<label for="categoryMinivan">Minivan</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typePickupTruck" type="checkbox" />
-												<label for="typePickupTruck">Pickup Truck</label>
+												<input value="Pickup Truck" id="categoryPickupTruck" type="checkbox" />
+												<label for="categoryPickupTruck">Pickup Truck</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typeStationWagon" type="checkbox" />
-												<label for="typeStationWagon">Station Wagon</label>
+												<input value="Station Wagon" id="categoryStationWagon" type="checkbox" />
+												<label for="categoryStationWagon">Station Wagon</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typeSedan" type="checkbox" />
-												<label for="typeSedan">Sedan</label>
+												<input value="Sedan" id="categorySedan" type="checkbox" />
+												<label for="categorySedan">Sedan</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="typeSUV" type="checkbox" />
-												<label for="typeSUV">SUV</label>
+												<input value="SUV" id="categorySUV" type="checkbox" />
+												<label for="categorySUV">SUV</label>
 											</div>
 
 										</div>
 									</div>
 								</div>
-							</div></th>
-							<!-- Year filter -->
-							<th><div class="btn-group" >
-								<button class="btn btn-default dropdown-toggle filter-toggle" aria-expanded="false">
-									<i class="fa fa-search"></i>
-								</button>
 								<button class="btn btn-warning filter-remove">
 									<i class="fa fa-times"></i>
+								</button>
+							</div></th>
+							<!-- Year filter -->
+							<th><div id="yearFilter" class="btn-group" >
+								<button class="btn btn-primary filter-toggle">
+									<i class="fa fa-search"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
 									<div class="input-group">
 										<span class="input-group-addon"><b>From</b></span>
-										<input type="number" min="1900" max="2016" class="form-control">
+										<input type="number" min="1900" max="2016" class="form-control from-input">
 										<span class="input-group-addon"><b>To</b></span>
-										<input type="number" min="1900" max="2016" class="form-control">
+										<input type="number" min="1900" max="2016" class="form-control to-input">
 										<span class="input-group-btn">
 											<button class="btn btn-primary" ><i class="fa fa-search"></i></button>
 										</span>
 									</div>
 								</div>
-							</div></th>
-							<!-- Seat filter -->
-							<th><div class="btn-group" >
-								<button class="btn btn-default dropdown-toggle filter-toggle" aria-expanded="false">
-									<i class="fa fa-search"></i>
-								</button>
 								<button class="btn btn-warning filter-remove">
 									<i class="fa fa-times"></i>
+								</button>
+							</div></th>
+							<!-- Seat filter -->
+							<th><div id="seatFilter" class="btn-group" >
+								<button class="btn btn-primary filter-toggle">
+									<i class="fa fa-search"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
 									<div class="input-group">
 										<div class="input-group">
 										<span class="input-group-addon"><b>From</b></span>
-										<input type="number" min="1" max="1000" class="form-control">
+										<input type="number" min="1" max="1000" class="form-control from-input">
 										<span class="input-group-addon"><b>To</b></span>
-										<input type="number" min="1" max="1000" class="form-control">
+										<input type="number" min="1" max="1000" class="form-control to-input">
 										<span class="input-group-btn">
 											<button class="btn btn-primary" ><i class="fa fa-search"></i></button>
 										</span>
 									</div>
 									</div>
 								</div>
-							</div></th>
-							<!-- Transmission filter -->
-							<th><div class="btn-group" >
-								<button class="btn btn-default dropdown-toggle filter-toggle" aria-expanded="false">
-									<i class="fa fa-search"></i>
-								</button>
 								<button class="btn btn-warning filter-remove">
 									<i class="fa fa-times"></i>
+								</button>
+							</div></th>
+							<!-- Transmission filter -->
+							<th><div id="transmissionFilter" class="btn-group" >
+								<button class="btn btn-primary filter-toggle">
+									<i class="fa fa-search"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
 									<button class="btn btn-primary btn-block" >Filter <i class="fa fa-search"></i></button>
 									<div class="scroller">
 										<div class="input-group" id="transmissionSelector">
 											<div class="checkbox checkbox-success">
-												<input id="transmissionAutomatic" type="checkbox" />
+												<input value="Automatic" id="transmissionAutomatic" type="checkbox" />
 												<label for="transmissionAutomatic">Automatic</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="transmissionManual" type="checkbox" />
+												<input value="Manual" id="transmissionManual" type="checkbox" />
 												<label for="transmissionManual">Manual</label>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div></th>
-							<!-- Fuel filter -->
-							<th><div class="btn-group" >
-								<button class="btn btn-default dropdown-toggle filter-toggle" aria-expanded="false">
-									<i class="fa fa-search"></i>
-								</button>
 								<button class="btn btn-warning filter-remove">
 									<i class="fa fa-times"></i>
+								</button>
+							</div></th>
+							<!-- Fuel filter -->
+							<th><div id="fuelFilter" class="btn-group" >
+								<button class="btn btn-primary filter-toggle">
+									<i class="fa fa-search"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
 									<button class="btn btn-primary btn-block" >Filter <i class="fa fa-search"></i></button>
 									<div class="scroller">
 										<div class="input-group" id="fuelSelector">
 											<div class="checkbox checkbox-success">
-												<input id="fuelAmmonia" type="checkbox" />
+												<input value="Ammonia" id="fuelAmmonia" type="checkbox" />
 												<label for="fuelAmmonia">Ammonia</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelBioalcohol" type="checkbox" />
+												<input value="Bioalcohol" id="fuelBioalcohol" type="checkbox" />
 												<label for="fuelBioalcohol">Bioalcohol</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelBiodiesel" type="checkbox" />
+												<input value="Biodiesel" id="fuelBiodiesel" type="checkbox" />
 												<label for="fuelBiodiesel">Biodiesel</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelBiogas" type="checkbox" />
+												<input value="Biogas" id="fuelBiogas" type="checkbox" />
 												<label for="fuelBiogas">Biogas</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelCNG" type="checkbox" />
+												<input value="Compressed Natural Gas" id="fuelCNG" type="checkbox" />
 												<label for="fuelCNG">Compressed Natural Gas</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelDiesel" type="checkbox" />
+												<input value="Diesel" id="fuelDiesel" type="checkbox" />
 												<label for="fuelDiesel">Diesel</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelElectric" type="checkbox" />
+												<input value="Electric" id="fuelElectric" type="checkbox" />
 												<label for="fuelElectric">Electric</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelFlexible" type="checkbox" />
+												<input value="Flexible" id="fuelFlexible" type="checkbox" />
 												<label for="fuelFlexible">Flexible</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelHybridElectric" type="checkbox" />
+												<input value="Hybrid Electric" id="fuelHybridElectric" type="checkbox" />
 												<label for="fuelHybridElectric">Hybrid Electric</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelHydrogen" type="checkbox" />
+												<input value="Hydrogen" id="fuelHydrogen" type="checkbox" />
 												<label for="fuelHydrogen">Hydrogen</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelLNG" type="checkbox" />
+												<input value="Liquefied Natural Gas" id="fuelLNG" type="checkbox" />
 												<label for="fuelLNG">Liquefied Natural Gas</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelLPG" type="checkbox" />
+												<input value="Liquefied Petroleum Gas" id="fuelLPG" type="checkbox" />
 												<label for="fuelLPG">Liquefied Petroleum Gas</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelPetrol" type="checkbox" />
+												<input value="Petrol" id="fuelPetrol" type="checkbox" />
 												<label for="fuelPetrol">Petrol</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelPluginHybridElectric" type="checkbox" />
+												<input value="Plug-in Hybrid Electric" id="fuelPluginHybridElectric" type="checkbox" />
 												<label for="fuelPluginHybridElectric">Plug-in Hybrid Electric</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelStream" type="checkbox" />
+												<input value="Stream" id="fuelStream" type="checkbox" />
 												<label for="fuelStream">Stream</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="fuelWoodGas" type="checkbox" />
+												<input value="Wood Gas" id="fuelWoodGas" type="checkbox" />
 												<label for="fuelWoodGas">Wood Gas</label>
 											</div>
 
 										</div>
 									</div>
 								</div>
-							</div></th>
-							<!-- Group filter -->
-							<th><div class="btn-group" >
-								<button class="btn btn-default dropdown-toggle filter-toggle" aria-expanded="false">
-									<i class="fa fa-search"></i>
-								</button>
 								<button class="btn btn-warning filter-remove">
 									<i class="fa fa-times"></i>
+								</button>
+							</div></th>
+							<!-- Group filter -->
+							<th><div id="groupFilter" class="btn-group" >
+								<button class="btn btn-primary filter-toggle">
+									<i class="fa fa-search"></i>
 								</button>
 								<div class="dropdown-menu filter-dropdown">
 									<button class="btn btn-primary btn-block" >Filter <i class="fa fa-search"></i></button>
 									<div class="scroller">
 										<div class="input-group" id="GroupSelector">
 											<div class="checkbox checkbox-success">
-												<input data-group-id="1" id="group1" type="checkbox" />
+												<input value="1" id="group1" type="checkbox" />
 												<label for="transmissionAutomatic">BMW Group 1</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="group2" data-group-id="2" type="checkbox" />
+												<input value="2" id="group2" type="checkbox" />
 												<label for="transmissionManual">Audi Group 2</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input id="group2" data-group-id="3" type="checkbox" />
+												<input value="3"id="group2" type="checkbox" />
 												<label for="transmissionManual">Ford Group 3</label>
 											</div>
 										</div>
 									</div>
 								</div>
+								<button class="btn btn-warning filter-remove">
+									<i class="fa fa-times"></i>
+								</button>
 							</div></th>
 							<!-- Action buttons for multi-select -->
 							<th><div class="btn-group" >
-								<button class="btn btn-primary btn-block dropdown-toggle" aria-expanded="false">
+								<button data-toggle="dropdown" class="btn btn-primary btn-block dropdown-toggle" aria-expanded="fal>
 									<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 								</button>
 								<ul class="dropdown-menu">
