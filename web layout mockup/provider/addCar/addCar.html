@@ -15,6 +15,9 @@
     <link href="./../../static/css/animate.css" rel="stylesheet">
     <link href="./../../static/css/style.css" rel="stylesheet">
     <link href="addCar.css" rel="stylesheet">
+    <!-- DROPZONE -->
+    <link href="../static/css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="../static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
     <style>
     .wizard > .content > .body position: relative;
     }
@@ -255,14 +258,16 @@
                                                 <input type="checkbox"> Automatic Windows </label>
                                         </div>
                                         <h3>Describe your car</h3>
-                                        <textarea  rows="5" type="text" class="form-control input-lg"></textarea>
+                                        <textarea rows="5" type="text" class="form-control input-lg"></textarea>
                                     </div>
                                 </fieldset>
                                 <h1>Pictures</h1>
                                 <fieldset>
-                                    <div class="text-center">
-                                        <h2>Describe your car</h2> <i><u>You can skip this step</u></i>
-                                        <textarea type="text" class="form-control input-lg"></textarea>
+                                    <!--<div id="my-awesome-dropzone" class="dropzone" action="#">
+                                            <div id="preview-template"> </div>
+                                            <input type="button" name="submit-img" class="btn btn-success pull-right" value="Save" /> <a id="cancel-img" class="btn btn-default pull-right">Cancel</a> </form>-->
+                                    <div id="dZUpload" class="dropzone">
+                                        <div class="dz-default dz-message"></div>
                                     </div>
                                 </fieldset>
                             </form>
@@ -287,6 +292,8 @@
     <script src="./../../static/js/plugins/staps/jquery.steps.min.js"></script>
     <!-- Jquery Validate -->
     <script src="./../../static/js/plugins/validate/jquery.validate.min.js"></script>
+    <!-- DROPZONE -->
+    <script src="../static/js/plugins/dropzone/dropzone.js"></script>
     <script>
         $(document).ready(function () {
             $("#wizard").steps();
@@ -364,33 +371,48 @@
                 }
                 $('#color-name').text(this.title);
             });
-            Dropzone.options.myAwesomeDropzone = {
-                autoProcessQueue: false
-                , uploadMultiple: true
-                , acceptedFiles: "image/jpeg,image/png,image/gif"
-                , parallelUploads: 20
-                , maxFiles: 20
-                , maxFilesize: 1
-                , dictDefaultMessage: "Drop files here to upload (or click)"
-                , dictInvalidFileType: "Accept image only", // Dropzone settings
-                init: function () {
-                    var myDropzone = this;
-                    this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        myDropzone.processQueue();
-                    });
-                    this.on("sendingmultiple", function () {
-                        alert("sending");
-                    });
-                    this.on("successmultiple", function (files, response) {
-                        alert("success");
-                    });
-                    this.on("errormultiple", function (files, response) {
-                        alert("fail");
-                    });
+//            Dropzone.options.myAwesomeDropzone = {
+//                autoProcessQueue: false
+//                , uploadMultiple: true
+//                , acceptedFiles: "image/jpeg,image/png,image/gif"
+//                , parallelUploads: 20
+//                , maxFiles: 20
+//                , maxFilesize: 1
+//                , dictDefaultMessage: "Drop files here to upload (or click)"
+//                , dictInvalidFileType: "Accept image only"
+//                , addRemoveLinks: "dictRemoveFile", //previewTemplate: '<div class="dz-preview dz-file-preview"><div class="dz-details"><div class="dz-filename"><span data-dz-name></span></div><div class="dz-size" data-dz-size></div><img data-dz-thumbnail /></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span>✔</span></div><div class="dz-error-mark"><span>✘</span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div><img src="removebutton.png" alt="Click me to remove the file." data-dz-remove />',
+//                // Dropzone settings
+//                init: function () {
+//                    var myDropzone = this;
+//                    this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
+//                        e.preventDefault();
+//                        e.stopPropagation();
+//                        myDropzone.processQueue();
+//                    });
+//                    this.on("sendingmultiple", function () {
+//                        alert("sending");
+//                    });
+//                    this.on("successmultiple", function (files, response) {
+//                        alert("success");
+//                    });
+//                    this.on("errormultiple", function (files, response) {
+//                        alert("fail");
+//                    });
+//                }
+//            }
+            Dropzone.autoDiscover = false;
+            $("#dZUpload").dropzone({
+                url: "hn_SimpeFileUploader.ashx"
+                , addRemoveLinks: true
+                , success: function (file, response) {
+                    var imgName = response;
+                    file.previewElement.classList.add("dz-success");
+                    console.log("Successfully uploaded :" + imgName);
                 }
-            }
+                , error: function (file, response) {
+                    file.previewElement.classList.add("dz-error");
+                }
+            });
             $('.btn-group .btn').on('click', function () {
                 alert($(this).text());
             });
