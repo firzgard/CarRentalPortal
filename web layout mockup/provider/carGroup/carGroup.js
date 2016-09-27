@@ -1,11 +1,11 @@
 const mockupData = [
-	{ "id": 1, "name": "BMW X5a", "brandID": 1, "modelID": 1, "modelName": "BMW X5", "groupID": 1, "groupName": "BMW Group 1", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 2, "name": "BMW X6b", "brandID": 1, "modelID": 2, "modelName": "BMW X6", "groupID": 1, "groupName": "BMW Group 1", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 3, "name": "BMW X2c", "brandID": 1, "modelID": 3, "modelName": "BMW X2", "groupID": 1, "groupName": "BMW Group 1", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 4, "name": "Audi A7d", "brandID": 2, "modelID": 4, "modelName": "Audi A7", "groupID": 2, "groupName": "Audi Group 2", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 5, "name": "Audi A8e", "brandID": 2, "modelID": 5, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 6, "name": "Audi A9f", "brandID": 2, "modelID": 6, "modelName": "Audi A9", "groupID": 2, "groupName": "Audi Group 2", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 7, "modelName": "Ford Fiesta ST", "groupID": 3, "groupName": "Ford Group 3", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
+	{ "id": 1, "name": "BMW X5a", "brandID": 1, "modelID": 1, "modelName": "BMW X5", "groupID": 1, "groupName": "HCM Garage 1", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 2, "name": "BMW X6b", "brandID": 1, "modelID": 2, "modelName": "BMW X6", "groupID": 1, "groupName": "HCM Garage 1", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 3, "name": "BMW X2c", "brandID": 1, "modelID": 3, "modelName": "BMW X2", "groupID": 1, "groupName": "HCM Garage 2", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 4, "name": "Audi A7d", "brandID": 2, "modelID": 4, "modelName": "Audi A7", "groupID": 2, "groupName": "Ha Noi Garage 2", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 5, "name": "Audi A8e", "brandID": 2, "modelID": 5, "modelName": "Audi A8", "groupID": 2, "groupName": "Hanoi Garage 4 2", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 6, "name": "Audi A9f", "brandID": 2, "modelID": 6, "modelName": "Audi A9", "groupID": 2, "groupName": "ahihi", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 7, "modelName": "Ford Fiesta ST", "groupID": 3, "groupName": "ppap", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
 ];
 
 // html star icons
@@ -132,7 +132,7 @@ $(document).ready(function(){
 			{ title: 'Seat', data: 'numOfSeat', width: '5%' },
 			{ title: 'Transmission', data: 'transmission', width: '10%' },
 			{ title: 'Fuel', data: 'fuel', width: '10%' },
-			{ title: 'Group', data: 'groupName', width: '15%' },
+			{ title: 'Garage', data: 'groupName', width: '15%' },
 			{
 				title: 'Action',
 				width: '10%',

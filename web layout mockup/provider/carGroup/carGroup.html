@@ -15,7 +15,7 @@
     <link href="./../../static/css/plugins/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet">
     <link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
     <link href="./../../static/css/style.css" rel="stylesheet">
-    <link href="./garage.css" rel="stylesheet"> </head>
+    <link href="./carGroup.css" rel="stylesheet"> </head>
 
 <body>
     <div id="wrapper">
@@ -120,7 +120,8 @@
                             <div class="row form-group">
                                 <div class="col-md-8">
                                     <div class="form-group">
-                                        <label>Status:</label><br/>
+                                        <label>Status:</label>
+                                        <br/>
                                         <select data-placeholder="Status">
                                             <option value="1" selected>Active</option>
                                             <option value="2">InActive</option>
@@ -130,7 +131,8 @@
                                         <label>Max Rental Period:</label>
                                         <input type="text" placeholder="Period" value="1 day" class="form-control" style="width: 100px;"> </div>
                                     <div class="form-group">
-                                        <label>Price Group:</label><br/>
+                                        <label>Price Group:</label>
+                                        <br/>
                                         <select>
                                             <option value="1">Price group A</option>
                                             <option value="2">Price group B</option>
@@ -143,7 +145,6 @@
                                         <div class="ibox-content text-center">
                                             <h5>Deposit: 1000k</h5>
                                             <h5>Per Day Price: 5000k</h5>
-                                            
                                             <div class="m-t-md"> <a data-toggle="modal" class="btn btn-success" href="#modal-form2">New Price Group Item</a>
                                                 <div id="modal-form2" class="modal fade" aria-hidden="true">
                                                     <div class="modal-dialog">
@@ -171,7 +172,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            
                                         </div>
                                     </dl>
                                 </div>
@@ -186,39 +186,9 @@
                     <div class="ibox-title"> <span class="label label-warning pull-right"></span>
                         <h5>Other car groups</h5> </div>
                     <div class="ibox-content">
-                        <div class="row">
-                            <a href="#">
-                                <div class="col-xs-4" style="border: 2px solid black;"> <i class="fa fa-th"></i>
-                                    <h4>Group B</h4> </div>
-                            </a>
-                            <a href="#">
-                                <div class="col-xs-4" style="border: 2px solid black;"> <i class="fa fa-th"></i>
-                                    <h4>Group C</h4> </div>
-                            </a>
-                            <a href="#">
-                                <div class="col-xs-4" style="border: 2px solid black;"> <i class="fa fa-th"></i>
-                                    <h4>Group D</h4> </div>
-                            </a>
-                        </div>
+                        <div class="row" style="border: 2px solid black;"> </div>
+                        <button class="btn btn-primary" style="margin-top: 5px">Car group management</button>
                     </div>
-                    <div class="ibox-content">
-                        <div class="row">
-                            <a href="#">
-                                <div class="col-xs-4" style="border: 2px solid black;"> <i class="fa fa-th"></i>
-                                    <h4>Group E</h4> </div>
-                            </a>
-                            <a href="#">
-                                <div class="col-xs-4" style="border: 2px solid black;"> <i class="fa fa-th"></i>
-                                    <h4>Group F</h4> </div>
-                            </a>
-                            <a href="#">
-                                <div class="col-xs-4" style="border: 2px solid black;"> <i class="fa fa-th"></i>
-                                    <h4>Group G</h4> </div>
-                            </a>
-                             <button class="btn btn-primary" style="margin-top: 5px">Car group management</button>
-                        </div>
-                    </div>
-                   
                 </div>
             </div>
             <div>
@@ -479,15 +449,15 @@
                                                 <div class="input-group" id="GroupSelector">
                                                     <div class="checkbox checkbox-success">
                                                         <input data-group-id="1" id="group1" type="checkbox" />
-                                                        <label for="transmissionAutomatic">BMW Group 1</label>
+                                                        <label for="transmissionAutomatic">HCM garage 1</label>
                                                     </div>
                                                     <div class="checkbox checkbox-success">
                                                         <input id="group2" data-group-id="2" type="checkbox" />
-                                                        <label for="transmissionManual">Audi Group 2</label>
+                                                        <label for="transmissionManual">HCM garage 2</label>
                                                     </div>
                                                     <div class="checkbox checkbox-success">
                                                         <input id="group2" data-group-id="3" type="checkbox" />
-                                                        <label for="transmissionManual">Ford Group 3</label>
+                                                        <label for="transmissionManual">HCM garage 3</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -499,7 +469,31 @@
                                     <div class="btn-group">
                                         <button class="btn btn-primary btn-block dropdown-toggle" aria-expanded="false"> <i class="fa fa-gear"></i> Actions <i class="caret"></i> </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="group">Change Group</a></li>
+                                            <li><a href="#" data-toggle="modal" data-target="#modal-form" data-name="garage">Change Group</a>
+                                                <div id="modal-form" class="modal fade" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="ibox float-e-margins" style="text-align:center">
+                                                                            <div class="ibox-title"> <span class="label label-warning pull-right"></span>
+                                                                                <h5>Other car groups</h5> </div>
+                                                                                <select data-placeholder="choose a group" class="form-control">
+                                                                                <option value="0">Group A</option>
+                                                                                <option value="1">Group B</option>
+                                                                                <option value="2">Group C</option>
+                                                                                </select><br/>
+                                                                            <button class="btn btn-primary" style="margin-top: 5px">Update</button>
+                                                                            <button class="btn btn-danger" style="margin-top: 5px">Cancle</button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
                                             <li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="garage">Change Garage</a></li>
                                             <li><a href="#" data-toggle="modal" data-target="#lgModal">Create New Vehicle</a></li>
                                         </ul>
@@ -524,6 +518,7 @@
     <script src="./../../static/js/inspinia.js"></script>
     <script src="./../../static/js/plugins/pace/pace.min.js"></script>
     <!-- bootstrap-timepicker -->
+    <script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
     <script src="./../../static/js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
     <!-- Chosen -->
     <script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
@@ -534,6 +529,27 @@
     <!-- jsTree -->
     <script src="./../../static/js/plugins/jsTree/jstree.min.js"></script>
     <!-- Page's script -->
-    <script src="./garage.js"></script>
+    <script src="./carGroup.js"></script>
+    <script>
+        var config = {
+            '.chosen-select': {}
+            , '.chosen-select-deselect': {
+                allow_single_deselect: true
+            }
+            , '.chosen-select-no-single': {
+                disable_search_threshold: 10
+            }
+            , '.chosen-select-no-results': {
+                no_results_text: 'Oops, nothing found!'
+            }
+            , '.chosen-select-width': {
+                width: "95%"
+            }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
 </body>
+
 </html>

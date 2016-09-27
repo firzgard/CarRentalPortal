@@ -1,12 +1,9 @@
 const testData = [
-	[1, 'Garage1', 'Garage1', 'sss@gmail.com', 0177477, 'User', '11:05 19/09/1995', true],
-	[2, 'Garage1', 'Garage1', 'sss@gmail.com', 0177477, 'User', '11:05 19/09/1995', false]
+	[1, 'Obama', 'chang trai da cam', 'sss@gmail.com', 0177477, 'User', '11:05 19/09/1995', true],
+	[2, 'ho cam dao', 'co gai trung hoa', 'sss@gmail.com', 0177477, 'provider', '11:05 19/09/1995', false]
 ]
 
-// html star icons
-const	fullStar = '<i class="fa fa-star"></i>',
-		halfStar = '<i class="fa fa-star-half-o"></i>',
-		emptyStar = '<i class="fa fa-star-o"></i>';
+
 
 $(document).ready(function() {
 	// Render table
