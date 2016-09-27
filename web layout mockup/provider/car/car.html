@@ -8,32 +8,16 @@
 
     <title>CRP | Edit car</title>
 
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
     
     <!-- DROPZONE -->
-    <link href="../static/css/plugins/dropzone/basic.css" rel="stylesheet">
-    <link href="../static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
 
-    <link href="../static/css/animate.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
-
-    <style>
-        .footable tr > td {
-            vertical-align: middle !important;
-        }
-        .btn-color {
-            border-radius: 0 !important;
-            border: #000 solid 1px;
-            margin: 2px 0px;
-        }
-        #panel-color {
-            display: none;
-        }
-        #my-awesome-dropzone {
-            display: none;
-        }
-    </style>
+    <link href="./../../static/css/animate.css" rel="stylesheet">
+    <link href="./../../static/css/style.css" rel="stylesheet">
+    <link href="./car.css" rel="stylesheet">
 </head>
 
 <body>
@@ -58,7 +42,7 @@
                         <li>
                             <div class="dropdown-messages-box">
                                 <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="./../static/img/a7.jpg">
+                                    <img alt="image" class="img-circle" src="./../../static/img/a7.jpg">
                                 </a>
                                 <div class="media-body">
                                     <small class="pull-right">46h ago</small>
@@ -71,7 +55,7 @@
                         <li>
                             <div class="dropdown-messages-box">
                                 <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="./../static/img/a4.jpg">
+                                    <img alt="image" class="img-circle" src="./../../static/img/a4.jpg">
                                 </a>
                                 <div class="media-body ">
                                     <small class="pull-right text-navy">5h ago</small>
@@ -84,7 +68,7 @@
                         <li>
                             <div class="dropdown-messages-box">
                                 <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="./../static/img/profile.jpg">
+                                    <img alt="image" class="img-circle" src="./../../static/img/profile.jpg">
                                 </a>
                                 <div class="media-body ">
                                     <small class="pull-right">23h ago</small>
@@ -185,7 +169,7 @@
                     <div class="ibox-content">
                     <div class="row">
                             <h2 class="font-bold">Car detail</h2>
-                            <a href="./carManagement.html" class="btn btn-primary pull-right m-r" style="margin-top: -40px; width: 100px;"><i class="fa fa-lg fa-arrow-circle-left"></i><span> Back</span></a>
+                            <a href="./../carManagement/carManagement.html" class="btn btn-primary pull-right m-r" style="margin-top: -40px; width: 100px;"><i class="fa fa-lg fa-arrow-circle-left"></i><span> Back</span></a>
                             <hr>
                         
                         <div class="col-md-6">
@@ -400,16 +384,16 @@
                                     <div class="carousel slide m-b" id="carousel1">
                                         <div class="carousel-inner">
                                             <div class="item active">
-                                                <img alt="image" class="img-responsive" src="../static/img/honda1.jpg">
+                                                <img alt="image" class="img-responsive" src="../../static/img/honda1.jpg">
                                             </div>
                                             <div class="item">
-                                                <img alt="image" class="img-responsive" src="../static/img/honda2.jpg">
+                                                <img alt="image" class="img-responsive" src="../../static/img/honda2.jpg">
                                             </div>
                                             <div class="item ">
-                                                <img alt="image" class="img-responsive" src="../static/img/honda3.jpg">
+                                                <img alt="image" class="img-responsive" src="../../static/img/honda3.jpg">
                                             </div>
                                             <div class="item ">
-                                                <img alt="image" class="img-responsive" src="../static/img/honda4.jpg">
+                                                <img alt="image" class="img-responsive" src="../../static/img/honda4.jpg">
                                             </div>
                                         </div>
                                         <a data-slide="prev" href="#carousel1" class="left carousel-control">
@@ -481,93 +465,19 @@
 
 
     <!-- Mainly scripts -->
-    <script src="../static/js/jquery-2.1.1.js"></script>
-    <script src="../static/js/bootstrap.min.js"></script>
-    <script src="../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="./../../static/js/jquery-2.1.1.js"></script>
+    <script src="./../../static/js/bootstrap.min.js"></script>
+    <script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="../static/js/inspinia.js"></script>
-    <script src="../static/js/plugins/pace/pace.min.js"></script>
+    <script src="./../../static/js/inspinia.js"></script>
+    <script src="./../../static/js/plugins/pace/pace.min.js"></script>
     <!-- DROPZONE -->
-    <script src="../static/js/plugins/dropzone/dropzone.js"></script>
+    <script src="./../../static/js/plugins/dropzone/dropzone.js"></script>
 
     <!-- Page-Level Scripts -->
-    <script>
-        
-        $(document).ready(function() {
-            
-            $('.btn-edit').on('click', function() {
-                $('#edit-car').modal('show');
-            });
-            
-            $('#change-color').on('click', function() {
-                $('#panel-color').show();
-            });
-            
-            $('.btn-color').on('click', function() {
-                $('#car-color').html('<i class="fa fa-lg fa-car"></i>');
-                $('#car-color').css('color', this.title);
-                if(this.title === 'Beige' || this.title === 'Silver' || this.title === 'White') {
-                    $('#car-color').css('background-color', '#1a001a');
-                } else {
-                    $('#car-color').css('background-color', 'transparent');
-                }
-                $('#color-name').text(this.title);
-            });
-            
-            $('#close-color-panel').on('click', function() {
-                $('#panel-color').hide();
-            });
-            
-            $('#edit-img').on('click', function() {
-                $('#edit-img').hide();
-                $('#img-div').hide();
-                $('#my-awesome-dropzone').show();
-            });
-            $('#cancel-img').on('click', function() {
-                $('#edit-img').show();
-                $('#img-div').show();
-                $('#my-awesome-dropzone').hide();
-            });
-            
-            Dropzone.options.myAwesomeDropzone = {
-
-                autoProcessQueue: false,
-                uploadMultiple: true,
-                acceptedFiles: "image/jpeg,image/png,image/gif",
-                parallelUploads: 20,
-                maxFiles: 20,
-                maxFilesize: 1,
-                dictDefaultMessage: "Drop files here to upload (or click)",
-                dictInvalidFileType: "Accept image only",
-                addRemoveLinks: "dictRemoveFile",
-                //previewTemplate: '<div class="dz-preview dz-file-preview"><div class="dz-details"><div class="dz-filename"><span data-dz-name></span></div><div class="dz-size" data-dz-size></div><img data-dz-thumbnail /></div><div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div><div class="dz-success-mark"><span>✔</span></div><div class="dz-error-mark"><span>✘</span></div><div class="dz-error-message"><span data-dz-errormessage></span></div></div><img src="removebutton.png" alt="Click me to remove the file." data-dz-remove />',
-
-                // Dropzone settings
-                init: function() {
-                    var myDropzone = this;
-
-                    this.element.querySelector('input[name="submit-img"]').addEventListener("click", function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        myDropzone.processQueue();
-                    });
-                    this.on("sendingmultiple", function() {
-                        alert("sending");
-                    });
-                    this.on("successmultiple", function(files, response) {
-                        alert("success");
-                    });
-                    this.on("errormultiple", function(files, response) {
-                        alert("fail");
-                    });
-                }
-
-            }
-        });
-
-    </script>
+    <script src="./car.js"></script>
 
 </body>
 
