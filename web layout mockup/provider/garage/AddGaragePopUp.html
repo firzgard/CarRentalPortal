@@ -10,6 +10,7 @@
     <link href="./../../static/css/animate.css" rel="stylesheet">
     <link href="./../../static/css/style.css" rel="stylesheet">
     <link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
     <!-- DROPZONE -->
     <link href="./../../static/css/plugins/dropzone/basic.css" rel="stylesheet">
     <link href="./../../static/css/plugins/dropzone/dropzone.css" rel="stylesheet"> </head>
@@ -153,6 +154,8 @@
     <script src="./../../static/js/plugins/iCheck/icheck.min.js"></script>
     <!-- Select2 -->
     <script src="./../../static/js/plugins/select2/select2.full.min.js"></script>
+    <!-- bootstrap-timepicker -->
+	<script src="./../../static/js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
     <!-- Custom and plugin javascript -->
     <!--
     <script src="./../../static/js/inspinia.js"></script>
@@ -182,33 +185,52 @@
                 $('#color-name').text(this.title);
             });
             Dropzone.options.myAwesomeDropzone = {
-                autoProcessQueue: false
-                , uploadMultiple: true
-                , acceptedFiles: "image/jpeg,image/png,image/gif"
-                , parallelUploads: 20
-                , maxFiles: 5
-                , maxFilesize: 1
-                , dictDefaultMessage: "Drop files here to upload (or click)"
-                , dictInvalidFileType: "Accept image only"
-                , addRemoveLinks: "dictRemoveFile"
-                , init: function () {
-                    var myDropzone = this;
-                    this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        myDropzone.processQueue();
-                    });
-                    this.on("sendingmultiple", function () {
-                        alert("sending");
-                    });
-                    this.on("successmultiple", function (files, response) {
-                        alert("success");
-                    });
-                    this.on("errormultiple", function (files, response) {
-                        alert("fail");
-                    });
+                    autoProcessQueue: false
+                    , uploadMultiple: true
+                    , acceptedFiles: "image/jpeg,image/png,image/gif"
+                    , parallelUploads: 20
+                    , maxFiles: 5
+                    , maxFilesize: 1
+                    , dictDefaultMessage: "Drop files here to upload (or click)"
+                    , dictInvalidFileType: "Accept image only"
+                    , addRemoveLinks: "dictRemoveFile"
+                    , init: function () {
+                        var myDropzone = this;
+                        this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            myDropzone.processQueue();
+                        });
+                        this.on("sendingmultiple", function () {
+                            alert("sending");
+                        });
+                        this.on("successmultiple", function (files, response) {
+                            alert("success");
+                        });
+                        this.on("errormultiple", function (files, response) {
+                            alert("fail");
+                        });
+                    }
                 }
-            }
+                // Intinialize open/close time-picker
+            const timepickerConfig = {
+                showMeridian: false
+                , defaultTime: false
+            };
+            $('#openTimeMon').timepicker(timepickerConfig);
+            $('#closeTimeMon').timepicker(timepickerConfig);
+            $('#openTimeTue').timepicker(timepickerConfig);
+            $('#closeTimeTue').timepicker(timepickerConfig);
+            $('#openTimeWed').timepicker(timepickerConfig);
+            $('#closeTimeWed').timepicker(timepickerConfig);
+            $('#openTimeThur').timepicker(timepickerConfig);
+            $('#closeTimeThur').timepicker(timepickerConfig);
+            $('#openTimeFri').timepicker(timepickerConfig);
+            $('#closeTimeFri').timepicker(timepickerConfig);
+            $('#openTimeSat').timepicker(timepickerConfig);
+            $('#closeTimeSat').timepicker(timepickerConfig);
+            $('#openTimeSun').timepicker(timepickerConfig);
+            $('#closeTimeSun').timepicker(timepickerConfig);
         });
 
         function addCar() {
