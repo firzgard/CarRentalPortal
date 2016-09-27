@@ -26,20 +26,6 @@ $(document).ready(function(){
 		showMeridian: false,
 		defaultTime: false
 	};
-	$('#openTimeMon').timepicker(timepickerConfig);
-	$('#closeTimeMon').timepicker(timepickerConfig);
-	$('#openTimeTue').timepicker(timepickerConfig);
-	$('#closeTimeTue').timepicker(timepickerConfig);
-	$('#openTimeWed').timepicker(timepickerConfig);
-	$('#closeTimeWed').timepicker(timepickerConfig);
-	$('#openTimeThur').timepicker(timepickerConfig);
-	$('#closeTimeThur').timepicker(timepickerConfig);
-	$('#openTimeFri').timepicker(timepickerConfig);
-	$('#closeTimeFri').timepicker(timepickerConfig);
-	$('#openTimeSat').timepicker(timepickerConfig);
-	$('#closeTimeSat').timepicker(timepickerConfig);
-	$('#openTimeSun').timepicker(timepickerConfig);
-	$('#closeTimeSun').timepicker(timepickerConfig);
 
 	// ============================================
 	// Vehicle table

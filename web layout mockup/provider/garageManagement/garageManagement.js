@@ -49,22 +49,22 @@ $(document).ready(() => {
 						<ul class="dropdown-menu">
 							<li><a href="./../garage/garage.html">Edit</a></li>
 							${row[4] ?
-								`<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="deactivate" data-id="${row[0]}" data-name="${row[1]}" >Deactivate</a></li>`
+								`<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="deactivate" data-id="${row.id}" data-name="${row.name}" >Deactivate</a></li>`
 							:
-								`<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="activate" data-id="${row[0]}" data-name="${row[1]}" >Activate</a></li>`
+								`<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="activate" data-id="${row.id}" data-name="${row.name}" >Activate</a></li>`
 							}
-							<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Delete</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
 						</ul>
 					</div>`;
 				}
 			}
 		],
 		columns: [
-			{ data: 'id', visible: false },
-			{ title: 'Name', data: 'name', width: '55%' },
-			{ title: 'Location', data: 'location', width: '15%' },
-			{ title: 'Stars', data: 'star', width: '10%' },
-			{ title: 'Status', data: 'isActive', width: '10%' },
+			{ name: 'ID', data: 'id', visible: false },
+			{ name: 'Name', title: 'Name', data: 'name', width: '55%' },
+			{ name: 'Location', title: 'Location', data: 'location', width: '15%' },
+			{ name: 'Stars', title: 'Stars', data: 'star', width: '10%' },
+			{ name: 'Status', title: 'Status', data: 'isActive', width: '10%' },
 			{
 				title: 'Action',
 				width: '10%',
