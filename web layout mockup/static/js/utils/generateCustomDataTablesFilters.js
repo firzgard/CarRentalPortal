@@ -10,7 +10,7 @@ function createTextFilter(table, filterNode, colName){
 	});
 
 	// enter pressed
-	$(".dropdown-menu input").keyup((event) => {
+	filterNode.find(".dropdown-menu input").keyup((event) => {
 		if (event.keyCode == 13) {
 			col.search(event.target.value).draw();
 			filterNode.find('.filter-toggle').addClass('btn-success');

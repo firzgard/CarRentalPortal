@@ -1582,6 +1582,16 @@ table.dataTable thead .sorting_asc_disabled,
 table.dataTable thead .sorting_desc_disabled {
   background: transparent;
 }
+table.dataTable tbody tr.selected .dropdown-menu a,
+table.dataTable tbody th.selected .dropdown-menu a,
+table.dataTable tbody td.selected .dropdown-menu a {
+  color: black;
+}
+table.dataTable tbody tr.selected .dropdown-menu a:hover,
+table.dataTable tbody th.selected .dropdown-menu a:hover,
+table.dataTable tbody td.selected .dropdown-menu a:hover {
+  color: #262626;
+}
 .dataTables_wrapper {
   padding-bottom: 30px;
 }

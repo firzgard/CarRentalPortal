@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Car Rental Port</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="./../../static/css/animate.css" rel="stylesheet">
+    <link href="./../../static/css/style.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+    <!-- DROPZONE -->
+    <link href="./../../static/css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/dropzone.css" rel="stylesheet"> </head>
+<style>
+    .chosen-container.chosen-container-single {
+        width: 300px !important;
+        /* or any value that fits your needs */
+    }
+    /*
+    #my-awesome-dropzone {
+        display: none;
+        height: 300px;
+        max-height: 300px;
+    }
+*/
+</style>
+
+<body>
+    <div id="page-wrapper" class="gray-bg">
+        <!--   Main     -->
+        <div class="wrapper wrapper-content animated fadeInLeft">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div>
+                        <button class="btn btn-danger" id="btnAddCar" onclick="addCar()">Add garage</button>
+                    </div>
+                </div>
+            </div>
+            <!--                    </form>-->
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header modal-header-popup">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add garage</h4> </div>
+                <div class="modal-body">
+                    <div class="input-group"> <span class="input-group-addon"><i class="fa fa-building-o"></i></span>
+                        <input type="text" placeholder="Garage Name" value="Garage 3k" id="name" class="form-control input-lg" required> </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="locationID">Location*</label>
+                            <div class="form-group">
+                                <select data-placeholder="Choose a model..." class="chosen-select" style="width:350px;">
+                                    <option value></option>
+                                    <option value="1" selected>Hồ Chí Minh</option>
+                                    <option value="2">Hà Nội</option>
+                                    <option value="3">Cà Mau</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address*</label>
+                                <input type="text" placeholder="Address" value="666 Nguyen Hue" class="form-control" id="address" required> </div>
+                            <div class="form-group">
+                                <label for="email">Email*</label>
+                                <input type="email" placeholder="Email Address" value="asdqlwkjd@3krental.com" class="form-control" id="email" required> </div>
+                            <div class="form-group">
+                                <label for="phone1">Phone 1*</label>
+                                <input type="text" placeholder="Primary Phone Number" value="0912312032031" class="form-control" id="phone1" required> </div>
+                            <div class="form-group">
+                                <label for="phone2">Phone 2</label>
+                                <input type="text" placeholder="Alternative Phone Number" value="" class="form-control" id="phone2"> </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Open Time</label>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Mon</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeMon">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeMon"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Tue</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeTue">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeTue"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Wed</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeWed">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeWed"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Thu</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeThur">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeThur"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Fri</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeFri">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeFri"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Sat</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" class="form-control" id="openTimeSat">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" class="form-control" id="closeTimeSat"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Sun</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" class="form-control" id="openTimeSun">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" class="form-control" id="closeTimeSun"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="./../../static/js/jquery-2.1.1.js"></script>
+    <script src="./../../static/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="./../../static/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- Select2 -->
+    <script src="./../../static/js/plugins/select2/select2.full.min.js"></script>
+    <!-- bootstrap-timepicker -->
+	<script src="./../../static/js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <!--
+    <script src="./../../static/js/inspinia.js"></script>
+    <script src="./../../static/js/plugins/pace/pace.min.js"></script>
+-->
+    <!-- Chosen -->
+    <script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
+    <!-- DROPZONE -->
+    <script src="./../../static/js/plugins/dropzone/dropzone.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green'
+                , radioClass: 'iradio_square-green'
+            , });
+            $('#change-color').on('click', function () {
+                $('#panel-color').show();
+            });
+            $('.btn-color').on('click', function () {
+                $('#current-color').css('color', this.title);
+                if (this.title === 'Beige' || this.title === 'Silver' || this.title === 'White') {
+                    $('#current-color').css('background-color', '#1a001a');
+                }
+                else {
+                    $('#current-color').css('background-color', 'transparent');
+                }
+                $('#color-name').text(this.title);
+            });
+            Dropzone.options.myAwesomeDropzone = {
+                    autoProcessQueue: false
+                    , uploadMultiple: true
+                    , acceptedFiles: "image/jpeg,image/png,image/gif"
+                    , parallelUploads: 20
+                    , maxFiles: 5
+                    , maxFilesize: 1
+                    , dictDefaultMessage: "Drop files here to upload (or click)"
+                    , dictInvalidFileType: "Accept image only"
+                    , addRemoveLinks: "dictRemoveFile"
+                    , init: function () {
+                        var myDropzone = this;
+                        this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            myDropzone.processQueue();
+                        });
+                        this.on("sendingmultiple", function () {
+                            alert("sending");
+                        });
+                        this.on("successmultiple", function (files, response) {
+                            alert("success");
+                        });
+                        this.on("errormultiple", function (files, response) {
+                            alert("fail");
+                        });
+                    }
+                }
+                // Intinialize open/close time-picker
+            const timepickerConfig = {
+                showMeridian: false
+                , defaultTime: false
+            };
+            $('#openTimeMon').timepicker(timepickerConfig);
+            $('#closeTimeMon').timepicker(timepickerConfig);
+            $('#openTimeTue').timepicker(timepickerConfig);
+            $('#closeTimeTue').timepicker(timepickerConfig);
+            $('#openTimeWed').timepicker(timepickerConfig);
+            $('#closeTimeWed').timepicker(timepickerConfig);
+            $('#openTimeThur').timepicker(timepickerConfig);
+            $('#closeTimeThur').timepicker(timepickerConfig);
+            $('#openTimeFri').timepicker(timepickerConfig);
+            $('#closeTimeFri').timepicker(timepickerConfig);
+            $('#openTimeSat').timepicker(timepickerConfig);
+            $('#closeTimeSat').timepicker(timepickerConfig);
+            $('#openTimeSun').timepicker(timepickerConfig);
+            $('#closeTimeSun').timepicker(timepickerConfig);
+        });
+
+        function addCar() {
+            $('#myModal').modal('show');
+        }
+        var config = {
+            '.chosen-select': {}
+            , '.chosen-select-deselect': {
+                allow_single_deselect: true
+            }
+            , '.chosen-select-no-single': {
+                disable_search_threshold: 10
+            }
+            , '.chosen-select-no-results': {
+                no_results_text: 'Oops, nothing found!'
+            }
+            , '.chosen-select-width': {
+                width: "100%"
+            }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
+</body>
+
+</html>
