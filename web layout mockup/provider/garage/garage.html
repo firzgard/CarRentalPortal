@@ -156,7 +156,7 @@
 							<div class="col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon"><i class="fa fa-building-o"></i></span>
-									<input type="text" placeholder="Garage Name" value="Garage 3k" id="name" class="form-control input-lg" required>
+									<input type="text" placeholder="Garage Name" value="Garage 3k" id="garageName" class="form-control input-lg" required>
 								</div>
 							</div>
 							<div data-star="4.4" class="col-md-4" id="starRating" ></div>
@@ -247,8 +247,8 @@
 						<div>
 							<button class="btn btn-primary pull-right">Save changes</button>
 							<div class="btn-group">
-								<button class="btn btn-warning">Deactive garage</button>
-								<button class="btn btn-danger">Delete garage</button>
+								<button id="activationBtn" class="btn btn-warning" data-toggle="modal" data-target="#customModal"></button>
+								<button class="btn btn-danger" data-toggle="modal" data-target="#customModal" data-action="deleteGarage">Delete garage</button>
 							</div>
 						</div>
 					</form>

@@ -64,7 +64,7 @@ function renderConfirmModal(type, action, modalNode, items){
 				</h2>
 			</div>
 			<div class="modal-body">
-				You are about to delete following ${type}(s):
+				You are about to ${action} following ${type}(s):
 				<ul>${items.reduce((html, item) => {
 					return html + `<li>${item.name}</li>`
 				}, '')}</ul>

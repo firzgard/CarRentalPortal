@@ -9,6 +9,26 @@ const mockupData = [
 ];
 
 $(document).ready(function(){
+	// Render re/deactivate button
+	let isActivateInput = $('#isActive');
+	function renderActivationBtn(){
+		let btn = $('#activationBtn')
+		if(isActivateInput.val() == 'true'){
+			btn.attr('data-action', 'deactivateGarage');
+			btn.html('Deactivate Garage');
+			btn.removeClass('btn-success');
+			btn.addClass('btn-warning');
+		} else {
+			btn.attr('data-action', 'reactivateGarage');
+			btn.html('Reactivate Garage');
+			btn.removeClass('btn-warning');
+			btn.addClass('btn-success');
+		}
+	}
+	renderActivationBtn();
+	// Bind the change event of isActive input with rerendering the btn
+	isActivateInput.on('change', renderActivationBtn);
+
 	// Intialize location selector
 	$('#locationID').chosen({
 		width: "100%",
@@ -153,6 +173,8 @@ $(document).ready(function(){
 				}
 
 				renderSelectorModal('group', this, vehicles);
+			}break;case 'duplicateVehicle':{
+				renderCreateVehicleModal(this, button.data('vehicle-id'));
 			}break;case 'deleteVehicle':{
 				renderConfirmModal('vehicle', 'delete', this, [{ id: button.data('vehicle-id'), name: button.data('vehicle-name') }]);
 			}break;case 'deleteVehicleMulti':{
@@ -164,8 +186,12 @@ $(document).ready(function(){
 				}
 
 				renderConfirmModal('vehicle', 'delete', this, vehicles);
-			}break;case 'duplicateVehicle':{
-				renderCreateVehicleModal(this, button.data('vehicle-id'));
+			}break;case 'deactivateGarage':{
+				renderConfirmModal('garage', 'deactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
+			}break;case 'reactivateGarage':{
+				renderConfirmModal('garage', 'reactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
+			}break;case 'deleteGarage':{
+				renderConfirmModal('garage', 'delete', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
 			}break;
 		}
 	});
