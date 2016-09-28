@@ -53,7 +53,7 @@
     });
     //end
     $('#end-day').datetimepicker({
-        defaultDate: new Date(),
+        //defaultDate: new Date(),
         format: 'YYYY-MM-DD',
         minDate: new Date(),
         useCurrent: false,
@@ -84,13 +84,13 @@
         $('#rent-time').on('keyup', function() {
             hour = parseInt(($('#rent-time').val()).substr(0,2));
             if(hour > 23) {
-                alert("00:00 ~ 24:00");
                 $('#rent-time').val("");
+                alert("00:00 ~ 24:00");
             }
             
             if(jQuery.inArray($('#rent-time').val(), time) >= 0) {
-                alert("that day has been booked by someone else");
                 $('#rent-time').val("");
+                alert("that day has been booked by someone else");
             }
         });
         
@@ -175,4 +175,86 @@
         $('#checkout-day').on('click', function() {
             alert();
         });
+        
+        // Fullcalendar
+        $('#schedule').fullCalendar({
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay,listWeek'
+            },
+            editable: false,
+            droppable: true, // this allows things to be dropped onto the calendar
+//            drop: function() {
+//                // is the "remove after drop" checkbox checked?
+//                if ($('#drop-remove').is(':checked')) {
+//                    // if so, remove the element from the "Draggable Events" list
+//                    $(this).remove();
+//                }
+//            },
+            eventLimit: true,
+            views: {
+                month: {
+                    eventLimit: 4,
+                },
+            },
+            events: [
+                {
+                    id: 1,
+                    title: 'ABC',
+                    start: new Date("2016-09-12 18:00"),
+                    end: new Date("2016-09-30 12:00"),
+                    allDay: false
+                },
+                {
+                    id: 2,
+                    title: 'ASA',
+                    start: new Date("2016-09-30 14:00"),
+                    end: new Date("2016-09-30 17:00"),
+                    color: '#ff0000',
+                    allDay: false
+                },
+                {
+                    id: 3,
+                    title: 'AHHH',
+                    start: new Date("2016-09-30 18:00"),
+                    end: new Date("2016-09-30 19:00"),
+                    color: '#0000ff',
+                    allDay: false
+                },
+                {
+                    id: 4,
+                    title: 'DR',
+                    start: new Date("2016-09-30 20:00"),
+                    end: new Date("2016-09-30 22:00"),
+                    color: '#ff0000',
+                    allDay: false,
+                    rendering: 'background'
+                },
+                {
+                    id: 5,
+                    title: 'AHHH',
+                    start: new Date("2016-10-01 06:00"),
+                    end: new Date("2016-10-01 09:00"),
+                    color: '#00ff00',
+                    allDay: false
+                },
+                
+                {
+                    id: 6,
+                    title: 'SSS',
+                    start: new Date("2016-10-01 12:00"),
+                    end: new Date("2016-10-01 17:00"),
+                    color: '#778811',
+                    allDay: false
+                },
+            ],
+//            eventRender: function(event, element) {
+//                element.append("<span class='closeon'><i class='fa fa-times'></i></span>");
+//                element.find(".closeon").click(function() {
+//                   $('#schedule').fullCalendar('removeEvents',event._id);
+//                });
+//            },
+        });
+        
     });
