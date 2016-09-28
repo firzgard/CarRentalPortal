@@ -16,9 +16,9 @@
 </head>
 
 <body>
-	<button class="btn btn-primary" data-toggle="modal" data-target="#mdModal" >Change Garage</button>
+	<button class="btn btn-primary" data-toggle="modal" data-target="#customModal" >Change Garage</button>
 
-	<div class="modal fade" id="mdModal" tabindex="-1" role="dialog"></div>
+	<div class="modal fade" id="customModal" tabindex="-1" role="dialog"></div>
 
 	<!-- Mainly scripts -->
 	<script src="./../static/js/jquery-2.1.1.js"></script>
@@ -38,7 +38,7 @@
 	<!-- Page's script -->
 	<script>
 		$(document).ready(() => {
-			$('#mdModal').on('show.bs.modal', function(event) {
+			$('#customModal').on('show.bs.modal', function(event) {
 				renderChangeGaragePopup(this);
 			});
 		});

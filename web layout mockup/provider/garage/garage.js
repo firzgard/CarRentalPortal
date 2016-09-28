@@ -73,10 +73,10 @@ $(document).ready(function(){
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" >Change Garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" >Change Group</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete Vehicle</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row.id}" >Duplicate Vehicle</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarage" data-vehicle-id="${row.id}" >Change Garage</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroup" data-vehicle-id="${row.id}" >Change Group</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.id}" data-vehicle-name="${row.name}" >Delete Vehicle</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${row.id}" >Duplicate Vehicle</a></li>
 							<li><a href="./../car/car.html" target="_blank">Edit Vehicle</a></li>
 						</ul>
 					</div>`;
@@ -124,4 +124,49 @@ $(document).ready(function(){
 	createCheckboxFilter(table, $('#fuelFilter'), 10);
 	// Vehicle Group filter
 	createCheckboxFilter(table, $('#groupFilter'), 3);
+
+	// Custom modal's content renders dynamically
+	$('#customModal').on('show.bs.modal', function(event) {
+		let button = $(event.relatedTarget),
+			action = button.data('action');
+
+		switch(action){
+			case 'changeGarage':{
+				renderSelectorModal('garage', this, [ button.data('vehicle-id') ]);
+			}break;case 'changeGarageMulti':{
+				let vehicles = [],
+					data = table.rows({ selected: true }).data();
+					
+				for(let i = 0; i < data.length; i++){
+					vehicles.push(data[i].id);
+				}
+
+				renderSelectorModal('garage', this, vehicles);
+			}break;case 'changeGroup':{
+				renderSelectorModal('group', this, [ button.data('vehicle-id') ]);
+			}break;case 'changeGroupMulti':{
+				let vehicles = [],
+					data = table.rows({ selected: true }).data();
+					
+				for(let i = 0; i < data.length; i++){
+					vehicles.push(data[i].id);
+				}
+
+				renderSelectorModal('group', this, vehicles);
+			}break;case 'deleteVehicle':{
+				renderConfirmModal('vehicle', 'delete', this, [{ id: button.data('vehicle-id'), name: button.data('vehicle-name') }]);
+			}break;case 'deleteVehicleMulti':{
+				let vehicles = [],
+					data = table.rows({ selected: true }).data();
+
+				for(let i = 0; i < data.length; i++){
+					vehicles.push({ id: data[i].id, name: data[i].name });
+				}
+
+				renderConfirmModal('vehicle', 'delete', this, vehicles);
+			}break;case 'duplicateVehicle':{
+				renderCreateVehicleModal(this, button.data('vehicle-id'));
+			}break;
+		}
+	});
 });

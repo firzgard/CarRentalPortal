@@ -559,9 +559,9 @@
 									<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="group">Change Group</a></li>
-									<li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="garage">Change Garage</a></li>
-									<li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="delete">Delete Vehicle</a></li>
+									<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroupMulti">Change Group</a></li>
+									<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarageMulti">Change Garage</a></li>
+									<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicleMulti">Delete Vehicle</a></li>
 								</ul>
 							</div></th>
 						</tr></tfoot>
@@ -576,19 +576,7 @@
 		</div>
 	</div>
 
-	<div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-			</div>
-		</div>
-	</div>
-
-	<div class="modal fade" id="bgModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-			</div>
-		</div>
-	</div>
+	<div class="modal fade" id="customModal" tabindex="-1" role="dialog"></div>
 
 	<!-- Mainly scripts -->
 	<script src="./../../static/js/jquery-2.1.1.js"></script>
@@ -616,6 +604,7 @@
 
 	<!-- custom utils -->
 	<script src="./../../static/js/utils/generateUIElements.js"></script>
+	<script src="./../../static/js/utils/customModals.js"></script>
 	<script src="./../../static/js/utils/generateCustomDataTablesFilters.js"></script>
 
 	<!-- Page's script -->
