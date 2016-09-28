@@ -254,6 +254,7 @@
 					</form>
 				</div>
 				<div class="ibox ibox-content float-e-margins">
+					<button class="btn btn-default pull-right" style="margin-bottom: 1em;" ><i class="fa fa-plus"> New vehicle</i></button>
 					<table class="table table-striped table-bordered table-hover" width="100%" id="vehicles">
 						<thead></thead>
 						<tfoot id="multiFilter" ><tr>
@@ -560,7 +561,7 @@
 								<ul class="dropdown-menu">
 									<li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="group">Change Group</a></li>
 									<li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="garage">Change Garage</a></li>
-									<li><a href="#" data-toggle="modal" data-target="#lgModal" >Create New Vehicle</a></li>
+									<li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="delete">Delete Vehicle</a></li>
 								</ul>
 							</div></th>
 						</tr></tfoot>
@@ -571,6 +572,20 @@
 				<div class="text-center">
 					<strong>Copyright</strong> CarRentalPortal &copy; 2014-2015
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="bgModal" tabindex="-1" role="dialog">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
 			</div>
 		</div>
 	</div>

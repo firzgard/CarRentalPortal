@@ -18,7 +18,6 @@ $(document).ready(function(){
 	// Render star-rating
 	let starRatingDiv = $('#starRating'),
 		star = starRatingDiv.data('star')
-
 	starRatingDiv.html(renderStarRating(star));
 
 	// Intinialize open/close time-picker
@@ -74,11 +73,11 @@ $(document).ready(function(){
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" data-id="${row.id}" >Change Garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" data-id="${row.id}" >Change Group</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#smModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row.id}" >Duplicate</a></li>
-							<li><a href="./../car/car.html">Edit</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" >Change Garage</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" >Change Group</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete Vehicle</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row.id}" >Duplicate Vehicle</a></li>
+							<li><a href="./../car/car.html" target="_blank">Edit Vehicle</a></li>
 						</ul>
 					</div>`;
 				}
