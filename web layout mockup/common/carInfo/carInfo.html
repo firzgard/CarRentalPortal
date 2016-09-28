@@ -8,36 +8,18 @@
 
     <title>CRP | Car Infomation</title>
 
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
 
-    <link href="../static/css/plugins/slick/slick.css" rel="stylesheet">
-    <link href="../static/css/plugins/slick/slick-theme.css" rel="stylesheet">
-    <link href="../static/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/slick/slick.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/slick/slick-theme.css" rel="stylesheet">
+<!--    <link href="../static/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">-->
 
-    <link href="../static/css/animate.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
-    <style>
-        .info-tb tr > td:first-child, .info-tb > .col-md-6 > .row > .col-md-6:first-child {
-            font-weight: bold;
-        }
-        .info-tb > .col-md-6 > .row {
-            border-top: 1px solid #e7eaec;
-            line-height: 1.42857;
-            padding: 8px;
-            vertical-align: top;
-        }
-        
-        .float-e-margins .ibox-content {
-            padding: 0px 30px !important;
-        }
-        .image-imitation {
-            padding: 0 !important;
-        }
-        .product-images {
-            max-width: 500px;
-        }
-    </style>
+    <link href="./../../static/css/animate.css" rel="stylesheet">
+    <link href="./../../static/css/style.css" rel="stylesheet">
+    
+    <link href="./../../static/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="./carInfo.css" rel="stylesheet">
 
 </head>
 
@@ -62,7 +44,7 @@
                             <li>
                                 <div class="dropdown-messages-box">
                                     <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="./../static/img/a7.jpg">
+                                        <img alt="image" class="img-circle" src="./../../static/img/a7.jpg">
                                     </a>
                                     <div class="media-body">
                                         <small class="pull-right">46h ago</small>
@@ -75,7 +57,7 @@
                             <li>
                                 <div class="dropdown-messages-box">
                                     <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="./../static/img/a4.jpg">
+                                        <img alt="image" class="img-circle" src="./../../static/img/a4.jpg">
                                     </a>
                                     <div class="media-body ">
                                         <small class="pull-right text-navy">5h ago</small>
@@ -88,7 +70,7 @@
                             <li>
                                 <div class="dropdown-messages-box">
                                     <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="./../static/img/profile.jpg">
+                                        <img alt="image" class="img-circle" src="./../../static/img/profile.jpg">
                                     </a>
                                     <div class="media-body ">
                                         <small class="pull-right">23h ago</small>
@@ -204,22 +186,22 @@
                                         <div class="product-images">
                                             <div>
                                                 <div class="image-imitation">
-                                                    <img src="../static/img/honda1.jpg" align="center" height="500" width="500">
+                                                    <img src="./../../static/img/honda1.jpg" align="center" height="500" width="500">
                                                 </div>
                                             </div>
                                             <div>
                                                 <div class="image-imitation">
-                                                    <img src="../static/img/honda2.jpg" align="middle" height="500" width="500">
+                                                    <img src="./../../static/img/honda2.jpg" align="middle" height="500" width="500">
                                                 </div>
                                             </div>
                                             <div>
                                                 <div class="image-imitation">
-                                                    <img src="../static/img/honda3.jpg" align="middle" height="500" width="500">
+                                                    <img src="./../../static/img/honda3.jpg" align="middle" height="500" width="500">
                                                 </div>
                                             </div>
                                             <div>
                                                 <div class="image-imitation">
-                                                    <img src="../static/img/honda4.jpg" align="middle" height="500" width="500">
+                                                    <img src="./../../static/img/honda4.jpg" align="middle" height="500" width="500">
                                                 </div>
                                             </div>
                                         </div>
@@ -382,6 +364,7 @@
                                 Rent this car
                             </h2>
                             <div class="row">
+                                <div class="col-md-offset-1 col-md-10">
                                 <div class="tabs-container">
                                     <ul class="nav nav-tabs">
                                         <li class="col-md-6 text-center active"><a data-toggle="tab" href="#tab-hour">Rent by hour</a></li>
@@ -389,19 +372,9 @@
                                     </ul>
                                     <div class="tab-content">
                                         <div id="tab-hour" class="tab-pane active">
-                                            <div class="col-md-8 panel-body">
+                                            <div class="col-md-12 panel-body">
                                                 <h3 class="text-center">Rent by hour</h3>
                                                 <hr>
-                                                <div class="row">
-                                                    <div class="col-md-4 m-t-xs">
-                                                        <label>Select start time</label>
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <div class="input-group m-b">
-                                                            <input type="text" id="rent-time" class="form-control" value=""/><span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
                                                 <div class="row">
                                                     <div class="col-md-4 m-t-xs">
                                                         <label>Select a package</label>
@@ -417,22 +390,38 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-4 m-t-xs">
-                                                        <label>Booking fee</label>
+                                                        <label>Select start day</label>
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="input-group m-b">
-                                                            <span id="h-fee" class="form-control">50,000</span><span class="input-group-addon">VND</span>
+                                                            <input type="text" id="rent-day" class="form-control" value=""/><span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                                                         </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 m-t-xs">
+                                                        <label>Select start time</label>
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group m-b">
+                                                            <input type="text" id="rent-time" class="form-control" value=""/><span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-4 m-t-xs">
+                                                        <label>Booking fee</label>
+                                                    </div>
+                                                    <div class="col-md-8 m-b m-t-xs">
+                                                        <span id="h-fee" class="">50,000</span><span> VND</span>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-4 m-t-xs">
                                                         <label>Total price</label>
                                                     </div>
-                                                    <div class="col-md-8">
-                                                        <div class="input-group m-b">
-                                                            <span id="h-total-price" class="form-control"></span><span class="input-group-addon">VND</span>
-                                                        </div>
+                                                    <div class="col-md-8 m-b m-t-xs">
+                                                        <span id="h-total-price"></span><span> VND</span>
                                                     </div>
                                                 </div>
 
@@ -442,38 +431,47 @@
                                             </div>
                                         </div>
                                         <div id="tab-day" class="tab-pane">
-                                            <div class="col-md-offset-4 col-md-8 panel-body">
+                                            <div class="col-md-12 panel-body">
                                                 <h3 class="text-center">Rent by Day</h3>
                                                 <hr>
                                                 <div class="row">
                                                     <div class="col-md-3 m-t-xs">
-                                                        <label>Select time</label>
+                                                        <label>Start time</label>
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="input-group m-b">
-                                                            <input type="text" id="start-time" class="form-control"/>
-                                                            <span class="input-group-addon">to</span>
-                                                            <input type="text" id="end-time" class="form-control"/>
+                                                            <input type="text" id="start-day" class="form-control" placeholder="Start day"/>
+                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                            <input type="text" id="start-time" class="form-control" placeholder="Start time"/>
+                                                            <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-3 m-t-xs">
+                                                        <label>End time</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="input-group m-b">
+                                                            <input type="text" id="end-day" class="form-control" placeholder="End day"/>
+                                                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                                            <input type="text" id="end-time" class="form-control" placeholder="End time"/>
                                                             <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 m-t-xs"><label>Day price</label></div>
-                                                    <div class="col-md-9">
-                                                        <div class="input-group m-b">
-                                                            <span id="day-price" class="form-control">700,000</span><span class="input-group-addon">VND</span>
-                                                        </div>
+                                                    <div class="col-md-9 m-b m-t-xs">
+                                                        <span id="day-price">700,000</span><span> VND</span>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-md-3 m-t-xs">
                                                         <label>Booking fee</label>
                                                     </div>
-                                                    <div class="col-md-9">
-                                                        <div class="input-group m-b">
-                                                            <span id="d-fee" class="form-control">50,000</span><span class="input-group-addon">VND</span>
-                                                        </div>
+                                                    <div class="col-md-9 m-b m-t-xs">
+                                                        <span id="d-fee">50,000</span><span> VND</span>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -482,7 +480,7 @@
                                                     </div>
                                                     <div class="col-md-9">
                                                         <div class="input-group m-b">
-                                                            <span id="d-total-price" class="form-control"></span><span class="input-group-addon">VND</span>
+                                                            <span id="d-total-price">0</span><span> VND</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -493,6 +491,7 @@
                                         </div>
                                         
                                     </div>
+                                </div>
                                 </div>
                             </div>
                             <hr>
@@ -524,160 +523,26 @@
 
 
 <!-- Mainly scripts -->
-<script src="../static/js/jquery-2.1.1.js"></script>
-<script src="../static/js/bootstrap.min.js"></script>
-<script src="../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="./../../static/js/jquery-2.1.1.js"></script>
+<script src="./../../static/js/bootstrap.min.js"></script>
+<script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <!-- Custom and plugin javascript -->
-<script src="../static/js/inspinia.js"></script>
-<script src="../static/js/plugins/pace/pace.min.js"></script>
+<script src="./../../static/js/inspinia.js"></script>
+<script src="./../../static/js/plugins/pace/pace.min.js"></script>
 
 <!-- slick carousel-->
-<script src="../static/js/plugins/slick/slick.min.js"></script>
+<script src="./../../static/js/plugins/slick/slick.min.js"></script>
     
 <!-- daterangepicker -->
-<script src="../static/js/plugins/moment/moment.min.js"></script>
-<script src="../static/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+<script src="./../../static/js/plugins/moment/moment.min.js"></script>
+<script src="./../../static/js/plugins/datetimepicker/temp/transition.js"></script>
+<script src="./../../static/js/plugins/datetimepicker/temp/collapse.js"></script>
+<script src="./../../static/js/plugins/datetimepicker/temp/bootstrap-datetimepicker.js"></script>
+<!--<script src="../static/js/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>-->
 
-<script type="text/javascript">
-    /* rent by hour */
-    $('#time').datetimepicker({
-        defaultDate: "11/1/2013",
-        disabledDates: [
-            moment("12/25/2013"),
-            new Date(2013, 11 - 1, 21),
-            "11/22/2013 00:53"
-        ]
-    });
-    $('#rent-time').datetimepicker({
-        format: 'yyyy-m-d h:00',
-//        defaultDate: new Date(),
-        startDate: new Date(),
-        //endDate: '',
-//        initialDate: new Date(),
-        pickerReferer: 'input',
-        autoclose: true,
-        startView: 'month',
-        minView: 'day',
-        maxView: 'year',
-        viewSelect: 'month',
-        showMeridian: true,
-    });
-    
-    /* rent by day */
-    // start
-    $('#start-time').datetimepicker({
-        startDate: new Date(),
-        //endDate: '',
-        disableDates: ["2016-09-24"],
-        initialDate: new Date(),
-        format: 'yyyy-m-d h:00',
-        autoclose: true,
-        minView: 'day',
-        maxView: 'year',
-        viewSelect: 'month',
-        showMeridian: true,
-    });
-    // end
-    $('#end-time').datetimepicker({
-        startDate: new Date(),
-        //endDate: '',
-        format: 'yyyy-m-d h:00',
-        autoclose: true,
-        minView: 'day',
-        maxView: 'year',
-        viewSelect: 'month',
-        showMeridian: true,
-    });
-    
-    $(document).ready(function(){
-        
-        $('.product-images').slick({
-            dots: true
-        });
-
-        $('#phone-view').on('click', function() {
-            $('#phone-view').html('<i class="fa fa-phone"></i> ');
-            $('#phone-view').append(' 01687548624');
-            
-        });
-        $('#email-view').on('click', function() {
-            $('#email-view').html('<i class="fa fa-envelope"></i> ');
-            $('#email-view').append(' thanh@gmail.com');
-        });
-        
-        // test
-        $('#end-time').change(function() {
-//            var s = $('#end-time').val();
-//            var st = moment(s).format("YYYY-MM-DD HH:mm");
-//            $('#start-time').datetimepicker('setEndDate', st);
-        });
-        $('#start-time').change(function() {
-            var s = $('#start-time').val();
-            var e = $('#end-time').val();
-            
-            var st = moment(s).format("YYYY-MM-DD HH:mm");
-            var et = moment(e).format("YYYY-MM-DD HH:mm");
-            if(e) {
-                
-                if(st > et) {
-                    et = moment(s).add(1, 'days').format("YYYY-M-D HH:mm");
-                    $('#end-time').val(et);
-                }
-            }
-            $('#end-time').datetimepicker('setStartDate', st);
-        });
-        
-        
-        // total hour price
-        var total = parseInt($('#hour-price').val()) + parseInt($('#h-fee').text().replace(",",""));
-        total = total.toString();
-        if (total.length >= 4) {
-            total = total.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
-        }
-        $('#h-total-price').text(total);
-        
-        $('#hour-price').on('change', function() {
-            var total = parseInt($('#hour-price').val()) + parseInt($('#h-fee').text().replace(",",""));
-            total = total.toString();
-            if (total.length >= 4) {
-                total = total.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
-            }
-            
-            $('#h-total-price').text(total);
-        });
-        
-        // total day price
-        $('#start-time, #end-time').on('change', function() {
-            if($('#start-time').val()) {
-                if($('#end-time').val()) {
-                    var s = $('#start-time').val();
-                    s = s.substring(0, s.length - 5);
-                    s = moment(s);
-                    
-                    var e = $('#end-time').val();
-                    e = e.substring(0, e.length -5);
-                    e = moment(e);
-                    
-                    var duration = moment.duration(e.diff(s));
-                    var days = duration.asDays() + 1;
-                    days = parseInt(days);
-                    var total = parseInt($('#day-price').text().replace(",",""))*days + parseInt($('#d-fee').text().replace(",",""));
-                    total = total.toString();
-                    if (total.length >= 4) {
-                        total = total.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
-                    }
-                    $('#d-total-price').text(total);
-                }
-            }
-        });
-        
-        $('#checkout-day').on('click', function() {
-            alert();
-        });
-    });
-</script>
+<script src="./carInfo.js"></script>
 
 </body>
 

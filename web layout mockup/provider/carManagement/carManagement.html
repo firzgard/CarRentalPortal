@@ -8,41 +8,25 @@
 
     <title>CRP | Car management</title>
 
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
 
     <!-- FooTable -->
-    <link href="../static/css/plugins/footable/footable.bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/footable/footable.bootstrap.min.css" rel="stylesheet">
     
     <!-- Datatables -->
-    <link href="../static/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
     
     <!-- DROPZONE -->
-    <link href="../static/css/plugins/dropzone/basic.css" rel="stylesheet">
-    <link href="../static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
     
     <!-- Gallery -->
-    <link href="../static/css/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/blueimp/css/blueimp-gallery.min.css" rel="stylesheet">
 
-    <link href="../static/css/animate.css" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
-
-    <style>
-        .footable tr > td {
-            vertical-align: middle !important;
-        }
-        .btn-color {
-            border-radius: 0 !important;
-            border: #000 solid 1px;
-            margin: 2px 0px;
-        }
-        #panel-color {
-            display: none;
-        }
-        #my-awesome-dropzone {
-            display: none;
-        }
-    </style>
+    <link href="./../../static/css/animate.css" rel="stylesheet">
+    <link href="./../../static/css/style.css" rel="stylesheet">
+    <link href="./carManagement.css" rel="stylesheet">
 </head>
 
 <body>
@@ -52,7 +36,7 @@
 				<ul class="nav metismenu" id="side-menu">
 					<li class="nav-header">
 						<div class="dropdown profile-element"> <span>
-							<img alt="image" class="img-circle" src="./../static/img/profile_small.jpg" />
+							<img alt="image" class="img-circle" src="./../../static/img/profile_small.jpg" />
 							 </span>
 							<a data-toggle="dropdown" class="dropdown-toggle" href="#">
 								<span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">David Williams</strong>
@@ -291,7 +275,7 @@
                         <li>
                             <div class="dropdown-messages-box">
                                 <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="./../static/img/a7.jpg">
+                                    <img alt="image" class="img-circle" src="./../../static/img/a7.jpg">
                                 </a>
                                 <div class="media-body">
                                     <small class="pull-right">46h ago</small>
@@ -304,7 +288,7 @@
                         <li>
                             <div class="dropdown-messages-box">
                                 <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="./../static/img/a4.jpg">
+                                    <img alt="image" class="img-circle" src="./../../static/img/a4.jpg">
                                 </a>
                                 <div class="media-body ">
                                     <small class="pull-right text-navy">5h ago</small>
@@ -317,7 +301,7 @@
                         <li>
                             <div class="dropdown-messages-box">
                                 <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="./../static/img/profile.jpg">
+                                    <img alt="image" class="img-circle" src="./../../static/img/profile.jpg">
                                 </a>
                                 <div class="media-body ">
                                     <small class="pull-right">23h ago</small>
@@ -411,19 +395,326 @@
                 <div class="col-lg-12">
                     <div class="ibox float-e-margins">
                         <div class="ibox-content">
-                            <div class="btn-group pull-right m-r">
-                                <a id="add-car" class="btn btn-success"><span><i class="fa fa-car"></i></span><span> Add car</span></a>
-                                <div class="btn-group" >
-                                    <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">
-                                        <i class="fa fa-gear"></i> Actions <i class="caret"></i>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#" data-toggle="modal" data-target="#changeModal" data-name="group">Change group</a></li>
-                                        <li><a href="#" data-toggle="modal" data-target="#changeModal" data-name="garage">Change garage</a></li>
-                                    </ul>
-                                </div>
+<!--
+                            <div class="pull-right m-r">
                             </div>
-                            <table id="table-magmt" class="table table-stripped table-bordered table-hover">
+-->
+                            <table id="table-magmt" class="table table-stripped table-bordered table-hover" width="100%">
+                                <thead></thead>
+                                <tfoot id="multiFilter" ><tr>
+                                    <th></th>
+                                    <!-- vehicle license -->
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button class="btn btn-sm btn-primary dropdown-toggle filter-toggle" aria-expanded="false" >
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning filter-remove">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <div class="dropdown-menu filter-dropdown">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Vehicle License">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <!-- garage name -->
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button class="btn btn-sm btn-primary dropdown-toggle filter-toggle" aria-expanded="false">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning filter-remove">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <div class="dropdown-menu filter-dropdown">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Garage Name...">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <!-- group name -->
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button class="btn btn-sm btn-primary dropdown-toggle filter-toggle" aria-expanded="false">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning filter-remove">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <div class="dropdown-menu filter-dropdown">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Group Name...">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    
+                                    <!-- Brand search -->
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button class="btn btn-sm btn-primary dropdown-toggle filter-toggle" aria-expanded="false">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning filter-remove">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <div class="dropdown-menu filter-dropdown">
+                                                <button class="btn btn-primary btn-block" >Filter <i class="fa fa-search"></i></button>
+                                                <div class="scroller">
+                                                    <div class="input-group" id="brandTree">
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="brandAudi" type="checkbox" />
+                                                            <label for="brandAudi">Audi</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="brandBMW" type="checkbox" />
+                                                            <label for="brandBMW">BMW</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="brandHonda" type="checkbox" />
+                                                            <label for="brandHonda">Honda</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="brandSuzuki" type="checkbox" />
+                                                            <label for="brandSuzuki">Suzuki</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="brandToyota" type="checkbox" />
+                                                            <label for="brandToyota">Toyota</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <!-- Car type -->
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button class="btn btn-sm btn-primary dropdown-toggle filter-toggle" aria-expanded="false">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning filter-remove">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <div class="dropdown-menu filter-dropdown">
+                                                <button class="btn btn-primary btn-block" >Filter <i class="fa fa-search"></i></button>
+                                                <div class="scroller">
+                                                    <div class="input-group" id="typeTree">
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="typeMicroCar" type="checkbox" />
+                                                            <label for="typeMicroCar">Micro Car</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="typeMinivan" type="checkbox" />
+                                                            <label for="typeMinivan">Minivan</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="typePickupTruck" type="checkbox" />
+                                                            <label for="typePickupTruck">Pickup Truck</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="typeStationWagon" type="checkbox" />
+                                                            <label for="typeStationWagon">Station Wagon</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="typeSedan" type="checkbox" />
+                                                            <label for="typeSedan">Sedan</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="typeSUV" type="checkbox" />
+                                                            <label for="typeSUV">SUV</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                    <!-- Fuel -->
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button class="btn btn-sm btn-primary dropdown-toggle filter-toggle" aria-expanded="false">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning filter-remove">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <div class="dropdown-menu filter-dropdown">
+                                                <button class="btn btn-primary btn-block" >Filter <i class="fa fa-search"></i></button>
+                                                <div class="scroller">
+                                                    <div class="input-group" id="fuelSelector">
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelAmmonia" type="checkbox" />
+                                                            <label for="fuelAmmonia">Ammonia</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelBioalcohol" type="checkbox" />
+                                                            <label for="fuelBioalcohol">Bioalcohol</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelBiodiesel" type="checkbox" />
+                                                            <label for="fuelBiodiesel">Biodiesel</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelBiogas" type="checkbox" />
+                                                            <label for="fuelBiogas">Biogas</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelCNG" type="checkbox" />
+                                                            <label for="fuelCNG">Compressed Natural Gas</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelDiesel" type="checkbox" />
+                                                            <label for="fuelDiesel">Diesel</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelElectric" type="checkbox" />
+                                                            <label for="fuelElectric">Electric</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelFlexible" type="checkbox" />
+                                                            <label for="fuelFlexible">Flexible</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelHybridElectric" type="checkbox" />
+                                                            <label for="fuelHybridElectric">Hybrid Electric</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelHydrogen" type="checkbox" />
+                                                            <label for="fuelHydrogen">Hydrogen</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelLNG" type="checkbox" />
+                                                            <label for="fuelLNG">Liquefied Natural Gas</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelLPG" type="checkbox" />
+                                                            <label for="fuelLPG">Liquefied Petroleum Gas</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelPetrol" type="checkbox" />
+                                                            <label for="fuelPetrol">Petrol</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelPluginHybridElectric" type="checkbox" />
+                                                            <label for="fuelPluginHybridElectric">Plug-in Hybrid Electric</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelStream" type="checkbox" />
+                                                            <label for="fuelStream">Stream</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="fuelWoodGas" type="checkbox" />
+                                                            <label for="fuelWoodGas">Wood Gas</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <!-- Transmission -->
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button class="btn btn-sm btn-primary dropdown-toggle filter-toggle" aria-expanded="false">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning filter-remove">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <div class="dropdown-menu filter-dropdown">
+                                                <button class="btn btn-primary btn-block" >Filter <i class="fa fa-search"></i></button>
+                                                <div class="scroller">
+                                                    <div class="input-group" id="transmissionSelector">
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="transmissionAutomatic" type="checkbox" />
+                                                            <label for="transmissionAutomatic">Automatic</label>
+                                                        </div>
+                                                        <div class="checkbox checkbox-success">
+                                                            <input id="transmissionManual" type="checkbox" />
+                                                            <label for="transmissionManual">Manual</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th></th>
+                                    <!-- Seat -->
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button class="btn btn-sm btn-primary dropdown-toggle filter-toggle" aria-expanded="false">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning filter-remove">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <div class="dropdown-menu filter-dropdown">
+                                                <div class="input-group">
+                                                    <div class="input-group">
+                                                    <span class="input-group-addon"><b>From</b></span>
+                                                    <input type="number" min="1" max="1000" class="form-control">
+                                                    <span class="input-group-addon"><b>To</b></span>
+                                                    <input type="number" min="1" max="1000" class="form-control">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary" ><i class="fa fa-search"></i></button>
+                                                    </span>
+                                                </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <!-- Rate -->
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button class="btn btn-sm btn-primary dropdown-toggle filter-toggle" aria-expanded="false">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-warning filter-remove">
+                                                <i class="fa fa-times"></i>
+                                            </button>
+                                            <div class="dropdown-menu filter-dropdown">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><b>From</b></span>
+                                                    <input type="number" min="0" max="5" class="form-control">
+                                                    <span class="input-group-addon"><b>To</b></span>
+                                                    <input type="number" min="0" max="5" class="form-control">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary" ><i class="fa fa-search"></i></button>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <div class="btn-group" >
+                                            <button data-toggle="dropdown" class="btn btn-primary btn-block dropdown-toggle" aria-expanded="false">
+                                                <i class="fa fa-gear"></i> Actions <i class="caret"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a id="add-car" data-toggle="modal"><i class="fa fa-plus"></i> Add car</a></li>
+                                                <hr>
+                                                <li><a href="#" data-toggle="modal" data-target="#changeModal" data-name="group">Change group</a></li>
+                                                <li><a href="#" data-toggle="modal" data-target="#changeModal" data-name="garage">Change garage</a></li>
+                                            </ul>
+                                        </div>
+                                    </th>
+                                    
+                                    
+                                </tr></tfoot>
                             </table>
                         </div>
                     </div>
@@ -609,10 +900,10 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="lightBoxGallery">
-                                        <a href="../static/img/honda1.jpg" title="Honda CRV-2016" data-gallery=""><img src="../static/img/honda1.jpg" width="50" height="50"></a>
-                                        <a href="../static/img/honda2.jpg" title="Honda CRV-2016" data-gallery=""><img src="../static/img/honda2.jpg" width="50" height="50"></a>
-                                        <a href="../static/img/honda3.jpg" title="Honda CRV-2016" data-gallery=""><img src="../static/img/honda3.jpg" width="50" height="50"></a>
-                                        <a href="../static/img/honda4.jpg" title="Honda CRV-2016" data-gallery=""><img src="../static/img/honda4.jpg" width="50" height="50"></a>
+                                        <a href="./../../static/img/honda1.jpg" title="Honda CRV-2016" data-gallery=""><img src="./../../static/img/honda1.jpg" width="50" height="50"></a>
+                                        <a href="./../../static/img/honda2.jpg" title="Honda CRV-2016" data-gallery=""><img src="./../../static/img/honda2.jpg" width="50" height="50"></a>
+                                        <a href="./../../static/img/honda3.jpg" title="Honda CRV-2016" data-gallery=""><img src="./../../static/img/honda3.jpg" width="50" height="50"></a>
+                                        <a href="./../../static/img/honda4.jpg" title="Honda CRV-2016" data-gallery=""><img src="./../../static/img/honda4.jpg" width="50" height="50"></a>
                                     </div>
                                     <div id="blueimp-gallery" class="blueimp-gallery">
                                         <div class="slides"></div>
@@ -623,30 +914,6 @@
                                         <a class="play-pause"></a>
                                         <ol class="indicator"></ol>
                                     </div>
-<!--
-                                    <div class="carousel slide m-b" id="carousel1">
-                                        <div class="carousel-inner">
-                                            <div class="item active">
-                                                <img alt="image" class="img-responsive" src="../static/img/honda1.jpg">
-                                            </div>
-                                            <div class="item">
-                                                <img alt="image" class="img-responsive" src="../static/img/honda2.jpg">
-                                            </div>
-                                            <div class="item ">
-                                                <img alt="image" class="img-responsive" src="../static/img/honda3.jpg">
-                                            </div>
-                                            <div class="item ">
-                                                <img alt="image" class="img-responsive" src="../static/img/honda4.jpg">
-                                            </div>
-                                        </div>
-                                        <a data-slide="prev" href="#carousel1" class="left carousel-control">
-                                            <span class="icon-prev"></span>
-                                        </a>
-                                        <a data-slide="next" href="#carousel1" class="right carousel-control">
-                                            <span class="icon-next"></span>
-                                        </a>
-                                    </div>
--->
                                 </div>
                             </div>
                         </div>
@@ -674,243 +941,25 @@
 	</div>
 
     <!-- Mainly scripts -->
-    <script src="../static/js/jquery-2.1.1.js"></script>
-    <script src="../static/js/bootstrap.min.js"></script>
-    <script src="../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-    <!-- FooTable -->
-    <script src="../static/js/plugins/footable/footable.min.js"></script>
+    <script src="./../../static/js/jquery-2.1.1.js"></script>
+    <script src="./../../static/js/bootstrap.min.js"></script>
+    <script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     
     <!-- Datatables -->
-    <script src="../static/js/plugins/dataTables/datatables.min.js"></script>
+    <script src="./../../static/js/plugins/dataTables/datatables.min.js"></script>
 
     <!-- Custom and plugin javascript -->
-    <script src="../static/js/inspinia.js"></script>
-    <script src="../static/js/plugins/pace/pace.min.js"></script>
+    <script src="./../../static/js/inspinia.js"></script>
+    <script src="./../../static/js/plugins/pace/pace.min.js"></script>
     <!-- DROPZONE -->
-    <script src="../static/js/plugins/dropzone/dropzone.js"></script>
+    <script src="./../../static/js/plugins/dropzone/dropzone.js"></script>
     
     <!-- Gallery -->
-    <script src="../static/js/plugins/blueimp/jquery.blueimp-gallery.min.js"></script>
+    <script src="./../../static/js/plugins/blueimp/jquery.blueimp-gallery.min.js"></script>
 
     <!-- Page-Level Scripts -->
-    <script>
-        // html star icons
-        const	fullStar = '<i class="fa fa-star"></i>',
-                halfStar = '<i class="fa fa-star-half-o"></i>',
-                emptyStar = '<i class="fa fa-star-o"></i>';
-        var data = [
-                [
-                    "1",
-                    "59H-123.22",
-                    "ABC",
-                    "Grp A",
-                    "Honda",
-                    "SUV",
-                    "2.5L",
-                    "Petrol",
-                    "Automatic",
-                    "5000 HP",
-                    "5",
-                    "3.5",
-                ],
-                [
-                    "2",
-                    "give",
-                    "me",
-                    "more",
-                    "times",
-                    "I",
-                    "will",
-                    "improve",
-                    "that",
-                    "is",
-                    "5",
-                    "g",
-                    ]
-            ];
-        $(document).ready(function() {
-            
-            $('#table-magmt').DataTable({
-                "dom" : 'lrtip',
-                "data" : data,
-                //"bSort": false,
-                "bRetrieve": true,
-                //"bServerSide": true,
-                "bScrollCollapse": true,
-                "bProcessing": true,
-                "select": {
-                    style: 'multi'
-                },
-                //"iDisplayLength": 10,
-                //"aLengthMenu": [10, 25, 50],
-                "aoColumns" : [
-                    { visible: false },
-                    { title: "License"},
-                    { title: "Garage"},
-                    { title: "Group"},
-                    { title: "Brand"},
-                    { title: "Type"},
-                    { title: "Engine", visible: false},
-                    { title: "Fuel"},
-                    { title: "Transmission"},
-                    { title: "Power", visible: false},
-                    { title: "Seat"},
-                    { title: "Rate"},
-                    { title: "Action"},
-                ],
-                "aoColumnDefs": [
-//                    {
-//                        "aTargets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-//                        //"bSortable": false
-//                    },
-                    {
-                        "aTargets": [11],
-                        "mRender": function(data, type, o) {
-                            if(type === 'display'){
-                                for(var html = '', star = data, i = 0; i < 5; i++) {
-                                    if(star >= 1) {
-                                        html += fullStar;
-                                        star--;
-                                    } else if (star > 0) {
-                                        html += halfStar;
-                                        star--;
-                                    } else {
-                                        html += emptyStar;
-                                    }
-                                }
-                                return html += `&nbsp;&nbsp;<span class="badge">${data}</span>`;
-                            }
-                            return data;
-                        }
-                    },
-                    {
-                        "aTargets": [12],
-                        "mRender": function (data, type, o) {
-                            var action = `<div class="btn-group" >
-						<button data-toggle="dropdown" class="btn btn-primary btn-sm dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
-						</button>
-						<ul class="dropdown-menu">
-                            <li><a href="#" data-toggle="modal" class="font-bold gray-bg" data-target="#car-detail">Duplicate</a></li>
-							<li><a href="./car.html" class="font-bold gray-bg">Edit</a></li>
-							
-							<li><a href="#" data-toggle="modal" class="font-bold gray-bg" data-target="#confirmModal" data-action="delete" data-name="${o[1]}" data-id="${o[0]}">Delete</a></li>
-						</ul>
-					</div>`;
-                            var edit='<a class="btn btn-edit btn-primary btn-sm">Edit</a>'
-                            var del='<a class="btn btn-edit btn-danger btn-sm">Delete</a>'
-                            return action;
-                        },
-                        "bSortable": false,
-                    },
-                ],
-            });
-            
-            $('.btn-edit').on('click', function() {
-                $('#edit-car').modal('show');
-            });
-            
-            $('#car-color').css("color", $('#color-name').text());
-            
-            Dropzone.options.myAwesomeDropzone = {
-
-                autoProcessQueue: false,
-                uploadMultiple: true,
-                acceptedFiles: "image/jpeg,image/png,image/gif",
-                parallelUploads: 20,
-                maxFiles: 20,
-                maxFilesize: 1,
-                dictDefaultMessage: "Drop files here to upload (or click)",
-                dictInvalidFileType: "Accept image only",
-                addRemoveLinks: "dictRemoveFile",
-
-                // Dropzone settings
-                init: function() {
-                    var myDropzone = this;
-
-                    this.element.querySelector('input[name="submit-img"]').addEventListener("click", function(e) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        myDropzone.processQueue();
-                    });
-                    this.on("sendingmultiple", function() {
-                        alert("sending");
-                    });
-                    this.on("successmultiple", function(files, response) {
-                        alert("success");
-                    });
-                    this.on("errormultiple", function(files, response) {
-                        alert("fail");
-                    });
-                }
-
-            }
-            
-            //Render change modal
-            $('#changeModal').on('show.bs.modal', function(e) {
-                let button = $(e.relatedTarget),
-                    name = button.data('name');
-                
-                $(this).find('.modal-content').html(
-                    `<div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        <h2 class="modal-title">
-                            Change ${name}
-                        </h2>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <label>Select a ${name}</label>
-                            </div>
-                            <div class="col-md-8">
-                                <select>
-                                    <option value="1">a</option>
-                                    <option value="2">b</option>
-                                    <option value="3">c</option>
-                                    <option value="4">d</option>
-                                    <option value="5">e</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success">OK</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    </div>`
-                );
-            });
-            
-            // Render confirmation modal for actions
-            $('#confirmModal').on('show.bs.modal', function (event) {
-                let button = $(event.relatedTarget),
-                    action = button.data('action')
-                    id = button.data('id'),
-                    name = button.data('name');
-
-                $(this).find('.modal-content').html(`<div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h2 class="modal-title">
-                        Deletion Confirmation
-                    </h2>
-                </div>
-                <div class="modal-body">
-                    You are about to <b>delete</b> car <b>${name}</b>. Are you sure?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                    <button type="button" class="btn btn-danger">Yes</button>
-                </div>`);
-            });
-        });
-
-    </script>
+    <script src="./carManagement.js"></script>
 </body>
 
 </html>
