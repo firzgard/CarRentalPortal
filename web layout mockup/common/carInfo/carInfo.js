@@ -1,28 +1,28 @@
 /** carInfo ver1.0 */
 /* rent by hour */
     
-    var booked = ['2016-09-26 19:00','2016-09-27 17:00','2016-09-28 13:00','2016-09-28 14:00'];
+    var booked = ['2016-09-29 19:00','2016-09-30 17:00','2016-09-28 13:00','2016-09-28 14:00'];
     var time = [];
-    var allTime = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
     
     $('#rent-day').datetimepicker({
         defaultDate: new Date(),
         format: 'YYYY-MM-DD',
         minDate: new Date(),
     });
-    $('#rent-time').datetimepicker({
-        defaultDate: new Date(),
-        format: 'HH:00',
-        minDate: new Date(),
-    });
+//    $('#rent-time').datetimepicker({
+//        defaultDate: new Date(),
+//        format: 'HH:00',
+//        minDate: new Date(),
+//    });
     
+    // define booked time in day has been chosen
     for(var i=0; i<booked.length; i++) {
         if(booked[i].substr(0,10) === $('#rent-day').val()) {
-            time.push(parseInt(booked[i].substr(11,2)));
+            time.push(booked[i].substr(11,5));
         }
     }
-    $('#rent-time').data("DateTimePicker").enabledHours(allTime);
-    $('#rent-time').data("DateTimePicker").disabledHours(time);
+//    $('#rent-time').data("DateTimePicker").enabledHours(allTime);
+//    $('#rent-time').data("DateTimePicker").disabledHours(time);
     
     $('#rent-day').on('dp.change', function() {
         time = [];
@@ -30,18 +30,18 @@
         
         for(var i=0; i<booked.length; i++) {
             if(booked[i].substr(0,10) === $('#rent-day').val()) {            
-                time.push(parseInt(booked[i].substr(11,2)));
+                time.push(booked[i].substr(11,5));
             }
         }
-        $('#rent-time').data("DateTimePicker").enabledHours(allTime);
-        $('#rent-time').data("DateTimePicker").disabledHours(time);
-        
-        if($('#rent-day').val() !== today.toString()) {
-            $('#rent-time').data("DateTimePicker").minDate(false);
-        }
-        if($('#rent-day').val() === today.toString()) {
-            $('#rent-time').data("DateTimePicker").minDate(moment(new Date()).format("HH:00"));
-        }
+//        $('#rent-time').data("DateTimePicker").enabledHours(allTime);
+//        $('#rent-time').data("DateTimePicker").disabledHours(time);
+//        
+//        if($('#rent-day').val() !== today.toString()) {
+//            $('#rent-time').data("DateTimePicker").minDate(false);
+//        }
+//        if($('#rent-day').val() === today.toString()) {
+//            $('#rent-time').data("DateTimePicker").minDate(moment(new Date()).format("HH:00"));
+//        }
     });
     
     /* rent by day */
@@ -53,24 +53,24 @@
     });
     //end
     $('#end-day').datetimepicker({
-        //defaultDate: new Date(),
+        defaultDate: new Date(),
         format: 'YYYY-MM-DD',
         minDate: new Date(),
         useCurrent: false,
     });
-    // start
-    $('#start-time').datetimepicker({
-        defaultDate: new Date(),
-        format: 'HH:00',
-        minDate: new Date(),
-    });
-    // end
-    $('#end-time').datetimepicker({
-        //defaultDate: new Date(),
-        format: 'HH:00',
-        minDate: new Date(),
-        useCurrent: false,
-    });
+//    // start
+//    $('#start-time').datetimepicker({
+//        defaultDate: new Date(),
+//        format: 'HH:00',
+//        minDate: new Date(),
+//    });
+//    // end
+//    $('#end-time').datetimepicker({
+//        //defaultDate: new Date(),
+//        format: 'HH:00',
+//        minDate: new Date(),
+//        useCurrent: false,
+//    });
     
     $('#start-day').on('dp.change',function(e) {
         $('#end-day').data("DateTimePicker").minDate(e.date);
@@ -80,6 +80,19 @@
     })
     
     $(document).ready(function(){
+        
+        $('#rent-time').on('keyup', function() {
+            hour = parseInt(($('#rent-time').val()).substr(0,2));
+            if(hour > 23) {
+                alert("00:00 ~ 24:00");
+                $('#rent-time').val("");
+            }
+            
+            if(jQuery.inArray($('#rent-time').val(), time) >= 0) {
+                alert("that day has been booked by someone else");
+                $('#rent-time').val("");
+            }
+        });
         
         $('.product-images').slick({
             dots: true
@@ -95,27 +108,27 @@
             $('#email-view').append(' thanh@gmail.com');
         });
         
-        // test
-        $('#end-time').change(function() {
-//            var s = $('#end-time').val();
+//        // test
+//        $('#end-time').change(function() {
+////            var s = $('#end-time').val();
+////            var st = moment(s).format("YYYY-MM-DD HH:mm");
+////            $('#start-time').datetimepicker('setEndDate', st);
+//        });
+//        $('#start-time').change(function() {
+//            var s = $('#start-time').val();
+//            var e = $('#end-time').val();
+//            
 //            var st = moment(s).format("YYYY-MM-DD HH:mm");
-//            $('#start-time').datetimepicker('setEndDate', st);
-        });
-        $('#start-time').change(function() {
-            var s = $('#start-time').val();
-            var e = $('#end-time').val();
-            
-            var st = moment(s).format("YYYY-MM-DD HH:mm");
-            var et = moment(e).format("YYYY-MM-DD HH:mm");
-            if(e) {
-                
-                if(st > et) {
-                    et = moment(s).add(1, 'days').format("YYYY-M-D HH:mm");
-                    $('#end-time').val(et);
-                }
-            }
-            $('#end-time').datetimepicker('setStartDate', st);
-        });
+//            var et = moment(e).format("YYYY-MM-DD HH:mm");
+//            if(e) {
+//                
+//                if(st > et) {
+//                    et = moment(s).add(1, 'days').format("YYYY-M-D HH:mm");
+//                    $('#end-time').val(et);
+//                }
+//            }
+//            $('#end-time').datetimepicker('setStartDate', st);
+//        });
         
         
         // total hour price

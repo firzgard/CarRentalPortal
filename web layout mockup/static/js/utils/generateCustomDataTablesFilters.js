@@ -124,3 +124,29 @@ function createIntRangeFilter(table, filterNode, filterCol){
 		filterNode.removeClass('open');
 	});
 }
+
+// For range-like with float data
+function createFloatRangeFilter(table, filterNode, filterCol){
+	let min, max;
+
+	$.fn.dataTable.ext.search.push((settings, data) => {
+		return ( min ? ( Number.parseFloat(data[filterCol]) >= min ) : true )
+			&& ( max ? ( Number.parseFloat(data[filterCol]) <= max ) : true );
+	});
+
+	// filter button clicked
+	filterNode.find('.dropdown-menu button').click((event) => {
+		min = Number.parseFloat(filterNode.find('.from-input').val());
+		max = Number.parseFloat(filterNode.find('.to-input').val());
+		table.draw();
+		filterNode.find('.filter-toggle').addClass('btn-success');
+	});
+
+	// clear filter event
+	filterNode.find('.filter-remove').click((event) => {
+		min = max = null;
+		table.draw();
+		filterNode.find('.filter-toggle').removeClass('btn-success');
+		filterNode.removeClass('open');
+	});
+}
