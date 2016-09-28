@@ -1,3 +1,7 @@
+.wrapper.wrapper-content {
+	position: relative;
+}
+
 #name {
 	font-size: 2em;
 	font-weight:bold;
@@ -24,11 +28,12 @@
 
 .filter-dropdown {
 	left: -2em;
+	margin-bottom: 2em;
 	min-width: initial;
 	padding: 5px;
 }
 .scroller {
-	max-height: 20em;
+	max-height: 30em;
     overflow-x: hidden;
 }
 .filter-dropdown input[type=text] {

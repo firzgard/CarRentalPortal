@@ -1,32 +1,12 @@
 const mockupData = [
-	{ "id": 1, "name": "BMW X5a", "brandID": 1, "modelID": 1, "modelName": "BMW X5", "groupID": 1, "groupName": "HCM Garage 1", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 2, "name": "BMW X6b", "brandID": 1, "modelID": 2, "modelName": "BMW X6", "groupID": 1, "groupName": "HCM Garage 1", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 3, "name": "BMW X2c", "brandID": 1, "modelID": 3, "modelName": "BMW X2", "groupID": 1, "groupName": "HCM Garage 2", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 4, "name": "Audi A7d", "brandID": 2, "modelID": 4, "modelName": "Audi A7", "groupID": 2, "groupName": "Ha Noi Garage 2", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 5, "name": "Audi A8e", "brandID": 2, "modelID": 5, "modelName": "Audi A8", "groupID": 2, "groupName": "Hanoi Garage 4 2", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 6, "name": "Audi A9f", "brandID": 2, "modelID": 6, "modelName": "Audi A9", "groupID": 2, "groupName": "ahihi", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 7, "modelName": "Ford Fiesta ST", "groupID": 3, "groupName": "ppap", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
+	{ "id": 1, "name": "BMW X5a", "brandID": 1, "modelID": 1, "modelName": "BMW X5", "groupID": 1, "Garage": "HCM garage", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 2, "name": "BMW X6b", "brandID": 1, "modelID": 2, "modelName": "BMW X6", "groupID": 1, "Garage": "Hanoi garage", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 3, "name": "BMW X2c", "brandID": 1, "modelID": 3, "modelName": "BMW X2", "groupID": 1, "Garage": "HCM Garage 2", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 4, "name": "Audi A7d", "brandID": 2, "modelID": 4, "modelName": "Audi A7", "groupID": 2, "Garage": "Ha Noi Garage 2", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 5, "name": "Audi A8e", "brandID": 2, "modelID": 5, "modelName": "Audi A8", "groupID": 2, "Garage": "Hanoi Garage 4 2", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 6, "name": "Audi A9f", "brandID": 2, "modelID": 6, "modelName": "Audi A9", "groupID": 2, "Garage": "ahihi", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 7, "modelName": "Ford Fiesta ST", "groupID": 3, "Garage": "ppap", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" }
 ];
-
-// html star icons
-const	fullStar = '<i class="fa fa-star"></i>',
-		halfStar = '<i class="fa fa-star-half-o"></i>',
-		emptyStar = '<i class="fa fa-star-o"></i>';
-
-function renderStarRating(starRating){
-	for(var html = '', star = starRating, i = 0; i < 5; i++) {
-		if(star >= 1) {
-			html += fullStar;
-			star--;
-		} else if (star > 0) {
-			html += halfStar;
-			star--;
-		} else {
-			html += emptyStar;
-		}
-	}
-	return html += `&nbsp;<span class="badge">${starRating}</span>`
-}
 
 $(document).ready(function(){
 	// Intialize location selector
@@ -34,38 +14,8 @@ $(document).ready(function(){
 		width: "100%",
 		no_results_text: "No result!"
 	});
-
-	// Render star-rating
-	let starRatingDiv = $('#starRating'),
-		star = starRatingDiv.data('star')
-
-	starRatingDiv.html(renderStarRating(star));
-
-	// Intinialize open/close time-picker
-	const timepickerConfig = {
-		showMeridian: false,
-		defaultTime: false
-	};
-	$('#openTimeMon').timepicker(timepickerConfig);
-	$('#closeTimeMon').timepicker(timepickerConfig);
-	$('#openTimeTue').timepicker(timepickerConfig);
-	$('#closeTimeTue').timepicker(timepickerConfig);
-	$('#openTimeWed').timepicker(timepickerConfig);
-	$('#closeTimeWed').timepicker(timepickerConfig);
-	$('#openTimeThur').timepicker(timepickerConfig);
-	$('#closeTimeThur').timepicker(timepickerConfig);
-	$('#openTimeFri').timepicker(timepickerConfig);
-	$('#closeTimeFri').timepicker(timepickerConfig);
-	$('#openTimeSat').timepicker(timepickerConfig);
-	$('#closeTimeSat').timepicker(timepickerConfig);
-	$('#openTimeSun').timepicker(timepickerConfig);
-	$('#closeTimeSun').timepicker(timepickerConfig);
-
-	// ============================================
-	// Vehicle table
-
 	// render model-tree selector
-	$('#modelTree').jstree({
+	let modelTree = $.jstree.create('#modelTree', {
 		core: {
 			dblclick_toggle: false,
 			themes: {
@@ -77,28 +27,26 @@ $(document).ready(function(){
 	});
 
 	// set toogling dropdown event for filter dropdown buttons
-	$('#multiFilter .dropdown-toggle').on('click', function (event) {
+	$('#multiFilter .filter-toggle').on('click', function (event) {
 		let dropdownContainer = $(this).parent();
 
 		if(dropdownContainer.hasClass('open')){
-			$('#multiFilter .dropdown-toggle').parent().removeClass('open');
+			$('#multiFilter .filter-toggle').parent().removeClass('open');
 		} else {
-			$('#multiFilter .dropdown-toggle').parent().removeClass('open');
+			$('#multiFilter .filter-toggle').parent().removeClass('open');
 			dropdownContainer.addClass('open');
 		}
-		
-		
 	});
 
 	// Load vehicles belonging to this garage
-	$('#vehicles').DataTable({
+	let table = $('#vehicles').DataTable({
 		data: mockupData,
 		dom: 'ltipr',
 		lengthMenu: [ 10, 25, 50 ],
 		processing: true,
 		select: {
-			style: 'multi+shift',
-
+			selector: 'td:not(:last-child)',
+			style: 'multi+shift'
 		},
 		columnDefs: [
 			{
@@ -110,10 +58,10 @@ $(document).ready(function(){
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" data-id="${row[0]}" >Change Garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" data-id="${row[0]}" >Change Group</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#smModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Delete</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row[0]}" >Duplicate</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" data-id="${row.id}" >Change Garage</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" data-id="${row.id}" >Change Group</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#smModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row.id}" >Duplicate</a></li>
 							<li><a href="./../car/car.html">Edit</a></li>
 						</ul>
 					</div>`;
@@ -121,19 +69,20 @@ $(document).ready(function(){
 			}
 		],
 		columns: [
-			{ data: 'id', visible: false },
-			{ data: 'brandID', visible: false },
-			{ data: 'modelID', visible: false },
-			{ data: 'groupID', visible: false },
-			{ title: 'Name', data: 'name', width: '20%' },
-			{ title: 'Model', data: 'modelName', width: '15%' },
-			{ title: 'Category', data: 'category', width: '10%' },
-			{ title: 'Year', data: 'year', width: '5%' },
-			{ title: 'Seat', data: 'numOfSeat', width: '5%' },
-			{ title: 'Transmission', data: 'transmission', width: '10%' },
-			{ title: 'Fuel', data: 'fuel', width: '10%' },
-			{ title: 'Garage', data: 'groupName', width: '15%' },
+			{ name: 'ID', data: 'id', type: 'num', visible: false },
+			{ name: 'BrandID', data: 'brandID', type: 'num', visible: false },
+			{ name: 'ModelID', data: 'modelID', type: 'num', visible: false },
+			{ name: 'GroupID', data: 'groupID', type: 'num', visible: false },
+			{ name: 'Name', title: 'Name', data: 'name', width: '20%' },
+			{ name: 'Model', title: 'Model', data: 'modelName', width: '15%' },
+			{ name: 'Category', title: 'Category', data: 'category', width: '10%' },
+			{ name: 'Year', title: 'Year', data: 'year', width: '5%' },
+			{ name: 'Seat', title: 'Seat', data: 'numOfSeat', width: '5%' },
+			{ name: 'Transmission', title: 'Transmission', data: 'transmission', width: '10%' },
+			{ name: 'Fuel', title: 'Fuel', data: 'fuel', width: '10%' },
+			{ name: 'Garage', title: 'Garage', data: 'Garage', width: '15%' },
 			{
+				name: 'Action', 
 				title: 'Action',
 				width: '10%',
 				orderable: false,
@@ -141,4 +90,23 @@ $(document).ready(function(){
 			}
 		]
 	});
-})
+
+	// Bind the filters with table
+
+	// Vehicle's name filter
+	createTextFilter(table, $('#vehicleNameFilter'), 'Name');
+	// Model filter
+	createTreeFilter(table, $('#modelFilter'), [1, 2], modelTree);
+	// Category filter
+	createCheckboxFilter(table, $('#categoryFilter'), 6);
+	// Year filter
+	createIntRangeFilter(table, $('#yearFilter'), 7);
+	// Seat filter
+	createIntRangeFilter(table, $('#seatFilter'), 8);
+	// Transmission filter
+	createCheckboxFilter(table, $('#transmissionFilter'), 9);
+	// Fuel filter
+	createCheckboxFilter(table, $('#fuelFilter'), 10);
+	// Vehicle Group filter
+	createCheckboxFilter(table, $('#groupFilter'), 3);
+});
