@@ -74,7 +74,7 @@ $(document).ready(function() {
 			</h2>
 		</div>
 		<div class="modal-body">
-			You are about to <b>${action}</b> garage <b>${name}</b>. Are you sure?
+			You are about to <b>${action}</b> User <b>${name}</b>. Are you sure?
 		</div>
 		<div class="modal-footer">
 			<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
