@@ -13,6 +13,7 @@
 
     <link href="./../../static/css/plugins/slick/slick.css" rel="stylesheet">
     <link href="./../../static/css/plugins/slick/slick-theme.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
 <!--    <link href="../static/css/plugins/datetimepicker/bootstrap-datetimepicker.min.css" rel="stylesheet">-->
 
     <link href="./../../static/css/animate.css" rel="stylesheet">
@@ -404,7 +405,7 @@
                                                     </div>
                                                     <div class="col-md-8">
                                                         <div class="input-group m-b">
-                                                            <input type="text" id="rent-time" class="form-control" value=""/><span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                                            <input type="text" id="rent-time" data-mask="99:00" class="form-control" value=""/><span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -442,7 +443,7 @@
                                                         <div class="input-group m-b">
                                                             <input type="text" id="start-day" class="form-control" placeholder="Start day"/>
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                            <input type="text" id="start-time" class="form-control" placeholder="Start time"/>
+                                                            <input type="text" id="start-time" data-mask="99:00" class="form-control" placeholder="Start time"/>
                                                             <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                                         </div>
                                                     </div>
@@ -455,7 +456,7 @@
                                                         <div class="input-group m-b">
                                                             <input type="text" id="end-day" class="form-control" placeholder="End day"/>
                                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                                            <input type="text" id="end-time" class="form-control" placeholder="End time"/>
+                                                            <input type="text" id="end-time" data-mask="99:00" class="form-control" placeholder="End time"/>
                                                             <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                                         </div>
                                                     </div>
@@ -527,6 +528,9 @@
 <script src="./../../static/js/bootstrap.min.js"></script>
 <script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    
+<!-- Input Mask-->
+<script src="./../../static/js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
 <!-- Custom and plugin javascript -->
 <script src="./../../static/js/inspinia.js"></script>

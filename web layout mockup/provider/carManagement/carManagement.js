@@ -1,21 +1,17 @@
 /** carManagement.js ver1.0 */
-// html star icons
-const	fullStar = '<i class="fa fa-star"></i>',
-        halfStar = '<i class="fa fa-star-half-o"></i>',
-        emptyStar = '<i class="fa fa-star-o"></i>';
 var data = [
         [
             "1",
             "59H-123.22",
             "ABC",
-            "Grp A",
+            "Group A",
             "Honda",
             "SUV",
             "2.5L",
             "Petrol",
             "Automatic",
             "5000 HP",
-            "5",
+            "7",
             "3.5",
         ],
         [
@@ -30,19 +26,19 @@ var data = [
             "that",
             "is",
             "5",
-            "g",
+            "5",
             ]
     ];
 $(document).ready(function() {
 
     // set toogling dropdown event for filter dropdown buttons
-    $('#multiFilter .dropdown-toggle').on('click', function (event) {
+    $('#multiFilter .filter-toggle').on('click', function (event) {
         let dropdownContainer = $(this).parent();
 
         if(dropdownContainer.hasClass('open')){
-            $('#multiFilter .dropdown-toggle').parent().removeClass('open');
+            $('#multiFilter .filter-toggle').parent().removeClass('open');
         } else {
-            $('#multiFilter .dropdown-toggle').parent().removeClass('open');
+            $('#multiFilter .filter-toggle').parent().removeClass('open');
             dropdownContainer.addClass('open');
         }
     });
@@ -57,7 +53,7 @@ $(document).ready(function() {
 //                $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
 //            } );
 
-    var table = $('#table-magmt').dataTable({
+    let table = $('#table-magmt').DataTable({
         "dom" : 'lrtip',
         //"sDom": '<"top"if>rt<"bottom"lp><"clear">',
         "data" : data,
@@ -67,13 +63,14 @@ $(document).ready(function() {
         "scrollCollapse": true,
         "processing": true,
         "select": {
-            style: 'multi'
+            selector: 'td:not(:last-child)',
+            style: 'multi+shift'
         },
         //"iDisplayLength": 10,
         //"aLengthMenu": [10, 25, 50],
         "columns" : [
             { visible: false },
-            { title: "License"},
+            { name:"License", title: "License"},
             { title: "Garage"},
             { title: "Group"},
             { title: "Brand"},
@@ -87,28 +84,10 @@ $(document).ready(function() {
             { title: "Action"},
         ],
         "columnDefs": [
-//                    {
-//                        "aTargets": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
-//                        //"bSortable": false
-//                    },
             {
                 "targets": [11],
                 "render": function(data, type, o) {
-                    if(type === 'display'){
-                        for(var html = '', star = data, i = 0; i < 5; i++) {
-                            if(star >= 1) {
-                                html += fullStar;
-                                star--;
-                            } else if (star > 0) {
-                                html += halfStar;
-                                star--;
-                            } else {
-                                html += emptyStar;
-                            }
-                        }
-                        return html += `&nbsp;&nbsp;<span class="badge">${data}</span>`;
-                    }
-                    return data;
+                    return renderStarRating(data);
                 }
             },
             {
@@ -133,15 +112,27 @@ $(document).ready(function() {
             },
         ],
     });
-
-//            table.columns().every(function() {
-//                var that = this;
-//                $('input', this.footer()).on( 'keyup change', function() {
-//                if(that.search() !== this.value) {
-//                    that.search( this.value ).draw();
-//                    }
-//                });
-//            });
+    
+    // create column filter
+    // vehicle license text filter
+    createTextFilter(table, $('#vehicleLicense'), 'License');
+    // garage checkbox filter
+    createCheckboxFilter(table, $('#garageName'), 2);
+    // group checkbox filter
+    createCheckboxFilter(table, $('#groupName'), 3);
+    // brand checkbox filter
+    createCheckboxFilter(table, $('#brandName'), 4);
+    // brand checkbox filter
+    createCheckboxFilter(table, $('#carType'), 5);
+    // fuel checkbox filter
+    createCheckboxFilter(table, $('#fuel'), 7);
+    // transmission checkbox filter
+    createCheckboxFilter(table, $('#transmission'), 8);
+    // seat range filter
+    createIntRangeFilter(table, $('#seat'), 10);
+    // rate range filter
+    createFloatRangeFilter(table, $('#rate'), 11);
+    
 
     $('#car-color').css("color", $('#color-name').text());
 
@@ -239,4 +230,5 @@ $(document).ready(function() {
             <button type="button" class="btn btn-danger">Yes</button>
         </div>`);
     });
+    
 });

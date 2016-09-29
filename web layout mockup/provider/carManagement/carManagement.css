@@ -26,6 +26,9 @@
     width: 2.5em;
 }
 
+.last-col-filter {
+    left: -8em !important;
+}
 .filter-dropdown {
     left: -2em;
     min-width: initial;
