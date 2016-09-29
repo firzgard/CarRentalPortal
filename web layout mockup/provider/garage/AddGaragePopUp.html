@@ -1,133 +1,53 @@
-const mockupData = [
-	{ "id": 1, "name": "Garage1", "address": "13B Quang Trung, Go Vap District", "location": "Ho Chi Minh", "star": 4.7, "isActive": true},
-	{ "id": 2, "name": "Garage2", "address": "209 Nguyen Tat Thanh, District 7", "location": "Ho Chi Minh", "star": 3.7, "isActive": false},
-	{ "id": 3, "name": "Garage3", "address": "20 Thanh Thai, District 10", "location": "Ho Chi Minh", "star": 1.7, "isActive": false},
-	{ "id": 4, "name": "Garage4", "address": "121A Nguyen Kiem, Go Vap District", "location": "Ho Chi Minh", "star": 2, "isActive": false},
-	{ "id": 5, "name": "Garage5", "address": "22E Lu Gia, District 10", "location": "Ho Chi Minh", "star": 3.3, "isActive": false},
-	{ "id": 6, "name": "Garage6", "address": "222 Huynh Tan Phat, District 7", "location": "Ho Chi Minh", "star": 4.4, "isActive": false},
-	{ "id": 7, "name": "Garage7", "address": "23A Thanh Cong, Ba Dinh", "location": "Ha Noi", "star": 5, "isActive": true},
-	{ "id": 8, "name": "Garage8", "address": "69 Nguyen Chi Thanh, Cau Giay", "location": "Ha Noi", "star": 1, "isActive": true},
-	{ "id": 9, "name": "Garage9", "address": "456 Hoang Huy Giap, Cau Giay", "location": "Ha Noi", "star": 2, "isActive": true},
-	{ "id": 10, "name": "Garage10", "address": "98 Hang Ngang", "location": "Ha Noi", "star": 4.7, "isActive": true}
-];
+<!DOCTYPE html>
+<html>
 
-$(document).ready(() => {
-    
-    // set toogling dropdown event for filter dropdown buttons
-	$('#multiFilter .filter-toggle').on('click', function (event) {
-		let dropdownContainer = $(this).parent();
+<head>
+    <title>Car Rental Port</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="./../../static/css/animate.css" rel="stylesheet">
+    <link href="./../../static/css/style.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
+    <!-- DROPZONE -->
+    <link href="./../../static/css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/dropzone.css" rel="stylesheet"> </head>
+<style>
+    .chosen-container.chosen-container-single {
+        width: 300px !important;
+        /* or any value that fits your needs */
+    }
+    /*
+    #my-awesome-dropzone {
+        display: none;
+        height: 300px;
+        max-height: 300px;
+    }
+*/
+</style>
 
-		if(dropdownContainer.hasClass('open')){
-			$('#multiFilter .filter-toggle').parent().removeClass('open');
-		} else {
-			$('#multiFilter .filter-toggle').parent().removeClass('open');
-			dropdownContainer.addClass('open');
-		}
-	});
-    
-	// Render table
-	let table = $('#garages').DataTable({
-        dom: "ltipr",
-		data: mockupData,
-		columnDefs: [
-			{
-				// Render stars
-				targets: 4,
-				render: (data, type) => {
-					if(type === 'display'){
-						return renderStarRating(data);
-					}
-					return data;
-				}
-			},
-			{
-				// Render status label
-				targets: 5,
-				render: (data, type) => {
-					if(type === 'display'){
-						return `<div class="status-label" >
-							<p class="label label-${data ? 'primary': 'danger'}">${data ? 'Active': 'Inactive'}</p>
-						</div>`;
-					}
-					return data;
-				}
-			},
-			{
-				// Render action button
-				targets: 6,
-				render: (data, type, row) => {
-					return `<div class="btn-group" >
-						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
-						</button>
-						<ul class="dropdown-menu">
-							<li><a href="./../garage/garage.html">Edit</a></li>
-							${row.isActive ?
-								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row.id}" data-name="${row.name}" >Deactivate</a></li>`
-							:
-								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row.id}" data-name="${row.name}" >Activate</a></li>`
-							}
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
-						</ul>
-					</div>`;
-				}
-			}
-		],
-		columns: [
-			{ name: 'ID', data: 'id', visible: false },
-			{ name: 'Name', title: 'Name', data: 'name', width: '25%' },
-			{ name: 'Address', title: 'Address', data: 'address', width: '30%' },
-			{ name: 'Location', title: 'Location', data: 'location', width: '15%' },
-			{ name: 'Stars', title: 'Stars', data: 'star', width: '10%' },
-			{ name: 'Status', title: 'Status', data: 'isActive', width: '10%' },
-			{
-				title: 'Action',
-				width: '10%',
-				orderable: false,
-				searchable: false
-			}
-		]
-	});
-
-    // garage's name text filter
-    createTextFilter(table, $('#garageName'), 'Name');
-    // garage's address text filter
-    createTextFilter(table, $('#garageAdress'), 'Address');
-    // location checkbox filter
-    createCheckboxFilter(table, $('#location'), 3);
-    // rate range filter | datatype: float
-    createFloatRangeFilter(table, $('#rate'), 4);
-    // status checkbox filter
-    createCheckboxFilter(table, $('#status'), 5);
-    
-    
-	// Render confirmation modal for actions
-	$('#mdModal').on('show.bs.modal', function(event) {
-		let button = $(event.relatedTarget),
-			action = button.data('action')
-			id = button.data('id'),
-			name = button.data('name');
-
-		$(this).find('.modal-content').html(`<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-			<h2 class="modal-title">
-				${action === 'delete' ? 'Deletion' : (action === 'deactivate' ? 'Deactivation': 'Activation')} Confirmation
-			</h2>
-		</div>
-		<div class="modal-body">
-			You are about to <b>${action}</b> garage <b>${name}</b>. Are you sure?
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-			<button type="button" class="btn btn-danger">Yes</button>
-		</div>`);
-	});
-    
-    $('#addGarage').on('show.bs.modal', function(event) {
-        $(this).find('.modal-content').html(`
-            <div class="modal-header modal-header-popup">
+<body>
+    <div id="page-wrapper" class="gray-bg">
+        <!--   Main     -->
+        <div class="wrapper wrapper-content animated fadeInLeft">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <div>
+                        <button class="btn btn-danger" id="btnAddCar" onclick="addCar()">Add garage</button>
+                    </div>
+                </div>
+            </div>
+            <!--                    </form>-->
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header modal-header-popup">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">Add garage</h4> </div>
                 <div class="modal-body">
@@ -137,7 +57,7 @@ $(document).ready(() => {
                         <div class="col-md-6">
                             <label for="locationID">Location*</label>
                             <div class="form-group">
-                                <select data-placeholder="Choose a model..." id="modalItemSelector" class="form-control" style="width:350px;">
+                                <select data-placeholder="Choose a model..." class="chosen-select" style="width:350px;">
                                     <option value></option>
                                     <option value="1" selected>Hồ Chí Minh</option>
                                     <option value="2">Hà Nội</option>
@@ -224,10 +144,117 @@ $(document).ready(() => {
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     <button class="btn btn-primary" type="submit">Save changes</button>
                 </div>
-        `);
-        $('#modalItemSelector').chosen({
-            width: "100%",
-            no_results_text: "No result!"
+            </div>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="./../../static/js/jquery-2.1.1.js"></script>
+    <script src="./../../static/js/bootstrap.min.js"></script>
+    <!-- iCheck -->
+    <script src="./../../static/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- Select2 -->
+    <script src="./../../static/js/plugins/select2/select2.full.min.js"></script>
+    <!-- bootstrap-timepicker -->
+	<script src="./../../static/js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <!--
+    <script src="./../../static/js/inspinia.js"></script>
+    <script src="./../../static/js/plugins/pace/pace.min.js"></script>
+-->
+    <!-- Chosen -->
+    <script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
+    <!-- DROPZONE -->
+    <script src="./../../static/js/plugins/dropzone/dropzone.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green'
+                , radioClass: 'iradio_square-green'
+            , });
+            $('#change-color').on('click', function () {
+                $('#panel-color').show();
+            });
+            $('.btn-color').on('click', function () {
+                $('#current-color').css('color', this.title);
+                if (this.title === 'Beige' || this.title === 'Silver' || this.title === 'White') {
+                    $('#current-color').css('background-color', '#1a001a');
+                }
+                else {
+                    $('#current-color').css('background-color', 'transparent');
+                }
+                $('#color-name').text(this.title);
+            });
+            Dropzone.options.myAwesomeDropzone = {
+                    autoProcessQueue: false
+                    , uploadMultiple: true
+                    , acceptedFiles: "image/jpeg,image/png,image/gif"
+                    , parallelUploads: 20
+                    , maxFiles: 5
+                    , maxFilesize: 1
+                    , dictDefaultMessage: "Drop files here to upload (or click)"
+                    , dictInvalidFileType: "Accept image only"
+                    , addRemoveLinks: "dictRemoveFile"
+                    , init: function () {
+                        var myDropzone = this;
+                        this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            myDropzone.processQueue();
+                        });
+                        this.on("sendingmultiple", function () {
+                            alert("sending");
+                        });
+                        this.on("successmultiple", function (files, response) {
+                            alert("success");
+                        });
+                        this.on("errormultiple", function (files, response) {
+                            alert("fail");
+                        });
+                    }
+                }
+                // Intinialize open/close time-picker
+            const timepickerConfig = {
+                showMeridian: false
+                , defaultTime: false
+            };
+            $('#openTimeMon').timepicker(timepickerConfig);
+            $('#closeTimeMon').timepicker(timepickerConfig);
+            $('#openTimeTue').timepicker(timepickerConfig);
+            $('#closeTimeTue').timepicker(timepickerConfig);
+            $('#openTimeWed').timepicker(timepickerConfig);
+            $('#closeTimeWed').timepicker(timepickerConfig);
+            $('#openTimeThur').timepicker(timepickerConfig);
+            $('#closeTimeThur').timepicker(timepickerConfig);
+            $('#openTimeFri').timepicker(timepickerConfig);
+            $('#closeTimeFri').timepicker(timepickerConfig);
+            $('#openTimeSat').timepicker(timepickerConfig);
+            $('#closeTimeSat').timepicker(timepickerConfig);
+            $('#openTimeSun').timepicker(timepickerConfig);
+            $('#closeTimeSun').timepicker(timepickerConfig);
         });
-    });
-});
+
+        function addCar() {
+            $('#myModal').modal('show');
+        }
+        var config = {
+            '.chosen-select': {}
+            , '.chosen-select-deselect': {
+                allow_single_deselect: true
+            }
+            , '.chosen-select-no-single': {
+                disable_search_threshold: 10
+            }
+            , '.chosen-select-no-results': {
+                no_results_text: 'Oops, nothing found!'
+            }
+            , '.chosen-select-width': {
+                width: "100%"
+            }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
+</body>
+
+</html>
