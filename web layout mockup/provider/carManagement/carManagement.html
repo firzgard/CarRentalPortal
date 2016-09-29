@@ -11,6 +11,7 @@
     <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
     <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
     <link href="./../../static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
     
     <!-- Datatables -->
     <link href="./../../static/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
@@ -394,7 +395,7 @@
                     <div class="ibox float-e-margins">
                         <div class="ibox-content">
                             <div class="pull-right m-r m-b">
-                                <a id="add-car" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i> Add car</a>
+                                <a id="add-car" class="btn btn-success" data-toggle="modal"><i class="fa fa-plus"></i> New vehicle</a>
                             </div>
                             <table id="table-magmt" class="table table-stripped table-bordered table-hover" width="100%">
                                 <thead></thead>
@@ -724,8 +725,8 @@
                                                 <i class="fa fa-gear"></i> Actions <i class="caret"></i>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#" data-toggle="modal" data-target="#changeModal" data-name="group">Change group</a></li>
-                                                <li><a href="#" data-toggle="modal" data-target="#changeModal" data-name="garage">Change garage</a></li>
+                                                <li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroupMulti">Change group</a></li>
+                                                <li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarageMulti">Change garage</a></li>
                                             </ul>
                                         </div>
                                     </th>
@@ -950,12 +951,7 @@
 		</div>
 	</div>
     
-    <div class="modal fade" id="changeModal" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-			</div>
-		</div>
-	</div>
+    <div class="modal fade" id="customModal" tabindex="-1" role="dialog"></div>
 
     <!-- Mainly scripts -->
     <script src="./../../static/js/jquery-2.1.1.js"></script>
@@ -965,6 +961,9 @@
     
     <!-- Datatables -->
     <script src="./../../static/js/plugins/dataTables/datatables.min.js"></script>
+    
+    <!-- Chosen -->
+	<script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
 
     <!-- Custom and plugin javascript -->
     <script src="./../../static/js/inspinia.js"></script>
@@ -977,6 +976,7 @@
 
     <!-- custom utils -->
 	<script src="./../../static/js/utils/generateUIElements.js"></script>
+    <script src="./../../static/js/utils/customModals.js"></script>
 	<script src="./../../static/js/utils/generateCustomDataTablesFilters.js"></script>
     
     <!-- Page-Level Scripts -->
