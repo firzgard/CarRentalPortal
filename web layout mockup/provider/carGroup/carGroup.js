@@ -60,7 +60,9 @@ $(document).ready(function(){
 						<ul class="dropdown-menu">
 							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" data-id="${row.id}" >Change Garage</a></li>
 							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" data-id="${row.id}" >Change Group</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#smModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
+
+							<li><a href="#" data-toggle="modal" class ="font-bold" data-target="#confirmModal" data-action="delete" data-name="${row.name}" data-id="${row.id}">Delete</a></li>
+
 							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row.id}" >Duplicate</a></li>
 							<li><a href="./../car/car.html">Edit</a></li>
 						</ul>
@@ -91,6 +93,28 @@ $(document).ready(function(){
 		]
 	});
 
+	$('#confirmModal').on('show.bs.modal', function (event) {
+	    let button = $(event.relatedTarget),
+            action = button.data('action')
+	    id = button.data('id'),
+        name = button.data('name');
+
+	    $(this).find('.modal-content').html(`<div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <h2 class="modal-title">
+                Deletion Confirmation
+            </h2>
+        </div>
+        <div class="modal-body">
+            You are about to <b>delete</b> car group <b>${name}</b>. Are you sure?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-danger">Yes</button>
+        </div>`);
+	});
 	// Bind the filters with table
 
 	// Vehicle's name filter
