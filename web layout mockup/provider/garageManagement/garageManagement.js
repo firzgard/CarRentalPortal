@@ -49,11 +49,11 @@ $(document).ready(() => {
 						<ul class="dropdown-menu">
 							<li><a href="./../garage/garage.html">Edit</a></li>
 							${row[4] ?
-								`<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="deactivate" data-id="${row.id}" data-name="${row.name}" >Deactivate</a></li>`
+								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row.id}" data-name="${row.name}" >Deactivate</a></li>`
 							:
-								`<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="activate" data-id="${row.id}" data-name="${row.name}" >Activate</a></li>`
+								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row.id}" data-name="${row.name}" >Activate</a></li>`
 							}
-							<li><a href="#" data-toggle="modal" data-target="#confirmModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
 						</ul>
 					</div>`;
 				}
@@ -75,7 +75,7 @@ $(document).ready(() => {
 	});
 
 	// Render confirmation modal for actions
-	$('#confirmModal').on('show.bs.modal', function(event) {
+	$('#mdModal').on('show.bs.modal', function(event) {
 		let button = $(event.relatedTarget),
 			action = button.data('action')
 			id = button.data('id'),
@@ -96,5 +96,5 @@ $(document).ready(() => {
 			<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
 			<button type="button" class="btn btn-danger">Yes</button>
 		</div>`);
-	})
+	});
 });
