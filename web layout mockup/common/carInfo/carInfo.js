@@ -198,6 +198,7 @@
                     eventLimit: 4,
                 },
             },
+            //eventBackgroundColor: '#ff0000',
             events: [
                 {
                     id: 1,
@@ -229,7 +230,6 @@
                     end: new Date("2016-09-30 22:00"),
                     color: '#ff0000',
                     allDay: false,
-                    rendering: 'background'
                 },
                 {
                     id: 5,
@@ -247,6 +247,23 @@
                     end: new Date("2016-10-01 17:00"),
                     color: '#778811',
                     allDay: false
+                },
+                {
+                    id: 7,
+                    title: 'DR',
+                    start: new Date("2016-09-30 22:00"),
+                    end: new Date("2016-10-01 06:00"),
+                    color: '#ff0000',
+                    allDay: false,
+                    rendering: 'background',
+                },
+                {
+                    id: 8,
+                    title: 'DR',
+                    start: new Date("2016-09-08 06:00"),
+                    end: new Date("2016-09-10 06:00"),
+                    color: '#ff0000',
+                    rendering: 'background',
                 },
             ],
 //            eventRender: function(event, element) {
