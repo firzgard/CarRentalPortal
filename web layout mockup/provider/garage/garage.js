@@ -179,10 +179,11 @@ $(document).ready(function(){
 					year: 2015,
 					garageID: 1,
 					groupID: 1,
-					transmission: 1,
-					engine: 6.3,
-					power: 495,
-					color: 1,
+					transmissionType: 1,
+					transmissionDetail: '8-speed ZF 8HP tiptronic automatic',
+					engine: '4.2 V8 TDI',
+					fuel: 6,
+					color: 'black',
 					description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, qui, temporibus. Eius, id iusto repellat fugiat. Quo adipisci sint natus magni facilis tempore, possimus, pariatur perferendis consequatur eum quas rerum.'
 				}
 

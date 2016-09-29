@@ -2,6 +2,9 @@ Beige
 Black
 Blue
 Brown
+Green
+Orange
+Purple
 Red
 Silver
 White
