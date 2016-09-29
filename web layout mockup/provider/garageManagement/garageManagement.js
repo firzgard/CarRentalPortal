@@ -124,4 +124,110 @@ $(document).ready(() => {
 			<button type="button" class="btn btn-danger">Yes</button>
 		</div>`);
 	});
+    
+    $('#addGarage').on('show.bs.modal', function(event) {
+        $(this).find('.modal-content').html(`
+            <div class="modal-header modal-header-popup">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add garage</h4> </div>
+                <div class="modal-body">
+                    <div class="input-group"> <span class="input-group-addon"><i class="fa fa-building-o"></i></span>
+                        <input type="text" placeholder="Garage Name" value="Garage 3k" id="name" class="form-control input-lg" required> </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="locationID">Location*</label>
+                            <div class="form-group">
+                                <select data-placeholder="Choose a model..." id="modalItemSelector" class="form-control" style="width:350px;">
+                                    <option value></option>
+                                    <option value="1" selected>Hồ Chí Minh</option>
+                                    <option value="2">Hà Nội</option>
+                                    <option value="3">Cà Mau</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address*</label>
+                                <input type="text" placeholder="Address" value="666 Nguyen Hue" class="form-control" id="address" required> </div>
+                            <div class="form-group">
+                                <label for="email">Email*</label>
+                                <input type="email" placeholder="Email Address" value="asdqlwkjd@3krental.com" class="form-control" id="email" required> </div>
+                            <div class="form-group">
+                                <label for="phone1">Phone 1*</label>
+                                <input type="text" placeholder="Primary Phone Number" value="0912312032031" class="form-control" id="phone1" required> </div>
+                            <div class="form-group">
+                                <label for="phone2">Phone 2</label>
+                                <input type="text" placeholder="Alternative Phone Number" value="" class="form-control" id="phone2"> </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Open Time</label>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Mon</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeMon">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeMon"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Tue</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeTue">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeTue"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Wed</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeWed">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeWed"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Thu</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeThur">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeThur"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Fri</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" value="6:00" class="form-control" id="openTimeFri">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" value="20:00" class="form-control" id="closeTimeFri"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Sat</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" class="form-control" id="openTimeSat">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" class="form-control" id="closeTimeSat"> </div>
+                                </div>
+                                <div class="input-group row">
+                                    <label class="col-xs-2 control-label">Sun</label>
+                                    <div class="input-group col-xs-10">
+                                        <div class="input-group-addon">From</div>
+                                        <input type="text" class="form-control" id="openTimeSun">
+                                        <div class="input-group-addon">To</div>
+                                        <input type="text" class="form-control" id="closeTimeSun"> </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+        `);
+        $('#modalItemSelector').chosen({
+            width: "100%",
+            no_results_text: "No result!"
+        });
+    });
 });
