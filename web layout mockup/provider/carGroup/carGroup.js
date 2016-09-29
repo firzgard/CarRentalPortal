@@ -1,19 +1,45 @@
 const mockupData = [
-	{ "id": 1, "name": "BMW X5a", "brandID": 1, "modelID": 1, "modelName": "BMW X5", "groupID": 1, "Garage": "HCM garage", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 2, "name": "BMW X6b", "brandID": 1, "modelID": 2, "modelName": "BMW X6", "groupID": 1, "Garage": "Hanoi garage", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 3, "name": "BMW X2c", "brandID": 1, "modelID": 3, "modelName": "BMW X2", "groupID": 1, "Garage": "HCM Garage 2", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 4, "name": "Audi A7d", "brandID": 2, "modelID": 4, "modelName": "Audi A7", "groupID": 2, "Garage": "Ha Noi Garage 2", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 5, "name": "Audi A8e", "brandID": 2, "modelID": 5, "modelName": "Audi A8", "groupID": 2, "Garage": "Hanoi Garage 4 2", "year": "2015", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 6, "name": "Audi A9f", "brandID": 2, "modelID": 6, "modelName": "Audi A9", "groupID": 2, "Garage": "ahihi", "year": "2016", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 7, "modelName": "Ford Fiesta ST", "groupID": 3, "Garage": "ppap", "year": "2014", "category": "Hatchback", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" }
+	{ "id": 1, "name": "BMW X5a", "brandID": 2, "modelID": 14, "modelName": "BMW X5", "groupID": 1, "Garage": "HCM Garage", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 2, "name": "BMW X6b", "brandID": 2, "modelID": 15, "modelName": "BMW X6", "groupID": 1, "Garage": "HCM Garage", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 3, "name": "BMW X3c", "brandID": 2, "modelID": 13, "modelName": "BMW X3", "groupID": 1, "Garage": "HCM Garage", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 4, "name": "Audi A7d", "brandID": 1, "modelID": 3, "modelName": "Audi A7", "groupID": 2, "Garage": "HCM Garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 5, "name": "Audi A8e", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "Garage": "HaNoi Garage", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 6, "name": "Audi A8f", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "Garage": "HaNoi Garage", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 18, "modelName": "Ford Fiesta Mk6", "groupID": 3, "Garage": "HaNoi Garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" }
 ];
 
 $(document).ready(function(){
+	// Render re/deactivate button
+	let isActivateInput = $('#isActive');
+	function renderActivationBtn(){
+		let btn = $('#activationBtn')
+		if(isActivateInput.val() == 'true'){
+			btn.attr('data-action', 'deactivateCarGroup');
+			btn.html('Deactivate Group');
+			btn.removeClass('btn-success');
+			btn.addClass('btn-warning');
+		} else {
+			btn.attr('data-action', 'reactivateCarGroup');
+			btn.html('Reactivate Group');
+			btn.removeClass('btn-warning');
+			btn.addClass('btn-success');
+		}
+	}
+	renderActivationBtn();
+	// Bind the change event of isActive input with rerendering the btn
+	isActivateInput.on('change', renderActivationBtn);
+
 	// Intialize location selector
 	$('#locationID').chosen({
 		width: "100%",
 		no_results_text: "No result!"
 	});
+
+
+
+	// ============================================
+	// Vehicle table
+
 	// render model-tree selector
 	let modelTree = $.jstree.create('#modelTree', {
 		core: {
@@ -58,13 +84,11 @@ $(document).ready(function(){
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" data-id="${row.id}" >Change Garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" data-id="${row.id}" >Change Group</a></li>
-
-							<li><a href="#" data-toggle="modal" class ="font-bold" data-target="#confirmModal" data-action="delete" data-name="${row.name}" data-id="${row.id}">Delete</a></li>
-
-							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row.id}" >Duplicate</a></li>
-							<li><a href="./../car/car.html">Edit</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarage" data-vehicle-id="${row.id}" >Change Garage</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroup" data-vehicle-id="${row.id}" >Change Group</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.id}" data-vehicle-name="${row.name}" >Delete Vehicle</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${row.id}" >Duplicate Vehicle</a></li>
+							<li><a href="./../car/car.html" target="_blank">Edit Vehicle</a></li>
 						</ul>
 					</div>`;
 				}
@@ -93,28 +117,6 @@ $(document).ready(function(){
 		]
 	});
 
-	$('#confirmModal').on('show.bs.modal', function (event) {
-	    let button = $(event.relatedTarget),
-            action = button.data('action')
-	    id = button.data('id'),
-        name = button.data('name');
-
-	    $(this).find('.modal-content').html(`<div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            <h2 class="modal-title">
-                Deletion Confirmation
-            </h2>
-        </div>
-        <div class="modal-body">
-            You are about to <b>delete</b> car group <b>${name}</b>. Are you sure?
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-            <button type="button" class="btn btn-danger">Yes</button>
-        </div>`);
-	});
 	// Bind the filters with table
 
 	// Vehicle's name filter
@@ -133,4 +135,53 @@ $(document).ready(function(){
 	createCheckboxFilter(table, $('#fuelFilter'), 10);
 	// Vehicle Group filter
 	createCheckboxFilter(table, $('#groupFilter'), 3);
+
+	// Custom modal's content renders dynamically
+	$('#customModal').on('show.bs.modal', function(event) {
+		let button = $(event.relatedTarget),
+			action = button.data('action');
+
+		switch(action){
+			case 'changeGarage':{
+				renderSelectorModal('garage', this, [ button.data('vehicle-id') ]);
+			}break;case 'changeGarageMulti':{
+				let vehicles = [],
+					data = table.rows({ selected: true }).data();
+					
+				for(let i = 0; i < data.length; i++){
+					vehicles.push(data[i].id);
+				}
+
+				renderSelectorModal('garage', this, vehicles);
+			}break;case 'changeGroup':{
+				renderSelectorModal('group', this, [ button.data('vehicle-id') ]);
+			}break;case 'changeGroupMulti':{
+				let vehicles = [],
+					data = table.rows({ selected: true }).data();
+					
+				for(let i = 0; i < data.length; i++){
+					vehicles.push(data[i].id);
+				}
+
+				renderSelectorModal('group', this, vehicles);
+			}break;case 'duplicateVehicle':{
+				renderCreateVehicleModal(this, button.data('vehicle-id'));
+			}break;case 'deleteVehicle':{
+				renderConfirmModal('vehicle', 'delete', this, [{ id: button.data('vehicle-id'), name: button.data('vehicle-name') }]);
+			}break;case 'deleteVehicleMulti':{
+				let vehicles = [],
+					data = table.rows({ selected: true }).data();
+
+				for(let i = 0; i < data.length; i++){
+					vehicles.push({ id: data[i].id, name: data[i].name });
+				}
+
+				renderConfirmModal('vehicle', 'delete', this, vehicles);
+			} break; case 'deactivateCarGroup': {
+				renderConfirmModal('Car Group', 'deactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			} break; case 'reactivateCarGroup': {
+				renderConfirmModal('Car Group', 'reactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			}break;
+		}
+	});
 });
