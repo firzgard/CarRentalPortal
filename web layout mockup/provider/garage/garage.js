@@ -40,12 +40,6 @@ $(document).ready(function(){
 		star = starRatingDiv.data('star')
 	starRatingDiv.html(renderStarRating(star));
 
-	// Intinialize open/close time-picker
-	const timepickerConfig = {
-		showMeridian: false,
-		defaultTime: false
-	};
-
 	// ============================================
 	// Vehicle table
 
@@ -62,7 +56,7 @@ $(document).ready(function(){
 	});
 
 	// set toogling dropdown event for filter dropdown buttons
-	$('#multiFilter .filter-toggle').on('click', function (event) {
+	$('#multiFilter .filter-toggle').click(function(event){
 		let dropdownContainer = $(this).parent();
 
 		if(dropdownContainer.hasClass('open')){
@@ -153,7 +147,8 @@ $(document).ready(function(){
 		switch(action){
 			case 'changeGarage':{
 				renderSelectorModal('garage', this, [ button.data('vehicle-id') ]);
-			}break;case 'changeGarageMulti':{
+			}
+			break;case 'changeGarageMulti':{
 				let vehicles = [],
 					data = table.rows({ selected: true }).data();
 					
@@ -162,9 +157,11 @@ $(document).ready(function(){
 				}
 
 				renderSelectorModal('garage', this, vehicles);
-			}break;case 'changeGroup':{
+			}
+			break;case 'changeGroup':{
 				renderSelectorModal('group', this, [ button.data('vehicle-id') ]);
-			}break;case 'changeGroupMulti':{
+			}
+			break;case 'changeGroupMulti':{
 				let vehicles = [],
 					data = table.rows({ selected: true }).data();
 					
@@ -173,11 +170,31 @@ $(document).ready(function(){
 				}
 
 				renderSelectorModal('group', this, vehicles);
-			}break;case 'duplicateVehicle':{
-				renderCreateVehicleModal(this, button.data('vehicle-id'));
-			}break;case 'deleteVehicle':{
+			}
+			break;case 'duplicateVehicle':{
+				// Ajax to get the prototype vehicle's info using id: button.data('vehicle-id')
+				let protoVehicle = {
+					name: 'Audi A8ZR',
+					modelID: 4,
+					year: 2015,
+					garageID: 1,
+					groupID: 1,
+					transmission: 1,
+					engine: 6.3,
+					power: 495,
+					color: 1,
+					description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, qui, temporibus. Eius, id iusto repellat fugiat. Quo adipisci sint natus magni facilis tempore, possimus, pariatur perferendis consequatur eum quas rerum.'
+				}
+
+				renderCreateVehicleModal(this, protoVehicle);
+			}
+			break;case 'createVehicle':{
+				renderCreateVehicleModal(this, { });
+			}
+			break;case 'deleteVehicle':{
 				renderConfirmModal('vehicle', 'delete', this, [{ id: button.data('vehicle-id'), name: button.data('vehicle-name') }]);
-			}break;case 'deleteVehicleMulti':{
+			}
+			break;case 'deleteVehicleMulti':{
 				let vehicles = [],
 					data = table.rows({ selected: true }).data();
 
@@ -186,13 +203,17 @@ $(document).ready(function(){
 				}
 
 				renderConfirmModal('vehicle', 'delete', this, vehicles);
-			}break;case 'deactivateGarage':{
+			}
+			break;case 'deactivateGarage':{
 				renderConfirmModal('garage', 'deactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
-			}break;case 'reactivateGarage':{
+			}
+			break;case 'reactivateGarage':{
 				renderConfirmModal('garage', 'reactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
-			}break;case 'deleteGarage':{
+			}
+			break;case 'deleteGarage':{
 				renderConfirmModal('garage', 'delete', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
-			}break;
+			}
+			break;
 		}
 	});
 });
