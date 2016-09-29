@@ -7,7 +7,7 @@ const testData = [
 
 $(document).ready(function() {
 	// Render table
-	$('#garages').DataTable({
+	$('#userMana').DataTable({
 		data: testData,
 		columnDefs: [
 			{
