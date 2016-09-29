@@ -14,7 +14,30 @@
             color: #f4511e;
         }
 
-       
+        .search {
+             border: 3px solid black;
+             border-radius: 6px;
+             height: 200px;
+             width: 200px;
+             float: left;
+             margin-left: 10px;
+           
+        }
+        .dmm {
+             border: 10px solid #f4511e;
+             float: left;
+             width:10%;
+        }
+       .back {
+           height: 600px;
+       }
+       .cc{
+        border: 3px solid black;
+         border-radius: 6px;
+             height: 200px;
+             width: 500px;
+             
+       }
         .panel-footer {
             background-color: white !important;
         }
@@ -92,3 +115,142 @@
             -o-transition-duration: .5s;
             transition-duration: .5s;
         }
+        #wrapper {
+	min-height: 100%;
+	position: relative;
+	background: #1cc09f linear-gradient(0deg, #1cc09f, #138569);
+}
+
+/* ====================================== */
+/* Filters */
+
+.filters {
+	padding: 0;
+}
+.filters .panel {
+	border-color: #e7eaec;
+	border-image: none;
+	border-style: solid solid none;
+	border-width: 1px 0;
+	border-radius: 0;
+}
+.filters .panel+.panel {
+	margin-top: 0;
+}
+.filters .panel-heading {
+	border-radius: 0;
+	background-color: #B2DFDB;
+	color: black;
+}
+.filters .panel-heading:hover {
+	background-color: #1ab394;
+	color: white;
+}
+
+.input-group-addon {
+	font-weight: bold;
+	text-align: left;
+	background-color: #B2DFDB;
+}
+
+.filters .panel-body {
+	max-height: 30em;
+	overflow-x: hidden;
+}
+
+#locationFilter .panel-body {
+	overflow-x: visible;
+}
+
+#colorSelector label {
+	display: flex;
+	align-items: center
+}
+#colorSelector .fa-car {
+	font-size: 1.5em;
+}
+#colorSelector .fa-beige {
+	color: beige;
+}
+#colorSelector .fa-black {
+	color: black;
+}
+#colorSelector .fa-blue {
+	color: blue;
+}
+#colorSelector .fa-brown {
+	color: brown;
+}
+#colorSelector .fa-red {
+	color: red;
+}
+#colorSelector .fa-silver {
+	color: silver;
+}
+#colorSelector .fa-white {
+	color: #F2F2F2;
+}
+#colorSelector .fa-yellow {
+	color: yellow;
+}
+
+.result-count {
+	margin-bottom: 1em;
+}
+
+/* ====================================== */
+/* Search Results */
+
+.search-result {
+	color: black;
+	text-decoration: none;
+	animation-duration 0.5s: 
+}
+.search-result:hover {
+	color: black;
+	text-decoration: none;
+	box-shadow: 0 0 20px 5px white;
+}
+
+.vehicle-img {
+    background-position: center;
+	background-size: cover;
+	padding-top: 75%;
+	position: relative;
+	width: 100%;
+}
+
+.vehicle-info {
+	padding: 10px 15px 5px;
+}
+.vehicle-info hr {
+	margin: 0.5em
+}
+
+.vehicle-price-tag {
+	background-color: #1ab394;
+	bottom: 0;
+	color: #ffffff;
+	font-weight: 600;
+	padding: 0.3em 1em 0.3em 2em;
+	position: absolute;
+	right: 0;
+}
+
+.vehicle-price {
+	font-size: 1.2em;
+}
+
+.vehicle-name {
+	font-size: 1.5em;
+	font-weight: bold;
+}
+
+.br-theme-fontawesome-stars .br-widget a {
+	font-size: 1.3em;
+}
+
+.license-number {
+	font-weight: bold;
+	text-align: center;
+}

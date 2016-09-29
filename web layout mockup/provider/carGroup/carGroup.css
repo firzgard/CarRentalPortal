@@ -1,0 +1,56 @@
+.wrapper.wrapper-content {
+	position: relative;
+}
+
+#name {
+	font-size: 2em;
+	font-weight:bold;
+}
+
+#starRating {
+	font-size: 2em;
+}
+
+#multiFilter {
+	display: table-header-group;
+}
+#multiFilter .btn-group {
+	min-width: 7em;
+	width: 100%;
+}
+
+.filter-toggle {
+	width: calc(100% - 3em);
+}
+.filter-remove {
+	width: 3em;
+}
+
+.filter-dropdown {
+	left: -2em;
+	margin-bottom: 2em;
+	min-width: initial;
+	padding: 5px;
+}
+.scroller {
+	max-height: 30em;
+    overflow-x: hidden;
+}
+.filter-dropdown input[type=text] {
+	min-width: 20em;
+}
+.filter-dropdown input[type=number] {
+	min-width: 7em;
+}
+.filter-dropdown .checkbox {
+	display: block;
+	padding: 0 15px 0.5em 20px; 
+	white-space: nowrap;
+}
+.filter-dropdown .checkbox:first-child {
+	padding-top: 0.5em;
+}
+
+#modelTree {
+	min-width: 20em;
+}
