@@ -1,4 +1,13 @@
 /** carInfo ver1.0 */
+body { 
+  background: url(./../../static/img/wallpaper.jpg) no-repeat center center;
+    background-attachment: fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 .info-tb tr > td:first-child, .info-tb > .col-md-6 > .row > .col-md-6:first-child {
     font-weight: bold;
 }
