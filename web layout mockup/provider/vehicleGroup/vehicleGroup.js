@@ -14,13 +14,13 @@ $(document).ready(function(){
 	function renderActivationBtn(){
 		let btn = $('#activationBtn')
 		if(isActivateInput.val() == 'true'){
-			btn.attr('data-action', 'deactivateCarGroup');
-			btn.html('Deactivate Group');
+		    btn.attr('data-action', 'deactivateCarGroup');
+			btn.html('Deactivate Car Group');
 			btn.removeClass('btn-success');
 			btn.addClass('btn-warning');
 		} else {
-			btn.attr('data-action', 'reactivateCarGroup');
-			btn.html('Reactivate Group');
+		    btn.attr('data-action', 'reactivateCarGroup');
+			btn.html('Reactivate Car Group');
 			btn.removeClass('btn-warning');
 			btn.addClass('btn-success');
 		}
@@ -35,7 +35,10 @@ $(document).ready(function(){
 		no_results_text: "No result!"
 	});
 
-
+	// Render star-rating
+	let starRatingDiv = $('#starRating'),
+		star = starRatingDiv.data('star')
+	starRatingDiv.html(renderStarRating(star));
 
 	// ============================================
 	// Vehicle table
@@ -53,7 +56,7 @@ $(document).ready(function(){
 	});
 
 	// set toogling dropdown event for filter dropdown buttons
-	$('#multiFilter .filter-toggle').on('click', function (event) {
+	$('#multiFilter .filter-toggle').click(function(event){
 		let dropdownContainer = $(this).parent();
 
 		if(dropdownContainer.hasClass('open')){
@@ -133,8 +136,8 @@ $(document).ready(function(){
 	createCheckboxFilter(table, $('#transmissionFilter'), 9);
 	// Fuel filter
 	createCheckboxFilter(table, $('#fuelFilter'), 10);
-	// Vehicle Group filter
-	createCheckboxFilter(table, $('#groupFilter'), 3);
+	// Vehicle Garage filter
+	createCheckboxFilter(table, $('#garageFilter'), 3);
 
 	// Custom modal's content renders dynamically
 	$('#customModal').on('show.bs.modal', function(event) {
@@ -144,7 +147,8 @@ $(document).ready(function(){
 		switch(action){
 			case 'changeGarage':{
 				renderSelectorModal('garage', this, [ button.data('vehicle-id') ]);
-			}break;case 'changeGarageMulti':{
+			}
+			break;case 'changeGarageMulti':{
 				let vehicles = [],
 					data = table.rows({ selected: true }).data();
 					
@@ -153,9 +157,11 @@ $(document).ready(function(){
 				}
 
 				renderSelectorModal('garage', this, vehicles);
-			}break;case 'changeGroup':{
+			}
+			break;case 'changeGroup':{
 				renderSelectorModal('group', this, [ button.data('vehicle-id') ]);
-			}break;case 'changeGroupMulti':{
+			}
+			break;case 'changeGroupMulti':{
 				let vehicles = [],
 					data = table.rows({ selected: true }).data();
 					
@@ -164,11 +170,32 @@ $(document).ready(function(){
 				}
 
 				renderSelectorModal('group', this, vehicles);
-			}break;case 'duplicateVehicle':{
-				renderCreateVehicleModal(this, button.data('vehicle-id'));
-			}break;case 'deleteVehicle':{
+			}
+			break;case 'duplicateVehicle':{
+				// Ajax to get the prototype vehicle's info using id: button.data('vehicle-id')
+				let protoVehicle = {
+					name: 'Audi A8ZR',
+					modelID: 4,
+					year: 2015,
+					garageID: 1,
+					groupID: 1,
+					transmissionType: 1,
+					transmissionDetail: '8-speed ZF 8HP tiptronic automatic',
+					engine: '4.2 V8 TDI',
+					fuel: 6,
+					color: 'black',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, qui, temporibus. Eius, id iusto repellat fugiat. Quo adipisci sint natus magni facilis tempore, possimus, pariatur perferendis consequatur eum quas rerum.'
+				}
+
+				renderCreateVehicleModal(this, protoVehicle);
+			}
+			break;case 'createVehicle':{
+				renderCreateVehicleModal(this, { });
+			}
+			break;case 'deleteVehicle':{
 				renderConfirmModal('vehicle', 'delete', this, [{ id: button.data('vehicle-id'), name: button.data('vehicle-name') }]);
-			}break;case 'deleteVehicleMulti':{
+			}
+			break;case 'deleteVehicleMulti':{
 				let vehicles = [],
 					data = table.rows({ selected: true }).data();
 
@@ -177,11 +204,14 @@ $(document).ready(function(){
 				}
 
 				renderConfirmModal('vehicle', 'delete', this, vehicles);
-			} break; case 'deactivateCarGroup': {
-				renderConfirmModal('Car Group', 'deactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
-			} break; case 'reactivateCarGroup': {
-				renderConfirmModal('Car Group', 'reactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
-			}break;
+			}
+			break;case 'deactivateCarGroup':{
+			    renderConfirmModal('carGroup', 'deactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			}
+			break;case 'reactivateCarGroup':{
+			    renderConfirmModal('carGroup', 'reactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			}
+			break;
 		}
 	});
 });
