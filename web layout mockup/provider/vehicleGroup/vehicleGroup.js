@@ -1,11 +1,11 @@
 const mockupData = [
-	{ "id": 1, "name": "BMW X5a", "brandID": 2, "modelID": 14, "modelName": "BMW X5", "groupID": 1, "groupName": "BMW Group 1", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 2, "name": "BMW X6b", "brandID": 2, "modelID": 15, "modelName": "BMW X6", "groupID": 1, "groupName": "BMW Group 1", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 3, "name": "BMW X3c", "brandID": 2, "modelID": 13, "modelName": "BMW X3", "groupID": 1, "groupName": "BMW Group 1", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 4, "name": "Audi A7d", "brandID": 1, "modelID": 3, "modelName": "Audi A7", "groupID": 2, "groupName": "Audi Group 2", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 5, "name": "Audi A8e", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 6, "name": "Audi A8f", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 18, "modelName": "Ford Fiesta Mk6", "groupID": 3, "groupName": "Ford Group 3", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
+	{ "id": 1, "name": "BMW X5a", "brandID": 2, "modelID": 14, "modelName": "BMW X5", "groupID": 1, "Garage": "HCM Garage", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 2, "name": "BMW X6b", "brandID": 2, "modelID": 15, "modelName": "BMW X6", "groupID": 1, "Garage": "HCM Garage", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 3, "name": "BMW X3c", "brandID": 2, "modelID": 13, "modelName": "BMW X3", "groupID": 1, "Garage": "HCM Garage", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 4, "name": "Audi A7d", "brandID": 1, "modelID": 3, "modelName": "Audi A7", "groupID": 2, "Garage": "HCM Garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 5, "name": "Audi A8e", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "Garage": "HaNoi Garage", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 6, "name": "Audi A8f", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "Garage": "HaNoi Garage", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 18, "modelName": "Ford Fiesta Mk6", "groupID": 3, "Garage": "HaNoi Garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" }
 ];
 
 $(document).ready(function(){
@@ -14,13 +14,13 @@ $(document).ready(function(){
 	function renderActivationBtn(){
 		let btn = $('#activationBtn')
 		if(isActivateInput.val() == 'true'){
-			btn.attr('data-action', 'deactivateGarage');
-			btn.html('Deactivate Garage');
+			btn.attr('data-action', 'deactivateCarGroup');
+			btn.html('Deactivate Group');
 			btn.removeClass('btn-success');
 			btn.addClass('btn-warning');
 		} else {
-			btn.attr('data-action', 'reactivateGarage');
-			btn.html('Reactivate Garage');
+			btn.attr('data-action', 'reactivateCarGroup');
+			btn.html('Reactivate Group');
 			btn.removeClass('btn-warning');
 			btn.addClass('btn-success');
 		}
@@ -35,10 +35,7 @@ $(document).ready(function(){
 		no_results_text: "No result!"
 	});
 
-	// Render star-rating
-	let starRatingDiv = $('#starRating'),
-		star = starRatingDiv.data('star')
-	starRatingDiv.html(renderStarRating(star));
+
 
 	// ============================================
 	// Vehicle table
@@ -56,7 +53,7 @@ $(document).ready(function(){
 	});
 
 	// set toogling dropdown event for filter dropdown buttons
-	$('#multiFilter .filter-toggle').click(function(event){
+	$('#multiFilter .filter-toggle').on('click', function (event) {
 		let dropdownContainer = $(this).parent();
 
 		if(dropdownContainer.hasClass('open')){
@@ -109,7 +106,7 @@ $(document).ready(function(){
 			{ name: 'Seat', title: 'Seat', data: 'numOfSeat', width: '5%' },
 			{ name: 'Transmission', title: 'Transmission', data: 'transmission', width: '10%' },
 			{ name: 'Fuel', title: 'Fuel', data: 'fuel', width: '10%' },
-			{ name: 'Group', title: 'Group', data: 'groupName', width: '15%' },
+			{ name: 'Garage', title: 'Garage', data: 'Garage', width: '15%' },
 			{
 				name: 'Action', 
 				title: 'Action',
@@ -147,8 +144,7 @@ $(document).ready(function(){
 		switch(action){
 			case 'changeGarage':{
 				renderSelectorModal('garage', this, [ button.data('vehicle-id') ]);
-			}
-			break;case 'changeGarageMulti':{
+			}break;case 'changeGarageMulti':{
 				let vehicles = [],
 					data = table.rows({ selected: true }).data();
 					
@@ -157,11 +153,9 @@ $(document).ready(function(){
 				}
 
 				renderSelectorModal('garage', this, vehicles);
-			}
-			break;case 'changeGroup':{
+			}break;case 'changeGroup':{
 				renderSelectorModal('group', this, [ button.data('vehicle-id') ]);
-			}
-			break;case 'changeGroupMulti':{
+			}break;case 'changeGroupMulti':{
 				let vehicles = [],
 					data = table.rows({ selected: true }).data();
 					
@@ -170,32 +164,11 @@ $(document).ready(function(){
 				}
 
 				renderSelectorModal('group', this, vehicles);
-			}
-			break;case 'duplicateVehicle':{
-				// Ajax to get the prototype vehicle's info using id: button.data('vehicle-id')
-				let protoVehicle = {
-					name: 'Audi A8ZR',
-					modelID: 4,
-					year: 2015,
-					garageID: 1,
-					groupID: 1,
-					transmissionType: 1,
-					transmissionDetail: '8-speed ZF 8HP tiptronic automatic',
-					engine: '4.2 V8 TDI',
-					fuel: 6,
-					color: 'black',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, qui, temporibus. Eius, id iusto repellat fugiat. Quo adipisci sint natus magni facilis tempore, possimus, pariatur perferendis consequatur eum quas rerum.'
-				}
-
-				renderCreateVehicleModal(this, protoVehicle);
-			}
-			break;case 'createVehicle':{
-				renderCreateVehicleModal(this, { });
-			}
-			break;case 'deleteVehicle':{
+			}break;case 'duplicateVehicle':{
+				renderCreateVehicleModal(this, button.data('vehicle-id'));
+			}break;case 'deleteVehicle':{
 				renderConfirmModal('vehicle', 'delete', this, [{ id: button.data('vehicle-id'), name: button.data('vehicle-name') }]);
-			}
-			break;case 'deleteVehicleMulti':{
+			}break;case 'deleteVehicleMulti':{
 				let vehicles = [],
 					data = table.rows({ selected: true }).data();
 
@@ -204,17 +177,11 @@ $(document).ready(function(){
 				}
 
 				renderConfirmModal('vehicle', 'delete', this, vehicles);
-			}
-			break;case 'deactivateGarage':{
-				renderConfirmModal('garage', 'deactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
-			}
-			break;case 'reactivateGarage':{
-				renderConfirmModal('garage', 'reactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
-			}
-			break;case 'deleteGarage':{
-				renderConfirmModal('garage', 'delete', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
-			}
-			break;
+			} break; case 'deactivateCarGroup': {
+				renderConfirmModal('Car Group', 'deactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			} break; case 'reactivateCarGroup': {
+				renderConfirmModal('Car Group', 'reactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			}break;
 		}
 	});
 });

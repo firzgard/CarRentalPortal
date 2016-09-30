@@ -1,0 +1,17 @@
+[
+	{ "id": 1, "name": "Amonia" },
+	{ "id": 2, "name": "Bioalcohol" },
+	{ "id": 3, "name": "Biodiesel" },
+	{ "id": 4, "name": "Biogas" },
+	{ "id": 5, "name": "Compressed Natural Gas" },
+	{ "id": 6, "name": "Diesel" },
+	{ "id": 7, "name": "Electric" },
+	{ "id": 8, "name": "Flexible" },
+	{ "id": 9, "name": "Hybrid Electric" },
+	{ "id": 10, "name": "Hydrogen" },
+	{ "id": 11, "name": "Liquefied Natural Gas" },
+	{ "id": 12, "name": "Liquefied Petronleum Gas" },
+	{ "id": 13, "name": "Petrol" },
+	{ "id": 14, "name": "Plug-in Hybrid Electric" },
+	{ "id": 15, "name": "Stream Wood Gas" }
+]

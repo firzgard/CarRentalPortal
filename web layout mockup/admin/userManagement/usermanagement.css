@@ -1,14 +1,15 @@
-.wrapper.wrapper-content {
-	position: relative;
+#garages .label {
+	font-size: 15px;
+	padding: 5px 20%;
 }
 
-#starRating {
-	font-size: 2em;
+.status-label {
+	margin: 10px;
+	text-align: center;
 }
 
-#workingTime .input-group-addon:first-of-type  {
-	font-weight: bold;
-	width: 8em;
+#confirmModal .modal-dialog {
+	margin-top: 20vh;
 }
 
 #multiFilter {
@@ -49,8 +50,4 @@
 }
 .filter-dropdown .checkbox:first-child {
 	padding-top: 0.5em;
-}
-
-#modelTree {
-	min-width: 20em;
 }
