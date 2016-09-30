@@ -13,8 +13,8 @@
     <link href="./../../static/css/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="./../../static/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
     <link href="./../../static/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
-
-
+    <link href="./../../static/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
 	<link href="./../../static/css/animate.css" rel="stylesheet">
@@ -45,14 +45,16 @@
     </div>
         
         <div class="row col-lg">
-            <div class="jumbotron text-center" style="background-image: url(./images/panel.png);
-                                                     background-size: 100% 350px;
+            <div class="jumbotron text-center" style="background-image: url(./images/back.jpg);
+                                                     background-size: cover;
                                                      background-position: right top;
-                                                    height: 350px;" >
-                <h1>CAR RENTAL PORTAL</h1>
-                <p>We specialize in CAR</p>
+                                                     height: 600px;" >
+                <h1><font color="white">CAR RENTAL PORTAL</font></h1>
+                <p><font color="white">We specialize in CAR</font></p>
                 <form class="form-inline">
-                <div class="form-group" >
+                <div class="form-group" style="padding: 15px 20px 20px 20px;
+                                                     background: rgba(100,150,100,.55);
+                                                     border: 1px solid white; border-radius: 10px;">
                     <!--
 				    <select class="my_select_box" style="width: 100px" data-placeholder="Location" id="locationSelector" multiple> -->
                     <select class="my_select_box" data-placeholder="Location">
@@ -62,12 +64,36 @@
 				    <option value="3">Singabore</option>
 				    </select>	
                     
+                      <select class="form-control" id="sel1">
+                            <option value="" disabled selected>Number of seet</option>
+                            <option>>5</option>
+                            <option>>8</option>
+                            <option>>16</option>
+                        </select>
+                    
+                     <div class="form-group" id="data_1">
+                                        <div class="input-group date"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <input type="text" class="form-control" value="Pick up Date" placeholder="Pick up Date"> </div>
+                                    </div>
+                    <div class="input-group clockpicker" data-autoclose="true"> <span class="input-group-addon">
+                                            <span class="fa fa-clock-o"></span> </span>
+                                        <input type="text" class="form-control" value="Pick up hour"> </div>
+                    
+                     <div class="form-group" id="data_1">
+                                        <div class="input-group date"> <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                                            <input type="text" class="form-control" value="Return date"> </div>
+                                    </div>
+                    <div class="input-group clockpicker" data-autoclose="true"> <span class="input-group-addon">
+                                            <span class="fa fa-clock-o"></span> </span>
+                                        <input type="text" class="form-control" value="Return hour"> </div>
+                    
+                    <!--
                     <select class="my_select_box" data-placeholder="Brand">
                     <option value="1" >Brand</option>
                     <option value="2" >All</option>
                     <option value="2" >BMW</option>
                     <option value="3">Toyota</option>
-                    </select>
+                    </select> -->
                     
          
                         <!--
@@ -77,17 +103,9 @@
 													</div>
 				        </div>
                        -->
-                        <select class="form-control" id="sel1">
-                            <option value="" disabled selected>Number of seet</option>
-                            <option>>5</option>
-                            <option>>8</option>
-                            <option>>16</option>
-                        </select>
+                      
                         
-                        <div id="reportrange" class="form-control">
-                                <i class="fa fa-calendar"></i>
-                                <span> cc</span> <b class="caret"></b>
-                        </div>
+                    
                     <button type="button" class="btn btn-danger">SEARCH</button>
                     </div>
                     
@@ -96,302 +114,6 @@
             </div>
         </div>
         <div class="container body-content">
-        <div class="featred">
-            <div class="text-center">
-                <h1 style="font-size: x-large;
-                            font-style: unset;
-                            padding: 1.875rem 0;">FEATURED CARS</h1>
-            </div>
-        </div>
-    
-    
-              <div class="col-sm-4 col-xs-12">
-                 <div class="panel panel-default text-center" style="border-color: white">
-                     <div class="panel-heading" style="border-bottom: 4px solid;">
-                        <h1>>5-SEAT</h1>
-                    </div>
-                     
-                    <div class="panel-body">
-                        
-                   <div class="ibox-content product-box" style="margin-bottom: 5px">
-					   <a href="#">
-						<div data-vehicle-id="13" class="ibox ibox-content product-box search-result">
-							<div class="vehicle-img" style="background-image: url('./images/CAR2.jpg');">
-								<div class="vehicle-price-tag"><span class="vehicle-price">666,666 <sup>d</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">Lamborghini Aventador SV</div>
-                                <!-- Star -->
-							
-								<hr>
-								<div><i class="fa fa-map-marker"></i> Ho Chi Minh</div>
-								<div><i class="fa fa-building"></i>Green Hill</div>
-								<hr>
-								  <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                    
-                                     <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                </button>
-                                </div>
-							</div>
-						</div>
-					   </a>
-                        </div>
-                        
-                        
-                         <div class="ibox-content product-box" style="margin-bottom: 5px">
-					   <a href="#">
-						<div data-vehicle-id="13" class="ibox ibox-content product-box search-result">
-							<div class="vehicle-img" style="background-image: url('./images/CAR2.jpg');">
-								<div class="vehicle-price-tag"><span class="vehicle-price">666,666 <sup>d</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">Lamborghini Aventador SV</div>
-                                <!-- Star -->
-								
-								<hr>
-								<div><i class="fa fa-map-marker"></i> Ho Chi Minh</div>
-								<div><i class="fa fa-building"></i>Green Hill</div>
-								<hr>
-								  <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                    
-                                     <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                </button>
-                                </div>
-							</div>
-						</div>
-					   </a>
-                        </div>
-                        
-                        
-                          <div class="ibox-content product-box" style="margin-bottom: 5px">
-					   <a href="#">
-						<div data-vehicle-id="13" class="ibox ibox-content product-box search-result">
-							<div class="vehicle-img" style="background-image: url('./images/CAR2.jpg');">
-								<div class="vehicle-price-tag"><span class="vehicle-price">666,666 <sup>d</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">Lamborghini Aventador SV</div>
-                                <!-- Star -->
-								
-								<hr>
-								<div><i class="fa fa-map-marker"></i> Ho Chi Minh</div>
-								<div><i class="fa fa-building"></i>Green Hill</div>
-								<hr>
-								  <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                    
-                                     <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                </button>
-                                </div>
-							</div>
-						</div>
-					   </a>
-                        </div>
-                        
-                       
-                    </div>
-                    <div class="panel-footer">
-                         <button class="btn btn-lg" style="background-color:#00BDFF;">MORE+</button>
-                    </div>
-                </div>
-            </div>
-            
-           
-            <div class="col-sm-4 col-xs-12">
-                 <div class="panel panel-default text-center" style="border-color: white">
-                     <div class="panel-heading" style="border-bottom: 4px solid;">
-                        <h1>>8-SEAT</h1>
-                    </div>
-                     
-                    <div class="panel-body">
-                        
-                          <div class="ibox-content product-box" style="margin-bottom: 5px">
-					   <a href="#">
-						<div data-vehicle-id="13" class="ibox ibox-content product-box search-result">
-							<div class="vehicle-img" style="background-image: url('./images/CAR2.jpg');">
-								<div class="vehicle-price-tag"><span class="vehicle-price">666,666 <sup>d</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">Lamborghini Aventador SV</div>
-                                <!-- Star -->
-								
-								<hr>
-								<div><i class="fa fa-map-marker"></i> Ho Chi Minh</div>
-								<div><i class="fa fa-building"></i>Green Hill</div>
-								<hr>
-								  <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                    
-                                     <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                </button>
-                                </div>
-							</div>
-						</div>
-					   </a>
-                        </div>
-                        
-                        
-                           <div class="ibox-content product-box" style="margin-bottom: 5px">
-					   <a href="#">
-						<div data-vehicle-id="13" class="ibox ibox-content product-box search-result">
-							<div class="vehicle-img" style="background-image: url('./images/CAR2.jpg');">
-								<div class="vehicle-price-tag"><span class="vehicle-price">666,666 <sup>d</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">Lamborghini Aventador SV</div>
-                                <!-- Star -->
-								
-								<hr>
-								<div><i class="fa fa-map-marker"></i> Ho Chi Minh</div>
-								<div><i class="fa fa-building"></i>Green Hill</div>
-								<hr>
-								  <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                    
-                                     <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                </button>
-                                </div>
-							</div>
-						</div>
-					   </a>
-                        </div>
-                        
-                        
-                             <div class="ibox-content product-box" style="margin-bottom: 5px">
-					   <a href="#">
-						<div data-vehicle-id="13" class="ibox ibox-content product-box search-result">
-							<div class="vehicle-img" style="background-image: url('./images/CAR2.jpg');">
-								<div class="vehicle-price-tag"><span class="vehicle-price">666,666 <sup>d</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">Lamborghini Aventador SV</div>
-                                <!-- Star -->
-								
-								<hr>
-								<div><i class="fa fa-map-marker"></i> Ho Chi Minh</div>
-								<div><i class="fa fa-building"></i>Green Hill</div>
-								<hr>
-								  <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                    
-                                     <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                </button>
-                                </div>
-							</div>
-						</div>
-					   </a>
-                        </div>
-                        
-                       
-                       
-                    </div>
-                    <div class="panel-footer">
-                         <button class="btn btn-lg" style="background-color:#00BDFF;">MORE+</button>
-                    </div>
-                </div>
-            </div>
-        
-            <div class="col-sm-4 col-xs-12">
-                <div class="panel panel-default text-center" style="border-color: white">
-                     <div class="panel-heading" style="border-bottom: 4px solid;">
-                        <h1>>16-SEAT</h1>
-                    </div>
-                    <div class="panel-body">
-                        <div class="ibox-content product-box" style="margin-bottom: 5px">
-					   <a href="#">
-						<div data-vehicle-id="13" class="ibox ibox-content product-box search-result">
-							<div class="vehicle-img" style="background-image: url('./images/CAR2.jpg');">
-								<div class="vehicle-price-tag"><span class="vehicle-price">666,666 <sup>d</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">Lamborghini Aventador SV</div>
-                                <!-- Star -->
-								
-								<hr>
-								<div><i class="fa fa-map-marker"></i> Ho Chi Minh</div>
-								<div><i class="fa fa-building"></i>Green Hill</div>
-								<hr>
-								  <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                    
-                                     <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                </button>
-                                </div>
-							</div>
-						</div>
-					   </a>
-                        </div>
-                        
-                        
-                           <div class="ibox-content product-box" style="margin-bottom: 5px">
-					   <a href="#">
-						<div data-vehicle-id="13" class="ibox ibox-content product-box search-result">
-							<div class="vehicle-img" style="background-image: url('./images/CAR2.jpg');">
-								<div class="vehicle-price-tag"><span class="vehicle-price">666,666 <sup>d</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">Lamborghini Aventador SV</div>
-                                <!-- Star -->
-								
-								<hr>
-								<div><i class="fa fa-map-marker"></i> Ho Chi Minh</div>
-								<div><i class="fa fa-building"></i>Green Hill</div>
-								<hr>
-								  <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                    
-                                     <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                </button>
-                                </div>
-							</div>
-						</div>
-					   </a>
-                        </div>
-                        
-                            <div class="ibox-content product-box" style="margin-bottom: 5px">
-					   <a href="#">
-						<div data-vehicle-id="13" class="ibox ibox-content product-box search-result">
-							<div class="vehicle-img" style="background-image: url('./images/CAR2.jpg');">
-								<div class="vehicle-price-tag"><span class="vehicle-price">666,666 <sup>d</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">Lamborghini Aventador SV</div>
-                                <!-- Star -->
-								
-								<hr>
-								<div><i class="fa fa-map-marker"></i> Ho Chi Minh</div>
-								<div><i class="fa fa-building"></i>Green Hill</div>
-								<hr>
-								  <div class="m-t text-righ">
-                                    <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                    
-                                     <button type="button" class="btn btn-success">
-                                <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                                </button>
-                                </div>
-							</div>
-						</div>
-					   </a>
-                        </div>
-                        
-                    </div>
-                  
-                    <div class="panel-footer">
-                         <button class="btn btn-lg" style="background-color:#00BDFF;">MORE+</button>
-                        
-                    </div>
-                </div>
-            </div>
           <div class="panel-footer">
                 <div class="text-center">
                      <button class="btn btn-lg" style="background-color:rgba(73, 164, 22, 0.89);">VIEW ALL+</button>
@@ -428,97 +150,311 @@
 											
   
 
+     <!-- Mainly scripts -->
     <script src="./../../static/js/jquery-2.1.1.js"></script>
-	<script src="./../../static/js/bootstrap.min.js"></script>
-	<script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-	<script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
+    <script src="./../../static/js/bootstrap.min.js"></script>
+    <!-- Custom and plugin javascript -->
     <script src="./../../static/js/inspinia.js"></script>
     <script src="./../../static/js/plugins/pace/pace.min.js"></script>
     <script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-	<!-- Custom and plugin javascript -->
-	<script src="./../../static/js/inspinia.js"></script>
-
-	<!-- Templating engine. Use mustache -->
-	<script src="./../../static/js/plugins/mustache/mustache.min.js"></script>
-
-	<!-- Date range use moment.js same as full calendar plugin -->
-	<script src="./../../static/js/plugins/fullcalendar/moment.min.js"></script>
-
-	<!-- Date range picker -->
-    <script src="./../../static/js/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Chosen -->
+    <script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
+    <!-- JSKnob -->
+    <script src="./../../static/js/plugins/jsKnob/jquery.knob.js"></script>
+    <!-- Input Mask-->
+    <script src="./../../static/js/plugins/jasny/jasny-bootstrap.min.js"></script>
     <!-- Data picker -->
-   <script src="./../../static/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-
-    
+    <script src="./../../static/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <!-- NouSlider -->
+    <script src="./../../static/js/plugins/nouslider/jquery.nouislider.min.js"></script>
+    <!-- Switchery -->
+    <script src="./../../static/js/plugins/switchery/switchery.js"></script>
+    <!-- IonRangeSlider -->
+    <script src="./../../static/js/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
+    <!-- iCheck -->
+    <script src="./../../static/js/plugins/iCheck/icheck.min.js"></script>
+    <!-- MENU -->
+    <script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <!-- Color picker -->
+    <script src="./../../static/js/plugins/colorpicker/bootstrap-colorpicker.min.js"></script>
+    <!-- Clock picker -->
+    <script src="./../../static/js/plugins/clockpicker/clockpicker.js"></script>
+    <!-- Image cropper -->
+    <script src="./../../static/js/plugins/cropper/cropper.min.js"></script>
     <!-- Date range use moment.js same as full calendar plugin -->
     <script src="./../../static/js/plugins/fullcalendar/moment.min.js"></script>
-
     <!-- Date range picker -->
     <script src="./../../static/js/plugins/daterangepicker/daterangepicker.js"></script>
-
-	<!-- Chosen -->
-	<script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
-        
     <!-- Select2 -->
     <script src="./../../static/js/plugins/select2/select2.full.min.js"></script>
-
-	<!-- jsTree -->
-	<script src="./../../static/js/plugins/jsTree/jstree.min.js"></script>
-
-	<!-- jquery-bar-rating -->
-	<script src="./../../static/js/plugins/jquery-bar-rating/jquery.barrating.min.js"></script>
-
-	<!-- Page's script -->
-    <script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
-    <script src="./home.js" ></script>
+    <!-- TouchSpin -->
+    <script src="./../../static/js/plugins/touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="./home.js"></script>
     <script>
-        $(document).ready(function(){
-            $('input[name="daterange"]').daterangepicker();
-
-            $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
-
-            $('#reportrange').daterangepicker({
-                format: 'MM/DD/YYYY',
-                startDate: moment().subtract(29, 'days'),
-                endDate: moment(),
-                minDate: '01/01/2012',
-                maxDate: '12/31/2015',
-                dateLimit: { days: 60 },
-                showDropdowns: true,
-                showWeekNumbers: true,
-                timePicker: false,
-                timePickerIncrement: 1,
-                timePicker12Hour: true,
-                ranges: {
-                    'Today': [moment(), moment()],
-                    'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                    'This Month': [moment().startOf('month'), moment().endOf('month')],
-                    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                opens: 'right',
-                drops: 'down',
-                buttonClasses: ['btn', 'btn-sm'],
-                applyClass: 'btn-primary',
-                cancelClass: 'btn-default',
-                separator: ' to ',
-                locale: {
-                    applyLabel: 'Submit',
-                    cancelLabel: 'Cancel',
-                    fromLabel: 'From',
-                    toLabel: 'To',
-                    customRangeLabel: 'Custom',
-                    daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr','Sa'],
-                    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                    firstDay: 1
+        $(document).ready(function () {
+            var $image = $(".image-crop > img")
+            $($image).cropper({
+                aspectRatio: 1.618
+                , preview: ".img-preview"
+                , done: function (data) {
+                    // Output the result data for cropping image.
                 }
-            }, function(start, end, label) {
+            });
+            var $inputImage = $("#inputImage");
+            if (window.FileReader) {
+                $inputImage.change(function () {
+                    var fileReader = new FileReader()
+                        , files = this.files
+                        , file;
+                    if (!files.length) {
+                        return;
+                    }
+                    file = files[0];
+                    if (/^image\/\w+$/.test(file.type)) {
+                        fileReader.readAsDataURL(file);
+                        fileReader.onload = function () {
+                            $inputImage.val("");
+                            $image.cropper("reset", true).cropper("replace", this.result);
+                        };
+                    }
+                    else {
+                        showMessage("Please choose an image file.");
+                    }
+                });
+            }
+            else {
+                $inputImage.addClass("hide");
+            }
+            $("#download").click(function () {
+                window.open($image.cropper("getDataURL"));
+            });
+            $("#zoomIn").click(function () {
+                $image.cropper("zoom", 0.1);
+            });
+            $("#zoomOut").click(function () {
+                $image.cropper("zoom", -0.1);
+            });
+            $("#rotateLeft").click(function () {
+                $image.cropper("rotate", 45);
+            });
+            $("#rotateRight").click(function () {
+                $image.cropper("rotate", -45);
+            });
+            $("#setDrag").click(function () {
+                $image.cropper("setDragMode", "crop");
+            });
+            $('#data_1 .input-group.date').datepicker({
+                todayBtn: "linked"
+                , keyboardNavigation: false
+                , forceParse: false
+                , calendarWeeks: true
+                , autoclose: true
+            });
+            $('#data_2 .input-group.date').datepicker({
+                startView: 1
+                , todayBtn: "linked"
+                , keyboardNavigation: false
+                , forceParse: false
+                , autoclose: true
+                , format: "dd/mm/yyyy"
+            });
+            $('#data_3 .input-group.date').datepicker({
+                startView: 2
+                , todayBtn: "linked"
+                , keyboardNavigation: false
+                , forceParse: false
+                , autoclose: true
+            });
+            $('#data_4 .input-group.date').datepicker({
+                minViewMode: 1
+                , keyboardNavigation: false
+                , forceParse: false
+                , autoclose: true
+                , todayHighlight: true
+            });
+            $('#data_5 .input-daterange').datepicker({
+                keyboardNavigation: false
+                , forceParse: false
+                , autoclose: true
+            });
+            var elem = document.querySelector('.js-switch');
+            var switchery = new Switchery(elem, {
+                color: '#1AB394'
+            });
+            var elem_2 = document.querySelector('.js-switch_2');
+            var switchery_2 = new Switchery(elem_2, {
+                color: '#ED5565'
+            });
+            var elem_3 = document.querySelector('.js-switch_3');
+            var switchery_3 = new Switchery(elem_3, {
+                color: '#1AB394'
+            });
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green'
+                , radioClass: 'iradio_square-green'
+            });
+            $('.clockpicker').clockpicker();
+            $('input[name="daterange"]').daterangepicker();
+            $('#reportrange span').html(moment().subtract(29, 'days').format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
+            $('#reportrange').daterangepicker({
+                format: 'MM/DD/YYYY'
+                , startDate: moment().subtract(29, 'days')
+                , endDate: moment()
+                , minDate: '01/01/2012'
+                , maxDate: '12/31/2015'
+                , dateLimit: {
+                    days: 60
+                }
+                , showDropdowns: true
+                , showWeekNumbers: true
+                , timePicker: false
+                , timePickerIncrement: 1
+                , timePicker12Hour: true
+                , ranges: {
+                    'Today': [moment(), moment()]
+                    , 'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')]
+                    , 'Last 7 Days': [moment().subtract(6, 'days'), moment()]
+                    , 'Last 30 Days': [moment().subtract(29, 'days'), moment()]
+                    , 'This Month': [moment().startOf('month'), moment().endOf('month')]
+                    , 'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                }
+                , opens: 'right'
+                , drops: 'down'
+                , buttonClasses: ['btn', 'btn-sm']
+                , applyClass: 'btn-primary'
+                , cancelClass: 'btn-default'
+                , separator: ' to '
+                , locale: {
+                    applyLabel: 'Submit'
+                    , cancelLabel: 'Cancel'
+                    , fromLabel: 'From'
+                    , toLabel: 'To'
+                    , customRangeLabel: 'Custom'
+                    , daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
+                    , monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+                    , firstDay: 1
+                }
+            }, function (start, end, label) {
                 console.log(start.toISOString(), end.toISOString(), label);
                 $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             });
+            $(".select2_demo_1").select2();
+            $(".select2_demo_2").select2();
+            $(".select2_demo_3").select2({
+                placeholder: "Select a state"
+                , allowClear: true
+            });
+            $(".touchspin1").TouchSpin({
+                buttondown_class: 'btn btn-white'
+                , buttonup_class: 'btn btn-white'
+            });
+            $(".touchspin2").TouchSpin({
+                min: 0
+                , max: 100
+                , step: 0.1
+                , decimals: 2
+                , boostat: 5
+                , maxboostedstep: 10
+                , postfix: '%'
+                , buttondown_class: 'btn btn-white'
+                , buttonup_class: 'btn btn-white'
+            });
+            $(".touchspin3").TouchSpin({
+                verticalbuttons: true
+                , buttondown_class: 'btn btn-white'
+                , buttonup_class: 'btn btn-white'
+            });
+        });
+        var config = {
+            '.chosen-select': {}
+            , '.chosen-select-deselect': {
+                allow_single_deselect: true
+            }
+            , '.chosen-select-no-single': {
+                disable_search_threshold: 10
+            }
+            , '.chosen-select-no-results': {
+                no_results_text: 'Oops, nothing found!'
+            }
+            , '.chosen-select-width': {
+                width: "95%"
+            }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+        $("#ionrange_1").ionRangeSlider({
+            min: 0
+            , max: 5000
+            , type: 'double'
+            , prefix: "$"
+            , maxPostfix: "+"
+            , prettify: false
+            , hasGrid: true
+        });
+        $("#ionrange_2").ionRangeSlider({
+            min: 0
+            , max: 10
+            , type: 'single'
+            , step: 0.1
+            , postfix: " carats"
+            , prettify: false
+            , hasGrid: true
+        });
+        $("#ionrange_3").ionRangeSlider({
+            min: -50
+            , max: 50
+            , from: 0
+            , postfix: "°"
+            , prettify: false
+            , hasGrid: true
+        });
+        $("#ionrange_4").ionRangeSlider({
+            values: [
+                "January", "February", "March"
+                , "April", "May", "June"
+                , "July", "August", "September"
+                , "October", "November", "December"
+            ]
+            , type: 'single'
+            , hasGrid: true
+        });
+        $("#ionrange_5").ionRangeSlider({
+            min: 10000
+            , max: 100000
+            , step: 100
+            , postfix: " km"
+            , from: 55000
+            , hideMinMax: true
+            , hideFromTo: false
+        });
+        $(".dial").knob();
+        $("#basic_slider").noUiSlider({
+            start: 40
+            , behaviour: 'tap'
+            , connect: 'upper'
+            , range: {
+                'min': 20
+                , 'max': 80
+            }
+        });
+        $("#range_slider").noUiSlider({
+            start: [40, 60]
+            , behaviour: 'drag'
+            , connect: true
+            , range: {
+                'min': 20
+                , 'max': 80
+            }
+        });
+        $("#drag-fixed").noUiSlider({
+            start: [40, 60]
+            , behaviour: 'drag-fixed'
+            , connect: true
+            , range: {
+                'min': 20
+                , 'max': 80
+            }
         });
     </script>
     </body>
