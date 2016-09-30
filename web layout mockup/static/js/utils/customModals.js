@@ -56,11 +56,32 @@ const mockupGarages = [
 	{ "id": 13, "name": "Petrol" },
 	{ "id": 14, "name": "Plug-in Hybrid Electric" },
 	{ "id": 15, "name": "Stream Wood Gas" }
-];
-function renderSelectorOptions(type, html = ''){
+], mockupColor = [
+	"beige",
+	"black",
+	"blue",
+	"brown",
+	"green",
+	"orange",
+	"purple",
+	"red",
+	"silver",
+	"white",
+	"yellow",
+]
+
+function renderSelectorOptions(type, selectedID, html = ''){
 	// Ajax data
 	switch(type){
-		case 'garage':{
+		case 'model':{
+			options = mockupModelTree;
+			html += '<option></option>';
+		}
+		break;case 'fuel':{
+			options = mockupFuelTypes;
+			html += '<option></option>';
+		}
+		break;case 'garage':{
 			options = mockupGarages;
 			html += '<option></option>';
 		}
@@ -68,24 +89,37 @@ function renderSelectorOptions(type, html = ''){
 			options = mockupGroups;
 			html += '<option value="null">------ None ------</option>';
 		}
-		break;case 'model':{
-			options = mockupModelTree;
-			html += '<option></option>';
-		}
-		break;case 'fuel':{
-			options = mockupFuelTypes;
-			html += '<option></option>';
-		}break;
+		break;
+	}
+
+	if(type === 'model'){
+		return options.reduce((html, brand) => {
+			return html + `<optgroup label="${brand.name}">
+				${brand.models.reduce((htmlLv2, model) => {
+					return htmlLv2 + `<option value="${model.id}" ${((model.id == selectedID) && 'selected') || ''}>${model.name}</option>`
+				}, '')}
+			</optgroup>`
+		}, html);
 	}
 
 	return options.reduce((html, option) => {
-		return html + `<option value="${option.id}">${option.name}</option>`
+		return html + `<option value="${option.id}" ${((option.id == selectedID) && 'selected') || ''}>${option.name}</option>`
+	}, html);
+}
+
+function renderColorOptions(selectedColor, html = ''){
+	const colorOptions = mockupColor;
+
+	return colorOptions.reduce((html, option) => {
+		return html + `<label class="btn btn-default ${((selectedColor === option) && 'active') || ''}">
+			<input type="radio" value="${option}" autocomplete="off" ${((selectedColor == option) && 'checked') || ''} >
+			<div><i class="fa fa-car" style="font-weight:bold; color:${option}; text-shadow: 0 0 1px black;"></i></div>
+			<div>${option}</div>
+		</label>`
 	}, html);
 }
 
 function renderSelectorModal(type, modalNode, vehicles){
-	
-
 	modalNode.innerHTML =`<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -96,7 +130,7 @@ function renderSelectorModal(type, modalNode, vehicles){
 			</div>
 			<div class="modal-body">
 				<div class="form-group">
-					<select data-placeholder="Please choose ${type}..." class="form-control" id="modalItemSelector" required>
+					<select data-placeholder="Please select ${type}..." class="form-control" id="modalItemSelector" required>
 						${renderSelectorOptions(type)}
 					</select>
 				</div>
@@ -108,18 +142,20 @@ function renderSelectorModal(type, modalNode, vehicles){
 		</div>
 	</div>`;
 
-	$('#modalItemSelector').chosen({
+	$(modalNode).find('#modalItemSelector').chosen({
 		width: "100%",
 		no_results_text: "No result!"
 	});
 }
 
-function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, groupID, transmission, engine, power, color, description }){
+function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, groupID, transmissionType, transmissionDetail, engine, fuel, color, description }){
 	// Ajax data here
 	const garage = mockupGarages,
 		group = mockupGroups;
 
-	modalNode.innerHTML = `<div class="modal-dialog modal-lg" role="document">
+	let jqModalNode = $(modalNode)
+
+	jqModalNode.html(`<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -128,88 +164,77 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 				<h2 class="modal-title">New Vehicle</h2>
 			</div>
 			<div class="modal-body">
-				<div class="form-group">
-					<div class="input-group">
-						<span class="input-group-addon"><i class="fa fa-car" style="font-size: 2em;"></i></span>
-						<input type="text" placeholder="Vehicle's name" value="${name || ''}" id="newName" class="form-control input-lg" style="font-size: 2em; font-weight:bold;" required>
-					</div>
-				</div>
 				<div class="row">
 					<div class="col-sm-6 form-group">
-						<label>Vehicle model*</label>
-						<select data-placeholder="Please choose vehicle's model..." class="input-group chosen-select">
-							<option></option>
-						</select>
+						<label>Vehicle's name*</label>
+						<input type="text" placeholder="Vehicle's name" value="${name || ''}" id="newName" class="form-control" required>
 					</div>
 					<div class="col-sm-6 form-group">
 						<label>License*</label>
-						<input type="text" class="form-control" required>
+						<input type="text" placeholder="Vehicle's license" id="newLicense" class="form-control" required>
 					</div>
 					<div class="col-sm-6 form-group">
-						<label>Fuel type</label>
-						<select data-placeholder="Choose fuel type..." class="input-group chosen-select">
-							${renderSelectorOptions('fuel')}
+						<label>Vehicle's model*</label>
+						<select data-placeholder="Please select vehicle's model..." class="input-group chosen-select" required>
+							${renderSelectorOptions('model', modelID)}
 						</select>
 					</div>
 					<div class="col-sm-6 form-group">
 						<label>Year*</label>
-						<input type="number" placeholder="Production year" class="form-control">
+						<input type="number" placeholder="Production year" value="${year || ''}" class="form-control" required>
 					</div>
 					<div class="col-sm-6 form-group">
-						<label>Transmission type*</label>
+						<label>Garage*</label>
+						<select data-placeholder="Please select fuel type..." class="input-group chosen-select" required>
+							${renderSelectorOptions('garage', garageID)}
+						</select>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label>Vehicle's group*</label>
+						<select data-placeholder="Please select fuel type..." class="input-group chosen-select" required>
+							${renderSelectorOptions('group', groupID)}
+						</select>
+					</div>
+					<div class="col-sm-6 form-group">
+						<label>Transmission type</label>
 						<div class="btn-group btn-group-justified" data-toggle="buttons" >
-							<label class="btn btn-info ${transmission && (transmission == 1) && 'active'}">
-								<input type="radio" value="1" autocomplete="off" ${transmission && (transmission == 1) && 'checked'} >Automatic
+							<label class="btn btn-success ${(transmissionType && (transmissionType == 1) && 'active') || ''}">
+								<input type="radio" value="1" autocomplete="off" ${(transmissionType && (transmissionType == 1) && 'checked') || ''} >Automatic
 							</label>
-							<label class="btn btn-info" ${transmission && (transmission == 2) && 'active'}>
-								<input type="radio" value="2" autocomplete="off" ${transmission && (transmission == 2) && 'checked'} >Manual
+							<label class="btn btn-info ${(transmissionType && (transmissionType == 2) && 'active') || ''}">
+								<input type="radio" value="2" autocomplete="off" ${(transmissionType && (transmissionType == 2) && 'checked') || ''} >Manual
 							</label>
 						</div>
 					</div>
 					<div class="col-sm-6 form-group">
-						<label>Engine capacity</label>
-						<div class="input-group">
-							<input type="number" class="form-control">
-							<span class="input-group-addon">l</span>
-						</div>
+						<label>Transmission detail</label>
+						<input type="text" placeholder="Transmission detail" value="${transmissionDetail || ''}" class="form-control">
 					</div>
 					<div class="col-sm-6 form-group">
-						<label>Engine power</label>
-						<div class="input-group">
-							<input type="number" class="form-control">
-							<span class="input-group-addon">hp</span>
-						</div>
+						<label>Engine</label>
+						<input type="text" placeholder="Engine" value="${engine || ''}" class="form-control">
+					</div>
+					<div class="col-sm-6 form-group">
+						<label>Fuel type</label>
+						<select data-placeholder="Please select fuel type..." class="input-group chosen-select">
+							${renderSelectorOptions('fuel', fuel)}
+						</select>
 					</div>
 					<div class="col-sm-12 form-group">
 						<label>Vehicle's color</label>
-						<div class="text-center">
-							<div id="current-color" class="text-center" style="font-size: 30px;"> <span><i class="fa fa-lg fa-car"></i></span> </div>
-							<div id="color-name"></div>
-							<div class="panel-body">
-								<a title="Beige" class="btn btn-lg btn-color" style="background-color: beige"></a>
-								<a title="Black" class="btn btn-lg btn-color" style="background-color: black"></a>
-								<a title="Blue" class="btn btn-lg btn-color" style="background-color: blue"></a>
-								<a title="Brown" class="btn btn-lg btn-color" style="background-color: brown"></a>
-								<a title="Gold" class="btn btn-lg btn-color" style="background-color: gold"></a>
-								<a title="Green" class="btn btn-lg btn-color" style="background-color: green"></a>
-								<a title="Orange" class="btn btn-lg btn-color" style="background-color: orange"></a>
-								<a title="Purple" class="btn btn-lg btn-color" style="background-color: purple"></a>
-								<a title="Red" class="btn btn-lg btn-color" style="background-color: red"></a>
-								<a title="Silver" class="btn btn-lg btn-color" style="background-color: silver"></a>
-								<a title="White" class="btn btn-lg btn-color" style="background-color: white"></a>
-								<a title="Yellow" class="btn btn-lg btn-color" style="background-color: yellow"></a>
-							</div>
+						<div class="btn-group btn-group-justified" data-toggle="buttons" >
+							${renderColorOptions(color)}
 						</div>
 					</div>
 					<div class="col-sm-12 form-group">
 						<label>Description</label>
-						<textarea rows="5" type="text" class="form-control input-lg"></textarea>
+						<textarea type="text" placeholder="Please enter your vehicle's description" rows="20" maxlength="200" class="form-control">${description || ''}</textarea>
 					</div>
 					<div class="col-sm-12 form-group">
 						<label>Car pictures</label>
-						<form id="my-awesome-dropzone" class="dropzone" action="#">
-							<div class="dropzone-previews"> </div>
-						</form>
+						<div id="imageDropzone" class="dropzone">
+							<div class="dropzone-previews"></div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -218,7 +243,40 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 				<button type="button" class="btn btn-primary">OK</button>
 			</div>
 		</div>
-	</div>`;
+	</div>`);
+
+	jqModalNode.find('.chosen-select').chosen({
+		width: "100%",
+		no_results_text: "No result!"
+	});
+
+	let imageDropzone = $("#imageDropzone").dropzone({
+		url: '#'
+		, autoProcessQueue: false
+		, parallelUploads: 5
+		, maxFilesize: 2
+		, uploadMultiple: true
+		, addRemoveLinks: "dictRemoveFile"
+		, hiddenInputContainer: '.modal-body'
+		, maxFiles: 5
+		, acceptedFiles: "image/jpeg,image/png,image/gif"
+		, init: function () {
+			// this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
+			// 	e.preventDefault();
+			// 	e.stopPropagation();
+			// 	myDropzone.processQueue();
+			// });
+			this.on("sendingmultiple", () => {
+				alert("sending");
+			});
+			this.on("successmultiple", (files, response) => {
+				alert("success");
+			});
+			this.on("errormultiple", (files, response) => {
+				alert("fail");
+			});
+		}
+	});
 }
 
 function renderConfirmModal(type, action, modalNode, items){
