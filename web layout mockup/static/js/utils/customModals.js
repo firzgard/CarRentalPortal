@@ -120,8 +120,6 @@ function renderColorOptions(selectedColor, html = ''){
 }
 
 function renderSelectorModal(type, modalNode, vehicles){
-	
-
 	modalNode.innerHTML =`<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
