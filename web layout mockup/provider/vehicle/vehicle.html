@@ -21,135 +21,120 @@
 </head>
 
 <body>
-
+    <div id="wrapper">
+		<nav class="navbar-default navbar-static-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav metismenu" id="side-menu">
+					<li class="nav-header">
+						<div class="dropdown profile-element text-center">
+							<a href="./../../common/home/home.html"><h1><i class="fa fa-car"></i> CRP</h1></a>
+						</div>
+						<div class="logo-element">
+							<a href="./../../common/home/home.html"><i class="fa fa-car"></i></a>
+						</div>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-th-large"></i>
+							<span class="nav-label">Administration</span>
+							<span class="fa arrow"></span>
+						</a>
+						<ul class="nav nav-second-level collapse">
+							<li><a href="./../../admin/userManagement/userManagement.html">User managerment</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-th-large"></i>
+							<span class="nav-label">Rental Management</span>
+							<span class="fa arrow"></span>
+						</a>
+						<ul class="nav nav-second-level collapse">
+							<li><a href="./../../provider/vehicleManagement/vehicleManagement.html">Vehicle</a></li>
+							<li><a href="./../../provider/garageManagement/garageManagement.html">Garage</a></li>
+							<li><a href="./../../provider/vehicleGroupMamagement/vehicleGroupManagement.html">Vehicle Group</a></li>
+						</ul>
+					</li>
+					<li><a href="./../../customer/personalInfo/personalInfo.html">
+						<i class="fa fa-th-large"></i>
+						<span class="nav-label">Personal Information</span>
+					</a></li>
+					<li><a href="./../../customer/bookingHistory.html">
+						<i class="fa fa-th-large"></i>
+						<span class="nav-label">Booking history</span>
+					</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div id="page-wrapper" class="gray-bg">
 
         <div class="row border-bottom">
-        <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-home"></i> </a>
-            <form role="search" class="navbar-form-custom" action="search_results.html">
-                <div class="form-group">
-                    <input type="text" placeholder="Search for a car..." class="form-control" name="top-search" id="top-search">
-                </div>
-            </form>
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+					<div class="navbar-header">
+						<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+					</div>
+					<ul class="nav navbar-top-links navbar-right">
+						<li class="dropdown">
+							<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+								<i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+							</a>
+							<ul class="dropdown-menu dropdown-alerts">
+								<li>
+									<a href="mailbox.html">
+										<div>
+											<i class="fa fa-envelope fa-fw"></i> You have 16 messages
+											<span class="pull-right text-muted small">4 minutes ago</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="profile.html">
+										<div>
+											<i class="fa fa-twitter fa-fw"></i> 3 New Followers
+											<span class="pull-right text-muted small">12 minutes ago</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="grid_options.html">
+										<div>
+											<i class="fa fa-upload fa-fw"></i> Server Rebooted
+											<span class="pull-right text-muted small">4 minutes ago</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<div class="text-center link-block">
+										<a href="notifications.html">
+											<strong>See All Alerts</strong>
+											<i class="fa fa-angle-right"></i>
+										</a>
+									</div>
+								</li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="login.html">
+								<i class="fa fa-sign-out"></i> Log out
+							</a>
+						</li>
+					</ul>
+				</nav>
         </div>
-            <ul class="nav navbar-top-links navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-messages">
-                        <li>
-                            <div class="dropdown-messages-box">
-                                <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="./../../static/img/a7.jpg">
-                                </a>
-                                <div class="media-body">
-                                    <small class="pull-right">46h ago</small>
-                                    <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-                                    <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <div class="dropdown-messages-box">
-                                <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="./../../static/img/a4.jpg">
-                                </a>
-                                <div class="media-body ">
-                                    <small class="pull-right text-navy">5h ago</small>
-                                    <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica Smith</strong>. <br>
-                                    <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <div class="dropdown-messages-box">
-                                <a href="profile.html" class="pull-left">
-                                    <img alt="image" class="img-circle" src="./../../static/img/profile.jpg">
-                                </a>
-                                <div class="media-body ">
-                                    <small class="pull-right">23h ago</small>
-                                    <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
-                                    <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <div class="text-center link-block">
-                                <a href="mailbox.html">
-                                    <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-                <li class="dropdown">
-                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="mailbox.html">
-                                <div>
-                                    <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="profile.html">
-                                <div>
-                                    <i class="fa fa-twitter fa-fw"></i> 3 New Followers
-                                    <span class="pull-right text-muted small">12 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="grid_options.html">
-                                <div>
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <div class="text-center link-block">
-                                <a href="notifications.html">
-                                    <strong>See All Alerts</strong>
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-
-
-                <li>
-                    <a href="login.html">
-                        <i class="fa fa-sign-out"></i> Log out
-                    </a>
-                </li>
-            </ul>
-
-        </nav>
-    <div class="row">
-    <div class="col-md-offset-1 col-md-10 wrapper wrapper-content animated fadeInRight">
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-md-10"><h2>Vehicle Detail</h2></div>
+        </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
 
                 <div class="ibox product-detail">
                     <div class="ibox-content">
                     <div class="row">
-                            <h2 class="font-bold">Vehicle detail</h2>
-                            <a href="./../vehicleManagement/vehicleManagement.html" class="btn btn-primary pull-right m-r" style="margin-top: -40px; width: 100px;"><i class="fa fa-lg fa-arrow-circle-left"></i><span> Back</span></a>
-                            <hr>
                         
                         <div class="col-md-6">
                             <div class="row">
@@ -228,23 +213,8 @@
                                 <div class="col-md-4 text-right">
                                     <label>Engine</label>
                                 </div>
-                                <div class="col-md-8">
-                                    <div class="input-group m-b">
-                                        <input type="text" class="form-control" value="2.4"/><span class="input-group-addon">L</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-4 text-right">
-                                    <label>Power</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="input-group m-b">
-                                        <input type="text" class="form-control" value="5000"/><span class="input-group-addon">HP</span>
-                                    </div>
+                                <div class="col-md-8 m-b">                                    
+                                    <input type="text" class="form-control" value="3.0L 381HP Diesel I6 tri-turbo M"/>
                                 </div>
                             </div>
                         </div>
@@ -373,12 +343,14 @@
             </div>
         </div>
     </div>
-    </div>
+    
         <div class="footer text-center" style="position: initial;">
             <div>
                 <strong>Copyright</strong> Example Company &copy; 2014-2015
             </div>
         </div>
+    </div>
+</div>
         
     <div id="edit-car" class="modal fade" role="dialog">
         <div class="modal-dialog modal-lg" style="width: 80%;">

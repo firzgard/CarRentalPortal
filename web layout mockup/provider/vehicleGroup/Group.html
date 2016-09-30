@@ -2,23 +2,22 @@
 <html>
 
 <head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Vehicle Group</title>
-	<link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
-	<link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
-
-	<link href="./../../static/css/animate.css" rel="stylesheet">
-	<link href="./../../static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-	<link href="./../../static/css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
-	<link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
-	<link href="./../../static/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
-	<link href="./../../static/css/plugins/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet">
-	<link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
-
-	<link href="./../../static/css/style.css" rel="stylesheet">
-	<link href="./vehicleGroup.css" rel="stylesheet">
-</head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicle Group</title>
+    <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="./../../static/css/animate.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
+    <link href="./../../static/css/style.css" rel="stylesheet">
+    <link href="./Group.css" rel="stylesheet"> </head>
 
 <body>
     <div id="wrapper">
@@ -103,76 +102,65 @@
             </div>
             <div class="row wrapper border-bottom white-bg page-heading">
                 <div class="col-md-10">
-                    <h2>Group Detail</h2></div>
+                    <h2>Car Group Detail</h2></div>
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="col-lg-12">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-content">
-                            <div class="ibox ibox-content float-e-margins">
-                                <form action="#">
-                                    <input type="hidden" value="666" id="groupID" required="">
-                                    <input type="hidden" value="true" id="isActive" required="">
-                                    <div class="row form-group">
-                                        <div class="col-md-6">
-                                            <div class="input-group"> <span class="input-group-addon"><i class="fa fa-building-o"></i></span>
-                                                <input type="text" placeholder="group Name" value="Group A" id="groupName" class="form-control input-lg" required=""> </div>
-                                        </div>
+                <div class="ibox ibox-content float-e-margins">
+                    <form action="#">
+                        <input type="hidden" value="666" id="groupID" required>
+                        <input type="hidden" value="true" id="isActive" required>
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <div class="input-group"> <span class="input-group-addon"><i class="fa fa-building-o" style="font-size: 2em;" ></i></span>
+                                    <input type="text" placeholder="Garage Name" value="Garage 3k" id="groupName" class="form-control input-lg" style="font-size: 2em; font-weight:bold;" required> </div>
+                            </div>
+                            <div data-star="4.4" class="col-md-4" id="starRating"></div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="MaxRental">Max rental period:</label>
+                                    <div class="input-group m-b boxForm text-center">
+                                        <input type="text" value="5" class="form-control" required=""> <span class="input-group-addon">day</span> </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Deposit:</label>
+                                    <div class="input-group m-b boxForm text-center">
+                                        <input type="text" value="5000" class="form-control" required=""> <span class="input-group-addon">₫</span> </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Per day price:</label>
+                                    <div class="input-group m-b boxForm text-center">
+                                        <input type="text" value="5000" class="form-control" required=""> <span class="input-group-addon">₫</span> </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>
+                                        <h2><b>Price group item</b></h2></label>
+                                    <div class="form-group">
+                                        <label>Per day price:</label>
+                                        <div class="input-group m-b boxForm text-center">
+                                            <input type="text" value="5000" class="form-control" required=""> <span class="input-group-addon">h</span> </div>
                                     </div>
-                                    <div class="row form-group">
-                                        <div class="col-md-7">
-                                            <div class="form-group">
-                                                <label for="MaxRental">Max rental period:</label>
-                                                <div class="input-group m-b boxForm text-center">
-                                                    <input type="text" value="5" class="form-control" required=""> <span class="input-group-addon">day</span> </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Deposit:</label>
-                                                <div class="input-group m-b boxForm text-center">
-                                                    <input type="text" value="5000" class="form-control" required=""> <span class="input-group-addon">₫</span> </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Per day price:</label>
-                                                <div class="input-group m-b boxForm text-center">
-                                                    <input type="text" value="5000" class="form-control" required=""> <span class="input-group-addon">₫</span> </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Price group default:</label>
-                                                <div class="input-group m-b boxForm text-center">
-                                                    <input type="text" value="5" class="form-control" required=""> </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <div class="form-group">
-                                                <label>
-                                                    <h2><b>Price group item</b></h2></label>
-                                                <div class="form-group">
-                                                    <label>Per day price:</label>
-                                                    <div class="input-group m-b boxForm text-center">
-                                                        <input type="text" value="5000" class="form-control" required=""> <span class="input-group-addon">h</span> </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label>Price group default:</label>
-                                                    <div class="input-group m-b boxForm text-center">
-                                                        <input type="text" value="5" class="form-control" required=""><span class="input-group-addon">₫</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    <div class="form-group">
+                                        <label>Price group default:</label>
+                                        <div class="input-group m-b boxForm text-center">
+                                            <input type="text" value="5" class="form-control" required=""><span class="input-group-addon">₫</span> </div>
                                     </div>
-                                    <div>
-                                        <div class="btn-group">
-                                            <button id="activationBtn" class="btn btn-warning" data-toggle="modal" data-target="#customModal">CC</button>
-                                            <button class="btn btn-primary pull-right">Save changes</button>
-                                        </div>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div>
+                            <div class="btn-group">
+                                <button id="activationBtn" class="btn btn-warning" data-toggle="modal" data-target="#customModal"></button>
+                                <button class="btn btn-primary pull-right">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="ibox ibox-content float-e-margins">
-                    <button class="btn btn-default pull-right" style="margin-bottom: 1em;"><i class="fa fa-plus"> New vehicle</i></button>
+                    <button data-toggle="modal" data-target="#customModal" data-action="createVehicle" class="btn btn-success pull-right" style="margin-bottom: 1em;"> <i class="fa fa-plus"></i> New vehicle </button>
                     <table class="table table-striped table-bordered table-hover" width="100%" id="vehicles">
                         <thead></thead>
                         <tfoot id="multiFilter">
@@ -428,11 +416,11 @@
                                                 <div class="input-group" id="GroupSelector">
                                                     <div class="checkbox checkbox-success">
                                                         <input value="1" id="group1" type="checkbox" />
-                                                        <label for="transmissionAutomatic">HCM Garage</label>
+                                                        <label for="group1">HCM garage</label>
                                                     </div>
                                                     <div class="checkbox checkbox-success">
                                                         <input value="2" id="group2" type="checkbox" />
-                                                        <label for="transmissionManual">HaNoi Garage</label>
+                                                        <label for="group2">Hanoi Garage</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -474,6 +462,8 @@
     <script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
     <!-- datatables -->
     <script src="./../../static/js/plugins/dataTables/datatables.js"></script>
+    <!-- dropzone -->
+    <script src="./../../static/js/plugins/dropzone/dropzone.js"></script>
     <!-- jasny -->
     <script src="./../../static/js/plugins/jasny/jasny-bootstrap.min.js"></script>
     <!-- jquery-bar-rating -->
@@ -485,7 +475,7 @@
     <script src="./../../static/js/utils/customModals.js"></script>
     <script src="./../../static/js/utils/generateCustomDataTablesFilters.js"></script>
     <!-- Page's script -->
-    <script src="./vehicleGroup.js"></script>
+    <script src="./Group.js"></script>
 </body>
 
 </html>
