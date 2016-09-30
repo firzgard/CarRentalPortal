@@ -10,9 +10,11 @@
 
 	<link href="./../../static/css/animate.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-	<link href="./../../static/css/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/dropzone/basic.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+	<link href="./../../static/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
 
@@ -155,8 +157,8 @@
 						<div class="row form-group">
 							<div class="col-md-6">
 								<div class="input-group">
-									<span class="input-group-addon"><i class="fa fa-building-o"></i></span>
-									<input type="text" placeholder="Garage Name" value="Garage 3k" id="name" class="form-control input-lg" required>
+									<span class="input-group-addon"><i class="fa fa-building-o" style="font-size: 2em;" ></i></span>
+									<input type="text" placeholder="Garage Name" value="Garage 3k" id="garageName" class="form-control input-lg" style="font-size: 2em; font-weight:bold;" required>
 								</div>
 							</div>
 							<div data-star="4.4" class="col-md-4" id="starRating" ></div>
@@ -190,64 +192,73 @@
 								</div>
 							</div>
 							<div class="col-md-5">
-								<div class="form-group">
+								<div class="form-group" id="workingTime">
 									<label><h2><b>Open Time</b></h2></label>
 									<div class="input-group">
 										<div class="input-group-addon gray-bg">Monday</div>
 										<div class="input-group-addon">From</div>
-										<input type="text" value="6:00" class="form-control" id="openTimeMon">
+										<input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeMon">
 										<div class="input-group-addon">To</div>
-										<input type="text" value="20:00" class="form-control" id="closeTimeMon">
+										<input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeMon">
 									</div>
 									<div class="input-group">
 										<div class="input-group-addon gray-bg">Tuesday</div>
 										<div class="input-group-addon">From</div>
-										<input type="text" value="6:00" class="form-control" id="openTimeTue">
+										<input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeTue">
 										<div class="input-group-addon">To</div>
-										<input type="text" value="20:00" class="form-control" id="closeTimeTue">
+										<input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeTue">
 									</div>
 									<div class="input-group">
 										<div class="input-group-addon gray-bg">Wednesday</div>
 										<div class="input-group-addon">From</div>
-										<input type="text" value="6:00" class="form-control" id="openTimeWed">
+										<input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeWed">
 										<div class="input-group-addon">To</div>
-										<input type="text" value="20:00" class="form-control" id="closeTimeWed">
+										<input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeWed">
 									</div>
 									<div class="input-group">
 										<div class="input-group-addon gray-bg">Thursday</div>
 										<div class="input-group-addon">From</div>
-										<input type="text" value="6:00" class="form-control" id="openTimeThur">
+										<input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeThur">
 										<div class="input-group-addon">To</div>
-										<input type="text" value="20:00" class="form-control" id="closeTimeThur">
+										<input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeThur">
 									</div>
 									<div class="input-group">
 										<div class="input-group-addon gray-bg">Friday</div>
 										<div class="input-group-addon">From</div>
-										<input type="text" value="6:00" class="form-control" id="openTimeFri">
+										<input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeFri">
 										<div class="input-group-addon">To</div>
-										<input type="text" value="20:00" class="form-control" id="closeTimeFri">
+										<input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeFri">
 									</div>
 									<div class="input-group">
 										<div class="input-group-addon gray-bg">Saturday</div>
 										<div class="input-group-addon">From</div>
-										<input type="text" class="form-control" id="openTimeSat">
+										<input type="text" data-mask="99:99" class="form-control" id="openTimeSat">
 										<div class="input-group-addon">To</div>
-										<input type="text" class="form-control" id="closeTimeSat">
+										<input type="text" data-mask="99:99" class="form-control" id="closeTimeSat">
 									</div>
 									<div class="input-group">
 										<div class="input-group-addon gray-bg">Sunday</div>
 										<div class="input-group-addon">From</div>
-										<input type="text" class="form-control" id="openTimeSun">
+										<input type="text" data-mask="99:99" class="form-control" id="openTimeSun">
 										<div class="input-group-addon">To</div>
-										<input type="text" class="form-control" id="closeTimeSun">
+										<input type="text" data-mask="99:99" class="form-control" id="closeTimeSun">
 									</div>
 								</div>
 							</div>
 						</div>
-						<button class="btn btn-primary">Save changes</button>
+						<div>
+							<button class="btn btn-primary pull-right">Save changes</button>
+							<div class="btn-group">
+								<button id="activationBtn" class="btn btn-warning" data-toggle="modal" data-target="#customModal"></button>
+								<button class="btn btn-danger" data-toggle="modal" data-target="#customModal" data-action="deleteGarage">Delete garage</button>
+							</div>
+						</div>
 					</form>
 				</div>
 				<div class="ibox ibox-content float-e-margins">
+					<button data-toggle="modal" data-target="#customModal" data-action="createVehicle" class="btn btn-success pull-right" style="margin-bottom: 1em;" >
+						<i class="fa fa-plus"></i> New vehicle
+					</button>
 					<table class="table table-striped table-bordered table-hover" width="100%" id="vehicles">
 						<thead></thead>
 						<tfoot id="multiFilter" ><tr>
@@ -529,15 +540,15 @@
 										<div class="input-group" id="GroupSelector">
 											<div class="checkbox checkbox-success">
 												<input value="1" id="group1" type="checkbox" />
-												<label for="transmissionAutomatic">BMW Group 1</label>
+												<label for="group1">BMW Group 1</label>
 											</div>
 											<div class="checkbox checkbox-success">
 												<input value="2" id="group2" type="checkbox" />
-												<label for="transmissionManual">Audi Group 2</label>
+												<label for="group2">Audi Group 2</label>
 											</div>
 											<div class="checkbox checkbox-success">
-												<input value="3"id="group2" type="checkbox" />
-												<label for="transmissionManual">Ford Group 3</label>
+												<input value="3" id="group2" type="checkbox" />
+												<label for="group3">Ford Group 3</label>
 											</div>
 										</div>
 									</div>
@@ -552,9 +563,9 @@
 									<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="group">Change Group</a></li>
-									<li><a href="#" data-toggle="modal" data-target="#mdModal" data-name="garage">Change Garage</a></li>
-									<li><a href="#" data-toggle="modal" data-target="#lgModal" >Create New Vehicle</a></li>
+									<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroupMulti">Change Group</a></li>
+									<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarageMulti">Change Garage</a></li>
+									<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicleMulti">Delete Vehicle</a></li>
 								</ul>
 							</div></th>
 						</tr></tfoot>
@@ -569,6 +580,8 @@
 		</div>
 	</div>
 
+	<div class="modal fade" id="customModal" tabindex="-1" role="dialog"></div>
+
 	<!-- Mainly scripts -->
 	<script src="./../../static/js/jquery-2.1.1.js"></script>
 	<script src="./../../static/js/bootstrap.min.js"></script>
@@ -577,15 +590,18 @@
 	<!-- Custom and plugin javascript -->
 	<script src="./../../static/js/inspinia.js"></script>
 	<script src="./../../static/js/plugins/pace/pace.min.js"></script>
-	
-	<!-- bootstrap-timepicker -->
-	<script src="./../../static/js/plugins/bootstrap-timepicker/bootstrap-timepicker.min.js"></script>
 
 	<!-- Chosen -->
 	<script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
 
 	<!-- datatables -->
 	<script src="./../../static/js/plugins/dataTables/datatables.js"></script>
+
+	<!-- dropzone -->
+	<script src="./../../static/js/plugins/dropzone/dropzone.js"></script>
+	
+	<!-- jasny -->
+	<script src="./../../static/js/plugins/jasny/jasny-bootstrap.min.js"></script>
 
 	<!-- jquery-bar-rating -->
 	<script src="./../../static/js/plugins/jquery-bar-rating/jquery.barrating.min.js"></script>
@@ -595,6 +611,7 @@
 
 	<!-- custom utils -->
 	<script src="./../../static/js/utils/generateUIElements.js"></script>
+	<script src="./../../static/js/utils/customModals.js"></script>
 	<script src="./../../static/js/utils/generateCustomDataTablesFilters.js"></script>
 
 	<!-- Page's script -->

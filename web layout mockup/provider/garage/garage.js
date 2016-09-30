@@ -9,6 +9,26 @@ const mockupData = [
 ];
 
 $(document).ready(function(){
+	// Render re/deactivate button
+	let isActivateInput = $('#isActive');
+	function renderActivationBtn(){
+		let btn = $('#activationBtn')
+		if(isActivateInput.val() == 'true'){
+			btn.attr('data-action', 'deactivateGarage');
+			btn.html('Deactivate Garage');
+			btn.removeClass('btn-success');
+			btn.addClass('btn-warning');
+		} else {
+			btn.attr('data-action', 'reactivateGarage');
+			btn.html('Reactivate Garage');
+			btn.removeClass('btn-warning');
+			btn.addClass('btn-success');
+		}
+	}
+	renderActivationBtn();
+	// Bind the change event of isActive input with rerendering the btn
+	isActivateInput.on('change', renderActivationBtn);
+
 	// Intialize location selector
 	$('#locationID').chosen({
 		width: "100%",
@@ -18,28 +38,7 @@ $(document).ready(function(){
 	// Render star-rating
 	let starRatingDiv = $('#starRating'),
 		star = starRatingDiv.data('star')
-
 	starRatingDiv.html(renderStarRating(star));
-
-	// Intinialize open/close time-picker
-	const timepickerConfig = {
-		showMeridian: false,
-		defaultTime: false
-	};
-	$('#openTimeMon').timepicker(timepickerConfig);
-	$('#closeTimeMon').timepicker(timepickerConfig);
-	$('#openTimeTue').timepicker(timepickerConfig);
-	$('#closeTimeTue').timepicker(timepickerConfig);
-	$('#openTimeWed').timepicker(timepickerConfig);
-	$('#closeTimeWed').timepicker(timepickerConfig);
-	$('#openTimeThur').timepicker(timepickerConfig);
-	$('#closeTimeThur').timepicker(timepickerConfig);
-	$('#openTimeFri').timepicker(timepickerConfig);
-	$('#closeTimeFri').timepicker(timepickerConfig);
-	$('#openTimeSat').timepicker(timepickerConfig);
-	$('#closeTimeSat').timepicker(timepickerConfig);
-	$('#openTimeSun').timepicker(timepickerConfig);
-	$('#closeTimeSun').timepicker(timepickerConfig);
 
 	// ============================================
 	// Vehicle table
@@ -57,7 +56,7 @@ $(document).ready(function(){
 	});
 
 	// set toogling dropdown event for filter dropdown buttons
-	$('#multiFilter .filter-toggle').on('click', function (event) {
+	$('#multiFilter .filter-toggle').click(function(event){
 		let dropdownContainer = $(this).parent();
 
 		if(dropdownContainer.hasClass('open')){
@@ -88,11 +87,11 @@ $(document).ready(function(){
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGarage" data-id="${row.id}" >Change Garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="changeGroup" data-id="${row.id}" >Change Group</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#smModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#bgModal" data-action="duplicate" data-id="${row.id}" >Duplicate</a></li>
-							<li><a href="./../car/car.html">Edit</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarage" data-vehicle-id="${row.id}" >Change Garage</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroup" data-vehicle-id="${row.id}" >Change Group</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.id}" data-vehicle-name="${row.name}" >Delete Vehicle</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${row.id}" >Duplicate Vehicle</a></li>
+							<li><a href="./../car/car.html" target="_blank">Edit Vehicle</a></li>
 						</ul>
 					</div>`;
 				}
@@ -139,4 +138,83 @@ $(document).ready(function(){
 	createCheckboxFilter(table, $('#fuelFilter'), 10);
 	// Vehicle Group filter
 	createCheckboxFilter(table, $('#groupFilter'), 3);
+
+	// Custom modal's content renders dynamically
+	$('#customModal').on('show.bs.modal', function(event) {
+		let button = $(event.relatedTarget),
+			action = button.data('action');
+
+		switch(action){
+			case 'changeGarage':{
+				renderSelectorModal('garage', this, [ button.data('vehicle-id') ]);
+			}
+			break;case 'changeGarageMulti':{
+				let vehicles = [],
+					data = table.rows({ selected: true }).data();
+					
+				for(let i = 0; i < data.length; i++){
+					vehicles.push(data[i].id);
+				}
+
+				renderSelectorModal('garage', this, vehicles);
+			}
+			break;case 'changeGroup':{
+				renderSelectorModal('group', this, [ button.data('vehicle-id') ]);
+			}
+			break;case 'changeGroupMulti':{
+				let vehicles = [],
+					data = table.rows({ selected: true }).data();
+					
+				for(let i = 0; i < data.length; i++){
+					vehicles.push(data[i].id);
+				}
+
+				renderSelectorModal('group', this, vehicles);
+			}
+			break;case 'duplicateVehicle':{
+				// Ajax to get the prototype vehicle's info using id: button.data('vehicle-id')
+				let protoVehicle = {
+					name: 'Audi A8ZR',
+					modelID: 4,
+					year: 2015,
+					garageID: 1,
+					groupID: 1,
+					transmissionType: 1,
+					transmissionDetail: '8-speed ZF 8HP tiptronic automatic',
+					engine: '4.2 V8 TDI',
+					fuel: 6,
+					color: 'black',
+					description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, qui, temporibus. Eius, id iusto repellat fugiat. Quo adipisci sint natus magni facilis tempore, possimus, pariatur perferendis consequatur eum quas rerum.'
+				}
+
+				renderCreateVehicleModal(this, protoVehicle);
+			}
+			break;case 'createVehicle':{
+				renderCreateVehicleModal(this, { });
+			}
+			break;case 'deleteVehicle':{
+				renderConfirmModal('vehicle', 'delete', this, [{ id: button.data('vehicle-id'), name: button.data('vehicle-name') }]);
+			}
+			break;case 'deleteVehicleMulti':{
+				let vehicles = [],
+					data = table.rows({ selected: true }).data();
+
+				for(let i = 0; i < data.length; i++){
+					vehicles.push({ id: data[i].id, name: data[i].name });
+				}
+
+				renderConfirmModal('vehicle', 'delete', this, vehicles);
+			}
+			break;case 'deactivateGarage':{
+				renderConfirmModal('garage', 'deactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
+			}
+			break;case 'reactivateGarage':{
+				renderConfirmModal('garage', 'reactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
+			}
+			break;case 'deleteGarage':{
+				renderConfirmModal('garage', 'delete', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
+			}
+			break;
+		}
+	});
 });
