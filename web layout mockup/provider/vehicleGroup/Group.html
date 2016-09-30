@@ -207,10 +207,16 @@
                                             <button class="btn btn-primary pull-right">Save changes</button>
                                         </div>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div>
+                            <div class="btn-group">
+                                <button id="activationBtn" class="btn btn-warning" data-toggle="modal" data-target="#customModal"></button>
+                                <button class="btn btn-primary pull-right">Save changes</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
 				<div class="ibox ibox-content float-e-margins">
 					<button data-toggle="modal" data-target="#customModal" data-action="createVehicle" class="btn btn-success pull-right" style="margin-bottom: 1em;" >
@@ -489,11 +495,11 @@
                                                 <div class="input-group" id="GroupSelector">
                                                     <div class="checkbox checkbox-success">
                                                         <input value="1" id="group1" type="checkbox" />
-                                                        <label for="transmissionAutomatic">HCM Garage</label>
+                                                        <label for="group1">HCM garage</label>
                                                     </div>
                                                     <div class="checkbox checkbox-success">
                                                         <input value="2" id="group2" type="checkbox" />
-                                                        <label for="transmissionManual">HaNoi Garage</label>
+                                                        <label for="group2">Hanoi Garage</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -546,7 +552,7 @@
     <script src="./../../static/js/utils/customModals.js"></script>
     <script src="./../../static/js/utils/generateCustomDataTablesFilters.js"></script>
     <!-- Page's script -->
-    <script src="./vehicleGroup.js"></script>
+    <script src="./Group.js"></script>
 </body>
 
 </html>

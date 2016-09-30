@@ -1,11 +1,11 @@
 const mockupData = [
-	{ "id": 1, "name": "BMW X5a", "brandID": 2, "modelID": 14, "modelName": "BMW X5", "groupID": 1, "Garage": "HCM Garage", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 2, "name": "BMW X6b", "brandID": 2, "modelID": 15, "modelName": "BMW X6", "groupID": 1, "Garage": "HCM Garage", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 3, "name": "BMW X3c", "brandID": 2, "modelID": 13, "modelName": "BMW X3", "groupID": 1, "Garage": "HCM Garage", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 4, "name": "Audi A7d", "brandID": 1, "modelID": 3, "modelName": "Audi A7", "groupID": 2, "Garage": "HCM Garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 5, "name": "Audi A8e", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "Garage": "HaNoi Garage", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 6, "name": "Audi A8f", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "Garage": "HaNoi Garage", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 18, "modelName": "Ford Fiesta Mk6", "groupID": 3, "Garage": "HaNoi Garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" }
+	{ "id": 1, "name": "BMW X5a", "brandID": 2, "modelID": 14, "modelName": "BMW X5", "groupID": 1, "garage": "HCM garage", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
+	{ "id": 2, "name": "BMW X6b", "brandID": 2, "modelID": 15, "modelName": "BMW X6", "groupID": 1, "garage": "HCM garage", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 3, "name": "BMW X3c", "brandID": 2, "modelID": 13, "modelName": "BMW X3", "groupID": 1, "garage": "HCM garage", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 4, "name": "Audi A7d", "brandID": 1, "modelID": 3, "modelName": "Audi A7", "groupID": 2, "garage": "Hanoi garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 5, "name": "Audi A8e", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "garage": "Hanoi garage", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 6, "name": "Audi A8f", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "garage": "Hanoi garage", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
+	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 18, "modelName": "Ford Fiesta Mk6", "groupID": 3, "garage": "Hanoi garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" }
 ];
 
 $(document).ready(function(){
@@ -14,12 +14,12 @@ $(document).ready(function(){
 	function renderActivationBtn(){
 		let btn = $('#activationBtn')
 		if(isActivateInput.val() == 'true'){
-		    btn.attr('data-action', 'deactivateCarGroup');
+			btn.attr('data-action', 'deactivateCarGroup');
 			btn.html('Deactivate Car Group');
 			btn.removeClass('btn-success');
 			btn.addClass('btn-warning');
 		} else {
-		    btn.attr('data-action', 'reactivateCarGroup');
+			btn.attr('data-action', 'reactivateCarGroup');
 			btn.html('Reactivate Car Group');
 			btn.removeClass('btn-warning');
 			btn.addClass('btn-success');
@@ -109,7 +109,7 @@ $(document).ready(function(){
 			{ name: 'Seat', title: 'Seat', data: 'numOfSeat', width: '5%' },
 			{ name: 'Transmission', title: 'Transmission', data: 'transmission', width: '10%' },
 			{ name: 'Fuel', title: 'Fuel', data: 'fuel', width: '10%' },
-			{ name: 'Garage', title: 'Garage', data: 'Garage', width: '15%' },
+			{ name: 'Garage', title: 'Garage', data: 'garage', width: '15%' },
 			{
 				name: 'Action', 
 				title: 'Action',
