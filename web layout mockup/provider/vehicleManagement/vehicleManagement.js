@@ -99,7 +99,7 @@ $(document).ready(function() {
                 </button>
                 <ul class="dropdown-menu">
                     <li><a href="#" data-toggle="modal" class="font-bold" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${o[0]}">Duplicate</a></li>
-                    <li><a href="./../car/car.html" class="font-bold">Edit</a></li>
+                    <li><a href="./../vehicle/vehicle.html" class="font-bold">Edit</a></li>
 
                     <li><a href="#" data-toggle="modal" class="font-bold" data-target="#confirmModal" data-action="delete" data-name="${o[1]}" data-id="${o[0]}">Delete</a></li>
                 </ul>

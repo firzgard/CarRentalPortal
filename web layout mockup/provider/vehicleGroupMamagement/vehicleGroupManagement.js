@@ -63,7 +63,7 @@ $(document).ready(() => {
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="./../garage/garage.html">Edit</a></li>
+							<li><a href="./../vehicleGroup/vehicleGroup.html">Edit</a></li>
 						</ul>
 					</div>`;
 				}
