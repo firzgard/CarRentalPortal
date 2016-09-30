@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Car Group</title>
+	<title>Vehicle Group</title>
 	<link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
 	<link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
 
@@ -17,7 +17,7 @@
 	<link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
 
 	<link href="./../../static/css/style.css" rel="stylesheet">
-	<link href="./carGroup.css" rel="stylesheet">
+	<link href="./vehicleGroup.css" rel="stylesheet">
 </head>
 
 <body>
@@ -33,70 +33,68 @@
                 <div class="col-md-10">
                     <h2>Group Detail</h2></div>
             </div>
-            <div class="col-lg-8">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-content">
-                        <form action="#">
-                            <input type="hidden" value="666" id="garageID" required>
-                            <input type="hidden" value="true" id="isActive" required>
-                            <div class="row form-group">
-                                <div class="col-md-6">
-                                    <div class="input-group"> <span class="input-group-addon"><i class="fa fa-building-o"></i></span>
-                                        <input type="text" placeholder="Garage Name" value="Car Group A" id="name" class="form-control input-lg" required> </div>
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form action="#">
+                        <input type="hidden" value="666" id="garageID" required>
+                        <input type="hidden" value="true" id="isActive" required>
+                        <div class="row form-group">
+                            <div class="col-md-6">
+                                <div class="input-group"> <span class="input-group-addon"><i class="fa fa-building-o"></i></span>
+                                    <input type="text" placeholder="Garage Name" value="Vehicle Group A" id="name" class="form-control input-lg" required> </div>
+                            </div>
+                            <div class="status-label">
+                                <p class="label label-primary">Active</p>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label>Status:</label>
+                                    <br/>
+                                    <select data-placeholder="Status">
+                                        <option value="1" selected>Active</option>
+                                        <option value="2">InActive</option>
+                                    </select>
                                 </div>
-                                <div class="status-label">
-                                    <p class="label label-primary">Active</p>
+                                <div class="form-group">
+                                    <label>Max Rental Period:</label>
+                                    <input type="text" placeholder="Period" value="1 day" class="form-control" style="width: 100px;"> </div>
+                                <div class="form-group">
+                                    <label>Price Group:</label>
+                                    <br/>
+                                    <select>
+                                        <option value="1">Price group A</option>
+                                        <option value="2">Price group B</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="row form-group">
-                                <div class="col-md-8">
-                                    <div class="form-group">
-                                        <label>Status:</label>
-                                        <br/>
-                                        <select data-placeholder="Status">
-                                            <option value="1" selected>Active</option>
-                                            <option value="2">InActive</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label>Max Rental Period:</label>
-                                        <input type="text" placeholder="Period" value="1 day" class="form-control" style="width: 100px;"> </div>
-                                    <div class="form-group">
-                                        <label>Price Group:</label>
-                                        <br/>
-                                        <select>
-                                            <option value="1">Price group A</option>
-                                            <option value="2">Price group B</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4" style="border: 2px solid black;">
-                                    <dl class="small m-b-none" style="text-align: center;">
-                                        <h4><font color="blue">5000/h price Group</font></h4>
-                                        <div class="ibox-content text-center">
-                                            <h5>Deposit: 1000k</h5>
-                                            <h5>Per Day Price: 5000k</h5>
-                                            <div class="m-t-md"> <a data-toggle="modal" class="btn btn-success" href="#modal-form2">New Price Group Item</a>
-                                                <div id="modal-form2" class="modal fade" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-body">
-                                                                <div class="row" style="text-align: center">
-                                                                    <h3 class="m-t-none m-b">New price group item</h3>
-                                                                    <div class="hihi">
-                                                                        <form role="form">
-                                                                            <div class="form-group">
-                                                                                <label>Deposit</label>
-                                                                                <input type="text" placeholder="200k" class="form-control"> </div>
-                                                                            <div class="form-group">
-                                                                                <label>Perday price</label>
-                                                                                <input type="text" placeholder="400k" class="form-control"> </div>
-                                                                            <div class="form-group">
-                                                                                <button class="btn btn-md btn-primary" type="submit"><strong>Update</strong></button>
-                                                                                <button class="btn btn-md btn-warning" type="submit"><strong>Cancle</strong></button>
-                                                                            </div>
-                                                                        </form>
-                                                                    </div>
+                            <div class="col-md-4" style="border: 2px solid black;">
+                                <dl class="small m-b-none" style="text-align: center;">
+                                    <h4><font color="blue">5000/h price Group</font></h4>
+                                    <div class="ibox-content text-center">
+                                        <h5>Deposit: 1000k</h5>
+                                        <h5>Per Day Price: 5000k</h5>
+                                        <div class="m-t-md"> <a data-toggle="modal" class="btn btn-success" href="#modal-form2">New Price Group Item</a>
+                                            <div id="modal-form2" class="modal fade" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <div class="row" style="text-align: center">
+                                                                <h3 class="m-t-none m-b">New price group item</h3>
+                                                                <div class="hihi">
+                                                                    <form role="form">
+                                                                        <div class="form-group">
+                                                                            <label>Deposit</label>
+                                                                            <input type="text" placeholder="200k" class="form-control"> </div>
+                                                                        <div class="form-group">
+                                                                            <label>Perday price</label>
+                                                                            <input type="text" placeholder="400k" class="form-control"> </div>
+                                                                        <div class="form-group">
+                                                                            <button class="btn btn-md btn-primary" type="submit"><strong>Update</strong></button>
+                                                                            <button class="btn btn-md btn-warning" type="submit"><strong>Cancle</strong></button>
+                                                                        </div>
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -104,25 +102,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </dl>
-                                </div>
+                                    </div>
+                                </dl>
                             </div>
-                            <button class="btn btn-primary">Save changes</button>
-                        </form>
-                    </div>
+                        </div>
+                        <button class="btn btn-primary">Save changes</button>
+                    </form>
                 </div>
             </div>
-            <div class="col-lg-4">
-                <div class="ibox float-e-margins" style="text-align:center">
-                    <div class="ibox-title"> <span class="label label-warning pull-right"></span>
-                        <h5>Other car groups</h5> </div>
-                    <div class="ibox-content">
-                        <div class="row" style="border: 2px solid black;"> </div>
-                        <button class="btn btn-primary" style="margin-top: 5px">Car group management</button>
-                    </div>
-                </div>
-            </div>
-            
             
 			<div>
 				<div class="ibox ibox-content float-e-margins">
@@ -505,7 +492,7 @@
 	<script src="./../../static/js/utils/generateCustomDataTablesFilters.js"></script>
 
 	<!-- Page's script -->
-	<script src="./carGroup.js"></script>
+	<script src="./vehicleGroup.js"></script>
 </body>
 
 </html>

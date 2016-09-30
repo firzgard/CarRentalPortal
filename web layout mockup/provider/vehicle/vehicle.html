@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CRP | Edit car</title>
+    <title>Vehicle</title>
 
     <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
     <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -17,7 +17,7 @@
 
     <link href="./../../static/css/animate.css" rel="stylesheet">
     <link href="./../../static/css/style.css" rel="stylesheet">
-    <link href="./car.css" rel="stylesheet">
+    <link href="./vehicle.css" rel="stylesheet">
 </head>
 
 <body>
@@ -139,27 +139,6 @@
             </ul>
 
         </nav>
-        </div>
-            <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-10">
-                    <h2>Edit car</h2>
-                    <ol class="breadcrumb">
-                        <li>
-                            <a href="#">Home</a>
-                        </li>
-                        <li>
-                            <a href="#">Car Management</a>
-                        </li>
-                        <li class="active">
-                            <strong>Edit car</strong>
-                        </li>
-                    </ol>
-                </div>
-                <div class="col-lg-2">
-
-                </div>
-            </div>
-    
     <div class="row">
     <div class="col-md-offset-1 col-md-10 wrapper wrapper-content animated fadeInRight">
         <div class="row">
@@ -168,14 +147,14 @@
                 <div class="ibox product-detail">
                     <div class="ibox-content">
                     <div class="row">
-                            <h2 class="font-bold">Car detail</h2>
-                            <a href="./../carManagement/carManagement.html" class="btn btn-primary pull-right m-r" style="margin-top: -40px; width: 100px;"><i class="fa fa-lg fa-arrow-circle-left"></i><span> Back</span></a>
+                            <h2 class="font-bold">Vehicle detail</h2>
+                            <a href="./../vehicleManagement/vehicleManagement.html" class="btn btn-primary pull-right m-r" style="margin-top: -40px; width: 100px;"><i class="fa fa-lg fa-arrow-circle-left"></i><span> Back</span></a>
                             <hr>
                         
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-4 text-right">
-                                    <label>Car garage</label>
+                                    <label>Garage</label>
                                 </div>
                                 <div class="col-md-8">
                                     <select class="form-control m-b">
@@ -190,7 +169,7 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-4 text-right">
-                                    <label>Car group</label>
+                                    <label>Group</label>
                                 </div>
                                 <div class="col-md-8">
                                     <select class="form-control m-b">
@@ -205,7 +184,7 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-4 text-right">
-                                    <label>Car brand</label>
+                                    <label>Brand</label>
                                 </div>
                                 <div class="col-md-8">
                                     <select class="form-control m-b">
@@ -220,7 +199,7 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-4 text-right">
-                                    <label>Car version</label>
+                                    <label>Model</label>
                                 </div>
                                 <div class="col-md-8">
                                     <select class="form-control m-b">
@@ -234,52 +213,12 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-md-4 text-right">
-                                    <label>Car type</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <select class="form-control m-b">
-                                        <option>Compact</option>
-                                        <option selected>SUV</option>
-                                        <option>Luxury</option>
-                                        <option>Sports</option>
-                                        <option>Electric</option>
-                                        <option>Trucks</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-4 text-right">
-                                    <label>License number</label>
+                                    <label>License</label>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="m-b">
                                         <input type="text" class="form-control" value="59H-201.11"/>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-4 text-right">
-                                    <label>Number of seat</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control m-b" value="5"/>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-4 text-right">
-                                    <label>Number of door</label>
-                                </div>
-                                <div class="col-md-8">
-                                    <input type="text" class="form-control m-b" value="4" />
                                 </div>
                             </div>
                         </div>
@@ -407,12 +346,7 @@
                                 </div>
                             </div>
                         </div>
-                        
-<!--
-                        <div class="col-md-6">
-                        </div>
--->
-                        
+
                         <div class="col-md-6">
                             <form id="my-awesome-dropzone" class="dropzone" action="#">
                                 <div id="preview-template">
@@ -451,7 +385,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Car details</h4>
+                    <h4 class="modal-title">Vehicle details</h4>
                 </div>
                 <div class="modal-body form-horizontal">
                 </div>
@@ -477,7 +411,7 @@
     <script src="./../../static/js/plugins/dropzone/dropzone.js"></script>
 
     <!-- Page-Level Scripts -->
-    <script src="./car.js"></script>
+    <script src="./vehicle.js"></script>
 
 </body>
 
