@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garage 3k</title>
+    <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="./../../static/css/animate.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="./../../static/plugins/chosen/chosen.css" rel="stylesheet">
+    <link href="./../../static/css/style.css" rel="stylesheet"> </head>
+
+<body>
+    <button class="btn btn-primary" data-toggle="modal" data-target="#modal-form">Change Garage</button>
+    <div id="modal-form" class="modal fade" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="ibox float-e-margins" style="text-align:center">
+                                <div class="ibox-title"> <span class="label label-warning pull-right"></span>
+                                    <h5>Other car groups</h5> </div>
+                                <select data-placeholder="choose a group" class="form-control">
+                                    <option value="0">Group A</option>
+                                    <option value="1">Group B</option>
+                                    <option value="2">Group C</option>
+                                </select>
+                                <br/>
+                                <button class="btn btn-primary" style="margin-top: 5px">Update</button>
+                                <button class="btn btn-danger" style="margin-top: 5px">Cancle</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="./../../static/js/jquery-2.1.1.js"></script>
+    <script src="./../../static/js/bootstrap.min.js"></script>
+    <script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="./../../static/js/inspinia.js"></script>
+    <script src="./../../static/js/plugins/pace/pace.min.js"></script>
+    <!-- Chosen -->
+    <script src="./../../static/js/plugins/chosen/chosen.jquery.js"></script>
+    <!-- custom utils -->
+    <script src="./../../static/js/utils/customModals.js"></script>
+    <!-- Page's script -->
+    <script>
+        $(document).ready(() => {
+            $('#mdModal').on('show.bs.modal', function (event) {
+                const ajaxData = [
+                    {
+                        id: 1
+                        , name: 'Garage Black'
+                    }
+                    , {
+                        id: 2
+                        , name: 'Garage White'
+                    }
+                    , {
+                        id: 3
+                        , name: 'Garage Red'
+                    }
+                    , {
+                        id: 4
+                        , name: 'Garage Blue'
+                    }
+                    , {
+                        id: 5
+                        , name: 'Garage Green'
+                    }
+				];
+                renderChangeGaragePopup(ajaxData, this);
+            });
+        });
+    </script>
+</body>
+
+</html>
