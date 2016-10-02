@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9cfe2ffcad9f46058d3c4e75e9558197" Name="Diagram1">
+        <EntityTypeShape EntityType="CRPDBModel.BookingReceipt" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Brand" Width="1.5" PointX="0.75" PointY="4.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Garage" Width="1.5" PointX="3" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Model" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Notification" Width="1.5" PointX="3" PointY="16.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.PriceGroup" Width="1.5" PointX="0.75" PointY="20.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.PriceGroupItem" Width="1.5" PointX="3" PointY="23.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.User" Width="1.5" PointX="0.75" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.Vehicle" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.VehicleGroup" Width="1.5" PointX="3" PointY="20" IsExpanded="true" />
+        <EntityTypeShape EntityType="CRPDBModel.VehicleImage" Width="1.5" PointX="7.5" PointY="11.75" IsExpanded="true" />
+        <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_Vehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_CarModel_CarBrand" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Car_Store" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Store_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Vehicle_Model" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Notification_User" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Notification_User1" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_PriceGroupItem_PriceGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_VehicleGroup_PriceGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_Car_CarGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="CRPDBModel.FK_CarImage_Car" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
