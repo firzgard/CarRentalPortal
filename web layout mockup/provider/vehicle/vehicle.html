@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Vehicle</title>
+
+    <link href="./../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    
+    <!-- DROPZONE -->
+    <link href="./../../static/css/plugins/dropzone/basic.css" rel="stylesheet">
+    <link href="./../../static/css/plugins/dropzone/dropzone.css" rel="stylesheet">
+
+    <link href="./../../static/css/animate.css" rel="stylesheet">
+    <link href="./../../static/css/style.css" rel="stylesheet">
+    <link href="./vehicle.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="wrapper">
+		<nav class="navbar-default navbar-static-side" role="navigation">
+			<div class="sidebar-collapse">
+				<ul class="nav metismenu" id="side-menu">
+					<li class="nav-header">
+						<div class="dropdown profile-element text-center">
+							<a href="./../../common/home/home.html"><h1><i class="fa fa-car"></i> CRP</h1></a>
+						</div>
+						<div class="logo-element">
+							<a href="./../../common/home/home.html"><i class="fa fa-car"></i></a>
+						</div>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-th-large"></i>
+							<span class="nav-label">Administration</span>
+							<span class="fa arrow"></span>
+						</a>
+						<ul class="nav nav-second-level collapse">
+							<li><a href="./../../admin/userManagement/userManagement.html">User managerment</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">
+							<i class="fa fa-th-large"></i>
+							<span class="nav-label">Rental Management</span>
+							<span class="fa arrow"></span>
+						</a>
+						<ul class="nav nav-second-level collapse">
+							<li><a href="./../../provider/vehicleManagement/vehicleManagement.html">Vehicle</a></li>
+							<li><a href="./../../provider/garageManagement/garageManagement.html">Garage</a></li>
+							<li><a href="./../../provider/vehicleGroupMamagement/vehicleGroupManagement.html">Vehicle Group</a></li>
+						</ul>
+					</li>
+					<li><a href="./../../customer/personalInfo/personalInfo.html">
+						<i class="fa fa-th-large"></i>
+						<span class="nav-label">Personal Information</span>
+					</a></li>
+					<li><a href="./../../customer/bookingHistory.html">
+						<i class="fa fa-th-large"></i>
+						<span class="nav-label">Booking history</span>
+					</a></li>
+				</ul>
+			</div>
+		</nav>
+		<div id="page-wrapper" class="gray-bg">
+
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+					<div class="navbar-header">
+						<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+					</div>
+					<ul class="nav navbar-top-links navbar-right">
+						<li class="dropdown">
+							<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+								<i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
+							</a>
+							<ul class="dropdown-menu dropdown-alerts">
+								<li>
+									<a href="mailbox.html">
+										<div>
+											<i class="fa fa-envelope fa-fw"></i> You have 16 messages
+											<span class="pull-right text-muted small">4 minutes ago</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="profile.html">
+										<div>
+											<i class="fa fa-twitter fa-fw"></i> 3 New Followers
+											<span class="pull-right text-muted small">12 minutes ago</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<a href="grid_options.html">
+										<div>
+											<i class="fa fa-upload fa-fw"></i> Server Rebooted
+											<span class="pull-right text-muted small">4 minutes ago</span>
+										</div>
+									</a>
+								</li>
+								<li class="divider"></li>
+								<li>
+									<div class="text-center link-block">
+										<a href="notifications.html">
+											<strong>See All Alerts</strong>
+											<i class="fa fa-angle-right"></i>
+										</a>
+									</div>
+								</li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="login.html">
+								<i class="fa fa-sign-out"></i> Log out
+							</a>
+						</li>
+					</ul>
+				</nav>
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-md-10"><h2>Vehicle Detail</h2></div>
+        </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="ibox product-detail">
+                    <div class="ibox-content">
+                    <div class="row">
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>Garage</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control m-b">
+                                        <option selected>Garage X</option>
+                                        <option>Garage Y</option>
+                                        <option>Garage Z</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>Group</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control m-b">
+                                        <option selected>Group A</option>
+                                        <option>Group B</option>
+                                        <option>Group C</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>Brand</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control m-b">
+                                        <option>Audi</option>
+                                        <option>BMW</option>
+                                        <option selected>Honda</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>Model</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <select class="form-control m-b">
+                                        <option>CRV-2015</option>
+                                        <option selected>CRV-2016</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>License</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="m-b">
+                                        <input type="text" class="form-control" value="59H-201.11"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>Engine</label>
+                                </div>
+                                <div class="col-md-8 m-b">                                    
+                                    <input type="text" class="form-control" value="3.0L 381HP Diesel I6 tri-turbo M"/>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>Fuel type</label>
+                                </div>
+                                <div class="col-md-8 m-b">
+                                    <select class="form-control">
+                                        <option selected>Petrol</option>
+                                        <option>Gas</option>
+                                        <option>Electric</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>Transmission</label>
+                                </div>
+                                <div class="col-md-8 m-b">
+                                    <div class="form-control">
+                                        <div class="col-md-6"><input type="radio" checked value="Automatic" name="trans"> Automatic</div>
+                                        <div class="col-md-6"><input type="radio" value="Manual" name="trans"> Manual</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>Color</label>
+                                </div>
+                                <div class="col-md-8 m-b" style="height: 200px;">
+                                    <div class="row m-l">
+                                        <span id="car-color"><i class="fa fa-lg fa-car"></i></span> <span id="color-name">Black</span>
+                                        <a class="btn btn-sm btn-default m-l-xs" id="change-color">Change</a>
+                                        
+                                        <div id="panel-color" class="panel panel-primary m-r m-t">
+                                            <div class="panel-heading">
+                                                Choose a color
+                                            </div>
+                                            <div class="panel-body">
+                                                <a title="Beige" class="btn btn-lg btn-color" style="background-color: beige"></a>
+                                                <a title="Black" class="btn btn-lg btn-color" style="background-color: black"></a>
+                                                <a title="Blue" class="btn btn-lg btn-color" style="background-color: blue"></a>
+                                                <a title="Brown" class="btn btn-lg btn-color" style="background-color: brown"></a>
+                                                <a title="Gold" class="btn btn-lg btn-color" style="background-color: Gold"></a>
+                                                <a title="Green" class="btn btn-lg btn-color" style="background-color: Green"></a>
+                                                <a title="Orange" class="btn btn-lg btn-color" style="background-color: Orange"></a>
+                                                <a title="Purple" class="btn btn-lg btn-color" style="background-color: Purple"></a>
+                                                <a title="Red" class="btn btn-lg btn-color" style="background-color: Red"></a>
+                                                <a title="Silver" class="btn btn-lg btn-color" style="background-color: Silver"></a>
+                                                <a title="White" class="btn btn-lg btn-color" style="background-color: White"></a>
+                                                <a title="Yellow" class="btn btn-lg btn-color" style="background-color: Yellow"></a>
+                                                <br/>
+                                                <a id="close-color-panel" class="btn btn-sm btn-primary">close</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="img-div" class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-4 text-right">
+                                    <label>Image</label>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="carousel slide m-b" id="carousel1">
+                                        <div class="carousel-inner">
+                                            <div class="item active">
+                                                <img alt="image" class="img-responsive" src="../../static/img/honda1.jpg">
+                                            </div>
+                                            <div class="item">
+                                                <img alt="image" class="img-responsive" src="../../static/img/honda2.jpg">
+                                            </div>
+                                            <div class="item ">
+                                                <img alt="image" class="img-responsive" src="../../static/img/honda3.jpg">
+                                            </div>
+                                            <div class="item ">
+                                                <img alt="image" class="img-responsive" src="../../static/img/honda4.jpg">
+                                            </div>
+                                        </div>
+                                        <a data-slide="prev" href="#carousel1" class="left carousel-control">
+                                            <span class="icon-prev"></span>
+                                        </a>
+                                        <a data-slide="next" href="#carousel1" class="right carousel-control">
+                                            <span class="icon-next"></span>
+                                        </a>
+                                    </div>
+                                    <a id="edit-img" class="btn btn-warning">Edit image</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                <div id="preview-template">
+                                </div>
+                                <div class="row">
+                                    <input type="button" name="submit-img" class="btn btn-success pull-right m-l-xs" value="Save" />
+                                    <a id="cancel-img" class="btn btn-default pull-right">Cancel</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                        
+                        <hr>
+                    <div class="row">
+                        <div class="text-center">
+                            <a class="btn btn-primary btn-lg">Save change</a>
+                        </div>
+                    </div>
+                        
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+        <div class="footer text-center" style="position: initial;">
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2015
+            </div>
+        </div>
+    </div>
+</div>
+        
+    <div id="edit-car" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-lg" style="width: 80%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Vehicle details</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Mainly scripts -->
+    <script src="./../../static/js/jquery-2.1.1.js"></script>
+    <script src="./../../static/js/bootstrap.min.js"></script>
+    <script src="./../../static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="./../../static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="./../../static/js/inspinia.js"></script>
+    <script src="./../../static/js/plugins/pace/pace.min.js"></script>
+    <!-- DROPZONE -->
+    <script src="./../../static/js/plugins/dropzone/dropzone.js"></script>
+
+    <!-- Page-Level Scripts -->
+    <script src="./vehicle.js"></script>
+
+</body>
+
+</html>
