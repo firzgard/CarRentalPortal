@@ -6,7 +6,7 @@ using System.Web;
 
 namespace CRP.Models.Entities
 {
-	public interface IUnitOfWork
+	public interface IUnitOfWork : IDisposable
 	{
 		void Save();
 		Task SaveAsync();
@@ -29,6 +29,11 @@ namespace CRP.Models.Entities
 		public async Task SaveAsync()
 		{
 			await this.entities.SaveChangesAsync();
+		}
+
+		public void Dispose()
+		{
+			entities.Dispose();
 		}
 	}
 }

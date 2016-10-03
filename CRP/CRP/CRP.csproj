@@ -603,6 +603,8 @@
     <Content Include="Models\Entities\CRPEntities.edmx.diagram">
       <DependentUpon>CRPEntities.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Provider\Views\Garage\GarageListView.cshtml" />
+    <Content Include="Areas\Provider\Views\Garage\GarageDetail.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -664,7 +666,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Vehicle\Random.cshtml" />
     <Content Include="Views\Shared\_SideNavBarPartial.cshtml" />
     <Content Include="Views\Shared\_ManagementLayout.cshtml" />
     <Content Include="Views\Shared\_jsTreeDemo.cshtml" />
@@ -682,7 +683,6 @@
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
-    <Folder Include="Areas\Provider\Views\Garage\" />
     <Folder Include="Areas\Provider\Views\Shared\" />
     <Folder Include="Areas\Provider\Views\Vehicle\" />
     <Folder Include="Models\ViewModels\" />
