@@ -12,6 +12,6 @@ namespace CRP.Models.Entities.Services
 	public class ModelDetails
 	{
 		public Model Model { get; set; }
-		public IQueryable<Brand> Brand { get; set; }
+		public IEnumerable<Brand> Brand { get; set; }
 	}
 }
