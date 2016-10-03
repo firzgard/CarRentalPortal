@@ -1,0 +1,59 @@
+﻿@model CRP.Models.Entities.Garage
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+    List<CRP.Models.Entities.Garage> lstGara = ViewBag.garaList;
+}
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>name</th>
+            <th>Action</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @{
+            foreach (CRP.Models.Entities.Garage gara in lstGara)
+            {
+                <tr>
+                    <td>
+                        @gara.ID
+                    </td>
+                    <td>
+                        @gara.Name
+                    </td>
+                    <td><button class="btn btn-primary" onclick="deleteGara(@gara.ID)">Delete</button></td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    function deleteGara(id) {
+        $.ajax({
+            url: '/Brand/delete',
+            data: {
+                id: id
+            },
+
+            error: function () {
+                alert("Problem")
+            },
+            success: function (data) {
+                if (data === 'true') {
+                    alert("Delete successfully!")
+                    location.reload();
+                } else {
+                    alert("Cannot delete this PC because it is in used!");
+                }
+
+            },
+
+            type: 'post'
+        });
+    }
+</script>

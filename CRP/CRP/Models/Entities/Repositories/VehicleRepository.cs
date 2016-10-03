@@ -5,13 +5,13 @@ using System.Web;
 
 namespace CRP.Models.Entities.Repositories
 {
-	public partial interface IVehicleRepository : IRepository<Vehicle>
+	public partial interface IVehicleRepository
 	{
 
 	}
 
-	public partial class VehicleRepository : BaseRepository<Vehicle>, IVehicleRepository
+	public partial class VehicleRepository : IVehicleRepository
 	{
-		public VehicleRepository(CRPEntities entities) : base(entities) { }
+		public VehicleRepository(){ }
 	}
 }

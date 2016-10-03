@@ -1,0 +1,65 @@
+﻿@model CRP.Models.Entities.Brand
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+    List<CRP.Models.Entities.Brand> lstBrand = ViewBag.brandList;
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>brand</th>
+            <th>Action</th>
+            <th>Action 2</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @{
+            foreach (CRP.Models.Entities.Brand brand in lstBrand)
+            {
+                <tr>
+                    <td>
+                        @brand.ID
+                    </td>
+                    <td>
+                        @brand.Name
+                    </td>
+                    <td>
+                    <button class="btn btn-primary" onclick="deleteGara(@brand.ID)">Delete</button></td>
+                    <td>
+                        <button class="btn btn-primary" onclick="deleteGara(@brand.ID)">Update</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    function deleteGara(id) {
+        $.ajax({
+            url: '/Brand/Delete',
+            data: {
+                id: id
+            },
+
+            error: function () {
+                alert("Problem")
+            },
+            success: function (data) {
+                if (data.isSucced) {
+                    alert("Delete successfully!")
+                    location.reload();
+                } else {
+                    alert("Cannot delete this because it is in used!");
+                }
+            },
+            fail : function(){
+                alert("cccc")
+            },
+            type: 'post'
+        });
+    }
+</script>

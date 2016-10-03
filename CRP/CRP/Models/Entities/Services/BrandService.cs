@@ -6,10 +6,10 @@ using System.Web;
 
 namespace CRP.Models.Entities.Services
 {
-	public class GarageService 
-	{
-        GarageRepository _repository = new GarageRepository();
-        public Boolean add(Garage brand)
+    public class BrandService
+    {
+        BrandRepository _repository = new BrandRepository();
+        public Boolean add(Brand brand)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace CRP.Models.Entities.Services
 
         public Boolean delete(int ID)
         {
-            Garage deleteBrand = _repository.findById(ID);
+            Brand deleteBrand = _repository.findById(ID);
             if (deleteBrand == null)
             {
                 return false;
@@ -44,10 +44,10 @@ namespace CRP.Models.Entities.Services
                 return true;
             }
         }
-        public List<Garage> getAll()
+        public List<Brand> getAll()
         {
-            List<Garage> lstBrand = new List<Garage>();
-            lstBrand = _repository.getAllGarage();
+            List<Brand> lstBrand = new List<Brand>();
+            lstBrand = _repository.getList();
             return lstBrand;
         }
     }
