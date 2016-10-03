@@ -8,18 +8,16 @@ using System.Web;
 
 namespace CRP.Models.Entities.Repositories
 {
-	public interface IRepository
+	public class IEntity
 	{
-
+		public string Id;
 	}
-
-	public interface IRepository<TEntity> : IRepository
-		where TEntity : class
+	public interface BaseRepository<T> where T : class
 	{
-	}
-
-	public abstract class BaseRepository<TEntity> : IRepository<TEntity>
-		where TEntity : class
-	{
+		IEnumerable<T> List { get; }
+		void Add(T entity);
+		void Delete(T entity);
+		void Update(T entity);
+		T findById(int Id);
 	}
 }
