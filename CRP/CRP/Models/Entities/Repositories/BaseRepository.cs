@@ -63,5 +63,10 @@ namespace CRP.Models.Entities.Repositories
 		{
 			return await this.dbSet.FindAsync(key);
 		}
-	}
+
+        public IEnumerable<TEntity> GetAll()
+        {
+            return this.dbSet.ToList<TEntity>();
+        }
+    }
 }

@@ -16,10 +16,10 @@ namespace CRP.Models.Entities.Services
 
 		Task<VehicleDetails> GetDetailAsync(string seoName);
 
-		Task CreateAsync(Vehicle vehicle);
+        new Task CreateAsync(Vehicle vehicle);
 
-		Task UpdateAsync(Vehicle vehicle);
-	}
+        new Task UpdateAsync(Vehicle vehicle);
+    }
 
 	public class VehicleService
 	{

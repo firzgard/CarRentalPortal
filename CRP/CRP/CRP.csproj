@@ -605,6 +605,13 @@
     </Content>
     <Content Include="Areas\Provider\Views\Garage\GarageListView.cshtml" />
     <Content Include="Areas\Provider\Views\Garage\GarageDetail.cshtml" />
+    <Content Include="Areas\Provider\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Provider\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Provider\Views\Vehicle\Index.cshtml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -643,8 +650,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -683,8 +688,7 @@
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
-    <Folder Include="Areas\Provider\Views\Shared\" />
-    <Folder Include="Areas\Provider\Views\Vehicle\" />
+    <Folder Include="Content\extends\" />
     <Folder Include="Models\ViewModels\" />
   </ItemGroup>
   <ItemGroup>
