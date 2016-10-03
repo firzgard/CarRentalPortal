@@ -70,26 +70,18 @@ namespace CRP.Areas.Provider.Controllers
             }
         }
 
-        // GET: Provider/CarBrand/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
         // POST: Provider/CarBrand/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
 
-                return RedirectToAction("Index");
-            }
-            catch
+        [HttpPost]
+        public String Delete()
+        {
+            int ID = int.Parse(Request.Params["id"]);
+
+            if (service.delete(ID))
             {
-                return View();
+                return "true";
             }
+            return "false";
         }
     }
 }
