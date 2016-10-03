@@ -6,7 +6,7 @@ using System.Web;
 
 namespace CRP.Models.Entities.Services
 {
-	public class GarageService
+	public class GarageService 
 	{
         GarageRepository _repository = new GarageRepository();
         public Boolean add(Garage brand)
@@ -39,6 +39,7 @@ namespace CRP.Models.Entities.Services
                 catch (Exception e)
                 {
                     e.GetHashCode();
+                    return false;
                 }
                 return true;
             }

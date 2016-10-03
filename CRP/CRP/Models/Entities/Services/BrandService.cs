@@ -39,6 +39,7 @@ namespace CRP.Models.Entities.Services
                 catch (Exception e)
                 {
                     e.GetHashCode();
+                    return false;
                 }
                 return true;
             }
