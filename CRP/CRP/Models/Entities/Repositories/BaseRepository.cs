@@ -12,7 +12,7 @@ namespace CRP.Models.Entities.Repositories
 	{
 		public string Id;
 	}
-	public interface BaseRepository<T> where T : class
+	public interface IBaseRepository<T> where T : class
 	{
 		IEnumerable<T> List { get; }
 		void Add(T entity);

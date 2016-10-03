@@ -201,6 +201,7 @@
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
+    <Compile Include="Areas\Provider\Controllers\VehicleGroupController.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -251,8 +252,11 @@
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
     <Compile Include="Models\Entities\Repositories\GarageRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\VehicleRepository.cs" />
+    <Compile Include="Models\Entities\Services\BaseService.cs" />
     <Compile Include="Models\Entities\Services\BrandService.cs" />
     <Compile Include="Models\Entities\Services\GarageService.cs" />
+    <Compile Include="Models\Entities\Services\VehicleService.cs" />
     <Compile Include="Models\Entities\User.cs">
       <DependentUpon>CRPEntities.tt</DependentUpon>
     </Compile>
@@ -1467,7 +1471,7 @@
     <Content Include="Models\Entities\CRPEntities.edmx.diagram">
       <DependentUpon>CRPEntities.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Provider\Views\Garage\GarageList.cshtml" />
+    <Content Include="Areas\Provider\Views\Garage\GarageManagement.cshtml" />
     <Content Include="Areas\Provider\Views\Garage\GarageDetail.cshtml" />
     <Content Include="Areas\Provider\Views\Brand\Index.cshtml" />
     <Content Include="Areas\Provider\Views\Garage\Index.cshtml" />
@@ -1491,7 +1495,7 @@
     <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\pace.min.js" />
-    <Content Include="Scripts\pageScript\garageList.js" />
+    <Content Include="Scripts\pageScript\garageManagement.js" />
     <Content Include="Scripts\prototype.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -1551,6 +1555,7 @@
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
     <Folder Include="Areas\Provider\Views\Shared\" />
+    <Folder Include="Areas\Provider\Views\VehicleGroup\" />
     <Folder Include="Areas\Provider\Views\Vehicle\" />
     <Folder Include="Models\ViewModels\" />
     <Folder Include="Views\Base\" />

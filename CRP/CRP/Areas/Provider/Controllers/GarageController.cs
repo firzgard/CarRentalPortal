@@ -12,6 +12,13 @@ namespace CRP.Areas.Provider.Controllers
 	public class GarageController : Controller
 	{
 		GarageService service = new GarageService();
+
+		[Route("management/garageManagement")]
+		public ViewResult GarageManagement()
+		{
+			return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
+		}
+
 		// GET: Brand
 		public ActionResult Index()
 		{
