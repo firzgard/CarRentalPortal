@@ -152,10 +152,26 @@
 	</div>
 </div>
 
-@section Scripts {
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/GarageList")
+				  .Include("~/Content/awesome-bootstrap-checkbox.css",
+					  "~/Content/chosen.css",
+					  "~/Content/Datatable/css/dataTables.bootstrap.css"));
+}
+@section Styles {
+	@Styles.Render("~/Styles/GarageList")
+}
+
+@section PageStyle {
 	@Styles.Render("~/Content/pageStyle/garageList.css")
 }
 
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/GarageList")
+	.Include("~/Scripts/chosen.jquery.js",
+		"~/Scripts/Datatables/dataTables.bootstrap.js",
+		"~/Scripts/utils/generateUIElements.js",
+		"~/Scripts/utils/generateCustomDataTablesFilters.js",
+		"~/Scripts/pageScript/garageList.js"));
+}
 @section Scripts {
-	@Scripts.Render("~/Scripts/pageScript/garageList.js")
+	@Scripts.Render("~/Scripts/GarageList")
 }
