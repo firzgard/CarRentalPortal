@@ -9,17 +9,26 @@ namespace CRP.Controllers
 {
 	public class VehicleController : Controller
 	{
-		[Route("api/vehicles/{id}")]
-		public ActionResult Index()
+		[Route("vehicleManagement")]
+		public ViewResult VehicleManagement()
 		{
-			return View();
+			return View("~/Areas/Provider/Views/Vehicle/VehicleManagement.cshtml");
 		}
 
-		public ActionResult Random()
+		[Route("api/vehicleList")]
+		public JsonResult getVehicleListJson()
 		{
-			var vehicle = new Vehicle() { Name = "BWM X7" };
+			var vehicle = new Vehicle() { Id = 666, Name = "BWM X7" };
 
-			return View();
+			return Json(vehicle);
+		}
+
+		[Route("api/vehicleDetail/{id}")]
+		public JsonResult getVehicleDetailJson()
+		{
+			var vehicle = new Vehicle() { Id = 666, Name = "BWM X7" };
+
+			return Json (vehicle);
 		}
 	}
 }
