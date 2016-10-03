@@ -602,10 +602,10 @@
       <DependentUpon>CRPEntities.edmx</DependentUpon>
     </Content>
     <Content Include="Areas\Provider\Views\Garage\GarageListView.cshtml" />
-    <Content Include="Areas\Provider\Views\Garage\GarageDetail.cshtml" />
     <Content Include="Areas\Provider\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Provider\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Provider\Views\Vehicle\Index.cshtml" />
+    <Content Include="Areas\Provider\Views\Garage\Index.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
