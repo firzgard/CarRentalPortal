@@ -1,0 +1,34 @@
+﻿@model CRP.Models.Entities.Brand
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+    List<CRP.Models.Entities.Brand> lstBrand = ViewBag.brandList;
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>brand</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @{
+            foreach (CRP.Models.Entities.Brand brand in lstBrand)
+            {
+                <tr>
+                    <td>
+                        @brand.ID
+                    </td>
+                    <td>
+                        @brand.Name
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+
