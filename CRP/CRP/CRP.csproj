@@ -251,9 +251,7 @@
     <Compile Include="Models\Entities\Repositories\VehicleRepository.cs" />
     <Compile Include="Models\Entities\Services\BaseService.cs" />
     <Compile Include="Models\Entities\Services\GarageService.cs" />
-    <Compile Include="Models\Entities\Services\ModelService.cs" />
     <Compile Include="Models\Entities\Services\VehicleService.cs" />
-    <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Entities\User.cs">
       <DependentUpon>CRPEntities.tt</DependentUpon>
     </Compile>

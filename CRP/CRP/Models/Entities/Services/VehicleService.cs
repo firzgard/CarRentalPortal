@@ -28,7 +28,7 @@ namespace CRP.Models.Entities.Services
 	public class VehicleDetails
 	{
 		public Vehicle Vehicle { get; set; }
-		public IEnumerable<ModelDetails> ModelDetails { get; set; }
+		//public IEnumerable<ModelDetails> ModelDetails { get; set; }
 		public IEnumerable<Garage> Garage { get; set; }
 		public IEnumerable<VehicleGroup> VehicleGroup { get; set; }
 		public IEnumerable<VehicleImage> VehicleImages { get; set; }
