@@ -270,6 +270,7 @@
       <DependentUpon>CRPEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\JsonModels\BrandModel.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Vehicle.cs" />
