@@ -5,7 +5,10 @@ using System.Web;
 
 namespace CRP.Models.Entities.Services
 {
-	public class GarageService
+	public interface IGarageService : IService<Garage>
+	{
+	}
+	public class GarageService : BaseService<Garage>, IGarageService
 	{
 	}
 }

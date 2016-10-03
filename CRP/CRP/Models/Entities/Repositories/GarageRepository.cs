@@ -12,6 +12,6 @@ namespace CRP.Models.Entities.Repositories
 
 	public partial class GarageRepository : BaseRepository<Vehicle>, IGarageRepository
 	{
-		public GarageRepository(CRPEntities entities) : base(entities) { }
+		public GarageRepository(){ }
 	}
 }

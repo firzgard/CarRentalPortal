@@ -9,16 +9,6 @@ namespace CRP.Models.Entities.Services
 {
 	public interface IVehicleService : IService<Vehicle>
 	{
-		IEnumerable<Vehicle> GetActive();
-		IEnumerable<VehicleDetails> GetDetailList();
-
-		Task<VehicleDetails> GetDetailAsync(int? id);
-
-		Task<VehicleDetails> GetDetailAsync(string seoName);
-
-		Task CreateAsync(Vehicle vehicle);
-
-		Task UpdateAsync(Vehicle vehicle);
 	}
 
 	public class VehicleService
