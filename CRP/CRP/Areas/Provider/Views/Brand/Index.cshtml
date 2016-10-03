@@ -12,6 +12,7 @@
             <th>ID</th>
             <th>brand</th>
             <th>Action</th>
+            <th>Action 2</th>
         </tr>
 
     </thead>
@@ -28,6 +29,9 @@
                     </td>
                     <td>
                     <button class="btn btn-primary" onclick="deleteGara(@brand.ID)">Delete</button></td>
+                    <td>
+                        <button class="btn btn-primary" onclick="deleteGara(@brand.ID)">Update</button>
+                    </td>
                 </tr>
             }
         }
@@ -45,13 +49,15 @@
                 alert("Problem")
             },
             success: function (data) {
-                if (data === 'true') {
+                if (data.isSucced) {
                     alert("Delete successfully!")
                     location.reload();
                 } else {
                     alert("Cannot delete this because it is in used!");
                 }
-
+            },
+            fail : function(){
+                alert("cccc")
             },
             type: 'post'
         });
