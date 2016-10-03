@@ -20,5 +20,16 @@ namespace CRP.Areas.Provider.Controllers
             ViewBag.garaList = lstGara;
             return View();
         }
+        // POST: Provider/CarBrand/Delete/5
+        [HttpPost]
+        public String Delete()
+        {
+            int ID = int.Parse(Request.Params["id"]);
+            if (service.delete(ID))
+            {
+                return "true";
+            }
+            return "false";
+        }
     }
 }
