@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using CRP.Models.JsonModels;
 
 namespace CRP.Areas.Provider.Controllers
 {
@@ -20,58 +22,25 @@ namespace CRP.Areas.Provider.Controllers
             return View();
         }
 
-        // GET: Provider/CarBrand/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Provider/CarBrand/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Provider/CarBrand/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Provider/CarBrand/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
         // POST: Provider/CarBrand/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public String Edit()
         {
-            try
+            //get du lieu
+            int ID = int.Parse(Request.Params["id"]);
+            string newBrand = Request.Params["brand"];
+            Brand seaBrand = service.findByID(ID);
+            seaBrand.Name = newBrand;
+            if (service.UpdateBrand(seaBrand))
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
+                return "true";
+            } else
             {
-                return View();
+                return "false";
             }
         }
 
         // POST: Provider/CarBrand/Delete/5
-
         [HttpPost]
         public JsonResult Delete()
         {
@@ -83,5 +52,21 @@ namespace CRP.Areas.Provider.Controllers
             }
             return Json(new { isSucced = false });
         }
+        [HttpGet]
+        public Object getJsonBrand()
+        {
+            List<Brand> lstBrand = new List<Brand>();
+            List<BrandModel> jsonBrands = new List<BrandModel>();
+            lstBrand = service.getAll();
+            foreach (Brand p in lstBrand)
+            {
+                BrandModel jsonBrand = new BrandModel();
+                jsonBrand.ID = p.ID;
+                jsonBrand.Name = p.Name;
+                jsonBrands.Add(jsonBrand);
+            }
+            String json = JsonConvert.SerializeObject(jsonBrands);
+            return json;
+        }
     }
-}
+  }

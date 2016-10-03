@@ -10,9 +10,11 @@
     <thead>
         <tr>
             <th>ID</th>
-            <th>brand</th>
-            <th>Action</th>
-            <th>Action 2</th>
+            <th>
+                Name
+            </th>
+            <th>Delete</th>
+            <th>Update</th>
         </tr>
 
     </thead>
@@ -25,12 +27,12 @@
                         @brand.ID
                     </td>
                     <td>
-                        @brand.Name
+                        <input type="text" id="txtBrand" value="@brand.Name"/>
                     </td>
                     <td>
-                    <button class="btn btn-primary" onclick="deleteGara(@brand.ID)">Delete</button></td>
+                    <button class="btn btn-primary" onclick="deleteBrand(@brand.ID)">Delete</button></td>
                     <td>
-                        <button class="btn btn-primary" onclick="deleteGara(@brand.ID)">Update</button>
+                        <button class="btn btn-primary" onclick="updateBrand(@brand.ID)">Update</button>
                     </td>
                 </tr>
             }
@@ -38,7 +40,32 @@
     </tbody>
 </table>
 <script>
-    function deleteGara(id) {
+    function updateBrand(id){
+        var ID = id;
+        var brand = $("txtBrand").val();
+        $.ajax({
+            url: '/Brand/Edit',
+            data: {
+                id: id,
+                brand: brand,
+            },
+            error: function() {
+                alert("Problem occurred!")
+            },
+            success: function (data) {
+                if (data ==='true')
+                {
+                    alert("Edit successfully");
+                    location.reload();
+                } else{
+                    alert("Problem!!");
+                    location.reload();
+                }
+            },
+            type: 'POST'
+        })
+    }
+    function deleteBrand(id) {
         $.ajax({
             url: '/Brand/Delete',
             data: {

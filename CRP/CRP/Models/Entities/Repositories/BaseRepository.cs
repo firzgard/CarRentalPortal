@@ -8,11 +8,7 @@ using System.Web;
 
 namespace CRP.Models.Entities.Repositories
 {
-	public class IEntity
-	{
-		public string Id;
-	}
-	public interface BaseRepository<T> where T : class
+	interface IRepository<T> where T : class
 	{
 		IEnumerable<T> List { get; }
 		void Add(T entity);
