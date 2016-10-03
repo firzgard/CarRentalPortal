@@ -199,6 +199,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
+    <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -247,13 +248,10 @@
       <DependentUpon>CRPEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
     <Compile Include="Models\Entities\Repositories\GarageRepository.cs" />
-    <Compile Include="Models\Entities\Repositories\VehicleRepository.cs" />
-    <Compile Include="Models\Entities\Services\BaseService.cs" />
+    <Compile Include="Models\Entities\Services\BrandService.cs" />
     <Compile Include="Models\Entities\Services\GarageService.cs" />
-    <Compile Include="Models\Entities\Services\ModelService.cs" />
-    <Compile Include="Models\Entities\Services\VehicleService.cs" />
-    <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Entities\User.cs">
       <DependentUpon>CRPEntities.tt</DependentUpon>
     </Compile>
@@ -605,6 +603,8 @@
     </Content>
     <Content Include="Areas\Provider\Views\Garage\GarageListView.cshtml" />
     <Content Include="Areas\Provider\Views\Garage\GarageDetail.cshtml" />
+    <Content Include="Areas\Provider\Views\Brand\Index.cshtml" />
+    <Content Include="Areas\Provider\Views\Garage\Index.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
