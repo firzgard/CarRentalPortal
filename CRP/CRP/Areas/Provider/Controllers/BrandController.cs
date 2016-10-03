@@ -73,15 +73,15 @@ namespace CRP.Areas.Provider.Controllers
         // POST: Provider/CarBrand/Delete/5
 
         [HttpPost]
-        public String Delete()
+        public JsonResult Delete()
         {
             int ID = int.Parse(Request.Params["id"]);
 
             if (service.delete(ID))
             {
-                return "true";
+                return Json(new { isSucced= true});
             }
-            return "false";
+            return Json(new { isSucced = false });
         }
     }
 }
