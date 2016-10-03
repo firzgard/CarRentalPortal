@@ -11,6 +11,7 @@
         <tr>
             <th>ID</th>
             <th>brand</th>
+            <th>Action</th>
         </tr>
 
     </thead>
@@ -25,10 +26,34 @@
                     <td>
                         @brand.Name
                     </td>
+                    <td>
+                    <button class="btn btn-primary" onclick="deleteGara(@brand.ID)">Delete</button></td>
                 </tr>
             }
         }
-
     </tbody>
 </table>
+<script>
+    function deleteGara(id) {
+        $.ajax({
+            url: '/Brand/Delete',
+            data: {
+                id: id
+            },
 
+            error: function () {
+                alert("Problem")
+            },
+            success: function (data) {
+                if (data === 'true') {
+                    alert("Delete successfully!")
+                    location.reload();
+                } else {
+                    alert("Cannot delete this because it is in used!");
+                }
+
+            },
+            type: 'post'
+        });
+    }
+</script>

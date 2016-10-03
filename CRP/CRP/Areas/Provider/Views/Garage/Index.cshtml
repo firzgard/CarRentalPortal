@@ -6,11 +6,12 @@
     List<CRP.Models.Entities.Garage> lstGara = ViewBag.garaList;
 }
 
-<table>
+<table border="1">
     <thead>
         <tr>
             <th>ID</th>
             <th>name</th>
+            <th>Action</th>
         </tr>
 
     </thead>
@@ -25,9 +26,34 @@
                     <td>
                         @gara.Name
                     </td>
+                    <td><button class="btn btn-primary" onclick="deleteGara(@gara.ID)">Delete</button></td>
                 </tr>
             }
         }
-
     </tbody>
 </table>
+<script>
+    function deleteGara(id) {
+        $.ajax({
+            url: '/Brand/delete',
+            data: {
+                id: id
+            },
+
+            error: function () {
+                alert("Problem")
+            },
+            success: function (data) {
+                if (data === 'true') {
+                    alert("Delete successfully!")
+                    location.reload();
+                } else {
+                    alert("Cannot delete this PC because it is in used!");
+                }
+
+            },
+
+            type: 'post'
+        });
+    }
+</script>
