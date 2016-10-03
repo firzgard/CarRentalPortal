@@ -171,33 +171,13 @@ const mockupSearchResult = {
 	totalPages: 20
 };
 
-// html star icons
-const	fullStar = '<i class="fa fa-star"></i>',
-		halfStar = '<i class="fa fa-star-half-o"></i>',
-		emptyStar = '<i class="fa fa-star-o"></i>';
-
 // Renderers
 //==================================
 
 function renderSearchResultGrid(searchResults){
-	function renderStarRating(starRating){
-		for(var html = '', star = starRating, i = 0; i < 5; i++) {
-			if(star >= 1) {
-				html += fullStar;
-				star--;
-			} else if (star > 0) {
-				html += halfStar;
-				star--;
-			} else {
-				html += emptyStar;
-			}
-		}
-		return html += `&nbsp;<span class="badge">${starRating}</span>`
-	}
-
 	function renderSearchResult(searchResult){
 		return `<div class="col-lg-4" >
-			<a href="${searchResult.vehicleURL}">
+			<a href="./../vehicleInfo/vehicleInfo.html">
 				<div data-vehicle-id="${searchResult.id}" class="ibox ibox-content product-box search-result" >
 					<div class="vehicle-img" style="background-image: url('${searchResult.imageURL}');" >
 						<div class="vehicle-price-tag" ><span class="vehicle-price" >${searchResult.perDayPrice} <sup>&#8363;</sup>/<sub>day</sub></span></div>
@@ -239,8 +219,8 @@ $(document).ready(() => {
 	// ==================================================
 	// Render filters
 
-	// Brand-tree selector
-	$('#brandTree').jstree({
+	// model-tree selector
+	let modelTree = $.jstree.create('#modelTree', {
 		core: {
 			dblclick_toggle: false,
 			themes: {
@@ -257,14 +237,8 @@ $(document).ready(() => {
 		no_results_text: "No result!"
 	});
 
-	// Time range selector
-	$('#timerange #startTimeDisplay').val(moment().format('YYYY-MM-DD'));
-	$('#timerange #endTimeDisplay').val(moment().add(13, 'days').format('YYYY-MM-DD'));
-
 	$('#timerange').daterangepicker({
-		format: 'YYYY-MM-DD',
-		startDate: moment(),
-		endDate: moment().add(13, 'days'),
+		format: 'YYYY-MM-DD h:mm A',
 		showDropdowns: true,
 		ranges: {
 			'Today': [moment(), moment()],
@@ -289,7 +263,7 @@ $(document).ready(() => {
 			firstDay: 1
 		}
 	}, (start, end, label) => {
-		$('#timerange #startTimeDisplay').val(start.format('YYYY-MM-DD'));
-		$('#timerange #endTimeDisplay').val(end.format('YYYY-MM-DD'));
+		$('#timerange #startTimeDisplay').val(start.format('YYYY-MM-DD h:mm A'));
+		$('#timerange #endTimeDisplay').val(end.format('YYYY-MM-DD h:mm A'));
 	});
 });

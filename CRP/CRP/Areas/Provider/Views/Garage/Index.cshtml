@@ -1,0 +1,33 @@
+﻿@model CRP.Models.Entities.Garage
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+    List<CRP.Models.Entities.Garage> lstGara = ViewBag.garaList;
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>name</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        @{
+            foreach (CRP.Models.Entities.Garage gara in lstGara)
+            {
+                <tr>
+                    <td>
+                        @gara.ID
+                    </td>
+                    <td>
+                        @gara.Name
+                    </td>
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>

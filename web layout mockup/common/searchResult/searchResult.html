@@ -13,7 +13,6 @@
 	<link href="./../../static/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/chosen/chosen.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/daterangepicker/daterangepicker.css" rel="stylesheet">
-	<link href="./../../static/css/plugins/jquery-bar-rating/fontawesome-stars.css" rel="stylesheet">
 	<link href="./../../static/css/plugins/jsTree/themes/default/style.min.css" rel="stylesheet">
 
 	<link href="./../../static/css/style.css" rel="stylesheet">
@@ -151,45 +150,53 @@
 											</div>
 											<!-- Brand -->
 											<div class="panel panel-default">
-												<a data-toggle="collapse" href="#brandFilter">
+												<a data-toggle="collapse" href="#modelFilter">
 													<div class="panel-heading">
-														<h4 class="panel-title">Brand</h4>
+														<h4 class="panel-title">Model</h4>
 													</div>
 												</a>
-												<div id="brandFilter" class="panel-collapse collapse" >
+												<div id="modelFilter" class="panel-collapse collapse" >
 													<div class="panel-body">
-														<div id="brandTree">
+														<div id="modelTree">
 															<ul>
-																<li>Audi
+																<li data-node-lvl="1" data-node-id="1" >Audi
 																	<ul>
-																		<li>A1</li>
-																		<li>A6</li>
-																		<li>A7</li>
-																		<li>A8</li>
-																		<li>Q3</li>
-																		<li>Q7</li>
-																		<li>TT</li>
-																		<li>TTS</li>
+																		<li data-node-lvl="2" data-node-id="1" >A1</li>
+																		<li data-node-lvl="2" data-node-id="2" >A6</li>
+																		<li data-node-lvl="2" data-node-id="3" >A7</li>
+																		<li data-node-lvl="2" data-node-id="4" >A8</li>
+																		<li data-node-lvl="2" data-node-id="5" >Q3</li>
+																		<li data-node-lvl="2" data-node-id="6" >Q7</li>
+																		<li data-node-lvl="2" data-node-id="7" >TT</li>
+																		<li data-node-lvl="2" data-node-id="8" >TTS</li>
 																	</ul>
 																</li>
-																<li>BMW
+																<li data-node-lvl="1" data-node-id="2" >BMW
 																	<ul>
-																		<li>320i</li>
-																		<li>520i</li>
-																		<li>M3</li>
-																		<li>M6</li>
-																		<li>X3</li>
-																		<li>X5</li>
-																		<li>X6</li>
-																		<li>Z4</li>
+																		<li data-node-lvl="2" data-node-id="9" >320i</li>
+																		<li data-node-lvl="2" data-node-id="10" >520i</li>
+																		<li data-node-lvl="2" data-node-id="11" >M3</li>
+																		<li data-node-lvl="2" data-node-id="12" >M6</li>
+																		<li data-node-lvl="2" data-node-id="13" >X3</li>
+																		<li data-node-lvl="2" data-node-id="14" >X5</li>
+																		<li data-node-lvl="2" data-node-id="15" >X6</li>
+																		<li data-node-lvl="2" data-node-id="16" >Z4</li>
 																	</ul>
 																</li>
-																<li>Toyota
+																<li data-node-lvl="1" data-node-id="3" >Ford
 																	<ul>
-																		<li>Camry</li>
-																		<li>Corolla Altis</li>
-																		<li>Innova</li>
-																		<li>Land Cruiser</li>
+																		<li data-node-lvl="2" data-node-id="17" >Fiesta Mk5</li>
+																		<li data-node-lvl="2" data-node-id="18" >Fiesta Mk6</li>
+																		<li data-node-lvl="2" data-node-id="19" >Focus Mk2</li>
+																		<li data-node-lvl="2" data-node-id="20" >Focus Mk3</li>
+																	</ul>
+																</li>
+																<li data-node-lvl="1" data-node-id="4" >Toyota
+																	<ul>
+																		<li data-node-lvl="2" data-node-id="21" >Camry</li>
+																		<li data-node-lvl="2" data-node-id="22" >Corolla Altis</li>
+																		<li data-node-lvl="2" data-node-id="23" >Innova</li>
+																		<li data-node-lvl="2" data-node-id="24" >Land Cruiser</li>
 																	</ul>
 																</li>
 															</ul>
@@ -208,28 +215,28 @@
 													<div class="panel-body">
 														<div class="input-group" id="typeTree">
 															<div class="checkbox checkbox-success">
-																<input id="typeMicroCar" type="checkbox" />
-																<label for="fuelAmmonia">Micro Car</label>
+																<input value="Micro Car" id="categoryMicroCar" type="checkbox" />
+																<label for="categoryMicroCar">Micro Car</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="typeMinivan" type="checkbox" />
-																<label for="fuelAmmonia">Minivan</label>
+																<input value="Minicar" id="categoryMinivan" type="checkbox" />
+																<label for="categoryMinivan">Minivan</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="typePickupTruck" type="checkbox" />
-																<label for="fuelBioalcohol">Pickup Truck</label>
+																<input value="Pickup Truck" id="categoryPickupTruck" type="checkbox" />
+																<label for="categoryPickupTruck">Pickup Truck</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="typeStationWagon" type="checkbox" />
-																<label for="fuelBiodiesel">Station Wagon</label>
+																<input value="Station Wagon" id="categoryStationWagon" type="checkbox" />
+																<label for="categoryStationWagon">Station Wagon</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="typeSedan" type="checkbox" />
-																<label for="fuelBiogas">Sedan</label>
+																<input value="Sedan" id="categorySedan" type="checkbox" />
+																<label for="categorySedan">Sedan</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="typeSUV" type="checkbox" />
-																<label for="fuelCNG">SUV</label>
+																<input value="SUV" id="categorySUV" type="checkbox" />
+																<label for="categorySUV">SUV</label>
 															</div>
 
 														</div>
@@ -289,11 +296,11 @@
 													<div class="panel-body">
 														<div class="input-group" id="transmissionSelector">
 															<div class="checkbox checkbox-success">
-																<input id="transmissionAutomatic" type="checkbox" />
+																<input value="Automatic" id="transmissionAutomatic" type="checkbox" />
 																<label for="transmissionAutomatic">Automatic</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="transmissionManual" type="checkbox" />
+																<input value="Manual" id="transmissionManual" type="checkbox" />
 																<label for="transmissionManual">Manual</label>
 															</div>
 
@@ -359,67 +366,67 @@
 													<div class="panel-body">
 														<div class="input-group" id="fuelSelector">
 															<div class="checkbox checkbox-success">
-																<input id="fuelAmmonia" type="checkbox" />
+																<input value="Ammonia" id="fuelAmmonia" type="checkbox" />
 																<label for="fuelAmmonia">Ammonia</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelBioalcohol" type="checkbox" />
+																<input value="Bioalcohol" id="fuelBioalcohol" type="checkbox" />
 																<label for="fuelBioalcohol">Bioalcohol</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelBiodiesel" type="checkbox" />
+																<input value="Biodiesel" id="fuelBiodiesel" type="checkbox" />
 																<label for="fuelBiodiesel">Biodiesel</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelBiogas" type="checkbox" />
+																<input value="Biogas" id="fuelBiogas" type="checkbox" />
 																<label for="fuelBiogas">Biogas</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelCNG" type="checkbox" />
+																<input value="Compressed Natural Gas" id="fuelCNG" type="checkbox" />
 																<label for="fuelCNG">Compressed Natural Gas</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelDiesel" type="checkbox" />
+																<input value="Diesel" id="fuelDiesel" type="checkbox" />
 																<label for="fuelDiesel">Diesel</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelElectric" type="checkbox" />
+																<input value="Electric" id="fuelElectric" type="checkbox" />
 																<label for="fuelElectric">Electric</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelFlexible" type="checkbox" />
+																<input value="Flexible" id="fuelFlexible" type="checkbox" />
 																<label for="fuelFlexible">Flexible</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelHybridElectric" type="checkbox" />
+																<input value="Hybrid Electric" id="fuelHybridElectric" type="checkbox" />
 																<label for="fuelHybridElectric">Hybrid Electric</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelHydrogen" type="checkbox" />
+																<input value="Hydrogen" id="fuelHydrogen" type="checkbox" />
 																<label for="fuelHydrogen">Hydrogen</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelLNG" type="checkbox" />
+																<input value="Liquefied Natural Gas" id="fuelLNG" type="checkbox" />
 																<label for="fuelLNG">Liquefied Natural Gas</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelLPG" type="checkbox" />
+																<input value="Liquefied Petroleum Gas" id="fuelLPG" type="checkbox" />
 																<label for="fuelLPG">Liquefied Petroleum Gas</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelPetrol" type="checkbox" />
+																<input value="Petrol" id="fuelPetrol" type="checkbox" />
 																<label for="fuelPetrol">Petrol</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelPluginHybridElectric" type="checkbox" />
+																<input value="Plug-in Hybrid Electric" id="fuelPluginHybridElectric" type="checkbox" />
 																<label for="fuelPluginHybridElectric">Plug-in Hybrid Electric</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelStream" type="checkbox" />
+																<input value="Stream" id="fuelStream" type="checkbox" />
 																<label for="fuelStream">Stream</label>
 															</div>
 															<div class="checkbox checkbox-success">
-																<input id="fuelWoodGas" type="checkbox" />
+																<input value="Wood Gas" id="fuelWoodGas" type="checkbox" />
 																<label for="fuelWoodGas">Wood Gas</label>
 															</div>
 
@@ -454,55 +461,6 @@
 		</div>
 	</div>
 
-	<!-- Search result's template -->
-	<script id="searchResultTemplate" type="text/html" >
-		<div class="ibox animated fadeInRight" >
-			<div class="row" >
-			{{#searchResults}}
-				<div class="col-lg-4" >
-					<a href="{{vehicleURL}}">
-						<div data-vehicle-id="{{id}}" class="ibox ibox-content product-box search-result" >
-							<div class="vehicle-img" style="background-image: url('{{imageURL}}');" >
-								<div class="vehicle-price-tag" ><span class="vehicle-price" >{{perDayPrice}} <sup>&#8363;</sup>/<sub>day</sub></span></div>
-							</div>
-							<div class="vehicle-info">
-								<div class="vehicle-name">{{name}}</div>
-								<div>
-									<select class="star-rating">
-										<option value="1">1</option>
-										<option value="2">2</option>
-										<option value="3">3</option>
-										<option value="4">4</option>
-										<option value="5">5</option>
-									</select>
-
-								</div>
-								<hr>
-								<div><i class="fa fa-map-marker"></i> {{garageLocation}}</div>
-								<div><i class="fa fa-building"></i> {{garageName}}</div>
-								<hr>
-								<div class="license-number">{{licenseNumber}}</div>
-							</div>
-						</div>
-					</a>
-				</div>
-					
-			{{/searchResults}}
-			</div>
-			<div class="text-center">
-				<ul class="pagination pagination-lg" >
-					<li><a href="#"><i class="fa fa-chevron-left"></i></a></li>
-					<li><a href="#">1</a></li>
-					<li class="active" ><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">5</a></li>
-					<li><a href="#"><i class="fa fa-chevron-right"></i></a></li>
-				</ul>
-			</div>
-		</div>
-	</script>
-
 	<!-- Main scripts -->
 	<script src="./../../static/js/jquery-2.1.1.js"></script>
 	<script src="./../../static/js/bootstrap.min.js"></script>
@@ -527,8 +485,8 @@
 	<!-- jsTree -->
 	<script src="./../../static/js/plugins/jsTree/jstree.min.js"></script>
 
-	<!-- jquery-bar-rating -->
-	<script src="./../../static/js/plugins/jquery-bar-rating/jquery.barrating.min.js"></script>
+	<!-- custom utils -->
+	<script src="./../../static/js/utils/generateUIElements.js"></script>
 
 	<!-- Page's script -->
 	<script src="./searchResult.js" ></script>
