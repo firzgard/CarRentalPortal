@@ -18,7 +18,7 @@ namespace CRP.Areas.Provider.Controllers
 			List<Garage> lstGara = new List<Garage>();
 			lstGara = service.getAll();
 			ViewBag.garaList = lstGara;
-			return View();
+			return View("GarageDetail");
 		}
 		// POST: Provider/CarBrand/Delete/5
 		[HttpPost]

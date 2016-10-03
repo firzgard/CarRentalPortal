@@ -455,3 +455,34 @@
     </div>
 </div>
 
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/Garage")
+                                .Include("~/Content/awesome-bootstrap-checkbox.css",
+                                    "~/Content/chosen.css",
+                                    "~/Content/Datatable/css/jquery.dataTables.css",
+                                    "~/Content/Datatable/css/dataTables.bootstrap.css",
+                                    "~/Content/jasny-bootstrap.min.css",
+                                    "~/Content/jsTree/themes/default/style.min.css",
+                                    "~/Scripts/dropzone/basic.css",
+                                    "~/Scripts/dropzone/dropzone.css"));
+}
+@section Styles {
+    @Styles.Render("~/Styles/Garage")
+}
+@section PageStyle {
+    @Styles.Render("~/Content/pageStyle/garage.css")
+}
+
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/Garage")
+                  .Include("~/Scripts/chosen.jquery.js",
+                      "~/Scripts/Datatables/jquery.dataTables.js",
+                      "~/Scripts/Datatables/dataTables.bootstrap.js",
+                      "~/Scripts/dropzone/dropzone.js",
+                      "~/Scripts/jasny-bootstrap.min.js",
+                      "~/Scripts/jsTree3/jstree.min.js",
+                      "~/Scripts/utils/generateUIElements.js",
+                      "~/Scripts/utils/generateCustomDataTablesFilters.js",
+                      "~/Scripts/pageScript/garage.js"));
+}
+@section Scripts {
+    @Scripts.Render("~/Scripts/Garage")
+}
