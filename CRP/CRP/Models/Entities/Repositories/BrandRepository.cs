@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CRP.Models.Entities.Repositories
 {
-    public class BrandRepository : BaseRepository<Brand>
+    public class BrandRepository : IRepository<Brand>
     {
         CRPEntities _dataContext;
         public BrandRepository()
@@ -13,7 +13,7 @@ namespace CRP.Models.Entities.Repositories
             _dataContext = new CRPEntities();
         }
 
-        IEnumerable<Brand> BaseRepository<Brand>.List
+        IEnumerable<Brand> IRepository<Brand>.List
         {
             get
             {
