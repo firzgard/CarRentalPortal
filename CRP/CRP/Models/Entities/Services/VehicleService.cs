@@ -9,8 +9,8 @@ namespace CRP.Models.Entities.Services
 {
 	public interface IVehicleService : IService<Vehicle>
 	{
-		IQueryable<Vehicle> GetActive();
-		IQueryable<VehicleDetails> GetDetailList();
+		IEnumerable<Vehicle> GetActive();
+		IEnumerable<VehicleDetails> GetDetailList();
 
 		Task<VehicleDetails> GetDetailAsync(int? id);
 
@@ -28,9 +28,9 @@ namespace CRP.Models.Entities.Services
 	public class VehicleDetails
 	{
 		public Vehicle Vehicle { get; set; }
-		public IQueryable<ModelDetails> ModelDetails { get; set; }
-		public IQueryable<Garage> Garage { get; set; }
-		public IQueryable<VehicleGroup> VehicleGroup { get; set; }
-		public IQueryable<VehicleImage> VehicleImages { get; set; }
+		public IEnumerable<ModelDetails> ModelDetails { get; set; }
+		public IEnumerable<Garage> Garage { get; set; }
+		public IEnumerable<VehicleGroup> VehicleGroup { get; set; }
+		public IEnumerable<VehicleImage> VehicleImages { get; set; }
 	}
 }

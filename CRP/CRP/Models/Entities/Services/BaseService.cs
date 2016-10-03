@@ -16,9 +16,8 @@ namespace CRP.Models.Entities.Services
 	public interface IService<TEntity> : IService
 		where TEntity : class
 	{
-		IQueryable<TEntity> Get();
-		IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate);
 		TEntity Get(object key);
+		IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 		void Create(TEntity entity);
 		void Update(TEntity entity);
 		void Save();
@@ -64,20 +63,15 @@ namespace CRP.Models.Entities.Services
 			this.repository.Create(entity);
 			await this.SaveAsync();
 		}
-
-		public virtual IQueryable<TEntity> Get()
-		{
-			return this.repository.Get();
-		}
 		
 		public virtual TEntity Get(object key)
 		{
 			return this.repository.Get(key);
 		}
 
-		public virtual IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
+		public virtual IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
 		{
-			return this.repository.Get(predicate);
+			return this.repository.Find(predicate);
 		}
 
 		public virtual async Task<TEntity> GetAsync(object key)

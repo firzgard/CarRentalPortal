@@ -16,11 +16,9 @@ namespace CRP.Models.Entities.Repositories
 	public interface IRepository<TEntity> : IRepository
 		where TEntity : class
 	{
-		IQueryable<TEntity> Get();
-
-		IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate);
-
 		TEntity Get(object key);
+		IEnumerable<TEntity> GetAll();
+		IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
 
 		Task<TEntity> GetAsync(object key);
 
@@ -46,17 +44,12 @@ namespace CRP.Models.Entities.Repositories
 			dbSet.Add(entity);
 		}
 
-		public IQueryable<TEntity> Get()
-		{
-			return this.dbSet;
-		}
-
 		public TEntity Get(object key)
 		{
 			return this.dbSet.Find(key);
 		}
 
-		public IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
+		public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
 		{
 			return this.dbSet.Where(predicate);
 		}
