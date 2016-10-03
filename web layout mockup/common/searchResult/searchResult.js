@@ -177,7 +177,7 @@ const mockupSearchResult = {
 function renderSearchResultGrid(searchResults){
 	function renderSearchResult(searchResult){
 		return `<div class="col-lg-4" >
-			<a href="${searchResult.vehicleURL}">
+			<a href="./../vehicleInfo/vehicleInfo.html">
 				<div data-vehicle-id="${searchResult.id}" class="ibox ibox-content product-box search-result" >
 					<div class="vehicle-img" style="background-image: url('${searchResult.imageURL}');" >
 						<div class="vehicle-price-tag" ><span class="vehicle-price" >${searchResult.perDayPrice} <sup>&#8363;</sup>/<sub>day</sub></span></div>
@@ -237,14 +237,8 @@ $(document).ready(() => {
 		no_results_text: "No result!"
 	});
 
-	// Time range selector
-	$('#timerange #startTimeDisplay').val(moment().format('YYYY-MM-DD'));
-	$('#timerange #endTimeDisplay').val(moment().add(13, 'days').format('YYYY-MM-DD'));
-
 	$('#timerange').daterangepicker({
-		format: 'YYYY-MM-DD',
-		startDate: moment(),
-		endDate: moment().add(13, 'days'),
+		format: 'YYYY-MM-DD h:mm A',
 		showDropdowns: true,
 		ranges: {
 			'Today': [moment(), moment()],
@@ -269,7 +263,7 @@ $(document).ready(() => {
 			firstDay: 1
 		}
 	}, (start, end, label) => {
-		$('#timerange #startTimeDisplay').val(start.format('YYYY-MM-DD'));
-		$('#timerange #endTimeDisplay').val(end.format('YYYY-MM-DD'));
+		$('#timerange #startTimeDisplay').val(start.format('YYYY-MM-DD h:mm A'));
+		$('#timerange #endTimeDisplay').val(end.format('YYYY-MM-DD h:mm A'));
 	});
 });
