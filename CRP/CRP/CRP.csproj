@@ -213,6 +213,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Constant.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
@@ -258,10 +259,12 @@
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
     <Compile Include="Models\Entities\Repositories\GarageRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\VehicleGroupRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleRepository.cs" />
     <Compile Include="Models\Entities\Services\BaseService.cs" />
     <Compile Include="Models\Entities\Services\BrandService.cs" />
     <Compile Include="Models\Entities\Services\GarageService.cs" />
+    <Compile Include="Models\Entities\Services\VehicleGroupService.cs" />
     <Compile Include="Models\Entities\Services\VehicleService.cs" />
     <Compile Include="Models\Entities\Vehicle.cs">
       <DependentUpon>CRP.tt</DependentUpon>
@@ -1326,6 +1329,7 @@
     <Content Include="Content\metisMenu.min.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
+    <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
     <Content Include="Content\patterns\3.png" />
@@ -1489,6 +1493,8 @@
     <Content Include="Models\Entities\CRP.edmx.diagram">
       <DependentUpon>CRP.edmx</DependentUpon>
     </Content>
+    <Content Include="Areas\Provider\Views\VehicleGroup\CreatePopup.cshtml" />
+    <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupManagement.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -1515,6 +1521,8 @@
     <Content Include="Scripts\pace.min.js" />
     <Content Include="Scripts\pageScript\garage.js" />
     <Content Include="Scripts\pageScript\garageList.js" />
+    <Content Include="Scripts\pageScript\garageManagement.js" />
+    <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
     <Content Include="Scripts\prototype.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
