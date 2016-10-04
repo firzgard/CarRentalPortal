@@ -25,6 +25,8 @@ namespace CRP.Models.Entities
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<BookingReceipt> BookingReceipts { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Garage> Garages { get; set; }
@@ -32,10 +34,8 @@ namespace CRP.Models.Entities
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<PriceGroup> PriceGroups { get; set; }
         public virtual DbSet<PriceGroupItem> PriceGroupItems { get; set; }
-        public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Vehicle> Vehicles { get; set; }
         public virtual DbSet<VehicleGroup> VehicleGroups { get; set; }
         public virtual DbSet<VehicleImage> VehicleImages { get; set; }
-        public object Brand { get; internal set; }
     }
 }
