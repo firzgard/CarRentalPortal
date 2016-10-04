@@ -45,8 +45,8 @@ namespace CRP.Models.Entities
         public Nullable<System.DateTime> OpenTimeSun { get; set; }
         public Nullable<System.DateTime> CloseTimeSun { get; set; }
     
+        public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehicle> Vehicles { get; set; }
-        public virtual User User { get; set; }
     }
 }

@@ -213,41 +213,47 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Entities\AspNetRole.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\AspNetUser.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\BookingReceipt.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Brand.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\CRPEntities.Context.cs">
+    <Compile Include="Models\Entities\CRP.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CRPEntities.Context.tt</DependentUpon>
+      <DependentUpon>CRP.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\CRPEntities.cs">
+    <Compile Include="Models\Entities\CRP.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\CRPEntities.Designer.cs">
+    <Compile Include="Models\Entities\CRP.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>CRPEntities.edmx</DependentUpon>
+      <DependentUpon>CRP.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Garage.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Model.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Notification.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\PriceGroup.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\PriceGroupItem.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
@@ -257,17 +263,14 @@
     <Compile Include="Models\Entities\Services\BrandService.cs" />
     <Compile Include="Models\Entities\Services\GarageService.cs" />
     <Compile Include="Models\Entities\Services\VehicleService.cs" />
-    <Compile Include="Models\Entities\User.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Vehicle.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\VehicleGroup.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\VehicleImage.cs">
-      <DependentUpon>CRPEntities.tt</DependentUpon>
+      <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JsonModels\BrandModel.cs" />
@@ -1338,15 +1341,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\Entities\CRPEntities.Context.tt">
+    <Content Include="Models\Entities\CRP.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CRPEntities.edmx</DependentUpon>
-      <LastGenOutput>CRPEntities.Context.cs</LastGenOutput>
+      <DependentUpon>CRP.edmx</DependentUpon>
+      <LastGenOutput>CRP.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\Entities\CRPEntities.tt">
+    <Content Include="Models\Entities\CRP.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CRPEntities.edmx</DependentUpon>
-      <LastGenOutput>CRPEntities.cs</LastGenOutput>
+      <DependentUpon>CRP.edmx</DependentUpon>
+      <LastGenOutput>CRP.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\ai.0.22.19-build00125.js" />
     <Content Include="Scripts\ai.0.22.19-build00125.min.js" />
@@ -1466,13 +1469,6 @@
     <Content Include="Areas\Admin\Views\web.config" />
     <Content Include="Areas\Provider\Views\web.config" />
     <Content Include="Areas\Customer\Views\web.config" />
-    <EntityDeploy Include="Models\Entities\CRPEntities.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CRPEntities.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\Entities\CRPEntities.edmx.diagram">
-      <DependentUpon>CRPEntities.edmx</DependentUpon>
-    </Content>
     <Content Include="Areas\Provider\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Provider\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\Provider\Views\Vehicle\Index.cshtml" />
@@ -1480,6 +1476,13 @@
     <Content Include="Areas\Provider\Views\Brand\Index.cshtml" />
     <Content Include="Areas\Provider\Views\Garage\GarageList.cshtml" />
     <Content Include="Areas\Provider\Views\Garage\GarageManagement.cshtml" />
+    <EntityDeploy Include="Models\Entities\CRP.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CRP.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\Entities\CRP.edmx.diagram">
+      <DependentUpon>CRP.edmx</DependentUpon>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

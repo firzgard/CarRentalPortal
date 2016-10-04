@@ -5,6 +5,43 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="CRPDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetRoles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUserRoles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsProviderUntil" Type="datetime" />
+          <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
+          <Property Name="SelfDescription" Type="nvarchar" MaxLength="200" />
+          <Property Name="AvatarURL" Type="varchar" MaxLength="200" />
+        </EntityType>
         <EntityType Name="BookingReceipt">
           <Key>
             <PropertyRef Name="ID" />
@@ -98,23 +135,6 @@
           <Property Name="MaxTime" Type="int" Nullable="false" />
           <Property Name="Price" Type="float" Nullable="false" />
         </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Phone" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="Password" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="IsProviderUntil" Type="datetime" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="IsAdmin" Type="bit" Nullable="false" />
-          <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
-          <Property Name="SelfDescription" Type="nvarchar" MaxLength="200" />
-          <Property Name="AvatarURL" Type="varchar" MaxLength="200" />
-        </EntityType>
         <EntityType Name="Vehicle">
           <Key>
             <PropertyRef Name="ID" />
@@ -151,12 +171,12 @@
           <Property Name="URL" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CarID" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_BookingReceipt_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+        <Association Name="FK_BookingReceipt_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="BookingReceipt" Type="Self.BookingReceipt" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="BookingReceipt">
               <PropertyRef Name="CustomerID" />
@@ -223,24 +243,64 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Notification_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+          <End Role="AspNetRoles" Type="Self.AspNetRoles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetRoles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AspNetUserRoles" Type="Self.AspNetUserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Garage_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="Garage" Type="Self.Garage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Garage">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Notification">
               <PropertyRef Name="SenderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Notification_User1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+        <Association Name="FK_Notification_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Notification">
               <PropertyRef Name="ReceiverID" />
@@ -256,18 +316,6 @@
             </Principal>
             <Dependent Role="PriceGroupItem">
               <PropertyRef Name="PriceGroupID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Store_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Garage" Type="Self.Garage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Garage">
-              <PropertyRef Name="OwnerID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -296,6 +344,9 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="CRPDBModelStoreContainer">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BookingReceipt" EntityType="Self.BookingReceipt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Garage" EntityType="Self.Garage" Schema="dbo" store:Type="Tables" />
@@ -303,12 +354,11 @@
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceGroup" EntityType="Self.PriceGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceGroupItem" EntityType="Self.PriceGroupItem" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleGroup" EntityType="Self.VehicleGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleImage" EntityType="Self.VehicleImage" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_BookingReceipt_User" Association="Self.FK_BookingReceipt_User">
-            <End Role="User" EntitySet="User" />
+          <AssociationSet Name="FK_BookingReceipt_AspNetUsers" Association="Self.FK_BookingReceipt_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="BookingReceipt" EntitySet="BookingReceipt" />
           </AssociationSet>
           <AssociationSet Name="FK_BookingReceipt_Vehicle" Association="Self.FK_BookingReceipt_Vehicle">
@@ -331,21 +381,29 @@
             <End Role="Brand" EntitySet="Brand" />
             <End Role="Model" EntitySet="Model" />
           </AssociationSet>
-          <AssociationSet Name="FK_Notification_User" Association="Self.FK_Notification_User">
-            <End Role="User" EntitySet="User" />
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetRoles_RoleId">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserRoles_dbo_AspNetUsers_UserId">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Garage_AspNetUsers" Association="Self.FK_Garage_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Garage" EntitySet="Garage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_AspNetUsers" Association="Self.FK_Notification_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Notification" EntitySet="Notification" />
           </AssociationSet>
-          <AssociationSet Name="FK_Notification_User1" Association="Self.FK_Notification_User1">
-            <End Role="User" EntitySet="User" />
+          <AssociationSet Name="FK_Notification_AspNetUsers1" Association="Self.FK_Notification_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Notification" EntitySet="Notification" />
           </AssociationSet>
           <AssociationSet Name="FK_PriceGroupItem_PriceGroup" Association="Self.FK_PriceGroupItem_PriceGroup">
             <End Role="PriceGroup" EntitySet="PriceGroup" />
             <End Role="PriceGroupItem" EntitySet="PriceGroupItem" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Store_User" Association="Self.FK_Store_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Garage" EntitySet="Garage" />
           </AssociationSet>
           <AssociationSet Name="FK_Vehicle_Model" Association="Self.FK_Vehicle_Model">
             <End Role="Model" EntitySet="Model" />
@@ -361,6 +419,41 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CRPDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AspNetRole">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+        </EntityType>
+        <EntityType Name="AspNetUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsProviderUntil" Type="DateTime" Precision="3" />
+          <Property Name="Star" Type="Decimal" Precision="2" Scale="1" />
+          <Property Name="SelfDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AvatarURL" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="BookingReceipts" Relationship="Self.FK_BookingReceipt_AspNetUsers" FromRole="AspNetUsers" ToRole="BookingReceipt" />
+          <NavigationProperty Name="Garages" Relationship="Self.FK_Garage_AspNetUsers" FromRole="AspNetUsers" ToRole="Garage" />
+          <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_AspNetUsers" FromRole="AspNetUsers" ToRole="Notification" />
+          <NavigationProperty Name="Notifications1" Relationship="Self.FK_Notification_AspNetUsers1" FromRole="AspNetUsers" ToRole="Notification" />
+          <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+        </EntityType>
         <EntityType Name="BookingReceipt">
           <Key>
             <PropertyRef Name="ID" />
@@ -378,7 +471,7 @@
           <Property Name="VehicleName" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="GarageName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="GarageAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_BookingReceipt_User" FromRole="BookingReceipt" ToRole="User" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_BookingReceipt_AspNetUsers" FromRole="BookingReceipt" ToRole="AspNetUsers" />
           <NavigationProperty Name="Vehicle" Relationship="Self.FK_BookingReceipt_Vehicle" FromRole="BookingReceipt" ToRole="Vehicle" />
         </EntityType>
         <EntityType Name="Brand">
@@ -417,8 +510,8 @@
           <Property Name="CloseTimeSat" Type="DateTime" Precision="3" />
           <Property Name="OpenTimeSun" Type="DateTime" Precision="3" />
           <Property Name="CloseTimeSun" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Garage_AspNetUsers" FromRole="Garage" ToRole="AspNetUsers" />
           <NavigationProperty Name="Vehicles" Relationship="Self.FK_Car_Store" FromRole="Garage" ToRole="Vehicle" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Store_User" FromRole="Garage" ToRole="User" />
         </EntityType>
         <EntityType Name="Model">
           <Key>
@@ -443,8 +536,8 @@
           <Property Name="NotificationContent" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SentTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsRead" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Notification_User" FromRole="Notification" ToRole="User" />
-          <NavigationProperty Name="User1" Relationship="Self.FK_Notification_User1" FromRole="Notification" ToRole="User" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Notification_AspNetUsers" FromRole="Notification" ToRole="AspNetUsers" />
+          <NavigationProperty Name="AspNetUser1" Relationship="Self.FK_Notification_AspNetUsers1" FromRole="Notification" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="PriceGroup">
           <Key>
@@ -465,27 +558,6 @@
           <Property Name="MaxTime" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
           <NavigationProperty Name="PriceGroup" Relationship="Self.FK_PriceGroupItem_PriceGroup" FromRole="PriceGroupItem" ToRole="PriceGroup" />
-        </EntityType>
-        <EntityType Name="User">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IsProviderUntil" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
-          <Property Name="Star" Type="Decimal" Precision="2" Scale="1" />
-          <Property Name="SelfDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="AvatarURL" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="BookingReceipts" Relationship="Self.FK_BookingReceipt_User" FromRole="User" ToRole="BookingReceipt" />
-          <NavigationProperty Name="Garages" Relationship="Self.FK_Store_User" FromRole="User" ToRole="Garage" />
-          <NavigationProperty Name="Notifications" Relationship="Self.FK_Notification_User" FromRole="User" ToRole="Notification" />
-          <NavigationProperty Name="Notifications1" Relationship="Self.FK_Notification_User1" FromRole="User" ToRole="Notification" />
         </EntityType>
         <EntityType Name="Vehicle">
           <Key>
@@ -531,15 +603,51 @@
           <Property Name="CarID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Vehicle" Relationship="Self.FK_CarImage_Car" FromRole="VehicleImage" ToRole="Vehicle" />
         </EntityType>
-        <Association Name="FK_BookingReceipt_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
+        <Association Name="FK_BookingReceipt_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
           <End Role="BookingReceipt" Type="Self.BookingReceipt" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="BookingReceipt">
               <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Garage_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="Garage" Type="Self.Garage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Garage">
+              <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="SenderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notification_AspNetUsers1">
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="ReceiverID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -579,18 +687,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Store_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Garage" Type="Self.Garage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Garage">
-              <PropertyRef Name="OwnerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Vehicle_Model">
           <End Role="Model" Type="Self.Model" Multiplicity="1" />
           <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="*" />
@@ -600,30 +696,6 @@
             </Principal>
             <Dependent Role="Vehicle">
               <PropertyRef Name="ModelID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Notification_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Notification">
-              <PropertyRef Name="SenderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Notification_User1">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Notification">
-              <PropertyRef Name="ReceiverID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -675,7 +747,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="AspNetUserRoles">
+          <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+          <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="CRPEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
           <EntitySet Name="BookingReceipts" EntityType="Self.BookingReceipt" />
           <EntitySet Name="Brands" EntityType="Self.Brand" />
           <EntitySet Name="Garages" EntityType="Self.Garage" />
@@ -683,13 +761,24 @@
           <EntitySet Name="Notifications" EntityType="Self.Notification" />
           <EntitySet Name="PriceGroups" EntityType="Self.PriceGroup" />
           <EntitySet Name="PriceGroupItems" EntityType="Self.PriceGroupItem" />
-          <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="Vehicles" EntityType="Self.Vehicle" />
           <EntitySet Name="VehicleGroups" EntityType="Self.VehicleGroup" />
           <EntitySet Name="VehicleImages" EntityType="Self.VehicleImage" />
-          <AssociationSet Name="FK_BookingReceipt_User" Association="Self.FK_BookingReceipt_User">
-            <End Role="User" EntitySet="Users" />
+          <AssociationSet Name="FK_BookingReceipt_AspNetUsers" Association="Self.FK_BookingReceipt_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="BookingReceipt" EntitySet="BookingReceipts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Garage_AspNetUsers" Association="Self.FK_Garage_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Garage" EntitySet="Garages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_AspNetUsers" Association="Self.FK_Notification_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notification_AspNetUsers1" Association="Self.FK_Notification_AspNetUsers1">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
           <AssociationSet Name="FK_BookingReceipt_Vehicle" Association="Self.FK_BookingReceipt_Vehicle">
             <End Role="Vehicle" EntitySet="Vehicles" />
@@ -703,21 +792,9 @@
             <End Role="Garage" EntitySet="Garages" />
             <End Role="Vehicle" EntitySet="Vehicles" />
           </AssociationSet>
-          <AssociationSet Name="FK_Store_User" Association="Self.FK_Store_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Garage" EntitySet="Garages" />
-          </AssociationSet>
           <AssociationSet Name="FK_Vehicle_Model" Association="Self.FK_Vehicle_Model">
             <End Role="Model" EntitySet="Models" />
             <End Role="Vehicle" EntitySet="Vehicles" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notification_User" Association="Self.FK_Notification_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Notification" EntitySet="Notifications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notification_User1" Association="Self.FK_Notification_User1">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
           <AssociationSet Name="FK_PriceGroupItem_PriceGroup" Association="Self.FK_PriceGroupItem_PriceGroup">
             <End Role="PriceGroup" EntitySet="PriceGroups" />
@@ -735,6 +812,10 @@
             <End Role="Vehicle" EntitySet="Vehicles" />
             <End Role="VehicleImage" EntitySet="VehicleImages" />
           </AssociationSet>
+          <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+            <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
@@ -742,6 +823,37 @@
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="CRPDBModelStoreContainer" CdmEntityContainer="CRPEntities">
+          <EntitySetMapping Name="AspNetRoles">
+            <EntityTypeMapping TypeName="CRPDBModel.AspNetRole">
+              <MappingFragment StoreEntitySet="AspNetRoles">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="CRPDBModel.AspNetUser">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="IsProviderUntil" ColumnName="IsProviderUntil" />
+                <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="SelfDescription" ColumnName="SelfDescription" />
+                <ScalarProperty Name="AvatarURL" ColumnName="AvatarURL" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="BookingReceipts">
             <EntityTypeMapping TypeName="CRPDBModel.BookingReceipt">
               <MappingFragment StoreEntitySet="BookingReceipt">
@@ -842,24 +954,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Users">
-            <EntityTypeMapping TypeName="CRPDBModel.User">
-              <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="FullName" ColumnName="FullName" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Phone" ColumnName="Phone" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
-                <ScalarProperty Name="IsProviderUntil" ColumnName="IsProviderUntil" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
-                <ScalarProperty Name="Star" ColumnName="Star" />
-                <ScalarProperty Name="SelfDescription" ColumnName="SelfDescription" />
-                <ScalarProperty Name="AvatarURL" ColumnName="AvatarURL" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Vehicles">
             <EntityTypeMapping TypeName="CRPDBModel.Vehicle">
               <MappingFragment StoreEntitySet="Vehicle">
@@ -899,6 +993,14 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="AspNetUserRoles" TypeName="CRPDBModel.AspNetUserRoles" StoreEntitySet="AspNetUserRoles">
+            <EndProperty Name="AspNetRoles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="AspNetUsers">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
