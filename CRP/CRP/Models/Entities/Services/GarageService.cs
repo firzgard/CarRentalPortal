@@ -55,5 +55,10 @@ namespace CRP.Models.Entities.Services
             List<Garage> lstGarage = new List<Garage>();
             return lstGarage;
         }
+        public Garage findByID(int id)
+        {
+            Garage garage = _repository.findById(id);
+            return garage;
+        }
     }
 }

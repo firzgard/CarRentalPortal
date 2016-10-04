@@ -1,8 +1,10 @@
-﻿
+﻿@model CRP.Models.Entities.Garage
 @{
     ViewBag.Title = "GarageDetail";
+    CRP.Models.Entities.Garage item = ViewBag.garaDetail;
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
 
 <h2>GarageDetail</h2>
 
+@item.Address ; @item.Name; @item.Star

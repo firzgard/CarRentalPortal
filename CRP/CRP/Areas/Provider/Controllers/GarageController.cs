@@ -27,7 +27,14 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("management/garageManagement/{id:int}")]
 		public ViewResult GarageManagement(int id)
 		{
-			return View("~/Areas/Provider/Views/Garage/GarageDetail.cshtml");
+            Garage garage = service.findByID(id);
+            if (garage != null) {
+                ViewBag.garaDetail = garage;
+            } else
+            {
+                return View("errorNull");
+            }
+            return View("~/Areas/Provider/Views/Garage/GarageDetail.cshtml");
 		}
 
 		// API Route to create single new garage
@@ -35,6 +42,7 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPost]
 		public Object CreateGarageAPI()
 		{
+
 			return Json("");
 		}
 
