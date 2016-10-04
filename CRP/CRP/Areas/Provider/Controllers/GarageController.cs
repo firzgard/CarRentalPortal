@@ -17,10 +17,7 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("management/garageManagement")]
 		public ViewResult GarageManagement()
 		{
-            List<Garage> lstGarage = new List<Garage>();
-            lstGarage = service.getAll();
-            ViewBag.garaList = lstGarage;
-            return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
+	    return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
 		}
 
 		// Route to garage's detailed info page
