@@ -38,7 +38,7 @@ namespace CRP.Areas.Customer.Controllers
 		}
 
 		// API route for sending comment/rating for a booking
-		[Route("api/booking/{id:int}")]
+		[Route("api/bookings/{id:int}")]
 		[HttpPatch]
 		public JsonResult RateBookingAPI(int id)
 		{

@@ -18,14 +18,15 @@ namespace CRP.Controllers
 
 		// Route to vehicle's detailed info page
 		[Route("management/vehicleManagement/{id:int}")]
-		[HttpGet]
 		public ViewResult VehihicleDetail(int id)
 		{
 			return View("~/Areas/Provider/Views/Vehicle/VehicleDetail.cshtml");
 		}
 
 		// API Route to get a list of vehicle to populate vehicleTable
+		// Allow filtering
 		// Server-side pagination needed
+		// Search/Filter/SortBy ability needed
 		[Route("api/vehicles")]
 		[HttpGet]
 		public JsonResult GetVehicleListAPI()

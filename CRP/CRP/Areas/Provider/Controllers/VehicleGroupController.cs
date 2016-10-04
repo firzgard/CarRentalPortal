@@ -46,14 +46,6 @@ namespace CRP.Areas.Provider.Controllers
 			return Json("");
 		}
 
-		// API route for toggling isActive (Deactivate/Reactivate) of single group
-		[Route("api/vehicleGroups/toggleIsActive/{id:int}")]
-		[HttpPatch]
-		public JsonResult ToogleIsActiveAPI(int id)
-		{
-			return Json("");
-		}
-
 		// API Route to delete single group
 		[Route("api/vehicleGroups/{id:int}")]
 		[HttpDelete]

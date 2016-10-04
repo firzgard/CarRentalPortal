@@ -17,24 +17,24 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("management/garageManagement")]
 		public ViewResult GarageManagement()
 		{
-            List<Garage> lstGarage = new List<Garage>();
-            lstGarage = service.getAll();
-            ViewBag.garaList = lstGarage;
-            return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
+			List<Garage> lstGarage = new List<Garage>();
+			lstGarage = service.getAll();
+			ViewBag.garaList = lstGarage;
+			return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
 		}
 
 		// Route to garage's detailed info page
 		[Route("management/garageManagement/{id:int}")]
 		public ViewResult GarageManagement(int id)
 		{
-            Garage garage = service.findByID(id);
-            if (garage != null) {
-                ViewBag.garaDetail = garage;
-            } else
-            {
-                return View("errorNull");
-            }
-            return View("~/Areas/Provider/Views/Garage/GarageDetail.cshtml");
+			Garage garage = service.findByID(id);
+			if (garage != null) {
+				ViewBag.garaDetail = garage;
+			} else
+			{
+				return View("errorNull");
+			}
+			return View("~/Areas/Provider/Views/Garage/GarageDetail.cshtml");
 		}
 
 		// API Route to get list of garage
@@ -62,14 +62,6 @@ namespace CRP.Areas.Provider.Controllers
 			return Json("");
 		}
 
-		// API route for toggling isActive (Deactivate/Reactivate) of single garage
-		[Route("api/garages/toggleIsActive/{id:int}")]
-		[HttpPatch]
-		public JsonResult ToogleIsActiveAPI(int id)
-		{
-			return Json("");
-		}
-
 		// API Route to delete single garage
 		[Route("api/garages/{id:int}")]
 		[HttpDelete]
@@ -82,7 +74,7 @@ namespace CRP.Areas.Provider.Controllers
 		public ActionResult Index()
 		{
 		List<Garage> lstGara = new List<Garage>();
-	    lstGara = service.getAll();
+		lstGara = service.getAll();
 		ViewBag.garaList = lstGara;
 		return View();
 		}
