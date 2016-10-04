@@ -25,8 +25,8 @@ namespace CRP.Models.Entities.Services
 
         public Boolean delete(int ID)
         {
-            Garage deleteBrand = _repository.findById(ID);
-            if (deleteBrand == null)
+            Garage deleteGarage = _repository.findById(ID);
+            if (deleteGarage == null)
             {
                 return false;
             }
@@ -34,7 +34,7 @@ namespace CRP.Models.Entities.Services
             {
                 try
                 {
-                    _repository.Delete(deleteBrand);
+                    _repository.Delete(deleteGarage);
                 }
                 catch (Exception e)
                 {
@@ -49,6 +49,11 @@ namespace CRP.Models.Entities.Services
             List<Garage> lstBrand = new List<Garage>();
             lstBrand = _repository.getAllGarage();
             return lstBrand;
+        }
+        public List<Garage> findByUser(int UserID)
+        {
+            List<Garage> lstGarage = new List<Garage>();
+            return lstGarage;
         }
     }
 }

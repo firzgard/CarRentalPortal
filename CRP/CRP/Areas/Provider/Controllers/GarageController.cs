@@ -17,6 +17,7 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("management/garageManagement")]
 		public ViewResult GarageManagement()
 		{
+
 			return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
 		}
 
@@ -60,14 +61,14 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		//// GET: Brand
-		//public ActionResult Index()
-		//{
-		//	List<Garage> lstGara = new List<Garage>();
-		//	lstGara = service.getAll();
-		//	ViewBag.garaList = lstGara;
-		//	return View();
-		//}
-		//// POST: Provider/CarBrand/Delete/5
+		public ActionResult Index()
+		{
+		List<Garage> lstGara = new List<Garage>();
+	    lstGara = service.getAll();
+		ViewBag.garaList = lstGara;
+		return View();
+		}
+		//POST: Provider/CarBrand/Delete/5
 		//[HttpPost]
 		//public String Delete()
 		//{

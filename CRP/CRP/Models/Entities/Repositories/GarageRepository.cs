@@ -38,7 +38,13 @@ namespace CRP.Models.Entities.Repositories
 			return query;
 		}
 
-		public void Update(Garage entity)
+        public List<Garage> findByUser(User userID)
+        {
+            var query = (from r in _dataContext.Garages where r.User == userID select r).ToList();
+            return query;
+        }
+
+        public void Update(Garage entity)
 		{
 			_dataContext.Entry(entity).State = System.Data.Entity.EntityState.Modified;
 			_dataContext.SaveChanges();
