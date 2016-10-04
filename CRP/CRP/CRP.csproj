@@ -274,6 +274,12 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JsonModels\BrandModel.cs" />
+    <Compile Include="Models\JsonModels\GarageModel.cs" />
+    <Compile Include="Models\JsonModels\MessageViewModels.cs" />
+    <Compile Include="Models\JsonModels\PriceGroupItemModel.cs" />
+    <Compile Include="Models\JsonModels\PriceGroupModel.cs" />
+    <Compile Include="Models\JsonModels\VehicleGroupModel.cs" />
+    <Compile Include="Models\JsonModels\VehicleModel.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Vehicle.cs" />
