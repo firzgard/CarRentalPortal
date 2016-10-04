@@ -203,7 +203,6 @@
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
-    <Compile Include="Areas\Provider\Controllers\VehicleGroupController.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -1317,6 +1316,7 @@
     <Content Include="Content\jsTree\themes\default\throbber.gif" />
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\metisMenu.min.css" />
+    <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
@@ -1474,10 +1474,16 @@
     <Content Include="Models\Entities\CRPEntities.edmx.diagram">
       <DependentUpon>CRPEntities.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Provider\Views\Garage\GarageManagement.cshtml" />
+    <Content Include="Areas\Provider\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Provider\Views\Shared\_Layout.cshtml" />
+    <Content Include="Areas\Provider\Views\Vehicle\Index.cshtml" />
     <Content Include="Areas\Provider\Views\Garage\GarageDetail.cshtml" />
     <Content Include="Areas\Provider\Views\Brand\Index.cshtml" />
-    <Content Include="Areas\Provider\Views\Garage\Index.cshtml" />
+    <Content Include="Areas\Provider\Views\Garage\GarageList.cshtml" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1498,7 +1504,8 @@
     <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\pace.min.js" />
-    <Content Include="Scripts\pageScript\garageManagement.js" />
+    <Content Include="Scripts\pageScript\garage.js" />
+    <Content Include="Scripts\pageScript\garageList.js" />
     <Content Include="Scripts\prototype.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
@@ -1517,8 +1524,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -1557,9 +1562,6 @@
     <Folder Include="Areas\Customer\Views\Booking\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
-    <Folder Include="Areas\Provider\Views\Shared\" />
-    <Folder Include="Areas\Provider\Views\VehicleGroup\" />
-    <Folder Include="Areas\Provider\Views\Vehicle\" />
     <Folder Include="Models\ViewModels\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
