@@ -27,7 +27,7 @@
                         @brand.ID
                     </td>
                     <td>
-                        <input type="text" id="txtBrand" value="@brand.Name"/>
+                        <input type="text" id="txtBrand@(brand.ID)" value="@brand.Name"/>
                     </td>
                     <td>
                     <button class="btn btn-primary" onclick="deleteBrand(@brand.ID)">Delete</button></td>
@@ -41,8 +41,8 @@
 </table>
 <script>
     function updateBrand(id){
-        var ID = id;
-        var brand = $("txtBrand").val();
+        var id = id;
+        var brand = $(`#txtBrand${id}`).val();
         $.ajax({
             url: '/Brand/Edit',
             data: {
