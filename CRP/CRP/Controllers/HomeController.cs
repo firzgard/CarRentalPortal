@@ -27,5 +27,13 @@ namespace CRP.Controllers
 		{
 			return View();
 		}
+		
+		// API Route for guest/customer to search vehicle for booking
+		[Route("api/vehicles/search")]
+		[HttpGet]
+		public JsonResult SearchVehiclesAPI()
+		{
+			return Json("");
+		}
 	}
 }
