@@ -28,7 +28,7 @@ namespace CRP.Models.Entities
         public string GarageName { get; set; }
         public string GarageAddress { get; set; }
     
-        public virtual User User { get; set; }
+        public virtual AspNetUser AspNetUser { get; set; }
         public virtual Vehicle Vehicle { get; set; }
     }
 }
