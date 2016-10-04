@@ -22,6 +22,14 @@ namespace CRP.Areas.Provider.Controllers
 			return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupDetail.cshtml");
 		}
 
+		// API Route to get list of group
+		[Route("api/vehicleGroups")]
+		[HttpGet]
+		public JsonResult GetVehicleGroupListAPI()
+		{
+			return Json("");
+		}
+
 		// API Route to create single new group
 		[Route("api/vehicleGroups")]
 		[HttpPost]
