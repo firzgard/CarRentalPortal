@@ -8,22 +8,23 @@ namespace CRP.Controllers
 {
 	public class HomeController : Controller
 	{
+		// Route to homepage
 		public ActionResult Index()
 		{
 			return View();
 		}
 
-		public ActionResult About()
+		// Route to vehicle search results
+		[Route("search")]
+		public ActionResult Search()
 		{
-			ViewBag.Message = "Your application description page.";
-
 			return View();
 		}
 
-		public ActionResult Contact()
+		// Route to vehicle's info
+		[Route("vehicleInfo/{id:int}")]
+		public ActionResult VehicleInfo(int id)
 		{
-			ViewBag.Message = "Your contact page.";
-
 			return View();
 		}
 	}
