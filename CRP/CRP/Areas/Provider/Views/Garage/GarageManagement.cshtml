@@ -1,7 +1,8 @@
-﻿
+﻿@model CRP.Models.Entities.Garage
 @{
-	ViewBag.Title = "Garage Management";
-	Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+    ViewBag.Title = "Garage Management";
+    List<CRP.Models.Entities.Garage> lstGarage= ViewBag.garaList;
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
 <div class="row wrapper border-bottom white-bg page-heading">
 	<h2>Garage Management</h2>

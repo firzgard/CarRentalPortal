@@ -17,7 +17,10 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("management/garageManagement")]
 		public ViewResult GarageManagement()
 		{
-			return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
+            List<Garage> lstGarage = new List<Garage>();
+            lstGarage = service.getAll();
+            ViewBag.garaList = lstGarage;
+            return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
 		}
 
 		// Route to garage's detailed info page
@@ -30,7 +33,7 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to create single new garage
 		[Route("api/garages")]
 		[HttpPost]
-		public JsonResult CreateGarageAPI()
+		public Object CreateGarageAPI()
 		{
 			return Json("");
 		}
@@ -60,14 +63,14 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		//// GET: Brand
-		//public ActionResult Index()
-		//{
-		//	List<Garage> lstGara = new List<Garage>();
-		//	lstGara = service.getAll();
-		//	ViewBag.garaList = lstGara;
-		//	return View();
-		//}
-		//// POST: Provider/CarBrand/Delete/5
+		public ActionResult Index()
+		{
+		List<Garage> lstGara = new List<Garage>();
+	    lstGara = service.getAll();
+		ViewBag.garaList = lstGara;
+		return View();
+		}
+		//POST: Provider/CarBrand/Delete/5
 		//[HttpPost]
 		//public String Delete()
 		//{
