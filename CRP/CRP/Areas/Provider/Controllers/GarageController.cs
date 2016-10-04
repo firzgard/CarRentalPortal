@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using CRP.Models;
 using CRP.Models.Entities.Services;
 using CRP.Models.Entities;
+using CRP.Models.JsonModels;
+using Newtonsoft.Json;
 
 namespace CRP.Areas.Provider.Controllers
 {
@@ -42,13 +44,29 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetGarageListAPI()
 		{
-			return Json("");
+			List<Garage> lstGarage = new List<Garage>();
+			List<GarageModel> jsonGarages = new List<GarageModel>();
+			//cho nay se get theo user
+			lstGarage = service.getAll();
+			foreach (Garage p in lstGarage)
+			{
+				GarageModel jsonGarage = new GarageModel();
+				jsonGarage.ID = p.ID;
+				jsonGarage.Name = p.Name;
+				jsonGarage.LocationID = p.LocationID;
+				jsonGarage.LocationName = "SomeWhere";
+				jsonGarage.Address = p.Address;
+				jsonGarage.Star = p.Star.GetValueOrDefault();
+				jsonGarage.IsActive = p.IsActive;
+				jsonGarages.Add(jsonGarage);
+			}
+			return Json(jsonGarages, JsonRequestBehavior.AllowGet);
 		}
 
 		// API Route to create single new garage
 		[Route("api/garages")]
 		[HttpPost]
-		public Object CreateGarageAPI()
+		public JsonResult CreateGarageAPI()
 		{
 
 			return Json("");
@@ -67,7 +85,18 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpDelete]
 		public JsonResult DeleteGarageAPI(int id)
 		{
-			return Json("");
+			MessageViewModels jsonResult = new MessageViewModels();
+			Boolean result = service.delete(id);
+			if (result)
+			{
+				jsonResult.StatusCode = 1;
+				jsonResult.Msg = "Deleted successfully!";
+			} else
+			{
+				jsonResult.StatusCode = 0;
+				jsonResult.Msg = "Error!";
+			}
+			return Json(jsonResult, JsonRequestBehavior.AllowGet);
 		}
 
 		//// GET: Brand
