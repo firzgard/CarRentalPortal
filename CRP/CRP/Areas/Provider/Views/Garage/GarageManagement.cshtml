@@ -153,24 +153,25 @@
 </div>
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/GarageList")
-				  .Include("~/Content/awesome-bootstrap-checkbox.css",
-					  "~/Content/chosen.css",
-					  "~/Content/Datatable/css/dataTables.bootstrap.css"));
+	.Include("~/Content/awesome-bootstrap-checkbox.css",
+		"~/Content/chosen.css",
+		"~/Content/DataTables/css/jquery.dataTables.css",
+		"~/Content/DataTables/css/dataTables.bootstrap.css"));
 }
 @section Styles {
 	@Styles.Render("~/Styles/GarageList")
 }
-
 @section PageStyle {
 	@Styles.Render("~/Content/pageStyle/garageList.css")
 }
 
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/GarageList")
-	.Include("~/Scripts/chosen.jquery.js",
-		"~/Scripts/Datatables/dataTables.bootstrap.js",
+	 .Include("~/Scripts/chosen.jquery.js",
+		"~/Scripts/DataTables/jquery.dataTables.js",
+		"~/Scripts/DataTables/dataTables.bootstrap.js",
 		"~/Scripts/utils/generateUIElements.js",
 		"~/Scripts/utils/generateCustomDataTablesFilters.js",
-		"~/Scripts/pageScript/garageList.js"));
+		"~/Scripts/pageScript/garageManagement.js"));
 }
 @section Scripts {
 	@Scripts.Render("~/Scripts/GarageList")

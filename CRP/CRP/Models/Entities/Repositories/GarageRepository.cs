@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CRP.Models.Entities.Repositories
 {
-	public class GarageRepository : IRepository<Garage>
+	public class GarageRepository : IBaseRepository<Garage>
 	{
 		CRPEntities _dataContext = new CRPEntities();
 		public IEnumerable<Garage> List
