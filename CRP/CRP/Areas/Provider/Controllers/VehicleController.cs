@@ -18,14 +18,14 @@ namespace CRP.Controllers
 
 		// Route to vehicle's detailed info page
 		[Route("management/vehicleManagement/{id:int}")]
-		public ViewResult VehihicleDetail()
+		[HttpGet]
+		public ViewResult VehihicleDetail(int id)
 		{
 			return View("~/Areas/Provider/Views/Vehicle/VehicleDetail.cshtml");
 		}
 
 		// API Route to get a list of vehicle to populate vehicleTable
-		// Only vehicle tables need this API because their possibly huge number of record
-		// So we need this API for server-side pagination
+		// Server-side pagination needed
 		[Route("api/vehicles")]
 		[HttpGet]
 		public JsonResult GetVehicleListAPI()
@@ -35,17 +35,17 @@ namespace CRP.Controllers
 			return Json(vehicle);
 		}
 
-		// API Route for getting vehicle's detailed infomations (for example, to duplicate vehicle)
-		[Route("api/vehicles/{id}")]
+		// API Route to get a vehicle's detailed info (To duplicate that vehicle, for example)
+		[Route("api/vehicles/{id:int}")]
 		[HttpGet]
-		public JsonResult GetVehicleDetailAPI()
+		public JsonResult GetVehicleDetailAPI(int id)
 		{
 			var vehicle = new Vehicle() { Id = 666, Name = "BWM X7" };
 
 			return Json(vehicle);
 		}
 
-		// API Route to create single new vehicles
+		// API Route to create/duplicate single new vehicles
 		[Route("api/vehicles")]
 		[HttpPost]
 		public JsonResult CreateVehicleAPI()
@@ -53,7 +53,7 @@ namespace CRP.Controllers
 			return Json("");
 		}
 
-		// API Route to edit single vehicle
+		// API Route for updating vehicle's info
 		[Route("api/vehicles")]
 		[HttpPatch]
 		public JsonResult EditVehicleAPI()
@@ -62,17 +62,9 @@ namespace CRP.Controllers
 		}
 
 		// API Route to delete 1 or multiple vehicles
-		[Route("api/vehicles")]
+		[Route("form/vehicles/delete")]
 		[HttpDelete]
 		public JsonResult DeleteVehiclesAPI()
-		{
-			return Json("");
-		}
-
-		// API Route for guest/customer to search vehicle for booking
-		[Route("api/vehicles/search")]
-		[HttpGet]
-		public JsonResult SearchVehiclesAPI()
 		{
 			return Json("");
 		}
@@ -93,10 +85,10 @@ namespace CRP.Controllers
 			return Json("");
 		}
 
-		// API route for creating an own booking
-		[Route("api/vehicles/cancelBooking/{id:int}")]
+		// API Route to create an own booking
+		[Route("form/vehicles/createBooking")]
 		[HttpPost]
-		public JsonResult CreateBookingAPI(int id)
+		public JsonResult CreateOwnBookingAPI()
 		{
 			return Json("");
 		}

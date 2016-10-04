@@ -37,6 +37,14 @@ namespace CRP.Areas.Provider.Controllers
             return View("~/Areas/Provider/Views/Garage/GarageDetail.cshtml");
 		}
 
+		// API Route to get list of garage
+		[Route("api/garages")]
+		[HttpGet]
+		public JsonResult GetGarageListAPI()
+		{
+			return Json("");
+		}
+
 		// API Route to create single new garage
 		[Route("api/garages")]
 		[HttpPost]
