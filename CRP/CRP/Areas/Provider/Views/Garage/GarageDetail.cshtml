@@ -1,6 +1,7 @@
-﻿
+﻿@model CRP.Models.Entities.Garage
 @{
     ViewBag.Title = "Garage Detail";
+    CRP.Models.Entities.Garage item = ViewBag.garaDetail;
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
 
@@ -16,7 +17,7 @@
                 <div class="col-md-6">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-building-o" style="font-size: 2em;"></i></span>
-                        <input type="text" placeholder="Garage Name" value="Garage 3k" id="garageName" class="form-control input-lg" style="font-size: 2em; font-weight:bold;" required>
+                        <input type="text" placeholder="Garage Name" value="@item.Name" id="garageName" class="form-control input-lg" style="font-size: 2em; font-weight:bold;" required>
                     </div>
                 </div>
                 <div data-star="4.4" class="col-md-4" id="starRating"></div>
@@ -34,19 +35,19 @@
                     </div>
                     <div class="form-group">
                         <label for="address">Address*</label>
-                        <input type="text" placeholder="Address" value="666 Nguyen Hue" class="form-control" id="address" required>
+                        <input type="text" placeholder="Address" value="@item.Address" class="form-control" id="address" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email*</label>
-                        <input type="text" placeholder="Email Address" value="asdqlwkjd@3krental.com" class="form-control" id="email" required>
+                        <input type="text" placeholder="Email Address" value="@item.Email" class="form-control" id="email" required>
                     </div>
                     <div class="form-group">
                         <label for="phone1">Phone 1*</label>
-                        <input type="text" placeholder="Primary Phone Number" value="0912312032031" class="form-control" id="phone1" required>
+                        <input type="text" placeholder="Primary Phone Number" value="@item.Phone1" class="form-control" id="phone1" required>
                     </div>
                     <div class="form-group">
                         <label for="phone2">Phone 2</label>
-                        <input type="text" placeholder="Alternative Phone Number" value="" class="form-control" id="phone2">
+                        <input type="text" placeholder="Alternative Phone Number" value="@item.Phone2" class="form-control" id="phone2">
                     </div>
                 </div>
                 <div class="col-md-5">
@@ -55,51 +56,51 @@
                         <div class="input-group">
                             <div class="input-group-addon gray-bg">Monday</div>
                             <div class="input-group-addon">From</div>
-                            <input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeMon">
+                            <input type="text" data-mask="99:99" value="@item.OpenTimeMon" class="form-control" id="openTimeMon">
                             <div class="input-group-addon">To</div>
-                            <input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeMon">
+                            <input type="text" data-mask="99:99" value="@item.CloseTimeMon" class="form-control" id="closeTimeMon">
                         </div>
                         <div class="input-group">
                             <div class="input-group-addon gray-bg">Tuesday</div>
                             <div class="input-group-addon">From</div>
-                            <input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeTue">
+                            <input type="text" data-mask="99:99" value="@item.OpenTimeTue" class="form-control" id="openTimeTue">
                             <div class="input-group-addon">To</div>
-                            <input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeTue">
+                            <input type="text" data-mask="99:99" value="@item.CloseTimeTue" class="form-control" id="closeTimeTue">
                         </div>
                         <div class="input-group">
                             <div class="input-group-addon gray-bg">Wednesday</div>
                             <div class="input-group-addon">From</div>
-                            <input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeWed">
+                            <input type="text" data-mask="99:99" value="@item.OpenTImeWed" class="form-control" id="openTimeWed">
                             <div class="input-group-addon">To</div>
-                            <input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeWed">
+                            <input type="text" data-mask="99:99" value="@item.CloseTImeWed" class="form-control" id="closeTimeWed">
                         </div>
                         <div class="input-group">
                             <div class="input-group-addon gray-bg">Thursday</div>
                             <div class="input-group-addon">From</div>
-                            <input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeThur">
+                            <input type="text" data-mask="99:99" value="@item.OpenTimeThur" class="form-control" id="openTimeThur">
                             <div class="input-group-addon">To</div>
-                            <input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeThur">
+                            <input type="text" data-mask="99:99" value="@item.CloseTimeThur" class="form-control" id="closeTimeThur">
                         </div>
                         <div class="input-group">
                             <div class="input-group-addon gray-bg">Friday</div>
                             <div class="input-group-addon">From</div>
-                            <input type="text" data-mask="99:99" value="6:00" class="form-control" id="openTimeFri">
+                            <input type="text" data-mask="99:99" value="@item.OpenTimeFri" class="form-control" id="openTimeFri">
                             <div class="input-group-addon">To</div>
-                            <input type="text" data-mask="99:99" value="20:00" class="form-control" id="closeTimeFri">
+                            <input type="text" data-mask="99:99" value="@item.CloseTimeFri" class="form-control" id="closeTimeFri">
                         </div>
                         <div class="input-group">
                             <div class="input-group-addon gray-bg">Saturday</div>
                             <div class="input-group-addon">From</div>
-                            <input type="text" data-mask="99:99" class="form-control" id="openTimeSat">
+                            <input type="text" data-mask="99:99" value="@item.OpenTimeSat" class="form-control" id="openTimeSat">
                             <div class="input-group-addon">To</div>
-                            <input type="text" data-mask="99:99" class="form-control" id="closeTimeSat">
+                            <input type="text" data-mask="99:99" value="@item.CloseTimeSat" class="form-control" id="closeTimeSat">
                         </div>
                         <div class="input-group">
                             <div class="input-group-addon gray-bg">Sunday</div>
                             <div class="input-group-addon">From</div>
-                            <input type="text" data-mask="99:99" class="form-control" id="openTimeSun">
+                            <input type="text" data-mask="99:99" value="@item.OpenTimeSun" class="form-control" id="openTimeSun">
                             <div class="input-group-addon">To</div>
-                            <input type="text" data-mask="99:99" class="form-control" id="closeTimeSun">
+                            <input type="text" data-mask="99:99" value="@item.CloseTimeSun" class="form-control" id="closeTimeSun">
                         </div>
                     </div>
                 </div>
