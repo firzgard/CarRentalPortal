@@ -38,9 +38,9 @@ namespace CRP.Models.Entities.Repositories
 			return query;
 		}
 
-        public List<Garage> findByUser(User userID)
+        public List<Garage> findByUser(AspNetUser userID)
         {
-            var query = (from r in _dataContext.Garages where r.User == userID select r).ToList();
+            var query = (from r in _dataContext.Garages where r.AspNetUser == userID select r).ToList();
             return query;
         }
 
