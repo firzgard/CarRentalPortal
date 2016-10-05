@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -204,6 +208,7 @@
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
     <Compile Include="Areas\Provider\Controllers\VehicleGroupController.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
+    <Compile Include="AutoMapperConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -245,7 +250,13 @@
     <Compile Include="Models\Entities\Garage.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Location.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Model.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Nation.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Notification.cs">
@@ -287,7 +298,7 @@
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Vehicle.cs" />
-    <Compile Include="Models\ViewModels\AddVehicleGroupViewModel.cs" />
+    <Compile Include="Models\ViewModels\VehicleGroupViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1498,9 +1509,10 @@
     <Content Include="Areas\Provider\Views\VehicleGroup\CreatePopup.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupManagement.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <None Include="Scripts\jquery-2.0.0.intellisense.js" />
+    <Content Include="Scripts\jquery-2.0.0.js" />
+    <Content Include="Scripts\jquery-2.0.0.min.js" />
+    <Content Include="Scripts\jquery-2.0.0.min.map" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />

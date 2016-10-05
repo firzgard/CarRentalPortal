@@ -142,24 +142,25 @@
         </table>
     </div>
 </div>
+<div id="myModal" class="modal fade" role="dialog"></div>
 
-@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleGroupManagement")
-                  .Include("~/Content/awesome-bootstrap-checkbox.css",
-                      "~/Content/chosen.css",
-                      "~/Content/DataTables/css/dataTables.bootstrap.css",
-                      "~/Content/pageStyle/vehicleGroupManagement.css"));
-}
-@section Styles {
-    @Styles.Render("~/Styles/VehicleGroupManagement")
-}
-@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleGroupManagement")
-                   .Include("~/Scripts/chosen.jquery.js",
-                      "~/Scripts/DataTables/jquery.dataTables.js",
-                      "~/Scripts/DataTables/dataTables.bootstrap.js",
-                      "~/Scripts/utils/generateUIElements.js",
-                      "~/Scripts/utils/generateCustomDataTablesFilters.js",
-                      "~/Scripts/pageScript/vehicleGroupManagement.js"));
-}
-@section Scripts {
-    @Scripts.Render("~/Scripts/VehicleGroupManagement")
-}
+    @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleGroupManagement")
+                            .Include("~/Content/awesome-bootstrap-checkbox.css",
+                                "~/Content/chosen.css",
+                                "~/Content/DataTables/css/dataTables.bootstrap.css",
+                                "~/Content/pageStyle/vehicleGroupManagement.css"));
+    }
+    @section Styles {
+        @Styles.Render("~/Styles/VehicleGroupManagement")
+    }
+    @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleGroupManagement")
+                             .Include("~/Scripts/chosen.jquery.js",
+                                "~/Scripts/DataTables/jquery.dataTables.js",
+                                "~/Scripts/DataTables/dataTables.bootstrap.js",
+                                "~/Scripts/utils/generateUIElements.js",
+                                "~/Scripts/utils/generateCustomDataTablesFilters.js",
+                                "~/Scripts/pageScript/vehicleGroupManagement.js"));
+    }
+    @section Scripts {
+        @Scripts.Render("~/Scripts/VehicleGroupManagement")
+    }
