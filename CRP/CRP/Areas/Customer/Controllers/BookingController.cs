@@ -9,14 +9,14 @@ namespace CRP.Areas.Customer.Controllers
 	public class BookingController : Controller
 	{
 		// Route to bookingConfirm page (Page for confirming booking details before paying)
-		[Route("management/bookingConfirm")]
+		[Route("bookingConfirm")]
 		public ViewResult BookingConfirm()
 		{
 			return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
 		// Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
-		[Route("management/bookingReceipt")]
+		[Route("bookingReceipt")]
 		public ViewResult BookingReceipt()
 		{
 			return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
@@ -29,6 +29,15 @@ namespace CRP.Areas.Customer.Controllers
 			return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
+		// API route for getting booking calendar of this vehicle
+		// Only get bookingReceipt of the next 30 days from this moment
+		[Route("api/bookings/{vehicleID:int}")]
+		[HttpGet]
+		public JsonResult GetBookingCalendarAPI(int vehicleID)
+		{
+			return Json("");
+		}
+
 		// API route for canceling a booking
 		[Route("api/bookings/{id:int}")]
 		[HttpDelete]
@@ -38,8 +47,8 @@ namespace CRP.Areas.Customer.Controllers
 		}
 
 		// API route for sending comment/rating for a booking
-		[Route("api/booking/{id:int}")]
-		[HttpPatch]
+		[Route("api/bookings/{id:int}")]
+		[HttpPut]
 		public JsonResult RateBookingAPI(int id)
 		{
 			return Json("");
