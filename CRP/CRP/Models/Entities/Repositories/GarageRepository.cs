@@ -69,5 +69,5 @@ namespace CRP.Models.Entities.Repositories
 			}
 			return true;
 		}
-	}
+    }
 }
