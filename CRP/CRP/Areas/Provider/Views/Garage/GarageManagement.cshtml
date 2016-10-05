@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "Garage Management";
     List<CRP.Models.Entities.Garage> lstGarage= ViewBag.garaList;
+    List<CRP.Models.Entities.Location> lstLocation = ViewBag.locationList;
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
 <div class="row wrapper border-bottom white-bg page-heading">
@@ -66,11 +67,11 @@
 								<div class="scroller">
 									<div class="input-group" id="typeTree">
                                         @{
-                                            foreach (CRP.Models.Entities.Garage item in lstGarage)
+                                            foreach (CRP.Models.Entities.Location item2 in lstLocation)
                                             {
                                                 <div class="checkbox checkbox-success">
-                                                    <input value="@item.LocationID" id="@item.LocationID" type="checkbox" />
-                                                    <label>@item.LocationID</label>
+                                                    <input value="@item2.ID" id="@item2.Name" type="checkbox" />
+                                                    <label>@item2.Name</label>
                                                 </div>
                                             }
                                         }
