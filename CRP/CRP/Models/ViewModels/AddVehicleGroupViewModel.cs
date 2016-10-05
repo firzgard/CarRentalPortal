@@ -14,6 +14,6 @@ namespace CRP.Models.ViewModels
         //public AddVehicleGroupViewModel(VehicleGroup entity) : base(entity) { }
 
         [Display(Name = "")]
-        public override string Name { get; set; }
+        public string Name { get; set; }
     }
 }

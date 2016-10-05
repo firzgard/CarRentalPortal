@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="CRPDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="CRPDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -96,6 +96,14 @@
           <Property Name="OpenTimeSun" Type="datetime" />
           <Property Name="CloseTimeSun" Type="datetime" />
         </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="NationID" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Model">
           <Key>
             <PropertyRef Name="ID" />
@@ -106,6 +114,13 @@
           <Property Name="Type" Type="int" Nullable="false" />
           <Property Name="NumOfDoor" Type="int" Nullable="false" />
           <Property Name="NumOfSeat" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="Notification">
           <Key>
@@ -283,6 +298,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Garage_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="Garage" Type="Self.Garage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Garage">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Location_Nation">
+          <End Role="Nation" Type="Self.Nation" Multiplicity="1" />
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="NationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Notification_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
@@ -350,7 +389,9 @@
           <EntitySet Name="BookingReceipt" EntityType="Self.BookingReceipt" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Garage" EntityType="Self.Garage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Model" EntityType="Self.Model" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nation" EntityType="Self.Nation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceGroup" EntityType="Self.PriceGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceGroupItem" EntityType="Self.PriceGroupItem" Schema="dbo" store:Type="Tables" />
@@ -393,6 +434,14 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Garage" EntitySet="Garage" />
           </AssociationSet>
+          <AssociationSet Name="FK_Garage_Location" Association="Self.FK_Garage_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Garage" EntitySet="Garage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_Nation" Association="Self.FK_Location_Nation">
+            <End Role="Nation" EntitySet="Nation" />
+            <End Role="Location" EntitySet="Location" />
+          </AssociationSet>
           <AssociationSet Name="FK_Notification_AspNetUsers" Association="Self.FK_Notification_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Notification" EntitySet="Notification" />
@@ -414,8 +463,7 @@
             <End Role="VehicleGroup" EntitySet="VehicleGroup" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="CRPDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -512,6 +560,7 @@
           <Property Name="CloseTimeSun" Type="DateTime" Precision="3" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Garage_AspNetUsers" FromRole="Garage" ToRole="AspNetUsers" />
           <NavigationProperty Name="Vehicles" Relationship="Self.FK_Car_Store" FromRole="Garage" ToRole="Vehicle" />
+          <NavigationProperty Name="Location" Relationship="CRPDBModel.FK_Garage_Location" FromRole="Garage" ToRole="Location" />
         </EntityType>
         <EntityType Name="Model">
           <Key>
@@ -816,7 +865,59 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <EntitySet Name="Locations" EntityType="CRPDBModel.Location" />
+          <EntitySet Name="Nations" EntityType="CRPDBModel.Nation" />
+          <AssociationSet Name="FK_Garage_Location" Association="CRPDBModel.FK_Garage_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Garage" EntitySet="Garages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Location_Nation" Association="CRPDBModel.FK_Location_Nation">
+            <End Role="Nation" EntitySet="Nations" />
+            <End Role="Location" EntitySet="Locations" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NationID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Garages" Relationship="CRPDBModel.FK_Garage_Location" FromRole="Location" ToRole="Garage" />
+          <NavigationProperty Name="Nation" Relationship="CRPDBModel.FK_Location_Nation" FromRole="Location" ToRole="Nation" />
+        </EntityType>
+        <EntityType Name="Nation">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Locations" Relationship="CRPDBModel.FK_Location_Nation" FromRole="Nation" ToRole="Location" />
+        </EntityType>
+        <Association Name="FK_Garage_Location">
+          <End Type="CRPDBModel.Location" Role="Location" Multiplicity="1" />
+          <End Type="CRPDBModel.Garage" Role="Garage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Garage">
+              <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Location_Nation">
+          <End Type="CRPDBModel.Nation" Role="Nation" Multiplicity="1" />
+          <End Type="CRPDBModel.Location" Role="Location" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nation">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Location">
+              <PropertyRef Name="NationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1001,6 +1102,23 @@
               <ScalarProperty Name="Id" ColumnName="UserId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="CRPDBModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="NationID" ColumnName="NationID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nations">
+            <EntityTypeMapping TypeName="CRPDBModel.Nation">
+              <MappingFragment StoreEntitySet="Nation">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
