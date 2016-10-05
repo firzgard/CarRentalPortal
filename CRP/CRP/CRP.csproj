@@ -245,9 +245,11 @@
     <Compile Include="Models\Entities\Garage.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Location.cs" />
     <Compile Include="Models\Entities\Model.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Nation.cs" />
     <Compile Include="Models\Entities\Notification.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
