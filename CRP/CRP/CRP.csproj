@@ -200,7 +200,6 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
-    <Compile Include="Areas\Provider\Controllers\BookingController.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
     <Compile Include="Areas\Provider\Controllers\VehicleGroupController.cs" />
@@ -261,12 +260,14 @@
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\BookingRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
     <Compile Include="Models\Entities\Repositories\GarageRepository.cs" />
     <Compile Include="Models\Entities\Repositories\LocationRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleGroupRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleRepository.cs" />
     <Compile Include="Models\Entities\Services\BaseService.cs" />
+    <Compile Include="Models\Entities\Services\BookingService.cs" />
     <Compile Include="Models\Entities\Services\BrandService.cs" />
     <Compile Include="Models\Entities\Services\GarageService.cs" />
     <Compile Include="Models\Entities\Services\LocationService.cs" />
