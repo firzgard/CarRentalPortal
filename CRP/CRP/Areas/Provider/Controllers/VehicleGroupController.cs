@@ -1,4 +1,7 @@
-﻿using System;
+﻿using CRP.Models.Entities;
+using CRP.Models.Entities.Services;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,8 +9,10 @@ using System.Web.Mvc;
 
 namespace CRP.Areas.Provider.Controllers
 {
+
 	public class VehicleGroupController : Controller
 	{
+        VehicleGroupService service = VehicleGroupService.getInstance();
 		// Route to vehicleGroupManagement page
 		[Route("management/vehicleGroupManagement")]
 		public ViewResult VehicleGroupManagement()
@@ -27,8 +32,18 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetVehicleGroupListAPI()
 		{
-			return Json("");
+            var list = service.getAll();
+			return Json(list);
 		}
+
+        // Show create popup
+        [Route("management/vehicleGroupManagement/create")]
+        [HttpGet]
+        public ViewResult CreateVehicleGroup()
+        {
+            
+            return View("");
+        }
 
 		// API Route to create single new group
 		[Route("api/vehicleGroups")]
@@ -42,14 +57,6 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("api/vehicleGroups")]
 		[HttpPatch]
 		public JsonResult EditVehicleGroupAPI()
-		{
-			return Json("");
-		}
-
-		// API route for toggling isActive (Deactivate/Reactivate) of single group
-		[Route("api/vehicleGroups/toggleIsActive/{id:int}")]
-		[HttpPatch]
-		public JsonResult ToogleIsActiveAPI(int id)
 		{
 			return Json("");
 		}
