@@ -14,7 +14,7 @@ namespace CRP.Areas.Provider.Controllers
     public class GarageController : Controller
     {
         GarageService service = new GarageService();
-
+        LocationService locationService = new LocationService();
         // Route to garageManagement page
         [Route("management/garageManagement")]
         public ViewResult GarageManagement()
@@ -56,7 +56,7 @@ namespace CRP.Areas.Provider.Controllers
                 jsonGarage.ID = p.ID;
                 jsonGarage.Name = p.Name;
                 jsonGarage.LocationID = p.LocationID;
-                jsonGarage.LocationName = "SomeWhere";
+                jsonGarage.LocationName = locationService.findLocalNameByID(p.LocationID);
                 jsonGarage.Address = p.Address;
                 jsonGarage.Star = p.Star.GetValueOrDefault();
                 jsonGarage.IsActive = p.IsActive;
