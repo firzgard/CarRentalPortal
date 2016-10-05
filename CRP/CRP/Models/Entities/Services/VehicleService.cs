@@ -7,30 +7,73 @@ using CRP.Models.Entities.Repositories;
 
 namespace CRP.Models.Entities.Services
 {
-	public interface IVehicleService : IService<Vehicle>
-	{
-		IEnumerable<Vehicle> GetActive();
-		IEnumerable<VehicleDetails> GetDetailList();
+    public class VehicleService
+    {
+        VehicleRepository _repository = new VehicleRepository();
+        public Boolean add(Vehicle vehicle)
+        {
+            try
+            {
+                _repository.Add(vehicle);
+            }
+            catch (Exception e)
+            {
+                e.GetHashCode();
+                return false;
+            }
+            return true;
+        }
 
-		Task<VehicleDetails> GetDetailAsync(int? id);
+        public Boolean delete(int ID)
+        {
+            Vehicle deleteVehicle = _repository.findById(ID);
+            if (deleteVehicle == null)
+            {
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    _repository.Delete(deleteVehicle);
+                }
+                catch (Exception e)
+                {
+                    e.GetHashCode();
+                    return false;
+                }
+                return true;
+            }
+        }
+        public List<Vehicle> getAll()
+        {
+            List<Vehicle> lstVehicle = new List<Vehicle>();
+            lstVehicle = _repository.getList();
+            return lstVehicle;
+        }
+        public Boolean UpdateVehicle(Vehicle vehicle)
+        {
+            Vehicle sVehicle = _repository.findById(vehicle.ID);
+            if (sVehicle == null)
+            {
+                return false;
+            }
+            try
+            {
+                _repository.Update(vehicle);
+            }
+            catch (Exception e)
+            {
+                e.GetBaseException();
+                return false;
+            }
+            return true;
+        }
+        public Vehicle findByID(int ID)
+        {
+            Vehicle vehilce = _repository.findById(ID);
+            return vehilce;
+        }
 
-		Task<VehicleDetails> GetDetailAsync(string seoName);
-
-        new Task CreateAsync(Vehicle vehicle);
-
-        new Task UpdateAsync(Vehicle vehicle);
     }
-
-	public class VehicleService
-	{
-	}
-
-	public class VehicleDetails
-	{
-		public Vehicle Vehicle { get; set; }
-		//public IEnumerable<ModelDetails> ModelDetails { get; set; }
-		public IEnumerable<Garage> Garage { get; set; }
-		public IEnumerable<VehicleGroup> VehicleGroup { get; set; }
-		public IEnumerable<VehicleImage> VehicleImages { get; set; }
-	}
 }
