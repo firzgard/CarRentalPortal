@@ -5,7 +5,7 @@ using System.Web;
 
 namespace CRP.Models.Entities.Repositories
 {
-	public class GarageRepository : BaseRepository<Garage>
+	public class GarageRepository : IBaseRepository<Garage>
 	{
 		CRPEntities _dataContext = new CRPEntities();
 		public IEnumerable<Garage> List
@@ -38,7 +38,13 @@ namespace CRP.Models.Entities.Repositories
 			return query;
 		}
 
-		public void Update(Garage entity)
+        public List<Garage> findByUser(AspNetUser userID)
+        {
+            var query = (from r in _dataContext.Garages where r.AspNetUser == userID select r).ToList();
+            return query;
+        }
+
+        public void Update(Garage entity)
 		{
 			_dataContext.Entry(entity).State = System.Data.Entity.EntityState.Modified;
 			_dataContext.SaveChanges();

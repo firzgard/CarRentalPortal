@@ -50,5 +50,29 @@ namespace CRP.Models.Entities.Services
             lstBrand = _repository.getList();
             return lstBrand;
         }
+        public Boolean UpdateBrand(Brand brand)
+        {
+            Brand sBrand = _repository.findById(brand.ID);
+            if (sBrand == null)
+            {
+                return false;
+            }
+            try
+            {
+                _repository.Update(brand);
+            }
+            catch (Exception e)
+            {
+                e.GetBaseException();
+                return false;
+            }
+            return true;
+        }
+        public Brand findByID(int ID)
+        {
+            Brand brand = _repository.findById(ID);
+            return brand;
+        }
+
     }
 }
