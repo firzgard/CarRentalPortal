@@ -1,8 +1,8 @@
 ﻿@model CRP.Models.Entities.Garage
 @{
-    ViewBag.Title = "Garage Management";
-    List<CRP.Models.Entities.Garage> lstGarage= ViewBag.garaList;
-    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+	ViewBag.Title = "Garage Management";
+	List<CRP.Models.Entities.Garage> lstGarage= ViewBag.garaList;
+	Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
 <div class="row wrapper border-bottom white-bg page-heading">
 	<h2>Garage Management</h2>
@@ -65,15 +65,15 @@
 								<button class="btn btn-primary btn-block">Filter <i class="fa fa-search"></i></button>
 								<div class="scroller">
 									<div class="input-group" id="typeTree">
-                                        @{
-                                            foreach (CRP.Models.Entities.Garage item in lstGarage)
-                                            {
-                                                <div class="checkbox checkbox-success">
-                                                    <input value="@item.LocationID" id="@item.LocationID" type="checkbox" />
-                                                    <label>@item.LocationID</label>
-                                                </div>
-                                            }
-                                        }
+										@{
+											foreach (CRP.Models.Entities.Garage item in lstGarage)
+											{
+												<div class="checkbox checkbox-success">
+													<input value="@item.LocationID" id="@item.LocationID" type="checkbox" />
+													<label>@item.LocationID</label>
+												</div>
+											}
+										}
 									</div>
 								</div>
 							</div>

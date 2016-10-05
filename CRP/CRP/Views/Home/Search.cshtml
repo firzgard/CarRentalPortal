@@ -1,0 +1,239 @@
+﻿@{
+	ViewBag.Title = "Search";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="wrapper wrapper-content white-bg row">
+	<!-- filter -->
+	<div class="col-md-5">
+		<div class="animated fadeInLeft" id="filter">
+			<!-- Time -->
+			<div class="input-group" id="timeFilter">
+				<span class="input-group-addon"><i class="fa fa-calendar"></i> From:</span>
+				<input id="startTimeDisplay" class="form-control" />
+				<span class="input-group-addon"><i class="fa fa-calendar"></i> To:</span>
+				<input id="endTimeDisplay" class="form-control" />
+			</div>
+			<!-- Location -->
+			<select data-placeholder="Please choose a location..." id="locationFilter" class="form-control" multiple>
+				<option value></option>
+				<option value="1">Hồ Chí Minh</option>
+				<option value="2">Hà Nội</option>
+				<option value="3">Cà Mau</option>
+			</select>
+			<!-- Price -->
+			<div id="priceFilter"></div>
+			<!-- Brand -->
+			<div id="modelFilter">
+				<ul style="display:none;">
+					<li data-node-lvl="1" data-node-id="1">
+						Audi
+						<ul>
+							<li data-node-lvl="2" data-node-id="1">A1</li>
+							<li data-node-lvl="2" data-node-id="2">A6</li>
+							<li data-node-lvl="2" data-node-id="3">A7</li>
+							<li data-node-lvl="2" data-node-id="4">A8</li>
+							<li data-node-lvl="2" data-node-id="5">Q3</li>
+							<li data-node-lvl="2" data-node-id="6">Q7</li>
+							<li data-node-lvl="2" data-node-id="7">TT</li>
+							<li data-node-lvl="2" data-node-id="8">TTS</li>
+						</ul>
+					</li>
+					<li data-node-lvl="1" data-node-id="2">
+						BMW
+						<ul>
+							<li data-node-lvl="2" data-node-id="9">320i</li>
+							<li data-node-lvl="2" data-node-id="10">520i</li>
+							<li data-node-lvl="2" data-node-id="11">M3</li>
+							<li data-node-lvl="2" data-node-id="12">M6</li>
+							<li data-node-lvl="2" data-node-id="13">X3</li>
+							<li data-node-lvl="2" data-node-id="14">X5</li>
+							<li data-node-lvl="2" data-node-id="15">X6</li>
+							<li data-node-lvl="2" data-node-id="16">Z4</li>
+						</ul>
+					</li>
+					<li data-node-lvl="1" data-node-id="3">
+						Ford
+						<ul>
+							<li data-node-lvl="2" data-node-id="17">Fiesta Mk5</li>
+							<li data-node-lvl="2" data-node-id="18">Fiesta Mk6</li>
+							<li data-node-lvl="2" data-node-id="19">Focus Mk2</li>
+							<li data-node-lvl="2" data-node-id="20">Focus Mk3</li>
+						</ul>
+					</li>
+					<li data-node-lvl="1" data-node-id="4">
+						Toyota
+						<ul>
+							<li data-node-lvl="2" data-node-id="21">Camry</li>
+							<li data-node-lvl="2" data-node-id="22">Corolla Altis</li>
+							<li data-node-lvl="2" data-node-id="23">Innova</li>
+							<li data-node-lvl="2" data-node-id="24">Land Cruiser</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<!-- Category -->
+			<div id="typeFilter" class="form-group" >
+				<label class="control-label col-xs-3">Category</label>
+				<div class="input-group col-xs-9" >
+					<div class="checkbox checkbox-inline checkbox-primary">
+						<input value="Micro Car" id="categoryMicroCar" type="checkbox" />
+						<label for="categoryMicroCar">Micro Car</label>
+					</div>
+					<div class="checkbox checkbox-inline checkbox-primary">
+						<input value="Minicar" id="categoryMinivan" type="checkbox" />
+						<label for="categoryMinivan">Minivan</label>
+					</div>
+					<div class="checkbox checkbox-inline checkbox-primary">
+						<input value="Pickup Truck" id="categoryPickupTruck" type="checkbox" />
+						<label for="categoryPickupTruck">Pickup Truck</label>
+					</div>
+					<div class="checkbox checkbox-inline checkbox-primary">
+						<input value="Station Wagon" id="categoryStationWagon" type="checkbox" />
+						<label for="categoryStationWagon">Station Wagon</label>
+					</div>
+					<div class="checkbox checkbox-inline checkbox-primary">
+						<input value="Sedan" id="categorySedan" type="checkbox" />
+						<label for="categorySedan">Sedan</label>
+					</div>
+					<div class="checkbox checkbox-inline checkbox-primary">
+						<input value="SUV" id="categorySUV" type="checkbox" />
+						<label for="categorySUV">SUV</label>
+					</div>
+				</div>
+			</div>
+			<!-- NumOfSeat -->
+			<div id="numOfSeatFilter" class="form-group">
+				<label class="control-label col-xs-3">Seat</label>
+				<div class="input-group col-xs-9">
+					<span class="input-group-addon">From:</span>
+					<input type="number" min="0" max="99" class="form-control" />
+					<span class="input-group-addon">To:</span>
+					<input type="number" min="0" max="99" class="form-control" />
+				</div>
+			</div>
+			<!-- Transmission -->
+			<div id="transmissionFilter" class="form-group">
+				<label class="control-label col-xs-3">Transmission</label>
+				<div class="col-xs-3">
+					<div class="checkbox checkbox-inline checkbox-primary">
+						<input value="1" id="transmissionAutomatic" type="checkbox" />
+						<label for="transmissionAutomatic">Automatic</label>
+					</div>
+				</div>
+				<div class="col-xs-3">
+					<div class="checkbox checkbox-inline checkbox-primary">
+						<input value="2" id="transmissionManual" type="checkbox" />
+						<label for="transmissionManual">Manual</label>
+					</div>
+				</div>
+			</div>
+			<!-- Color -->
+			<div class="form-group">
+				<label class="control-label col-xs-3">Color</label>
+				<div class="col-xs-3">
+					<select data-placeholder="Please select fuel type..." id="colorFilter" class="form-control" multiple>
+						<option value></option>
+						<option value="1"><i class="fa fa-car fa-beige"></i>&nbsp;&nbsp;Beige</option>
+						<option value="2">Black</option>
+						<option value="3">Blue</option>
+						<option value="4">Brown</option>
+						<option value="5">Red</option>
+						<option value="6">Silver</option>
+						<option value="7">White</option>
+						<option value="8">Yellow</option>
+					</select>
+					<div class="checkbox checkbox-success">
+						<input id="colorBeige" type="checkbox" />
+						<label for="colorBeige"><i class="fa fa-car fa-beige"></i>&nbsp;&nbsp;Beige</label>
+					</div>
+					<div class="checkbox checkbox-success">
+						<input id="colorBlack" type="checkbox" />
+						<label for="colorBlack"><i class="fa fa-car fa-black"></i>&nbsp;&nbsp;Black</label>
+					</div>
+					<div class="checkbox checkbox-success">
+						<input id="colorBlue" type="checkbox" />
+						<label for="colorBlue"><i class="fa fa-car fa-blue"></i>&nbsp;&nbsp;Blue</label>
+					</div>
+					<div class="checkbox checkbox-success">
+						<input id="colorBrown" type="checkbox" />
+						<label for="colorBrown"><i class="fa fa-car fa-brown"></i>&nbsp;&nbsp;Brown</label>
+					</div>
+					<div class="checkbox checkbox-success">
+						<input id="colorRed" type="checkbox" />
+						<label for="colorRed"><i class="fa fa-car fa-red"></i>&nbsp;&nbsp;Red</label>
+					</div>
+					<div class="checkbox checkbox-success">
+						<input id="colorSilver" type="checkbox" />
+						<label for="colorSilver"><i class="fa fa-car fa-silver"></i>&nbsp;&nbsp;Silver</label>
+					</div>
+					<div class="checkbox checkbox-success">
+						<input id="colorWhite" type="checkbox" />
+						<label for="colorWhite"><i class="fa fa-car fa-white"></i>&nbsp;&nbsp;White</label>
+					</div>
+					<div class="checkbox checkbox-success">
+						<input id="colorYellow" type="checkbox" />
+						<label for="colorYellow"><i class="fa fa-car fa-yellow"></i>&nbsp;&nbsp;Yellow</label>
+					</div>
+				</div>
+			</div>
+			<!-- Fuel -->
+			<div class="form-group">
+				<label class="control-label col-xs-3">Color</label>
+				<div class="col-xs-3">
+					<select data-placeholder="Please select fuel type..." id="fuelFilter" class="form-control" multiple>
+						<option value></option>
+						<option value="1">Ammonia</option>
+						<option value="2">Bioalcohol</option>
+						<option value="3">Biodiesel</option>
+						<option value="4">Biogas</option>
+						<option value="5">Compressed Natural Gas</option>
+						<option value="6">Diesel</option>
+						<option value="7">Electric</option>
+						<option value="8">Flexible</option>
+						<option value="9">Hybrid Electric</option>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- results -->
+	<div class="col-md-7">
+		<div class="ibox animated fadeInRight">
+			<div id="searchResultGrid" class="row" ></div>
+			<div>2,160 results found</div>
+			<div class="text-center">
+				<ul id="paginatior" class="pagination-lg"></ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/Search")
+	 .Include("~/Content/awesome-bootstrap-checkbox.css",
+		 "~/Content/chosen.css",
+		 "~/Content/DateRangePicker/daterangepicker.css",
+		 "~/Content/NoUISlider/nouislider.css",
+		 "~/Content/NoUISlider/nouislider.pips.css",
+		 "~/Content/NoUISlider/nouislider.tooltips.css"));
+}
+@section Styles {
+	@Styles.Render("~/Styles/Search")
+}
+@section PageStyle {
+	@Styles.Render("~/Content/pageStyle/search.css")
+}
+
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/Search")
+	.Include(
+		"~/Scripts/moment.js",
+		"~/Scripts/chosen.jquery.js",
+		"~/Scripts/DateRangePicker/daterangepicker.js",
+		"~/Scripts/NoUISlider/nouislider.js",
+		"~/Scripts/twbsPagination/jquery.twbsPagination.js",
+		"~/Scripts/utils/generateUIElements.js",
+		"~/Scripts/pageScript/search.js"));
+}
+@section Scripts {
+	@Scripts.Render("~/Scripts/Search")
+}

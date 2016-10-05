@@ -12,7 +12,7 @@ namespace CRP.Areas.Provider.Controllers
 
 	public class VehicleGroupController : Controller
 	{
-        VehicleGroupService service = VehicleGroupService.getInstance();
+		VehicleGroupService service = VehicleGroupService.getInstance();
 		// Route to vehicleGroupManagement page
 		[Route("management/vehicleGroupManagement")]
 		public ViewResult VehicleGroupManagement()
@@ -32,18 +32,18 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetVehicleGroupListAPI()
 		{
-            var list = service.getAll();
+			var list = service.getAll();
 			return Json(list);
 		}
 
-        // Show create popup
-        [Route("management/vehicleGroupManagement/create")]
-        [HttpGet]
-        public ViewResult CreateVehicleGroup()
-        {
-            
-            return View("");
-        }
+		// Show create popup
+		[Route("management/vehicleGroupManagement/create")]
+		[HttpGet]
+		public ViewResult CreateVehicleGroup()
+		{
+			
+			return View("");
+		}
 
 		// API Route to create single new group
 		[Route("api/vehicleGroups")]
