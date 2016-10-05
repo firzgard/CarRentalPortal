@@ -30,6 +30,10 @@
         <AssociationConnector Association="CRPDBModel.FK_Car_CarGroup" ManuallyRouted="false" />
         <AssociationConnector Association="CRPDBModel.FK_CarImage_Car" ManuallyRouted="false" />
         <AssociationConnector Association="CRPDBModel.AspNetUserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CRPDBModel.Location" Width="1.5" PointX="0.75" PointY="21.125" />
+        <EntityTypeShape EntityType="CRPDBModel.Nation" Width="1.5" PointX="0.75" PointY="24.25" />
+        <AssociationConnector Association="CRPDBModel.FK_Garage_Location" />
+        <AssociationConnector Association="CRPDBModel.FK_Location_Nation" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

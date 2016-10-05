@@ -37,5 +37,7 @@ namespace CRP.Models.Entities
         public virtual DbSet<Vehicle> Vehicles { get; set; }
         public virtual DbSet<VehicleGroup> VehicleGroups { get; set; }
         public virtual DbSet<VehicleImage> VehicleImages { get; set; }
+        public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<Nation> Nations { get; set; }
     }
 }

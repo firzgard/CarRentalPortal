@@ -23,7 +23,89 @@ const mockupData2 = [
                 , "price": "100000"
             }
 ];
+
+const mockupData3 = [
+        {
+            "class": 1
+            , "time": "1"
+            , "price": "100000"
+        }
+        , {
+            "class": 2
+            , "time": "2"
+            , "price": "100000"
+        }
+        , {
+            "class": 4
+            , "time": "4"
+            , "price": "100000"
+        }
+
+];
+
+function addVehicleGroup() {
+    $('#myModal').modal('show');
+}
+
 $(document).ready(() => {
+    var table1 = $('#groupPop').DataTable({
+        dom : "lrtip",
+                data: mockupData3
+                , columnDefs: [
+                    {
+                        // Render action button
+                        targets: 3
+                        , render: (data, type, row) => {
+                            return `<span class="input-group-btn">
+              <button type="button" class="btn btn-danger btn-number minus-btn"  data-type="minus" data-field="quant[2]">
+                <span class="glyphicon glyphicon-minus"></span>
+              </button>
+          </span>
+
+          <span class="input-group-btn">
+              <button type="button" class="btn btn-success btn-number plus-btn" data-type="plus" data-field="quant[2]">
+                  <span class="glyphicon glyphicon-plus"></span>
+              </button>q
+          </span>`;
+                        }
+                    }
+                ]
+                , columns: [
+                    {
+                        data: 'class'
+                        , visible: false
+                    }
+                    , {
+                        title: 'Max time'
+                        , data: 'time'
+                        , width: '50%'
+                    }
+                    , {
+                        title: 'Price'
+                        , data: 'price'
+                        , width: '50%'
+                    }
+
+                ]
+            });
+
+            function bindMinusBtn() {
+                $('.minus-btn').unbind('click').click(function () {
+                    table1.row($(this).parents('tr')).remove().draw();
+                });
+            }
+            bindMinusBtn();
+            (function bindPlusBtn() {
+                $('.plus-btn').unbind('click').click(function () {
+                    table1.row.add({
+                        "class": 0
+                        , "time": 0
+                        , "price": 0
+                    }).draw();
+                    bindPlusBtn();
+                    bindMinusBtn();
+                });
+            })();
     
     // set toogling dropdown event for filter dropdown buttons
 	$('#multiFilter .filter-toggle').on('click', function (event) {
