@@ -18,13 +18,13 @@ namespace CRP.Controllers
 
 		// Route to vehicle's detailed info page
 		[Route("management/vehicleManagement/{id:int}")]
-		[HttpGet]
 		public ViewResult VehihicleDetail(int id)
 		{
 			return View("~/Areas/Provider/Views/Vehicle/VehicleDetail.cshtml");
 		}
 
 		// API Route to get a list of vehicle to populate vehicleTable
+		// Search/Filter/SortBy ability needed
 		// Server-side pagination needed
 		[Route("api/vehicles")]
 		[HttpGet]
@@ -62,7 +62,7 @@ namespace CRP.Controllers
 		}
 
 		// API Route to delete 1 or multiple vehicles
-		[Route("form/vehicles/delete")]
+		[Route("api/vehicles/delete")]
 		[HttpDelete]
 		public JsonResult DeleteVehiclesAPI()
 		{
@@ -85,8 +85,17 @@ namespace CRP.Controllers
 			return Json("");
 		}
 
+		// API Route to get bookings to load into calendar
+		// Need server-side pagination
+		[Route("api/vehicles/bookings/{vehicleID:int}/{page:int?}")]
+		[HttpGet]
+		public JsonResult CreateOwnBookingAPI(int vehicleID, int page = 1)
+		{
+			return Json("");
+		}
+
 		// API Route to create an own booking
-		[Route("form/vehicles/createBooking")]
+		[Route("api/vehicles/bookings")]
 		[HttpPost]
 		public JsonResult CreateOwnBookingAPI()
 		{
@@ -94,7 +103,8 @@ namespace CRP.Controllers
 		}
 
 		// API route for canceling an own booking
-		[Route("api/vehicles/cancelBooking/{id:int}")]
+		// Remember to check whether the userID is the same with the bookingReceipt's ID
+		[Route("api/vehicles/bookings/{id:int}")]
 		[HttpDelete]
 		public JsonResult CancelBookingAPI(int id)
 		{
