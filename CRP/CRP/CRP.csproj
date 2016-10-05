@@ -202,6 +202,7 @@
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
+    <Compile Include="Areas\Provider\Controllers\ModelController.cs" />
     <Compile Include="Areas\Provider\Controllers\VehicleGroupController.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -260,11 +261,13 @@
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
     <Compile Include="Models\Entities\Repositories\GarageRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleGroupRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleRepository.cs" />
     <Compile Include="Models\Entities\Services\BaseService.cs" />
     <Compile Include="Models\Entities\Services\BrandService.cs" />
     <Compile Include="Models\Entities\Services\GarageService.cs" />
+    <Compile Include="Models\Entities\Services\ModelService.cs" />
     <Compile Include="Models\Entities\Services\VehicleGroupService.cs" />
     <Compile Include="Models\Entities\Services\VehicleService.cs" />
     <Compile Include="Models\Entities\Vehicle.cs">
@@ -286,7 +289,6 @@
     <Compile Include="Models\JsonModels\VehicleModel.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1579,8 +1581,10 @@
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
+    <Folder Include="Areas\Provider\Views\Model\" />
     <Folder Include="Models\ViewModels\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\ModelRepository\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

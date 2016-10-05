@@ -48,7 +48,7 @@ namespace CRP.Models.Entities.Services
         public List<Vehicle> getAll()
         {
             List<Vehicle> lstVehicle = new List<Vehicle>();
-            lstVehicle = _repository.getList();
+            lstVehicle = _repository.getAllVehicle();
             return lstVehicle;
         }
         public Boolean UpdateVehicle(Vehicle vehicle)

@@ -5,46 +5,46 @@ using System.Web;
 
 namespace CRP.Models.Entities.Repositories
 {
-    public class VehicleRepository : IBaseRepository<Vehicle>
+    public class ModelRepository:IBaseRepository<Model>
     {
         CRPEntities _dataContext = new CRPEntities();
-        public IEnumerable<Vehicle> List
+        public IEnumerable<Model> List
         {
             get
             {
                 throw new NotImplementedException();
             }
         }
-        public List<Vehicle> getAllVehicle()
+        public List<Model> getAllModel()
         {
-            List<Vehicle> lstVehicle = _dataContext.Vehicles.ToList<Vehicle>();
-            return lstVehicle;
+            List<Model> lstModel = _dataContext.Models.ToList<Model>();
+            return lstModel;
         }
-        public void Add(Vehicle entity)
+        public void Add(Model entity)
         {
-            _dataContext.Vehicles.Add(entity);
+            _dataContext.Models.Add(entity);
             _dataContext.SaveChanges();
         }
 
-        public void Delete(Vehicle entity)
+        public void Delete(Model entity)
         {
-            _dataContext.Vehicles.Remove(entity);
+            _dataContext.Models.Remove(entity);
             _dataContext.SaveChanges();
         }
 
-        public Vehicle findById(int Id)
+        public Model findById(int Id)
         {
-            var query = (from r in _dataContext.Vehicles where r.ID == Id select r).FirstOrDefault();
+            var query = (from r in _dataContext.Models where r.ID == Id select r).FirstOrDefault();
             return query;
         }
 
-        public void Update(Vehicle entity)
+        public void Update(Model entity)
         {
             _dataContext.Entry(entity).State = System.Data.Entity.EntityState.Modified;
             _dataContext.SaveChanges();
         }
 
-        internal List<Vehicle> getList()
+        internal List<Model> getList()
         {
             throw new NotImplementedException();
         }

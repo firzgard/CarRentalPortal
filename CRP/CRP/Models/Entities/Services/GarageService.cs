@@ -60,6 +60,11 @@ namespace CRP.Models.Entities.Services
             Garage garage = _repository.findById(id);
             return garage;
         }
+        public String reGarageNameByID(int id)
+        {
+            Garage garage = _repository.findById(id);
+            return garage.Name;
+        }
         public Boolean doActive(int id)
         {
             Garage garage = _repository.findById(id);
@@ -68,10 +73,12 @@ namespace CRP.Models.Entities.Services
                 return false;
             }
             try
-            {   if (garage.IsActive)
+            {
+                if (garage.IsActive)
                 {
                     garage.IsActive = false;
-                } else
+                }
+                else
                 {
                     garage.IsActive = true;
                 }
