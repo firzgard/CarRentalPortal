@@ -9,11 +9,11 @@ namespace CRP.Models.Entities.Services
 	public class GarageService 
 	{
         GarageRepository _repository = new GarageRepository();
-        public Boolean add(Garage brand)
+        public Boolean add(Garage garege)
         {
             try
             {
-                _repository.Add(brand);
+                _repository.Add(garege);
             }
             catch (Exception e)
             {
@@ -60,6 +60,21 @@ namespace CRP.Models.Entities.Services
             Garage garage = _repository.findById(id);
             return garage;
         }
+
+        public Boolean Update(Garage garage)
+        {
+            try
+            {
+                _repository.Update(garage);
+            } catch (Exception e)
+            {
+                e.GetHashCode();
+                return false;
+            }
+          
+            return true;
+        }
+
         public Boolean doActive(int id)
         {
             Garage garage = _repository.findById(id);
@@ -83,6 +98,12 @@ namespace CRP.Models.Entities.Services
                 return false;
             }
             return true;
+        }
+
+        public String reGarageNameByID(int id)
+        {
+            Garage garage = _repository.findById(id);
+            return garage.Name;
         }
     }
 }
