@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CRP.Models;
-using CRP.Models.Entities.Services;
 using CRP.Models.Entities;
+using CRP.Models.Entities.Services;
 using CRP.Models.JsonModels;
 using Newtonsoft.Json;
 
@@ -20,7 +20,10 @@ namespace CRP.Areas.Provider.Controllers
         public ViewResult GarageManagement()
         {
             List<Garage> lstGarage = new List<Garage>();
+            List<Location> lstLocation = new List<Location>();
+            lstLocation = locationService.getAll();
             lstGarage = service.getAll();
+            ViewBag.locationList = lstLocation;
             ViewBag.garaList = lstGarage;
             return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
         }
