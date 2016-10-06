@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CRP.Models;
+using CRP.Models.Entities.Services;
+using CRP.Models.JsonModels;
+using CRP.Models.ViewModels;
 
 namespace CRP.Controllers
 {
 	public class HomeController : Controller
 	{
+		VehicleService vehicleService = new VehicleService();
+
 		// Route to homepage
 		public ActionResult Index()
 		{
@@ -30,11 +36,15 @@ namespace CRP.Controllers
 		
 		// API Route for guest/customer to search vehicle for booking
 		// Need filtering/sorting support
-		[Route("api/vehicles/search")]
+		[Route("api/search")]
 		[HttpGet]
-		public JsonResult SearchVehiclesAPI()
+		public JsonResult SearchVehiclesAPI(SearchConditionModel searchConditions)
 		{
-			return Json("");
+			string value = "asd";
+			bool a = Constants.TransmissionType.TryGetValue(1, out value);
+			//vehicleService.findToBook(searchConditions);
+			//new SearchResultJSONVModel
+			return Json(value, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

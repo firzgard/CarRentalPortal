@@ -170,14 +170,6 @@ namespace CRP.Areas.Provider.Controllers
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
 
-		// API Route for guest/customer to search vehicle for booking
-		[Route("api/vehicles/search")]
-		[HttpGet]
-		public JsonResult SearchVehiclesAPI()
-		{
-			return Json("");
-		}
-
 		// API Route to change garage of multiple vehicles
 		[Route("api/vehicles/changeGarage/{garageID:int}")]
 		[HttpPatch]
@@ -195,17 +187,25 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API route for creating an own booking
-		[Route("api/vehicles/cancelBooking/{id:int}")]
+		[Route("api/vehicles/bookings/{vehiceID:int}/{page:int?}")]
+		[HttpGet]
+		public JsonResult CreateBookingAPI(int vehiceID, int page = 1)
+		{
+			return Json("");
+		}
+
+		// API route for creating an own booking
+		[Route("api/vehicles/bookings/{vehiceID:int}")]
 		[HttpPost]
-		public JsonResult CreateBookingAPI(int id)
+		public JsonResult CreateBookingAPI(int vehiceID)
 		{
 			return Json("");
 		}
 
 		// API route for canceling an own booking
-		[Route("api/vehicles/cancelBooking/{id:int}")]
+		[Route("api/vehicles/bookings/{receiptID:int}")]
 		[HttpDelete]
-		public JsonResult CancelBookingAPI(int id)
+		public JsonResult CancelBookingAPI(int receiptID)
 		{
 			return Json("");
 		}

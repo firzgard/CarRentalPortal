@@ -1,4 +1,5 @@
 ﻿using CRP.Models.Entities.Repositories;
+using CRP.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,6 @@ namespace CRP.Models.Entities.Services
 {
     public class VehicleGroupService
     {
-        public static VehicleGroupService getInstance()
-        {
-             return new VehicleGroupService();
-        }
 
         VehicleGroupRepository _repository = new VehicleGroupRepository();
 

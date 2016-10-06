@@ -1,5 +1,6 @@
 ﻿using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
+using CRP.Models.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace CRP.Areas.Provider.Controllers
 
 	public class VehicleGroupController : Controller
 	{
-        VehicleGroupService service = VehicleGroupService.getInstance();
+        VehicleGroupService service = new VehicleGroupService();
 		// Route to vehicleGroupManagement page
 		[Route("management/vehicleGroupManagement")]
 		public ViewResult VehicleGroupManagement()
@@ -32,8 +33,17 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetVehicleGroupListAPI()
 		{
-            var list = service.getAll();
-			return Json(list);
+            var list = service.getAll().ToList();
+            var result = list.Select(q => new IConvertible[] {
+                q.ID,
+                q.Name,
+                q.MaxRentalPeriod != null ? q.MaxRentalPeriod : null,
+                q.PriceGroup.Deposit,
+                q.PriceGroup.PerDayPrice,
+                q.Vehicles.Count,
+                q.IsActive
+            });
+            return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
 		}
 
         // Show create popup
@@ -41,8 +51,8 @@ namespace CRP.Areas.Provider.Controllers
         [HttpGet]
         public ViewResult CreateVehicleGroup()
         {
-            
-            return View("");
+            VehicleGroupViewModel viewModel = new VehicleGroupViewModel();
+            return View("~/Areas/Provider/Views/VehicleGroup/CreatePopup.cshtml", viewModel);
         }
 
 		// API Route to create single new group
@@ -50,6 +60,7 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPost]
 		public JsonResult CreateVehicleGroupAPI()
 		{
+
 			return Json("");
 		}
 
