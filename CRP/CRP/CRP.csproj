@@ -219,7 +219,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\JsonModels\BookingReceiptModel.cs" />
     <Compile Include="Models\JsonModels\HomeJsonModels.cs" />
+    <Compile Include="Models\JsonModels\VehicleCalendarModel.cs" />
     <Compile Include="Models\JsonModels\MessageJsonModel.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">

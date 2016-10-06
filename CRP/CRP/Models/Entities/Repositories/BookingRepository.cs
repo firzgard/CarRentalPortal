@@ -74,6 +74,20 @@ namespace CRP.Models.Entities.Repositories
 			var query = (from r in _dataContext.BookingReceipts where r.VehicleID == vehicleID select r).ToList<BookingReceipt>();
 			return query;
 		}
+		
+		public List<BookingReceipt> getBookingOfUserWithRecord(int customerID, int record)
+		{
+			var query = (from r in _dataContext.BookingReceipts where r.CustomerID == customerID orderby r.ID descending select r).Skip((record - 1) * 10).Take(10).ToList<BookingReceipt>();
+			return query;
+		}
+
+		//getNumberPAge
+		public int getNumberPage(int customerID)
+		{
+			var query = (from r in _dataContext.BookingReceipts where r.CustomerID == customerID select r).Count();
+			return query;
+		}
+
 		//chua chac
 		public BookingReceipt getLastBooking(int vehicleID)
 		{
