@@ -13,6 +13,11 @@ namespace CRP.Models.Entities.Repositories
 		public string Id;
 	}
 
+    public interface IBaseRepository
+    {
+
+    }
+
 	public interface IBaseRepository<T> where T : class
 	{
 		IEnumerable<T> List { get; }

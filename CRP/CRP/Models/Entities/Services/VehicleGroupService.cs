@@ -27,7 +27,7 @@ namespace CRP.Models.Entities.Services
             }
             catch(Exception e)
             {
-                e.GetHashCode();
+                Console.WriteLine(e);
                 return false;
             }
             return true;
@@ -41,7 +41,7 @@ namespace CRP.Models.Entities.Services
             }
             catch(Exception e)
             {
-                e.GetHashCode();
+                Console.WriteLine(e);
                 return false;
             }
             return true;
@@ -55,7 +55,7 @@ namespace CRP.Models.Entities.Services
             }
             catch(Exception e)
             {
-                e.GetHashCode();
+                Console.WriteLine(e);
                 return false;
             }
             return true;

@@ -58,10 +58,14 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to create single new group
 		[Route("api/vehicleGroups")]
 		[HttpPost]
-		public JsonResult CreateVehicleGroupAPI()
+		public JsonResult CreateVehicleGroupAPI(VehicleGroupViewModel model)
 		{
-
-			return Json("");
+            bool result = service.add(model);
+            if(result)
+            {
+                return Json(new { result = result, message = "Create successful!" });
+            }
+			return Json(new { result = result, message = "Create failed!" });
 		}
 
 		// API Route to edit single group
