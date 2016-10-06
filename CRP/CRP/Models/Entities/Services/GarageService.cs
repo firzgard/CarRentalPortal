@@ -105,5 +105,11 @@ namespace CRP.Models.Entities.Services
             }
             return true;
         }
+
+        public String reGarageNameByID(int id)
+        {
+            Garage garage = _repository.findById(id);
+            return garage.Name;
+        }
     }
 }

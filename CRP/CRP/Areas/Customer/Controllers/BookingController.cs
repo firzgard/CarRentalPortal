@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRP.Models.Entities.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +9,12 @@ namespace CRP.Areas.Customer.Controllers
 {
 	public class BookingController : Controller
 	{
+        BookingService _service = new BookingService();
 		// Route to bookingConfirm page (Page for confirming booking details before paying)
 		[Route("bookingConfirm")]
 		public ViewResult BookingConfirm()
 		{
+
 			return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
