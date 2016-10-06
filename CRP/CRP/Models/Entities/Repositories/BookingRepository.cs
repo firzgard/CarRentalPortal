@@ -64,21 +64,21 @@ namespace CRP.Models.Entities.Repositories
 			_dataContext.Entry(entity).State = System.Data.Entity.EntityState.Modified;
 			_dataContext.SaveChanges();
 		}
-        public List<BookingReceipt> getByUser(int userID)
-        {
-            var query = (from r in _dataContext.BookingReceipts where r.CustomerID == userID select r).ToList<BookingReceipt>();
-            return query;
-        }
-        public List<BookingReceipt> getByVehicle(int vehicleID)
-        {
-            var query = (from r in _dataContext.BookingReceipts where r.VehicleID == vehicleID select r).ToList<BookingReceipt>();
-            return query;
-        }
-        //chua chac
-        public BookingReceipt getLastBooking(int vehicleID)
-        {
-            var query = (from r in _dataContext.BookingReceipts where r.VehicleID == vehicleID select r).FirstOrDefault();
-            return query;
-        }
-    }
+		public List<BookingReceipt> getByUser(int userID)
+		{
+			var query = (from r in _dataContext.BookingReceipts where r.CustomerID == userID select r).ToList<BookingReceipt>();
+			return query;
+		}
+		public List<BookingReceipt> getByVehicle(int vehicleID)
+		{
+			var query = (from r in _dataContext.BookingReceipts where r.VehicleID == vehicleID select r).ToList<BookingReceipt>();
+			return query;
+		}
+		//chua chac
+		public BookingReceipt getLastBooking(int vehicleID)
+		{
+			var query = (from r in _dataContext.BookingReceipts where r.VehicleID == vehicleID select r).FirstOrDefault();
+			return query;
+		}
+	}
 }

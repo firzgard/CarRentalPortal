@@ -51,7 +51,7 @@ namespace CRP.Models.Entities.Services
 		public List<Vehicle> getAll()
 		{
 			List<Vehicle> lstVehicle = new List<Vehicle>();
-			lstVehicle = _repository.getList();
+			lstVehicle = _repository.getAll();
 			return lstVehicle;
 		}
 		public Boolean UpdateVehicle(Vehicle vehicle)
@@ -78,11 +78,88 @@ namespace CRP.Models.Entities.Services
 			return vehilce;
 		}
 
-		public List<SearchResultJSONVModel> findToBook(SearchConditionModel searchConditions)
+		public List<SearchResultJsonModel> findToBook(SearchConditionModel searchConditions)
 		{
-			_repository.findToBook(searchConditions);
-			return null;
-		}
+			// Get all vehicles
+			List<Vehicle> vehicles = _repository.getAll();
+			
+			// Filters, go!!
+			if (searchConditions.TransmissionTypeIDList != null)
+				vehicles = vehicles.Where(
+					v => searchConditions.TransmissionTypeIDList.Contains(v.TransmissionType)
+				).ToList();
 
+			if (searchConditions.NumberOfSeatList != null)
+				vehicles = vehicles.Where(
+					v => searchConditions.NumberOfSeatList.Contains(v.Model.NumOfSeat)
+				).ToList();
+
+			if (searchConditions.VehicleTypeList != null)
+				vehicles = vehicles.Where(
+					v => searchConditions.VehicleTypeList.Contains(v.Model.Type)
+				).ToList();
+
+			if (searchConditions.ColorIDList != null)
+				vehicles = vehicles.Where(
+					v => searchConditions.ColorIDList.Contains(v.Color)
+				).ToList();
+
+			if (searchConditions.FuelTypeIDList != null)
+				vehicles = vehicles.Where(
+					v => searchConditions.FuelTypeIDList.Contains(v.FuelType)
+				).ToList();
+
+			if (searchConditions.LocationIDList != null)
+				vehicles = vehicles.Where(
+					v => searchConditions.LocationIDList.Contains(v.Garage.LocationID))
+				.ToList();
+
+			if (searchConditions.BrandIDList != null || searchConditions.ModelIDList != null)
+				vehicles = vehicles.Where(v => searchConditions.BrandIDList.Contains(v.Model.BrandID)
+								|| searchConditions.ModelIDList.Contains(v.ModelID)).ToList();
+
+			// Get the rental time in hour
+			TimeSpan rentalTimeSpan = searchConditions.EndTime - searchConditions.StartTime;
+			int rentalTime = (int)Math.Ceiling(rentalTimeSpan.TotalHours);
+
+			vehicles = vehicles.Where(v => !(v.VehicleGroup.MaxRentalPeriod * 24 < rentalTime)).ToList();
+
+			vehicles = vehicles.Where(v =>
+			{
+				bool isValid = true;
+				foreach (BookingReceipt br in v.BookingReceipts)
+				{
+					if ((searchConditions.StartTime > br.StartTime
+								&& searchConditions.StartTime < br.EndTime)
+							|| (searchConditions.EndTime > br.StartTime
+								&& searchConditions.EndTime < br.EndTime)
+							|| (searchConditions.StartTime <= br.StartTime
+								&& searchConditions.EndTime >= br.EndTime))
+					{
+						isValid = false;
+						break;
+					}
+				}
+				return isValid;
+			}).ToList();
+
+			// Parse into model suitable to send back to browser
+			List<SearchResultJsonModel> results = new List<JsonModels.SearchResultJsonModel>();
+			foreach(Vehicle vehicle in vehicles)
+			{
+				results.Add(new SearchResultJsonModel(vehicle, rentalTime));
+			}
+
+			if (searchConditions.MaxPrice != null && searchConditions.MinPrice != null
+					&& searchConditions.MaxPrice > searchConditions.MinPrice)
+			{
+				results = results.Where(
+					r => searchConditions.MaxPrice >= r.BestPossibleRentalPrice
+						&& searchConditions.MinPrice <= r.BestPossibleRentalPrice
+				).ToList();
+			}
+
+			return results;
+		}
 	}
 }

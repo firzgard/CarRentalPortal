@@ -173,8 +173,22 @@ const mockupSearchResult = {
 
 // Renderers
 //==================================
-
-function renderSearchResultGrid(searchResults){
+let searchConditions = {};
+// StartTime: 
+// EndTime:
+// MaxPrice:
+// MinPrice:
+// LocationIDList:
+// BrandIDList:
+// ModelIDList:
+// VehicleTypeList:
+// NumberOfSeatList:
+// TransmissionTypeIDList:
+// ColorIDList:
+// FuelTypeIDList:
+// OrderBy:
+// Page:
+function renderSearchResultGrid(searchConditions = null){
 	function renderSearchResult(searchResult){
 		return `<div class="col-lg-4" >
 			<a href="./../vehicleInfo/vehicleInfo.html">
@@ -196,51 +210,29 @@ function renderSearchResultGrid(searchResults){
 		</div>`
 	}
 
-	return `${searchResults.reduce((html, searchResult) => html + renderSearchResult(searchResult), '')}`;
+	$.ajax({
+		url: $('searchResultGrid').data('source'),
+		type: 'GET',
+		dataType: 'json',
+		data: searchConditions
+	})
+	.done(function(searchResults) {
+		$('#searchResultGrid').html(`${searchResults.reduce((html, searchResult) => html + renderSearchResult(searchResult), '')}`);
+	})
+	.fail(function(err) {
+		console.log(err);
+	});
 }
 //==================================
 
 $(document).ready(() => {
-	// Render search result grid
-	$('#searchResultGrid').html(
-		renderSearchResultGrid(mockupSearchResult.searchResults)
-	);
-
-	// Render search result grid's paginator
-	$('#paginatior').twbsPagination({
-		startPage: mockupSearchResult.currentPage,
-		totalPages: mockupSearchResult.totalPages,
-		visiblePages: 5,
-		onPageClick: function (event, page) {
-			// Ajax here to load the next page's content
-		}
-	});
-
-	// ==================================================
-	// Render filters
-
-	// model-tree selector
-	//let modelTree = $.jstree.create('#modelTree', {
-	//	core: {
-	//		dblclick_toggle: false,
-	//		themes: {
-	//			icons: false,
-	//			variant: "small"
-	//		}
-	//	},
-	//	plugins: ["checkbox", "wholerow"]
-	//});
-
 	// Time range filter
 	$('#timeFilter').daterangepicker({
-		format: 'YYYY-MM-DD h:mm A',
-		showDropdowns: true,
+		applyClass: 'btn-primary',
+		cancelClass: 'btn-default',
 		opens: 'right',
 		drops: 'down',
 		buttonClasses: ['btn', 'btn-sm'],
-		applyClass: 'btn-primary',
-		cancelClass: 'btn-default',
-		separator: ' to ',
 		locale: {
 			applyLabel: 'Apply',
 			cancelLabel: 'Cancel',
@@ -250,10 +242,14 @@ $(document).ready(() => {
 			daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
 			monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
 			firstDay: 1
-		}
+		},
+		showDropdowns: true,
+		timePicker: true,
 	}, (start, end, label) => {
-		$('#timerange #startTimeDisplay').val(start.format('YYYY-MM-DD h:mm A'));
-		$('#timerange #endTimeDisplay').val(end.format('YYYY-MM-DD h:mm A'));
+		$('#startTimeDisplay').val(start.format('YYYY-MM-DD h:mm A'));
+		$('#endTimeDisplay').val(end.format('YYYY-MM-DD h:mm A'));
+		searchConditions.StartTime = start.toDate();
+		searchConditions.EndTime = end.toDate();
 	});
 
 	// Location selector
@@ -278,4 +274,18 @@ $(document).ready(() => {
 		},
 		tooltips: true
 	})
+
+	
+	// Render search result grid
+	renderSearchResultGrid(searchConditions)
+
+	// Render search result grid's paginator
+	$('#paginatior').twbsPagination({
+		startPage: mockupSearchResult.currentPage,
+		totalPages: mockupSearchResult.totalPages,
+		visiblePages: 5,
+		onPageClick: function (event, page) {
+			// Ajax here to load the next page's content
+		}
+	});
 });
