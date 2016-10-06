@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AutoMapper;
+using CRP.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,10 +10,20 @@ namespace CRP.Controllers
 {
     public class BaseController : Controller
     {
-        // GET: Base
-        public ActionResult Index()
+        public IConfigurationProvider MapperConfig
         {
-            return View();
+            get
+            {
+                return this.Service<IConfigurationProvider>();
+            }
+        }
+
+        public IMapper Mapper
+        {
+            get
+            {
+                return this.Service<IMapper>();
+            }
         }
     }
 }

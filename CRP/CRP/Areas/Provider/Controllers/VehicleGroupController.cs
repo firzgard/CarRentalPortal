@@ -1,19 +1,23 @@
-﻿using CRP.Models.Entities;
+﻿using AutoMapper.QueryableExtensions;
+using CRP.Controllers;
+using CRP.Models;
+using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
 using CRP.Models.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace CRP.Areas.Provider.Controllers
 {
 
-	public class VehicleGroupController : Controller
+	public class VehicleGroupController : BaseController
 	{
-        VehicleGroupService service = new VehicleGroupService();
+        //VehicleGroupService service = new VehicleGroupService();
 		// Route to vehicleGroupManagement page
 		[Route("management/vehicleGroupManagement")]
 		public ViewResult VehicleGroupManagement()
@@ -33,6 +37,7 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetVehicleGroupListAPI()
 		{
+            var service = this.Service<IVehicleGroupService>();
             var list = service.getAll().ToList();
             var result = list.Select(q => new IConvertible[] {
                 q.ID,
@@ -58,15 +63,18 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to create single new group
 		[Route("api/vehicleGroups")]
 		[HttpPost]
-		public JsonResult CreateVehicleGroupAPI(VehicleGroupViewModel model)
+		public async Task<JsonResult> CreateVehicleGroupAPI(VehicleGroupViewModel model)
 		{
-            bool result = service.add(model);
-            if(result)
+            if (!this.ModelState.IsValid)
             {
-                return Json(new { result = result, message = "Create successful!" });
+                return Json(new { result = false, message = "Create failed!" });
             }
-			return Json(new { result = result, message = "Create failed!" });
-		}
+            var service = this.Service<IVehicleGroupService>();
+            var entity = this.Mapper.Map<VehicleGroup>(model);
+            await service.CreateAsync(model);
+
+            return Json(new { result = true, message = "Create successful!" });
+        }
 
 		// API Route to edit single group
 		[Route("api/vehicleGroups")]
