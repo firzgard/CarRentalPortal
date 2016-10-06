@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CRP.Models;
 using CRP.Models.Entities.Services;
 using CRP.Models.JsonModels;
 using CRP.Models.ViewModels;
@@ -35,13 +36,15 @@ namespace CRP.Controllers
 		
 		// API Route for guest/customer to search vehicle for booking
 		// Need filtering/sorting support
-		[Route("api/vehicles/search")]
+		[Route("api/search")]
 		[HttpGet]
 		public JsonResult SearchVehiclesAPI(SearchConditionModel searchConditions)
 		{
-			vehicleService.findToBook(searchConditions);
+			string value = "asd";
+			bool a = Constants.TransmissionType.TryGetValue(1, out value);
+			//vehicleService.findToBook(searchConditions);
 			//new SearchResultJSONVModel
-			return Json("");
+			return Json(value, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CRP.Models;
 using CRP.Models.Entities;
 
 namespace CRP.Models.JsonModels
 {
 	// Model to map the search request
-	// Use as input for route ~/api/vehicles/search/search/ of HomeController
+	// Use as input for route ~/api/vehicles/search/ of HomeController
 	public class SearchConditionModel
 	{
 		public DateTime StartTime { get; set; }
@@ -25,7 +26,7 @@ namespace CRP.Models.JsonModels
 	}
 
 	// Model of JSON object of search result for searching vehicle to book
-	// Use as json result for route ~/api/vehicles/searchsearch/ of HomeController
+	// Use as json result for route ~/api/vehicles/search/ of HomeController
 	public class SearchResultJSONVModel
 	{
 		public int ID { get; set; }
@@ -45,7 +46,12 @@ namespace CRP.Models.JsonModels
 			ID = vehicle.ID;
 			Name = vehicle.Name;
 			LicenseNumber = vehicle.LicenseNumber;
-			//TransmissionTypeName = vehicle.TransmissionType;
+			GarageName = vehicle.Garage.Name;
+			Location = vehicle.Garage.Location.Name;
+
+			string tempTransmissionTypeName = "";
+			Constants.TransmissionType.TryGetValue(vehicle.TransmissionType, out tempTransmissionTypeName);
+			TransmissionTypeName = tempTransmissionTypeName;
 		}
 	}
 }
