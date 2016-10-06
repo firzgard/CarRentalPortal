@@ -16,6 +16,7 @@ namespace CRP.Areas.Customer.Controllers
 		[Route("bookingConfirm")]
 		public ViewResult BookingConfirm()
 		{
+            //dau moa chua ro xu ly sao, chua lam
             int CustomerID = int.Parse(Request.Params["UserID"]);
             int VehicleID = int.Parse(Request.Params["VehicleID"]);
             //can 1 api de xu ly ca totalprice
@@ -27,6 +28,7 @@ namespace CRP.Areas.Customer.Controllers
             //can 1 cai datetimeformat
             DateTime StartTime = DateTime.Parse(Request.Params["StartTime"]);
             DateTime EndTime = DateTime.Parse(Request.Params["EndTime"]);
+            //van de o cho la lam sao 2 thang hien confirm cung luc, nhung thoi gian booking khac nhau thi van dc booking
             return View("~/Areas/CuopenTimeMonstomer/Views/Booking/BookingHistory.cshtml");
 		}
 
@@ -34,6 +36,7 @@ namespace CRP.Areas.Customer.Controllers
 		[Route("bookingReceipt")]
 		public ViewResult BookingReceipt()
 		{
+            //lay booking moi nhat tu datebase hien len
             //lay thong tin booking moi nhat cua thang user
             int CustomerID = int.Parse(Request.Params["UserID"]);
             BookingReceipt lastBooking = _service.getLastBooking(CustomerID);
@@ -46,24 +49,70 @@ namespace CRP.Areas.Customer.Controllers
 		[Route("management/bookingHistory")]
 		public ViewResult BookingHistory()
 		{
+            //
             //Lay ID cua thang User hien hanh
             int userID = 1;
-            //lay booking cua thang User hien hanh
+            //lay tat booking cua thang User hien hanh
             List<BookingReceipt> lstBooking = new List<BookingReceipt>();
             lstBooking = _service.getByUser(userID);
             ViewBag.BookingList = lstBooking;
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
-		// API route for getting booking calendar of this vehicle
-		// Only get bookingReceipt of the next 30 days from this moment
-		[Route("api/bookings/{vehicleID:int}")]
+        // API route for getting this user's booking receipts
+        // Pagination needed
+        // Order by startTime, from newer to older
+        [Route("api/bookings/{page:int?}")]
+        [HttpGet]
+        public JsonResult GetBookingReceiptAPI(int page = 1)
+        {
+            //lay id user
+            int customerID = 1;
+            //set cung 10 record la 1 page
+            int numberPage = (int) Math.Ceiling((_service.getNumberPage(customerID))/10.0);
+            List<BookingReceipt> lstBooking = new List<BookingReceipt>();
+            List<BookingReceiptModel> jsonBookings = new List<BookingReceiptModel>();
+            //lay theo so record
+            lstBooking = _service.getBookingOfUserWithRecord(customerID, page);
+            foreach (BookingReceipt p in lstBooking)
+            {
+                BookingReceiptModel jsonBooking = new BookingReceiptModel();
+                jsonBooking.ID = p.ID;
+                jsonBooking.VehicleID = p.VehicleID;
+                jsonBooking.VehicleName = p.VehicleName;
+                jsonBooking.BookingFee = p.BookingFee;
+                jsonBooking.CustomerID = p.CustomerID;
+                jsonBooking.Comment = p.Comment;
+                jsonBooking.GarageAddress = p.GarageAddress;
+                jsonBooking.GarageName = p.GarageName;
+                jsonBooking.IsCanceled = p.IsCanceled;
+                jsonBooking.Star = p.Star.GetValueOrDefault();
+                jsonBooking.TotalPrice = p.TotalPrice;
+                jsonBooking.StartTime = p.StartTime;
+                jsonBooking.EndTime = p.EndTime;
+                jsonBooking.numberPage = numberPage;
+                jsonBookings.Add(jsonBooking);
+            }
+            return Json(jsonBookings, JsonRequestBehavior.AllowGet);
+        }
+
+        // API route for getting booking calendar of this vehicle
+        // Only get bookingReceipt of the next 30 days from this moment
+        [Route("api/bookings/calendar/{vehicleID:int}")]
 		[HttpGet]
 		public JsonResult GetBookingCalendarAPI(int vehicleID)
 		{
             List<BookingReceipt> booking = _service.findByVehicle(vehicleID);
-            //cho nay can lay ra json la cai j, ngay thang nam ha
-			return Json("");
+            List<VehicleCalendarModel> jsonBookings = new List<VehicleCalendarModel>();
+            foreach (BookingReceipt p in booking)
+            {
+                VehicleCalendarModel jsonBooking = new VehicleCalendarModel();
+                jsonBooking.ID = p.ID;
+                jsonBooking.StartTime = p.StartTime;
+                jsonBooking.EndTime = p.EndTime;
+                jsonBookings.Add(jsonBooking);
+            }
+            return Json(jsonBookings, JsonRequestBehavior.AllowGet);
 		}
 
 		// API route for canceling a booking
