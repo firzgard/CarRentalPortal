@@ -228,6 +228,9 @@ function renderSearchResultGrid(searchConditions = null){
 $(document).ready(() => {
 	// Time range filter
 	$('#timeFilter').daterangepicker({
+		minDate: moment(),
+		maxDate: moment().add(30, 'days'),
+		dateLimit: { days: 30 }
 		applyClass: 'btn-primary',
 		cancelClass: 'btn-default',
 		opens: 'right',
@@ -236,6 +239,7 @@ $(document).ready(() => {
 		locale: {
 			applyLabel: 'Apply',
 			cancelLabel: 'Cancel',
+			format: 'YYYY-MM-DD h:mm A',
 			fromLabel: 'From',
 			toLabel: 'To',
 			customRangeLabel: 'Custom',
