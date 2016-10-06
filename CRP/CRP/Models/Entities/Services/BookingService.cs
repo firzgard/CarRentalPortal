@@ -52,8 +52,8 @@ namespace CRP.Models.Entities.Services
 		}
 		public List<BookingReceipt> findByUser(int UserID)
 		{
-			List<BookingReceipt> lstGarage = new List<BookingReceipt>();
-			return lstGarage;
+			List<BookingReceipt> lstBooking = new List<BookingReceipt>();
+			return lstBooking;
 		}
 		public BookingReceipt findByID(int id)
 		{
@@ -82,5 +82,60 @@ namespace CRP.Models.Entities.Services
 			List<BookingReceipt> bookingReceiptList = _repository.findBookingOfVehicleInPeriod(vehicleID, startTime, endTime);
 			return bookingReceiptList.Count() == 0;
 		}
-	}
+        public List<BookingReceipt> getByUser(int UserID)
+        {
+            List<BookingReceipt> lstBooking = _repository.getByUser(UserID);
+            return lstBooking;
+        }
+        public Boolean cancleBooking (int id)
+        {
+            BookingReceipt cancleBooking = _repository.findById(id);
+            cancleBooking.IsCanceled = true;
+            try
+            {
+                _repository.Update(cancleBooking);
+            }
+            catch (Exception e)
+            {
+                e.GetHashCode();
+                return false;
+            }
+
+            return true;
+
+        }
+        public Boolean rateForBooking(BookingReceipt booking) 
+        {
+            try
+            {
+                _repository.Update(booking);
+            }
+            catch (Exception e)
+            {
+                e.GetHashCode();
+                return false;
+            }
+
+            return true;
+        }
+        public List<BookingReceipt> findByVehicle(int vehicleID)
+        {
+            List<BookingReceipt> lstBooking = _repository.getByVehicle(vehicleID);
+            List<BookingReceipt> lstBookingDuring = new List<BookingReceipt>();
+            foreach (BookingReceipt booking in lstBooking)
+            {
+                if(booking.IsCanceled == false)
+                {
+                    lstBookingDuring.Add(booking);
+                }
+            }
+            return lstBookingDuring;
+        }
+        //xoa
+        public BookingReceipt getLastBooking(int customerID)
+        {
+            BookingReceipt lastBooking = _repository.getLastBooking(customerID);
+            return lastBooking;
+        }
+    }
 }
