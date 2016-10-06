@@ -44,6 +44,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.1.2.1\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
       <Private>True</Private>
@@ -204,6 +208,7 @@
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
     <Compile Include="Areas\Provider\Controllers\VehicleGroupController.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
+    <Compile Include="AutoMapperConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -213,7 +218,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\JsonModels\HomeJsonModels.cs" />
+    <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Constant.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>CRP.tt</DependentUpon>
@@ -245,11 +251,15 @@
     <Compile Include="Models\Entities\Garage.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\Location.cs" />
+    <Compile Include="Models\Entities\Location.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Model.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\Nation.cs" />
+    <Compile Include="Models\Entities\Nation.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Notification.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
@@ -285,15 +295,16 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JsonModels\BrandModel.cs" />
     <Compile Include="Models\JsonModels\GarageModel.cs" />
-    <Compile Include="Models\JsonModels\MessageViewModels.cs" />
+    <Compile Include="Models\ViewModels\HomeViewModels.cs" />
+    <Compile Include="Models\ViewModels\MessageViewModels.cs" />
     <Compile Include="Models\JsonModels\PriceGroupItemModel.cs" />
     <Compile Include="Models\JsonModels\PriceGroupModel.cs" />
     <Compile Include="Models\JsonModels\VehicleGroupModel.cs" />
     <Compile Include="Models\JsonModels\VehicleModel.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\Vehicle.cs" />
-    <Compile Include="Models\ViewModels\AddVehicleGroupViewModel.cs" />
+    <Compile Include="Models\ViewModels\VehicleGroupViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -454,6 +465,7 @@
     <Content Include="Content\DataTables\images\sort_desc.png" />
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
+    <Content Include="Content\DateRangePicker\daterangepicker.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\img\a1.jpg" />
@@ -1335,8 +1347,13 @@
     <Content Include="Content\jsTree\themes\default\throbber.gif" />
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\metisMenu.min.css" />
+    <Content Include="Content\NoUiSlider\nouislider.css" />
+    <Content Include="Content\NoUiSlider\nouislider.min.css" />
+    <Content Include="Content\NoUiSlider\nouislider.pips.css" />
+    <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
+    <Content Include="Content\pageStyle\search.css" />
     <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
@@ -1465,6 +1482,7 @@
     <Content Include="Scripts\DataTables\responsive.jqueryui.min.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.js" />
     <Content Include="Scripts\DataTables\responsive.semanticui.min.js" />
+    <Content Include="Scripts\DateRangePicker\daterangepicker.js" />
     <Content Include="Scripts\dropzone\basic.css" />
     <Content Include="Scripts\dropzone\basic.min.css" />
     <Content Include="Scripts\dropzone\dropzone-amd-module.js" />
@@ -1504,9 +1522,10 @@
     <Content Include="Areas\Provider\Views\VehicleGroup\CreatePopup.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupManagement.cshtml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <None Include="Scripts\jquery-2.0.0.intellisense.js" />
+    <Content Include="Scripts\jquery-2.0.0.js" />
+    <Content Include="Scripts\jquery-2.0.0.min.js" />
+    <Content Include="Scripts\jquery-2.0.0.min.map" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1526,17 +1545,40 @@
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\moment-with-locales.js" />
+    <Content Include="Scripts\moment-with-locales.min.js" />
+    <Content Include="Scripts\moment.js" />
+    <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\NoUISlider\nouislider.js" />
+    <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
     <Content Include="Scripts\pageScript\garage.js" />
     <Content Include="Scripts\pageScript\garageList.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
+    <Content Include="Scripts\pageScript\search.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
     <Content Include="Scripts\prototype.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\twbsPagination\jquery.twbsPagination.js" />
+    <Content Include="Scripts\twbsPagination\jquery.twbsPagination.min.js" />
     <Content Include="Scripts\utils\customModals.js" />
     <Content Include="Scripts\utils\generateCustomDataTablesFilters.js" />
     <Content Include="Scripts\utils\generateUIElements.js" />
+    <Content Include="Scripts\waypoints\jquery.waypoints.js" />
+    <Content Include="Scripts\waypoints\jquery.waypoints.min.js" />
+    <Content Include="Scripts\waypoints\noframework.waypoints.js" />
+    <Content Include="Scripts\waypoints\noframework.waypoints.min.js" />
+    <Content Include="Scripts\waypoints\shortcuts\infinite.js" />
+    <Content Include="Scripts\waypoints\shortcuts\infinite.min.js" />
+    <Content Include="Scripts\waypoints\shortcuts\inview.js" />
+    <Content Include="Scripts\waypoints\shortcuts\inview.min.js" />
+    <Content Include="Scripts\waypoints\shortcuts\sticky.js" />
+    <Content Include="Scripts\waypoints\shortcuts\sticky.min.js" />
+    <Content Include="Scripts\waypoints\waypoints.debug.js" />
+    <Content Include="Scripts\waypoints\zepto.waypoints.js" />
+    <Content Include="Scripts\waypoints\zepto.waypoints.min.js" />
+    <Content Include="Scripts\wNumb\wNumb.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -1577,6 +1619,7 @@
     <Content Include="Views\jsTree3\AJAXDemo.cshtml" />
     <Content Include="Views\Shared\_CommonLayout.cshtml" />
     <Content Include="Views\Shared\_HeaderBarPartial.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

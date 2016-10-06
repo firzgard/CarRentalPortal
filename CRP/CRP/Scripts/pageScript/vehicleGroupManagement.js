@@ -44,7 +44,18 @@ const mockupData3 = [
 ];
 
 function addVehicleGroup() {
-    $('#myModal').modal('show');
+    $.ajax({
+        type: "GET",
+        url: "/management/vehicleGroupManagement/create",
+        success: function (data) {
+            $('#myModal').html(data);
+            $('#myModal').modal('show');
+        },
+        eror: function (e) {
+
+        }
+    });
+    //$('#myModal').modal('show');
 }
 
 $(document).ready(() => {
@@ -122,7 +133,11 @@ $(document).ready(() => {
 	// Render table
 	let table = $('#garages').DataTable({
         dom: "ltipr",
-		data: mockupData,
+	    //data: mockupData,
+        ajax: {
+            url: "/api/vehicleGroups",
+            type: "GET"
+        },
 		columnDefs: [
 			{
 				// Render status label
@@ -152,13 +167,13 @@ $(document).ready(() => {
 			}
 		],
 		columns: [
-			{ name: 'ID', data: 'id', visible: false },
-			{ name: 'Name', title: 'Name', data: 'name', width: '25%' },
-			{ name: 'Maxrent', title: 'Maxrent', data: 'Max rental period', width: '30%' },
-			{ name: 'Deposit', title: 'Deposit', data: 'deposit', width: '15%' },
-            { name: 'Per day price', title: 'Per day price', data: 'per day price', width: '30%' },
-			{ name: 'Price', title: 'Price', data: 'price', width: '15%' },
-			{ name: 'Status', title: 'Status', data: 'isActive', width: '10%' },
+			{ name: 'ID', visible: false },
+			{ name: 'Name', title: 'Name', width: '30%' },
+			{ name: 'Maxrent', title: 'Max rental period', width: '10%', defaultContent: "N/A" },
+			{ name: 'Deposit', title: 'Deposit',  width: '15%' },
+            { name: 'PerDayPrice', title: 'Per day price', width: '15%' },
+			{ name: 'NumOfCar', title: 'Number of car', width: '10%' },
+			{ name: 'Status', title: 'Status', width: '10%' },
 			{
 				title: 'Action',
 				width: '10%',
