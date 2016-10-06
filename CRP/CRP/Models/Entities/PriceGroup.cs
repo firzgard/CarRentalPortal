@@ -22,8 +22,8 @@ namespace CRP.Models.Entities
         }
     
         public int ID { get; set; }
-        public double Deposit { get; set; }
-        public double PerDayPrice { get; set; }
+        public virtual double Deposit { get; set; }
+        public virtual double PerDayPrice { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PriceGroupItem> PriceGroupItems { get; set; }
