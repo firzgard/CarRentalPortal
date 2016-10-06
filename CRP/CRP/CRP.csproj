@@ -263,12 +263,14 @@
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
     <Compile Include="Models\Entities\Repositories\GarageRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\LocationRepository.cs" />
     <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleGroupRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleRepository.cs" />
     <Compile Include="Models\Entities\Services\BaseService.cs" />
     <Compile Include="Models\Entities\Services\BrandService.cs" />
     <Compile Include="Models\Entities\Services\GarageService.cs" />
+    <Compile Include="Models\Entities\Services\LocationService.cs" />
     <Compile Include="Models\Entities\Services\ModelService.cs" />
     <Compile Include="Models\Entities\Services\VehicleGroupService.cs" />
     <Compile Include="Models\Entities\Services\VehicleService.cs" />
@@ -1584,7 +1586,6 @@
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
-    <Folder Include="Models\ViewModels\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\ModelRepository\" />
   </ItemGroup>

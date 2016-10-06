@@ -92,11 +92,12 @@ namespace CRP.Areas.Provider.Controllers
 		public JsonResult GetVehicleDetailAPI(int id)
 		{
             //var vehicle = new Vehicle() { id = 666, Name = "BWM X7" };
-            //Vehicle vehicle = new Vehicle();
-            //VehicleModel vehiModel = new VehicleModel();
-            //vehicle = service.getAll();
+            Vehicle nVehicle = new Vehicle();
+            VehicleModel vehiModel = new VehicleModel();
+            nVehicle = service.findByID(id);
+            
 
-			return Json("");
+            return Json("");
 		}
 
 		// API Route to create single new vehicles
@@ -104,8 +105,42 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPost]
 		public JsonResult CreateVehicleAPI()
 		{
-			return Json("");
-		}
+            MessageViewModels jsonResult = new MessageViewModels();
+            string LicenNumb = Request.Params["LicenseNumber"];
+            string Name = Request.Params["Name"];
+            //int ModelID = int.Parse(Request.Params["ModelID"]);
+            //string ModelName = Request.Params["ModelName"];
+            //int BrandID = int.Parse(Request.Params["BrandID"]);
+            //string BrandName = Request.Params["BrandName"];
+            //int GarageID = int.Parse(Request.Params["GarageID"]);
+            //string GarageName = Request.Params["GarageName"];
+            //int VehicleGroupID = int.Parse(Request.Params["VehicleGroupID"]);
+            //string VehicleName = Request.Params["VehicleName"];
+            //int TransmissionTypeID = int.Parse(Request.Params["TransmissionTypeID"]);
+            //string TransmissionTypeName = Request.Params["TransmissionTypeName"];
+            //int FuelTypeID = int.Parse(Request.Params["FuelTypeID"]);
+            //string FuelTypeName = Request.Params["FuelTypeName"];
+            //int ColorID = int.Parse(Request.Params["ColorID"]);
+            //string ColorName = Request.Params["ColorName"];
+            int NumOfDoor = int.Parse(Request.Params["NumOfDoor"]);
+            int NumOfSeat = int.Parse(Request.Params["NumOfSeat"]);
+
+            Vehicle nVehicle = new Vehicle();
+            nVehicle.LicenseNumber = LicenNumb;
+            nVehicle.Name = Name;
+
+            if (service.add(nVehicle))
+            {
+                jsonResult.StatusCode = 1;
+                jsonResult.Msg = "Create successfully!";
+            }
+            else
+            {
+                jsonResult.StatusCode = 0;
+                jsonResult.Msg = "Creare failed!";
+            }
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
 
 		// API Route to edit single vehicle
 		[Route("api/vehicles")]
@@ -118,10 +153,22 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to delete 1 or multiple vehicles
 		[Route("api/vehicles")]
 		[HttpDelete]
-		public JsonResult DeleteVehiclesAPI()
+		public JsonResult DeleteVehiclesAPI(int id)
 		{
-			return Json("");
-		}
+            MessageViewModels jsonResult = new MessageViewModels();
+            Boolean result = service.delete(id);
+            if (result)
+            {
+                jsonResult.StatusCode = 1;
+                jsonResult.Msg = "Deleted successfully!";
+            }
+            else
+            {
+                jsonResult.StatusCode = 0;
+                jsonResult.Msg = "Error!";
+            }
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
 
 		// API Route for guest/customer to search vehicle for booking
 		[Route("api/vehicles/search")]
