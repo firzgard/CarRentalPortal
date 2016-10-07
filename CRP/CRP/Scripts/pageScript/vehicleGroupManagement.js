@@ -60,7 +60,6 @@ function addVehicleGroup() {
 
 $(document).ready(() => {
     var table1 = $('#groupPop').DataTable({
-        dom : "lrtip",
                 data: mockupData3
                 , columnDefs: [
                     {

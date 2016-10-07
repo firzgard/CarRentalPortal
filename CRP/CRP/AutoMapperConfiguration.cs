@@ -12,7 +12,10 @@ namespace CRP
     {
         public static void Configure()
         {
-            Mapper.Initialize(config => config.CreateMap<VehicleGroup, VehicleGroupViewModel>());
+            Mapper.Initialize(config => {
+                config.CreateMissingTypeMaps = true;
+                config.CreateMap<VehicleGroup, VehicleGroupViewModel>();
+            });
         }
     }
 }
