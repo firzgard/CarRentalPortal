@@ -124,7 +124,7 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPost]
 		public JsonResult CreateVehicleAPI()
 		{
-            MessageViewModels jsonResult = new MessageViewModels();
+            MessageJsonModel jsonResult = new MessageJsonModel();
             string LicenNumb = Request.Params["LicenseNumber"];
             string Name = Request.Params["Name"];
             //int ModelID = int.Parse(Request.Params["ModelID"]);
@@ -150,13 +150,13 @@ namespace CRP.Areas.Provider.Controllers
 
             if (service.add(nVehicle))
             {
-                jsonResult.StatusCode = 1;
-                jsonResult.Msg = "Create successfully!";
+                jsonResult.Status = 1;
+                jsonResult.Message = "Create successfully!";
             }
             else
             {
-                jsonResult.StatusCode = 0;
-                jsonResult.Msg = "Creare failed!";
+                jsonResult.Status = 0;
+                jsonResult.Message = "Creare failed!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
@@ -166,7 +166,7 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPatch]
 		public JsonResult EditVehicleAPI(int id)
 		{
-            MessageViewModels jsonResult = new MessageViewModels();
+            MessageJsonModel jsonResult = new MessageJsonModel();
             string LicenNumb = Request.Params["LicenseNumber"];
             string Name = Request.Params["Name"];
 
@@ -175,13 +175,13 @@ namespace CRP.Areas.Provider.Controllers
             editVehicle.Name = Name;
             if (service.add(editVehicle))
             {
-                jsonResult.StatusCode = 1;
-                jsonResult.Msg = "Create successfully!";
+                jsonResult.Status = 1;
+                jsonResult.Message = "Create successfully!";
             }
             else
             {
-                jsonResult.StatusCode = 0;
-                jsonResult.Msg = "Creare failed!";
+                jsonResult.Status = 0;
+                jsonResult.Message = "Creare failed!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
@@ -191,17 +191,17 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpDelete]
 		public JsonResult DeleteVehiclesAPI(int id)
 		{
-            MessageViewModels jsonResult = new MessageViewModels();
+            MessageJsonModel jsonResult = new MessageJsonModel();
             Boolean result = service.delete(id);
             if (result)
             {
-                jsonResult.StatusCode = 1;
-                jsonResult.Msg = "Deleted successfully!";
+                jsonResult.Status = 1;
+                jsonResult.Message = "Deleted successfully!";
             }
             else
             {
-                jsonResult.StatusCode = 0;
-                jsonResult.Msg = "Error!";
+                jsonResult.Status = 0;
+                jsonResult.Message = "Error!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
@@ -257,18 +257,49 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPost]
 		public JsonResult CreateBookingAPI(int vehiceID)
 		{
-            List<BookingReceipt> br = serviceBook.findByVehicle(vehiceID);
-            BookingReceiptModel brm = new BookingReceiptModel();
-            //brm.ID = ;
-			return Json("");
-		}
+            MessageJsonModel jsonResult = new MessageJsonModel();
+            string vehicleName = Request.Params["VehicleName"];
+            DateTime startTime = DateTime.Parse(Request.Params["StartTime"]);
+            DateTime endTime = DateTime.Parse(Request.Params["EndTime"]);
+            BookingReceipt bookre = new BookingReceipt();
+            bookre.StartTime = startTime;
+            bookre.EndTime = endTime;
+            if (serviceBook.add(bookre) )
+            {
+                jsonResult.Status = 1;
+                jsonResult.Message = "Create successfully!";
+            }
+            else
+            {
+                jsonResult.Status = 0;
+                jsonResult.Message = "Creare failed!";
+            }
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
 
 		// API route for canceling an own booking
 		[Route("api/vehicles/bookings/{receiptID:int}")]
 		[HttpDelete]
 		public JsonResult CancelBookingAPI(int receiptID)
 		{
-			return Json("");
-		}
+            MessageJsonModel jsonResult = new MessageJsonModel();
+            BookingReceipt br = serviceBook.findByID(receiptID);
+            while(serviceBook.CheckVehicleAvailability(br.VehicleID, br.StartTime, br.EndTime))
+            {
+                Boolean result = service.delete(receiptID);
+                if (result)
+                {
+                    jsonResult.Status = 1;
+                    jsonResult.Message = "Deleted successfully!";
+                }
+                else
+                {
+                    jsonResult.Status = 0;
+                    jsonResult.Message = "Error!";
+                }
+                
+            }
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
 	}
 }
