@@ -27,6 +27,7 @@ namespace CRP.Models.Entities
         public string VehicleName { get; set; }
         public string GarageName { get; set; }
         public string GarageAddress { get; set; }
+        public bool IsPending { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual Vehicle Vehicle { get; set; }

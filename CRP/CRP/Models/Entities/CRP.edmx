@@ -59,6 +59,7 @@
           <Property Name="VehicleName" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="GarageName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="GarageAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="IsPending" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -521,6 +522,7 @@
           <Property Name="GarageAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_BookingReceipt_AspNetUsers" FromRole="BookingReceipt" ToRole="AspNetUsers" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="BookingReceipt" ToRole="Vehicle" />
+          <Property Name="IsPending" Type="Boolean" Nullable="false" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -958,6 +960,7 @@
           <EntitySetMapping Name="BookingReceipts">
             <EntityTypeMapping TypeName="CRPDBModel.BookingReceipt">
               <MappingFragment StoreEntitySet="BookingReceipt">
+                <ScalarProperty Name="IsPending" ColumnName="IsPending" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
