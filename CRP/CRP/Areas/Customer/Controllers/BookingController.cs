@@ -25,9 +25,30 @@ namespace CRP.Areas.Customer.Controllers
             string VehicleName = Request.Params["VehicleName"];
             string GarageName = Request.Params["GarageName"];
             string GarageAddress = Request.Params["GarageAddress"];
-            //can 1 cai datetimeformat
             DateTime StartTime = DateTime.Parse(Request.Params["StartTime"]);
             DateTime EndTime = DateTime.Parse(Request.Params["EndTime"]);
+
+            BookingReceipt booking = new BookingReceipt();
+            booking.CustomerID = CustomerID;
+            booking.VehicleID = VehicleID;
+            booking.TotalPrice = TotalPrice;
+            booking.BookingFee = BookingFee;
+            booking.VehicleName = VehicleName;
+            booking.GarageName = GarageName;
+            booking.GarageAddress = GarageAddress;
+            booking.StartTime = StartTime;
+            booking.EndTime = EndTime;
+            //ispending = true;
+
+            //luu xuoong database
+            Boolean result = _service.add(booking);
+            if (result == false)
+            {
+
+            }
+            //luu xuong database voi ispending = true; return bookingID
+            //goi api thanh toan, neu ok, thi xet ispending = false, +
+            //sau 5 phut kiem tra neu ispending = false thi ko co gi, con is peding = true thi delete booking va return message overtime
             //van de o cho la lam sao 2 thang hien confirm cung luc, nhung thoi gian booking khac nhau thi van dc booking
             return View("~/Areas/CuopenTimeMonstomer/Views/Booking/BookingHistory.cshtml");
 		}
