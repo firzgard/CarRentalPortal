@@ -13,8 +13,8 @@
             <div class="ibox-content">
                 <div class="ibox ibox-content float-e-margins">
                     <form action="#">
-                        @Html.HiddenFor(q => q.ID)
-                        @Html.HiddenFor(q => q.IsActive)
+                        @Html.HiddenFor(q => q.ID, new { @id= "groupID" } )
+                        @Html.HiddenFor(q => q.IsActive, new { @id= "isActive" } )
                         <div class="row form-group">
                             <div class="col-md-6">
                                 <div class="input-group">
@@ -48,7 +48,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label>
-                                        <h2><b>Price group item</b></h2>
+                                        <h2><b>Price rental</b></h2>
                                     </label>
                                     <table class="table table-striped table-bordered table-hover " id="priceGroupItem"></table>
                                 </div>

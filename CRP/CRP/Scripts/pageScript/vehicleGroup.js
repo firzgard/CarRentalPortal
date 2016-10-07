@@ -28,46 +28,50 @@ const mockupData3 = [
 ];
 
 $(document).ready(function () {
+    const groupID = $('#groupID').val();
     let table1 = $('#priceGroupItem').DataTable({
         dom: "ltipr",
-        data: mockupData3
-                , columnDefs: [
-                    {
-                        // Render action button
-                        targets: 1
-                        , render: (data, type, row) => {
-                            return `
-              <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus" data-field="quant[2]">
-                <i class="fa fa-minus"></i>
-              </button>
-              <button type="button" class ="btn btn-primary btn-circle btn-number plus-btn" data-type="plus" data-field="quant[2]">
-                  <i class="fa fa-plus"></i>
-              </button>`;
-                        }
-                    }
-                ]
-                , columns: [
-                    {
-                        data: 'class',
-                        visible: false
-                    },
-                    {
-                        searchable: false,
-                        sortable: false,
-                        width: '24%'
-                    },
-                    {
-                        title: 'Max time',
-                        data: 'time',
-                        width: '38%'
-                    },
-                    {
-                        title: 'Price',
-                        data: 'price',
-                        width: '38%'
-                    }
+        ajax: {
+            url: `/api/priceGroup/1`,
+            type: "GET",
+        },
+        columnDefs: [
+            {
+                // Render action button
+                targets: 1
+                , render: (data, type, row) => {
+                    return `
+        <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus" data-field="quant[2]">
+        <i class="fa fa-minus"></i>
+        </button>
+        <button type="button" class ="btn btn-primary btn-circle btn-number plus-btn" data-type="plus" data-field="quant[2]">
+            <i class="fa fa-plus"></i>
+        </button>`;
+                }
+            }
+        ],
+        columns: [
+            {
+                visible: false,
+                data: "0"
+            },
+            {
+                searchable: false,
+                sortable: false,
+                width: '24%'
+            },
+            {
+                title: 'Max time',
+                width: '38%',
+                data: "1"
+            },
+            {
+                title: 'Price',
+                width: '38%',
+                data: "2"
+            }
 
-                ]
+        ]
     });
 
     function bindMinusBtn() {
@@ -89,10 +93,10 @@ $(document).ready(function () {
     })();
 
 	// Render re/deactivate button
-	let isActivateInput = $('#isActive');
+	let isActivateInput = Boolean($('#isActive').val());
 	function renderActivationBtn(){
 		let btn = $('#activationBtn')
-		if(isActivateInput.val() == 'true'){
+		if(isActivateInput == true){
 			btn.attr('data-action', 'deactivateCarGroup');
 			btn.html('Deactivate Car Group');
 			btn.removeClass('btn-success');

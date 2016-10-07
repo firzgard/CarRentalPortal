@@ -214,6 +214,7 @@
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
+    <Compile Include="Areas\Provider\Controllers\PriceGroupItemController.cs" />
     <Compile Include="Areas\Provider\Controllers\VehicleGroupController.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
     <Compile Include="AutoMapperConfiguration.cs" />
@@ -231,7 +232,10 @@
     <Compile Include="Models\AutofacModules\RepositoryModule.cs" />
     <Compile Include="Models\AutofacModules\ServiceModule.cs" />
     <Compile Include="Models\ControllerExtensions.cs" />
+    <Compile Include="Models\Entities\Repositories\PriceGroupItemRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
+    <Compile Include="Models\Entities\Services\PriceGroupItemService.cs" />
+    <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\JsonModels\BookingReceiptModel.cs" />
@@ -1707,6 +1711,7 @@
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
     <Folder Include="Areas\Provider\Views\Booking\" />
+    <Folder Include="Areas\Provider\Views\PriceGroup\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
