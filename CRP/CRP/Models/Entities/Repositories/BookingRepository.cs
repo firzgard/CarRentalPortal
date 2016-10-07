@@ -88,10 +88,10 @@ namespace CRP.Models.Entities.Repositories
 			return query;
 		}
 
-		//chua chac
-		public BookingReceipt getLastBooking(int vehicleID)
+		//chua chac, lay booking moi nhat cua no
+		public BookingReceipt getLastBooking(int customerID)
 		{
-			var query = (from r in _dataContext.BookingReceipts where r.VehicleID == vehicleID select r).FirstOrDefault();
+			var query = (from r in _dataContext.BookingReceipts where r.CustomerID == customerID orderby r.ID descending select r).FirstOrDefault();
 			return query;
 		}
 	}

@@ -36,12 +36,12 @@ namespace CRP.Areas.Customer.Controllers
 		[Route("bookingReceipt")]
 		public ViewResult BookingReceipt()
 		{
-            //lay booking moi nhat tu datebase hien len
             //lay thong tin booking moi nhat cua thang user
-            int CustomerID = int.Parse(Request.Params["UserID"]);
+            int CustomerID = 1;
             BookingReceipt lastBooking = _service.getLastBooking(CustomerID);
             //khi addBooking thi xuat ra ID
             // thieu api addBooking
+            ViewBag.BookingReceipt = lastBooking;
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
@@ -125,7 +125,7 @@ namespace CRP.Areas.Customer.Controllers
             if (result)
             {
                 jsonResult.Status = 1;
-                jsonResult.Message = "Deleted successfully!";
+                jsonResult.Message = "Cancle successfully!";
             }
             else
             {
@@ -143,13 +143,16 @@ namespace CRP.Areas.Customer.Controllers
 			//comment xong co can cancle va set dateend lun ko?
 			MessageJsonModel jsonResult = new MessageJsonModel();
             string comment = Request.Params["comment"];
-            Decimal Star = Decimal.Parse(Request.Params["star"]);
+            //cach tinh star cho vehicle hay cho Provider?
+            decimal Star = decimal.Parse(Request.Params["star"]);
             BookingReceipt booking = _service.findByID(id);
+            booking.Comment = comment;
+            booking.Star = Star;
             Boolean result = _service.rateForBooking(booking);
             if (result)
             {
                 jsonResult.Status = 1;
-                jsonResult.Message = "Deleted successfully!";
+                jsonResult.Message = "Rate successfully!";
             }
             else
             {
