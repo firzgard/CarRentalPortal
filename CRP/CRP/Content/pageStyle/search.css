@@ -52,32 +52,8 @@
 	display: flex;
 	align-items: center
 }
-#colorSelector .fa-car {
+#colorSelector .fa-car, .select2-results .fa-car {
 	font-size: 1.5em;
-}
-#colorSelector .fa-beige {
-	color: beige;
-}
-#colorSelector .fa-black {
-	color: black;
-}
-#colorSelector .fa-blue {
-	color: blue;
-}
-#colorSelector .fa-brown {
-	color: brown;
-}
-#colorSelector .fa-red {
-	color: red;
-}
-#colorSelector .fa-silver {
-	color: silver;
-}
-#colorSelector .fa-white {
-	color: #F2F2F2;
-}
-#colorSelector .fa-yellow {
-	color: yellow;
 }
 
 .result-count {

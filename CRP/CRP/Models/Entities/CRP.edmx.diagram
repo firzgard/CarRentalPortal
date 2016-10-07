@@ -21,7 +21,6 @@
         <AssociationConnector Association="CRPDBModel.FK_Garage_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="CRPDBModel.FK_Notification_AspNetUsers" ManuallyRouted="false" />
         <AssociationConnector Association="CRPDBModel.FK_Notification_AspNetUsers1" ManuallyRouted="false" />
-        <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_Vehicle" ManuallyRouted="false" />
         <AssociationConnector Association="CRPDBModel.FK_CarModel_CarBrand" ManuallyRouted="false" />
         <AssociationConnector Association="CRPDBModel.FK_Car_Store" ManuallyRouted="false" />
         <AssociationConnector Association="CRPDBModel.FK_Vehicle_Model" ManuallyRouted="false" />
@@ -34,6 +33,7 @@
         <EntityTypeShape EntityType="CRPDBModel.Nation" Width="1.5" PointX="0.75" PointY="24.25" />
         <AssociationConnector Association="CRPDBModel.FK_Garage_Location" />
         <AssociationConnector Association="CRPDBModel.FK_Location_Nation" />
+        <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_Vehicle" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

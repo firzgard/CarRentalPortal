@@ -11,8 +11,8 @@ namespace CRP.Models.JsonModels
 	// Use as input for route ~/api/vehicles/search/ of HomeController
 	public class SearchConditionModel
 	{
-		public DateTime StartTime { get; set; }
-		public DateTime EndTime { get; set; }
+		public DateTime? StartTime { get; set; }
+		public DateTime? EndTime { get; set; }
 		public double? MaxPrice { get; set; }
 		public double? MinPrice { get; set; }
 		public int[] LocationIDList { get; set; }

@@ -8,11 +8,13 @@
 	<div class="col-md-5">
 		<div class="animated fadeInLeft" id="filter">
 			<!-- Time -->
-			<div class="input-group" id="timeFilter">
-				<span class="input-group-addon"><i class="fa fa-calendar"></i> From:</span>
-				<input id="startTimeDisplay" class="form-control" />
-				<span class="input-group-addon"><i class="fa fa-calendar"></i> To:</span>
-				<input id="endTimeDisplay" class="form-control" />
+			<div class="form-group">
+				<div class="input-group" id="timeFilter">
+					<span class="input-group-addon"><i class="fa fa-calendar"></i> From:</span>
+					<input type="text" id="startTimeFilter" class="form-control" />
+					<span class="input-group-addon"><i class="fa fa-calendar"></i> To:</span>
+					<input type="text" id="endTimeFilter" class="form-control" />
+				</div>
 			</div>
 			<!-- Location -->
 			<select data-placeholder="Please choose a location..." id="locationFilter" class="form-control" multiple>
@@ -129,12 +131,12 @@
 				</div>
 			</div>
 			<!-- Color -->
-			<div class="form-group">
+			<div class="form-group" id="colorSelector">
 				<label class="control-label col-xs-3">Color</label>
 				<div class="col-xs-3">
-					<select data-placeholder="Please select fuel type..." id="colorFilter" class="form-control" multiple>
+					<select data-placeholder="Please select a color..." id="colorFilter" class="form-control" multiple>
 						<option value></option>
-						<option value="1"><i class="fa fa-car fa-beige"></i>&nbsp;&nbsp;Beige</option>
+						<option value="1">Beige</option>
 						<option value="2">Black</option>
 						<option value="3">Blue</option>
 						<option value="4">Brown</option>
@@ -200,7 +202,7 @@
 	<!-- results -->
 	<div class="col-md-7">
 		<div class="ibox animated fadeInRight">
-			<div id="searchResultGrid" class="row" data-source="@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })></div>
+			<div id="searchResultGrid" class="row" data-source="@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })" ></div>
 			<div>2,160 results found</div>
 			<div class="text-center">
 				<ul id="paginatior" class="pagination-lg"></ul>
@@ -211,11 +213,11 @@
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/Search")
 	 .Include("~/Content/awesome-bootstrap-checkbox.css",
-		 "~/Content/chosen.css",
-		 "~/Content/DateRangePicker/daterangepicker.css",
+		 "~/Content/bootstrap-datetimepicker/bootstrap-datetimepicker.css",
 		 "~/Content/NoUISlider/nouislider.css",
 		 "~/Content/NoUISlider/nouislider.pips.css",
-		 "~/Content/NoUISlider/nouislider.tooltips.css"));
+		 "~/Content/NoUISlider/nouislider.tooltips.css",
+		 "~/Content/select2/select2.css"));
 }
 @section Styles {
 	@Styles.Render("~/Styles/Search")
@@ -227,9 +229,9 @@
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/Search")
 	.Include(
 		"~/Scripts/moment.js",
-		"~/Scripts/chosen.jquery.js",
-		"~/Scripts/DateRangePicker/daterangepicker.js",
+		"~/Scripts/bootstrap-datetimepicker/bootstrap-datetimepicker.js",
 		"~/Scripts/NoUISlider/nouislider.js",
+		"~/Scripts/select2/select2.full.js",
 		"~/Scripts/twbsPagination/jquery.twbsPagination.js",
 		"~/Scripts/utils/generateUIElements.js",
 		"~/Scripts/pageScript/search.js"));
