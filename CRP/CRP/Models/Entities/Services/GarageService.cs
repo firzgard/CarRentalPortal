@@ -60,11 +60,6 @@ namespace CRP.Models.Entities.Services
             Garage garage = _repository.findById(id);
             return garage;
         }
-        public String reGarageNameByID(int id)
-        {
-            Garage garage = _repository.findById(id);
-            return garage.Name;
-        }
    
 
         public Boolean Update(Garage garage)
