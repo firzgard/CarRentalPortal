@@ -33,18 +33,20 @@ namespace CRP.Controllers
 		{
 			return View();
 		}
-		
+
 		// API Route for guest/customer to search vehicle for booking
 		// Need filtering/sorting support
-		[Route("api/search")]
 		[HttpGet]
+		[Route("api/search", Name = "SearchVehiclesAPI")]
 		public JsonResult SearchVehiclesAPI(SearchConditionModel searchConditions)
 		{
-			string value = "asd";
-			bool a = Constants.TransmissionType.TryGetValue(1, out value);
-			//vehicleService.findToBook(searchConditions);
-			//new SearchResultJSONVModel
-			return Json(value, JsonRequestBehavior.AllowGet);
+			if (searchConditions == null
+					|| searchConditions.StartTime == null
+					|| searchConditions.EndTime == null)
+				return Json(new MessageJsonModel("Bad request", 400));
+
+			List<SearchResultJsonModel> searchResults = vehicleService.findToBook(searchConditions);
+			return Json(new MessageJsonModel("OK", 200, searchResults), JsonRequestBehavior.AllowGet);
 		}
 	}
 }

@@ -234,7 +234,10 @@
     <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\JsonModels\BookingReceiptModel.cs" />
     <Compile Include="Models\JsonModels\HomeJsonModels.cs" />
+    <Compile Include="Models\JsonModels\VehicleCalendarModel.cs" />
+    <Compile Include="Models\JsonModels\MessageJsonModel.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>CRP.tt</DependentUpon>
@@ -311,7 +314,6 @@
     <Compile Include="Models\JsonModels\BrandModel.cs" />
     <Compile Include="Models\JsonModels\GarageModel.cs" />
     <Compile Include="Models\ViewModels\HomeViewModels.cs" />
-    <Compile Include="Models\ViewModels\MessageViewModels.cs" />
     <Compile Include="Models\JsonModels\PriceGroupItemModel.cs" />
     <Compile Include="Models\JsonModels\PriceGroupModel.cs" />
     <Compile Include="Models\JsonModels\VehicleGroupModel.cs" />
@@ -328,6 +330,8 @@
     <Content Include="Content\animate.css" />
     <Content Include="Content\animate.min.css" />
     <Content Include="Content\awesome-bootstrap-checkbox.css" />
+    <Content Include="Content\bootstrap-datetimepicker.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -1418,6 +1422,8 @@
     <Content Include="Content\awesome-bootstrap-checkbox.scss" />
     <Content Include="Content\awesome-bootstrap-checkbox.less" />
     <Content Include="Content\jasny-bootstrap.css.map" />
+    <Content Include="Scripts\bootstrap-datetimepicker.js" />
+    <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\chosen.jquery.js" />
