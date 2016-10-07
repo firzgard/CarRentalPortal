@@ -22,6 +22,22 @@ namespace CRP.Models.Entities.Services
             }
             return true;
         }
+        public int addwithPending(BookingReceipt booking)
+        {
+            int BookingId = 0;
+            try
+            {
+                _repository.Add(booking);
+                BookingReceipt lastbooking = _repository.getLastBooking(booking.CustomerID);
+                BookingId = lastbooking.ID;
+            }
+            catch (Exception e)
+            {
+                e.GetHashCode();
+                return BookingId;
+            }
+            return BookingId;
+        }
 
         public Boolean delete(int ID)
         {
@@ -43,6 +59,15 @@ namespace CRP.Models.Entities.Services
                 }
                 return true;
             }
+        }
+        public Boolean IsPending(int BookingID)
+        {
+            BookingReceipt booking = _repository.findById(BookingID);
+            if (booking.IsPending == true)
+            {
+                return true;
+            }
+            return false;
         }
         public List<BookingReceipt> getAll()
         {
