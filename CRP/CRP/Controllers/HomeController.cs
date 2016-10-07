@@ -43,7 +43,7 @@ namespace CRP.Controllers
 			if (searchConditions == null
 					|| searchConditions.StartTime == null
 					|| searchConditions.EndTime == null)
-				return Json(new MessageJsonModel("Bad request", 400));
+				return Json(new MessageJsonModel("Bad request", 400), JsonRequestBehavior.AllowGet);
 
 			List<SearchResultJsonModel> searchResults = vehicleService.findToBook(searchConditions);
 			return Json(new MessageJsonModel("OK", 200, searchResults), JsonRequestBehavior.AllowGet);

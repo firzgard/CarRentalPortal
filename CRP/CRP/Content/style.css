@@ -1,5 +1,5 @@
-@import url("./../fonts/open-sans.css");
-@import url("./../fonts/roboto.css");
+@import url("../fonts/open-sans.css");
+@import url("../fonts/roboto.css");
 /*
  *
  *   INSPINIA - Responsive Admin Theme
@@ -8236,4 +8236,31 @@ body.md-skin {
   #page-wrapper {
     margin: 0;
   }
+}
+
+/* =============================== */
+/* Custom */
+.fa-beige {
+  color: beige;
+}
+.fa-black {
+  color: black;
+}
+.fa-blue {
+  color: blue;
+}
+.fa-brown {
+  color: brown;
+}
+.fa-red {
+  color: red;
+}
+.fa-silver {
+  color: silver;
+}
+.fa-white {
+  color: #F2F2F2;
+}
+.fa-yellow {
+  color: yellow;
 }

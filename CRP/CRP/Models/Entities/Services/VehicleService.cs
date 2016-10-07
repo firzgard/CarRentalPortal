@@ -119,7 +119,7 @@ namespace CRP.Models.Entities.Services
 								|| searchConditions.ModelIDList.Contains(v.ModelID)).ToList();
 
 			// Get the rental time in hour
-			TimeSpan rentalTimeSpan = searchConditions.EndTime - searchConditions.StartTime;
+			TimeSpan rentalTimeSpan = (DateTime)searchConditions.EndTime - (DateTime)searchConditions.StartTime;
 			int rentalTime = (int)Math.Ceiling(rentalTimeSpan.TotalHours);
 
 			vehicles = vehicles.Where(v => !(v.VehicleGroup.MaxRentalPeriod * 24 < rentalTime)).ToList();

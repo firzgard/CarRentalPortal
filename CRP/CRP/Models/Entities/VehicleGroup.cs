@@ -21,9 +21,9 @@ namespace CRP.Models.Entities
         }
     
         public int ID { get; set; }
-        public virtual string Name { get; set; }
+        public string Name { get; set; }
         public bool IsActive { get; set; }
-        public virtual Nullable<int> MaxRentalPeriod { get; set; }
+        public Nullable<int> MaxRentalPeriod { get; set; }
         public int DefaultPriceGroupID { get; set; }
     
         public virtual PriceGroup PriceGroup { get; set; }

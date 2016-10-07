@@ -211,7 +211,7 @@ function renderSearchResultGrid(searchConditions = null){
 	}
 
 	$.ajax({
-		url: $('searchResultGrid').data('source'),
+		url: $('#searchResultGrid').data('source'),
 		type: 'GET',
 		dataType: 'json',
 		data: searchConditions
@@ -227,39 +227,51 @@ function renderSearchResultGrid(searchConditions = null){
 
 $(document).ready(() => {
 	// Time range filter
-	$('#timeFilter').daterangepicker({
-		minDate: moment(),
-		maxDate: moment().add(30, 'days'),
-		dateLimit: { days: 30 }
-		applyClass: 'btn-primary',
-		cancelClass: 'btn-default',
-		opens: 'right',
-		drops: 'down',
-		buttonClasses: ['btn', 'btn-sm'],
-		locale: {
-			applyLabel: 'Apply',
-			cancelLabel: 'Cancel',
-			format: 'YYYY-MM-DD h:mm A',
-			fromLabel: 'From',
-			toLabel: 'To',
-			customRangeLabel: 'Custom',
-			daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-			monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-			firstDay: 1
-		},
-		showDropdowns: true,
-		timePicker: true,
-	}, (start, end, label) => {
-		$('#startTimeDisplay').val(start.format('YYYY-MM-DD h:mm A'));
-		$('#endTimeDisplay').val(end.format('YYYY-MM-DD h:mm A'));
-		searchConditions.StartTime = start.toDate();
-		searchConditions.EndTime = end.toDate();
+	$('#startTimeFilter').datetimepicker();
+	$('#endTimeFilter').datetimepicker();
+	// $('#timeFilter').daterangepicker({
+	// 	minDate: moment(),
+	// 	maxDate: moment().add(30, 'days'),
+	// 	dateLimit: { days: 30 }
+	// 	applyClass: 'btn-primary',
+	// 	cancelClass: 'btn-default',
+	// 	opens: 'right',
+	// 	drops: 'down',
+	// 	buttonClasses: ['btn', 'btn-sm'],
+	// 	locale: {
+	// 		applyLabel: 'Apply',
+	// 		cancelLabel: 'Cancel',
+	// 		format: 'YYYY-MM-DD h:mm A',
+	// 		fromLabel: 'From',
+	// 		toLabel: 'To',
+	// 		customRangeLabel: 'Custom',
+	// 		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+	// 		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+	// 		firstDay: 1
+	// 	},
+	// 	showDropdowns: true,
+	// 	timePicker: true,
+	// }, (start, end, label) => {
+	// 	$('#startTimeDisplay').val(start.format('YYYY-MM-DD h:mm A'));
+	// 	$('#endTimeDisplay').val(end.format('YYYY-MM-DD h:mm A'));
+	// 	searchConditions.StartTime = start.toDate();
+	// 	searchConditions.EndTime = end.toDate();
+	// });
+
+	// Chosen selector
+	$('#locationFilter').select2();
+
+	const colorOptionFormat = (state) => {
+		return $(`<span><i class="fa fa-car fa-${state.text.toLowerCase()}"></i>&nbsp;&nbsp;${state.text}</span>`);
+	};
+	$('#colorFilter').select2({
+		templateSelection: colorOptionFormat,
+		templateResult: colorOptionFormat
 	});
 
-	// Location selector
-	$('#locationFilter').chosen({
-		width: "100%",
-		no_results_text: "No result!"
+	$('#fuelFilter').select2().on('change', function(evt){
+		searchConditions.FuelTypeIDList = $(evt.currentTarget).val());
+		console.log(searchConditions.FuelTypeIDList);
 	});
 
 	// Price filter slider
@@ -279,7 +291,6 @@ $(document).ready(() => {
 		tooltips: true
 	})
 
-	
 	// Render search result grid
 	renderSearchResultGrid(searchConditions)
 
