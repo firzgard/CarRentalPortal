@@ -78,7 +78,7 @@ namespace CRP.Areas.Customer.Controllers
             {
                 BookingReceiptModel jsonBooking = new BookingReceiptModel();
                 jsonBooking.ID = p.ID;
-                jsonBooking.VehicleID = p.VehicleID;
+                jsonBooking.VehicleID = (int) p.VehicleID;
                 jsonBooking.VehicleName = p.VehicleName;
                 jsonBooking.BookingFee = p.BookingFee;
                 jsonBooking.CustomerID = p.CustomerID;
