@@ -37,7 +37,7 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetVehicleGroupListAPI()
 		{
-            var service = this.Service<IVehicleGroupService>();
+            var service = new VehicleGroupService();
             var list = service.getAll().ToList();
             var result = list.Select(q => new IConvertible[] {
                 q.ID,
@@ -63,16 +63,22 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to create single new group
 		[Route("api/vehicleGroups")]
 		[HttpPost]
-		public async Task<JsonResult> CreateVehicleGroupAPI(VehicleGroupViewModel model)
+        [ValidateAntiForgeryToken]
+		public JsonResult CreateVehicleGroupAPI(VehicleGroupViewModel model)
 		{
             if (!this.ModelState.IsValid)
             {
+                return Json(new { result = false, message = "Invalid!" });
+            }
+            var service = new VehicleGroupService();
+            model.IsActive = true;
+            var entity = this.Mapper.Map<VehicleGroup>(model);
+            bool result = service.add(entity);
+
+            if(!result)
+            {
                 return Json(new { result = false, message = "Create failed!" });
             }
-            var service = this.Service<IVehicleGroupService>();
-            var entity = this.Mapper.Map<VehicleGroup>(model);
-            await service.CreateAsync(model);
-
             return Json(new { result = true, message = "Create successful!" });
         }
 

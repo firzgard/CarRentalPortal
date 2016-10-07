@@ -19,7 +19,7 @@ namespace CRP.Models.AutofacModules
 
         protected override void Load(ContainerBuilder builder)
         {
-            var repoType = typeof(IBaseRepository);
+            var repoType = typeof(IRepository);
             builder.RegisterAssemblyTypes(this.assembly)
                 .Where(q => repoType.IsAssignableFrom(q))
                 .AsImplementedInterfaces()

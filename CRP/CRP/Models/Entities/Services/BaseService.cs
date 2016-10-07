@@ -51,6 +51,10 @@ namespace CRP.Models.Entities.Services
             this.unitOfWork = unitOfWork;
         }
 
+        public BaseService()
+        {
+        }
+
         public virtual void Create(TEntity entity)
         {
             this.OnCreate(entity);
