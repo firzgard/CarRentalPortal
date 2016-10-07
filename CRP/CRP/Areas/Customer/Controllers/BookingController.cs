@@ -120,17 +120,17 @@ namespace CRP.Areas.Customer.Controllers
 		[HttpDelete]
 		public JsonResult CancelBookingAPI(int id)
 		{
-            MessageViewModels jsonResult = new MessageViewModels();
+            MessageJsonModel jsonResult = new MessageJsonModel();
             Boolean result = _service.cancleBooking(id);
             if (result)
             {
-                jsonResult.StatusCode = 1;
-                jsonResult.Msg = "Deleted successfully!";
+                jsonResult.Status = 1;
+                jsonResult.Message = "Deleted successfully!";
             }
             else
             {
-                jsonResult.StatusCode = 0;
-                jsonResult.Msg = "Error!";
+                jsonResult.Status = 0;
+                jsonResult.Message = "Error!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
 		}
@@ -140,21 +140,21 @@ namespace CRP.Areas.Customer.Controllers
 		[HttpPut]
 		public JsonResult RateBookingAPI(int id)
 		{
-            //comment xong co can cancle va set dateend lun ko?
-            MessageViewModels jsonResult = new MessageViewModels();
+			//comment xong co can cancle va set dateend lun ko?
+			MessageJsonModel jsonResult = new MessageJsonModel();
             string comment = Request.Params["comment"];
             Decimal Star = Decimal.Parse(Request.Params["star"]);
             BookingReceipt booking = _service.findByID(id);
             Boolean result = _service.rateForBooking(booking);
             if (result)
             {
-                jsonResult.StatusCode = 1;
-                jsonResult.Msg = "Deleted successfully!";
+                jsonResult.Status = 1;
+                jsonResult.Message = "Deleted successfully!";
             }
             else
             {
-                jsonResult.StatusCode = 0;
-                jsonResult.Msg = "Error!";
+                jsonResult.Status = 0;
+                jsonResult.Message = "Error!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
