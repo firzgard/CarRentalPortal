@@ -64,7 +64,7 @@ $(document).ready(() => {
                 , columnDefs: [
                     {
                         // Render action button
-                        targets: 1
+                        targets: 3
                         , render: (data, type, row) => {
                             return `<span class="input-group-btn">
               <button type="button" class="btn btn-danger btn-number minus-btn"  data-type="minus" data-field="quant[2]">

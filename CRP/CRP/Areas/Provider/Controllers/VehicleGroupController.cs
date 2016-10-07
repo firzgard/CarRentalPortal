@@ -31,7 +31,7 @@ namespace CRP.Areas.Provider.Controllers
 		{
             var service = new VehicleGroupService();
             VehicleGroup model = service.findByID(id);
-            var viewModel = (VehicleGroupViewModel) model;
+            VehicleGroupViewModel viewModel = new VehicleGroupViewModel(model);
 			return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupDetail.cshtml", viewModel);
 		}
 

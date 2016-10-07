@@ -8,7 +8,86 @@ const mockupData = [
 	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 18, "modelName": "Ford Fiesta Mk6", "groupID": 3, "garage": "Hanoi garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" }
 ];
 
-$(document).ready(function(){
+const mockupData3 = [
+        {
+            "class": 1
+            , "time": "1"
+            , "price": "100000"
+        }
+        , {
+            "class": 2
+            , "time": "2"
+            , "price": "100000"
+        }
+        , {
+            "class": 4
+            , "time": "4"
+            , "price": "100000"
+        }
+
+];
+
+$(document).ready(function () {
+    let table1 = $('#priceGroupItem').DataTable({
+        dom: "ltipr",
+        data: mockupData3
+                , columnDefs: [
+                    {
+                        // Render action button
+                        targets: 1
+                        , render: (data, type, row) => {
+                            return `
+              <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus" data-field="quant[2]">
+                <i class="fa fa-minus"></i>
+              </button>
+              <button type="button" class ="btn btn-primary btn-circle btn-number plus-btn" data-type="plus" data-field="quant[2]">
+                  <i class="fa fa-plus"></i>
+              </button>`;
+                        }
+                    }
+                ]
+                , columns: [
+                    {
+                        data: 'class',
+                        visible: false
+                    },
+                    {
+                        searchable: false,
+                        sortable: false,
+                        width: '24%'
+                    },
+                    {
+                        title: 'Max time',
+                        data: 'time',
+                        width: '38%'
+                    },
+                    {
+                        title: 'Price',
+                        data: 'price',
+                        width: '38%'
+                    }
+
+                ]
+    });
+
+    function bindMinusBtn() {
+        $('.minus-btn').unbind('click').click(function () {
+            table1.row($(this).parents('tr')).remove().draw();
+        });
+    }
+    bindMinusBtn();
+    (function bindPlusBtn() {
+        $('.plus-btn').unbind('click').click(function () {
+            table1.row.add({
+                "class": 0
+                , "time": 0
+                , "price": 0
+            }).draw();
+            bindPlusBtn();
+            bindMinusBtn();
+        });
+    })();
+
 	// Render re/deactivate button
 	let isActivateInput = $('#isActive');
 	function renderActivationBtn(){
