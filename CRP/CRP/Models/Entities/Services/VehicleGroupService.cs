@@ -62,5 +62,10 @@ namespace CRP.Models.Entities.Services
             }
             return true;
         }
+
+        public VehicleGroup findByID(int id)
+        {
+            return _repository.findById(id);
+        }
     }
 }

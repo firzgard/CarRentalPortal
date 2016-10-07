@@ -64,7 +64,7 @@ $(document).ready(() => {
                 , columnDefs: [
                     {
                         // Render action button
-                        targets: 3
+                        targets: 1
                         , render: (data, type, row) => {
                             return `<span class="input-group-btn">
               <button type="button" class="btn btn-danger btn-number minus-btn"  data-type="minus" data-field="quant[2]">
@@ -154,12 +154,14 @@ $(document).ready(() => {
 				// Render action button
 				targets: 7,
 				render: (data, type, row) => {
-					return `<div class="btn-group" >
+				    return `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="./../vehicleGroup/vehicleGroup.html">Edit</a></li>
+							<li><a href="/management/vehicleGroupManagement/${row[0]}">Edit</a></li>
+                            <li><a href="#">${row[6] === "Active" ? "Deactivate": "Reactivate"}</a></li>
+                            <li><a href="#">Delete</a></li>
 						</ul>
 					</div>`;
 				}

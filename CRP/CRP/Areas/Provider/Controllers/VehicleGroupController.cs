@@ -27,9 +27,12 @@ namespace CRP.Areas.Provider.Controllers
 
 		// Route to group's detailed info page
 		[Route("management/vehicleGroupManagement/{id:int}")]
-		public ViewResult VehicleGroupDetail()
+		public ViewResult VehicleGroupDetail(int id)
 		{
-			return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupDetail.cshtml");
+            var service = new VehicleGroupService();
+            VehicleGroup model = service.findByID(id);
+            var viewModel = (VehicleGroupViewModel) model;
+			return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupDetail.cshtml", viewModel);
 		}
 
 		// API Route to get list of group
