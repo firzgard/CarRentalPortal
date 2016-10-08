@@ -173,7 +173,9 @@ const mockupSearchResult = {
 
 // Renderers
 //==================================
-let searchConditions = {};
+let searchConditions = {
+	TransmissionTypeIDList: []
+};
 // StartTime: 
 // EndTime:
 // MaxPrice:
@@ -188,7 +190,7 @@ let searchConditions = {};
 // FuelTypeIDList:
 // OrderBy:
 // Page:
-function renderSearchResultGrid(searchConditions = null){
+function renderSearchResultGrid(){
 	function renderSearchResult(searchResult){
 		return `<div class="col-lg-4" >
 			<a href="./../vehicleInfo/vehicleInfo.html">
@@ -220,12 +222,16 @@ function renderSearchResultGrid(searchConditions = null){
 		$('#searchResultGrid').html(`${searchResults.reduce((html, searchResult) => html + renderSearchResult(searchResult), '')}`);
 	})
 	.fail(function(err) {
-		console.log(err);
+		console.log(err.responseJSON.Message);
 	});
 }
 //==================================
 
 $(document).ready(() => {
+	// Always set this to true to use traditional param serialization
+	// http://api.jquery.com/jquery.ajax/
+	jQuery.ajaxSettings.traditional = true;
+
 	// Time range filter
 	$('#startTimeFilter').datetimepicker();
 	$('#endTimeFilter').datetimepicker();
@@ -259,27 +265,49 @@ $(document).ready(() => {
 	// });
 
 	// Chosen selector
-	$('#locationFilter').select2();
+	// Location
+	$('#locationFilter').select2().on('change', (evt) => {
+		searchConditions.LocationIDList = $(evt.currentTarget).val();
+		renderSearchResultGrid();
+	});
 
+	// Category
+	$('#categoryFilter').select2().on('change', (evt) => {
+		searchConditions.VehicleTypeList = $(evt.currentTarget).val();
+		renderSearchResultGrid();
+	});
+
+	// Seat
+	$('#seatFilter').select2().on('change', (evt) => {
+		searchConditions.LocationIDList = $(evt.currentTarget).val();
+		renderSearchResultGrid();
+	});
+
+	// Color
 	const colorOptionFormat = (state) => {
 		return $(`<span><i class="fa fa-car fa-${state.text.toLowerCase()}"></i>&nbsp;&nbsp;${state.text}</span>`);
 	};
+
 	$('#colorFilter').select2({
 		templateSelection: colorOptionFormat,
 		templateResult: colorOptionFormat
+	}).on('change', function(evt){
+		searchConditions.ColorIDList = $(evt.currentTarget).val();
+		renderSearchResultGrid();
 	});
 
-	$('#fuelFilter').select2().on('change', function(evt){
-		searchConditions.FuelTypeIDList = $(evt.currentTarget).val());
-		console.log(searchConditions.FuelTypeIDList);
+	// Fuel
+	$('#fuelFilter').select2().on('change', (evt) => {
+		searchConditions.NumberOfSeatList = $(evt.currentTarget).val();
+		renderSearchResultGrid();
 	});
 
 	// Price filter slider
-	noUiSlider.create(document.getElementById('priceFilter'), {
+	let priceSlider = noUiSlider.create(document.getElementById('priceFilter'), {
 		connect: true,
 		format: {
-			to: value => `₫ ${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
-			from: value => Number.parseInt(value.replace('₫ ', '').replace(',', ''))
+			to: value => `₫&nbsp;${(Number.parseInt(value) / 1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}k`,
+			from: value => Number.parseInt(value.replace('₫&nbsp;', '').replace('k', '').replace(',', ''))
 		},
 		margin: 100000,
 		start: [100000, 10000000],
@@ -287,18 +315,41 @@ $(document).ready(() => {
 		range: {
 			'min': [100000],
 			'max': [10000000]
-		},
-		tooltips: true
-	})
+		}
+	});
+	priceSlider.on('update', (values, handle, unencoded) => {
+		$('#minPriceDisplay').html(values[0]);
+		$('#maxPriceDisplay').html(values[1]);
+	});
+	priceSlider.on('set', (values, handle, unencoded) => {
+		searchConditions.MaxPrice = Number.parseInt(unencoded[0]);
+		searchConditions.MinPrice = Number.parseInt(unencoded[1]);
+		renderSearchResultGrid();
+	});
 
+	// Transmission's checkbox
+	$('#transmissionFilter input[type=checkbox]').change(function(evt) {
+		if(this.checked){
+			searchConditions.TransmissionTypeIDList.push(this.value)
+		} else {
+			searchConditions.TransmissionTypeIDList = searchConditions.TransmissionTypeIDList.filter((el) => el != this.value)
+		}
+		renderSearchResultGrid();
+	});
+
+	// ========================================================
 	// Render search result grid
-	renderSearchResultGrid(searchConditions)
+	renderSearchResultGrid();
 
 	// Render search result grid's paginator
 	$('#paginatior').twbsPagination({
 		startPage: mockupSearchResult.currentPage,
 		totalPages: mockupSearchResult.totalPages,
 		visiblePages: 5,
+		first: '<<',
+		prev: '<',
+		next: '>',
+		last: '>>',
 		onPageClick: function (event, page) {
 			// Ajax here to load the next page's content
 		}

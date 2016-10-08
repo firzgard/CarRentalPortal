@@ -8,25 +8,6 @@
 .filters {
 	padding: 0;
 }
-.filters .panel {
-	border-color: #e7eaec;
-	border-image: none;
-	border-style: solid solid none;
-	border-width: 1px 0;
-	border-radius: 0;
-}
-.filters .panel+.panel {
-	margin-top: 0;
-}
-.filters .panel-heading {
-	border-radius: 0;
-	background-color: #B2DFDB;
-	color: black;
-}
-.filters .panel-heading:hover {
-	background-color: #1ab394;
-	color: white;
-}
 
 .input-group-addon {
 	font-weight: bold;
@@ -34,26 +15,12 @@
 	background-color: #B2DFDB;
 }
 
-.filters .panel-body {
-	max-height: 30em;
-	overflow-x: hidden;
-	padding: 0;
-}
-
-#locationFilter .panel-body {
-	overflow-x: visible;
-}
-
 #priceFilter {
-	margin: 6em 4em 0;
+	margin: 1em 2em 0;
 }
 
-#colorSelector label {
-	display: flex;
-	align-items: center
-}
 #colorSelector .fa-car, .select2-results .fa-car {
-	font-size: 1.5em;
+	font-size: 1.2em;
 }
 
 .result-count {
