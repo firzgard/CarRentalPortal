@@ -1,4 +1,5 @@
-﻿<html>
+﻿<!DOCTYPE html>
+<html>
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +11,12 @@
 	@Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-	<div id="wrapper">
+	<div id="wrapper" class="custom-page-wrapper">
 		@Html.Partial("_HeaderBarPartial")
 		@RenderBody()
-		<footer>
-			<div class="text-center">
-				<strong>Copyright</strong> CarRentalPortal &copy; @DateTime.Now.Year
-			</div>
-		</footer>
+		<div class="footer text-center">
+			<strong>Copyright</strong> CarRentalPortal &copy; @DateTime.Now.Year
+		</div>
 	</div>
 
 	@Scripts.Render("~/bundles/js")

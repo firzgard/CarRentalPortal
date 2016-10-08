@@ -1,14 +1,23 @@
-#wrapper {
-	min-height: 100%;
+body {
 	position: relative;
 }
 
-/* ====================================== */
-/* Filters */
-.filters {
-	padding: 0;
+.footer {
+	position: relative;
 }
 
+.scroll-container{
+	height: 100%;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+/* ====================================== */
+.custom-page-wrapper{
+	background-color: #ffffff;
+}
+
+/* Filters */
 .input-group-addon {
 	font-weight: bold;
 	text-align: left;

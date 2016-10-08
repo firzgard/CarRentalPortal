@@ -8,25 +8,26 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="wrapper wrapper-content white-bg row">
+<div class="wrapper-content row" style="padding-bottom: 20px;position: relative;height: calc(100vh - 100px);">
 	<!-- filter -->
-	<div class="col-md-6">
-		<div class="animated fadeInLeft" id="filter">
+	<div class="col-md-5 scroll-container" id="filters" style="padding-left: 4em; direction: rtl;">
+		<div class="animated fadeInLeft" style="direction: ltr;">
 			<!-- Time -->
 			<div class="form-group row">
 				<label class="col-xs-2">Time</label>
 				<div class="col-xs-10">
 					<div class="input-group" id="timeFilter">
-						<span class="input-group-addon"><i class="fa fa-calendar"></i> From:</span>
-						<input type="text" id="startTimeFilter" class="form-control" />
-						<span class="input-group-addon"><i class="fa fa-calendar"></i> To:</span>
-						<input type="text" id="endTimeFilter" class="form-control" />
+						<span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+						<input type="text" id="startTimeFilter" class="form-control" data-default-value="@DateTime.Now" />
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						<input type="text" id="endTimeFilter" class="form-control" data-default-value="@DateTime.Now" />
 					</div>
 				</div>
 			</div>
+			<hr>
 			<!-- Location -->
 			<div class="form-group row">
-				<label class="text-left col-xs-2">Location</label>
+				<label class="col-xs-2">Location</label>
 				<div class="col-xs-10">
 					<select data-placeholder="Please select categories..." id="locationFilter" class="form-control" multiple>
 						@foreach (Location entry in Model)
@@ -36,62 +37,21 @@
 					</select>
 				</div>
 			</div>
+			<hr>
 			<!-- Price -->
 			<div class="form-group row">
 				<label class="col-xs-12">Price</label>
 				<div id="minPriceDisplay" class="col-xs-6"></div>
 				<div id="maxPriceDisplay" class="col-xs-6 text-right"></div>
 				<div class="col-xs-12"><div id="priceFilter"></div></div>
+				<div id="lowestPriceDisplay" class="col-xs-4"></div>
+				<div id="averagePriceDisplay" class="col-xs-4 text-center"></div>
+				<div id="highestPriceDisplay" class="col-xs-4 text-right"></div>
 			</div>
 			<!-- Model + Brand -->
 			<div id="modelFilter">
-				<ul style="display:none;">
-					<li data-node-lvl="1" data-node-id="1">
-						Audi
-						<ul>
-							<li data-node-lvl="2" data-node-id="1">A1</li>
-							<li data-node-lvl="2" data-node-id="2">A6</li>
-							<li data-node-lvl="2" data-node-id="3">A7</li>
-							<li data-node-lvl="2" data-node-id="4">A8</li>
-							<li data-node-lvl="2" data-node-id="5">Q3</li>
-							<li data-node-lvl="2" data-node-id="6">Q7</li>
-							<li data-node-lvl="2" data-node-id="7">TT</li>
-							<li data-node-lvl="2" data-node-id="8">TTS</li>
-						</ul>
-					</li>
-					<li data-node-lvl="1" data-node-id="2">
-						BMW
-						<ul>
-							<li data-node-lvl="2" data-node-id="9">320i</li>
-							<li data-node-lvl="2" data-node-id="10">520i</li>
-							<li data-node-lvl="2" data-node-id="11">M3</li>
-							<li data-node-lvl="2" data-node-id="12">M6</li>
-							<li data-node-lvl="2" data-node-id="13">X3</li>
-							<li data-node-lvl="2" data-node-id="14">X5</li>
-							<li data-node-lvl="2" data-node-id="15">X6</li>
-							<li data-node-lvl="2" data-node-id="16">Z4</li>
-						</ul>
-					</li>
-					<li data-node-lvl="1" data-node-id="3">
-						Ford
-						<ul>
-							<li data-node-lvl="2" data-node-id="17">Fiesta Mk5</li>
-							<li data-node-lvl="2" data-node-id="18">Fiesta Mk6</li>
-							<li data-node-lvl="2" data-node-id="19">Focus Mk2</li>
-							<li data-node-lvl="2" data-node-id="20">Focus Mk3</li>
-						</ul>
-					</li>
-					<li data-node-lvl="1" data-node-id="4">
-						Toyota
-						<ul>
-							<li data-node-lvl="2" data-node-id="21">Camry</li>
-							<li data-node-lvl="2" data-node-id="22">Corolla Altis</li>
-							<li data-node-lvl="2" data-node-id="23">Innova</li>
-							<li data-node-lvl="2" data-node-id="24">Land Cruiser</li>
-						</ul>
-					</li>
-				</ul>
 			</div>
+			<hr>
 			<!-- Category -->
 			<div class="form-group row" >
 				<label class="col-xs-2">Category</label>
@@ -104,14 +64,20 @@
 					</select>
 				</div>
 			</div>
+			<hr>
 			<!-- NumOfSeat -->
 			<div class="form-group row">
 				<label class="col-xs-2">Seat</label>
 				<div class="col-xs-10">
 					<select data-placeholder="Please select number of seat..." id="seatFilter" class="form-control" multiple>
+						@foreach (int entry in Constants.CommonNumOfSeat)
+						{
+							<option value="@entry">@entry</option>
+						}
 					</select>
 				</div>
 			</div>
+			<hr>
 			<!-- Transmission -->
 			<div id="transmissionFilter" class="form-group row">
 				<label class="col-xs-3">Transmission</label>
@@ -125,18 +91,21 @@
 					</div>
 				}
 			</div>
+			<hr>
 			<!-- Color -->
 			<div class="form-group row" id="colorSelector">
 				<label class="col-xs-2">Color</label>
 				<div class="col-xs-10">
 					<select data-placeholder="Please select a color..." id="colorFilter" class="form-control" multiple>
-						@foreach (KeyValuePair<int, string> entry in Constants.Color)
+						@for(int i = 1; i < Constants.Color.Count(); i++)
 						{
-							<option value="@entry.Key">@entry.Value</option>
+							<option value="@i">@Constants.Color[i]</option>
 						}
+						<option value="0">@Constants.Color[0]</option>
 					</select>
 				</div>
 			</div>
+			<hr>
 			<!-- Fuel -->
 			<div class="form-group row">
 				<label class="col-xs-2">Fuel</label>
@@ -151,10 +120,10 @@
 		</div>
 	</div>
 	<!-- results -->
-	<div class="col-md-6">
+	<div class="col-md-7 scroll-container">
 		<div class="ibox animated fadeInRight">
 			<div id="searchResultGrid" class="row" data-source="@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })" ></div>
-			<div>2,160 results found</div>
+			<div id="recordInfo"></div>
 			<div class="text-center">
 				<ul id="paginatior" class="pagination-lg"></ul>
 			</div>
