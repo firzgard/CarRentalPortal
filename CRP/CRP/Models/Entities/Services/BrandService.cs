@@ -73,6 +73,11 @@ namespace CRP.Models.Entities.Services
             Brand brand = _repository.findById(ID);
             return brand;
         }
-
+        public String reBrandNameByID (int ID)
+        {
+            Brand brand = _repository.findById(ID);
+            return brand.Name;
+        }
+       
     }
 }

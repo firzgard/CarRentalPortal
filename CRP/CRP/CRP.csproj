@@ -238,6 +238,8 @@
     <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
+    <Compile Include="Models\Entities\Services\ModelService.cs" />
     <Compile Include="Models\JsonModels\BookingReceiptModel.cs" />
     <Compile Include="Models\JsonModels\HomeJsonModels.cs" />
     <Compile Include="Models\JsonModels\VehicleCalendarModel.cs" />
