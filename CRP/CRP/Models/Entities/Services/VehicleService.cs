@@ -94,9 +94,17 @@ namespace CRP.Models.Entities.Services
 					v => searchConditions.NumberOfSeatList.Contains(v.Model.NumOfSeat)
 				).ToList();
 
+			// First, use intersect() to join 2 array<int> that contain CategoryIDs
+			// Then check if the array is empty or not
 			if (searchConditions.VehicleTypeList != null)
 				vehicles = vehicles.Where(
-					v => searchConditions.VehicleTypeList.Contains(v.Model.Type)
+					v => {
+						var vehicleCategoryList = v.Model.ModelCategoryMappings.Aggregate(
+							new List<int>(), (acc, r) => { acc.Add(r.CategoryID); return acc; }
+						);
+
+						return searchConditions.VehicleTypeList.Intersect(vehicleCategoryList).Any();
+					}
 				).ToList();
 
 			if (searchConditions.ColorIDList != null)

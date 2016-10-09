@@ -59,6 +59,7 @@ namespace CRP.Models.JsonModels
 		public string GarageName { get; set; }
 		public string Location { get; set; }
 		public decimal? Star { get; set; }
+		public List<string> CategoryList { get; set; }
 		public List<string> ImageList { get; set; }
 		// Shortest rental period of this vehicle that fit the filter
 		public string BestPossibleRentalPeriod { get; set; }
@@ -73,8 +74,12 @@ namespace CRP.Models.JsonModels
 			GarageName = vehicle.Garage.Name;
 			Location = vehicle.Garage.Location.Name;
 			Star = vehicle.Star;
-			
-			foreach(VehicleImage image in vehicle.VehicleImages)
+
+			foreach (ModelCategoryMapping categoryMapping in vehicle.Model.ModelCategoryMappings)
+			{
+				CategoryList.Add(categoryMapping.Category.Name);
+			}
+			foreach (VehicleImage image in vehicle.VehicleImages)
 			{
 				ImageList.Add(image.URL);
 			}

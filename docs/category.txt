@@ -1,0 +1,31 @@
+Bus
+Compact Car
+Compact Executive
+Compact MPV
+Convertible
+Crossover SUV
+Grand tourer
+Estate / Station Wagon
+Economy Car
+Executive / Mid-luxury
+Family Car
+Full-size luxury / Grand saloon
+Hatchbacks
+Hot hatch
+Luxury Car
+Microcar
+Mini MPV
+MPV / Minivan
+Muscle Car
+Off-roader
+Pickup Truck
+Pony Car
+Saloon / Sedan
+Sports Car
+Sports Sedan
+Sports Utility Vehicle (SUV)
+Subcompact Car
+Supercar
+Roadster
+Van
+Ultracompact Car
