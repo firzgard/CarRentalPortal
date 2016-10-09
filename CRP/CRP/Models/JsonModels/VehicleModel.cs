@@ -27,5 +27,6 @@ namespace CRP.Models.JsonModels
         public decimal Star { get; set; }
         public int NumOfDoor { get; set; }
         public int NumOfSeat { get; set; }
+        public int Year { get; set; }
     }
 }

@@ -284,21 +284,21 @@ namespace CRP.Areas.Provider.Controllers
 		{
             MessageJsonModel jsonResult = new MessageJsonModel();
             BookingReceipt br = serviceBook.findByID(receiptID);
-            while(serviceBook.CheckVehicleAvailability(br.VehicleID, br.StartTime, br.EndTime))
-            {
-                Boolean result = service.delete(receiptID);
-                if (result)
-                {
-                    jsonResult.Status = 1;
-                    jsonResult.Message = "Deleted successfully!";
-                }
-                else
-                {
-                    jsonResult.Status = 0;
-                    jsonResult.Message = "Error!";
-                }
+            //while(serviceBook.CheckVehicleAvailability(br.VehicleID, br.StartTime, br.EndTime))
+            //{
+            //    Boolean result = service.delete(receiptID);
+            //    if (result)
+            //    {
+            //        jsonResult.Status = 1;
+            //        jsonResult.Message = "Deleted successfully!";
+            //    }
+            //    else
+            //    {
+            //        jsonResult.Status = 0;
+            //        jsonResult.Message = "Error!";
+            //    }
                 
-            }
+            //}
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
 	}

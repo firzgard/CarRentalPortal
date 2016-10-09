@@ -152,8 +152,12 @@ $(document).ready(function () {
 
 	// Load vehicles belonging to this garage
 	let table = $('#vehicles').DataTable({
-		data: mockupData,
-		dom: 'ltipr',
+		//data: mockupData,
+	    dom: 'ltipr',
+	    ajax: {
+	        url: "/api/vehicles/datatables",
+            type: "GET"
+	    },
 		lengthMenu: [ 10, 25, 50 ],
 		processing: true,
 		select: {
@@ -181,18 +185,18 @@ $(document).ready(function () {
 			}
 		],
 		columns: [
-			{ name: 'ID', data: 'id', type: 'num', visible: false },
-			{ name: 'BrandID', data: 'brandID', type: 'num', visible: false },
-			{ name: 'ModelID', data: 'modelID', type: 'num', visible: false },
-			{ name: 'GroupID', data: 'groupID', type: 'num', visible: false },
-			{ name: 'Name', title: 'Name', data: 'name', width: '20%' },
-			{ name: 'Model', title: 'Model', data: 'modelName', width: '15%' },
+			{ name: 'ID', data: 'ID', type: 'num', visible: false },
+			{ name: 'BrandID', data: 'BrandID', type: 'num', visible: false },
+			{ name: 'ModelID', data: 'ModelID', type: 'num', visible: false },
+			{ name: 'GarageID', data: 'GarageID', type: 'num', visible: false },
+			{ name: 'Name', title: 'Name', data: 'Name', width: '20%' },
+			{ name: 'Model', title: 'Model', data: 'ModelName', width: '15%' },
 			{ name: 'Category', title: 'Category', data: 'category', width: '10%' },
 			{ name: 'Year', title: 'Year', data: 'year', width: '5%' },
-			{ name: 'Seat', title: 'Seat', data: 'numOfSeat', width: '5%' },
-			{ name: 'Transmission', title: 'Transmission', data: 'transmission', width: '10%' },
-			{ name: 'Fuel', title: 'Fuel', data: 'fuel', width: '10%' },
-			{ name: 'Garage', title: 'Garage', data: 'garage', width: '15%' },
+			{ name: 'Seat', title: 'Seat', data: 'NumOfSeat', width: '5%' },
+			{ name: 'Transmission', title: 'Transmission', data: 'TransmissionTypeName', width: '10%' },
+			{ name: 'Fuel', title: 'Fuel', data: 'FuelTypeName', width: '10%' },
+			{ name: 'Garage', title: 'Garage', data: 'GarageName', width: '15%' },
 			{
 				name: 'Action', 
 				title: 'Action',
