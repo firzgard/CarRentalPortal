@@ -24,7 +24,8 @@ namespace CRP.Controllers
 		[Route("search")]
 		public ActionResult Search()
 		{
-			return View();
+			LocationService locationService = new LocationService();
+			return View(locationService.getAll().OrderBy(l => l.Name).ToList());
 		}
 
 		// Route to vehicle's info
@@ -32,21 +33,25 @@ namespace CRP.Controllers
 		public ActionResult VehicleInfo(int id)
 		{
 			return View();
+			
 		}
 
 		// API Route for guest/customer to search vehicle for booking
 		// Need filtering/sorting support
 		[HttpGet]
 		[Route("api/search", Name = "SearchVehiclesAPI")]
-		public JsonResult SearchVehiclesAPI(SearchConditionModel searchConditions)
+		public ActionResult SearchVehiclesAPI(SearchConditionModel searchConditions)
 		{
 			if (searchConditions == null
 					|| searchConditions.StartTime == null
-					|| searchConditions.EndTime == null)
-				return Json(new MessageJsonModel("Bad request", 400), JsonRequestBehavior.AllowGet);
+					|| searchConditions.EndTime == null
+					|| searchConditions.StartTime >= searchConditions.EndTime)
+				return new HttpStatusCodeResult(400, "Invalid time span");
 
-			List<SearchResultJsonModel> searchResults = vehicleService.findToBook(searchConditions);
-			return Json(new MessageJsonModel("OK", 200, searchResults), JsonRequestBehavior.AllowGet);
+			Response.StatusCode = 200;
+			Response.StatusDescription = "Queried successfully";
+			SearchResultJsonModel searchResult = vehicleService.findToBook(searchConditions);
+			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

@@ -78,8 +78,20 @@ namespace CRP.Areas.Customer.Controllers
             int CustomerID = 1;
             BookingReceipt lastBooking = _service.getLastBooking(CustomerID);
             //khi addBooking thi xuat ra ID
-            // thieu api addBooking
+            Boolean paySuccess = true;
+            //xuong databse ispending = false neu thanh toan thanh cong, xoa booking neu no ko thanh cong
             ViewBag.BookingReceipt = lastBooking;
+            //neu thanh toan thanh cong
+            if (paySuccess)
+            {
+                lastBooking.IsPending = false;
+                _service.Update(lastBooking);
+                ViewBag.BookingReceipt = lastBooking;
+            } else
+            {
+                _service.delete(lastBooking.ID);
+                ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
+            }
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 

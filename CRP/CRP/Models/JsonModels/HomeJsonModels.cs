@@ -23,11 +23,34 @@ namespace CRP.Models.JsonModels
 		public int[] TransmissionTypeIDList { get; set; }
 		public int[] ColorIDList { get; set; }
 		public int?[] FuelTypeIDList { get; set; }
+		public string OrderBy { get; set; }
+		public int Page { get; set; } = 1;
+	}
+
+	public class SearchResultJsonModel
+	{
+		public List<SearchResultVehicleJsonModel> SearchResultList { get; set; }
+		public int TotalResult { get; set; }
+		public int TotalPage { get; set; }
+		public double? LowestPrice { get; set; }
+		public double? HighestPrice { get; set; }
+		public double? AveragePrice { get; set; }
+
+		public SearchResultJsonModel(List<SearchResultVehicleJsonModel> searchResultList, int totalResult)
+		{
+			SearchResultList = searchResultList;
+			TotalResult = totalResult;
+
+			TotalPage = (int)Math.Ceiling((float) totalResult / Constants.NumberOfSearchResultPerPage);
+			LowestPrice = searchResultList.Min(r => r.BestPossibleRentalPrice);
+			HighestPrice = searchResultList.Max(r => r.BestPossibleRentalPrice);
+			AveragePrice = searchResultList.Average(r => r.BestPossibleRentalPrice);
+		}
 	}
 
 	// Model of JSON object of search result for searching vehicle to book
 	// Use as json result for route ~/api/vehicles/search/ of HomeController
-	public class SearchResultJsonModel
+	public class SearchResultVehicleJsonModel
 	{
 		public int ID { get; set; }
 		public string Name { get; set; }
@@ -42,7 +65,7 @@ namespace CRP.Models.JsonModels
 		// Lowest price range of this vehicle that fit the filter
 		public double? BestPossibleRentalPrice { get; set; }
 		
-		public SearchResultJsonModel(Entities.Vehicle vehicle, int rentalTime)
+		public SearchResultVehicleJsonModel(Entities.Vehicle vehicle, int rentalTime)
 		{
 			ID = vehicle.ID;
 			Name = vehicle.Name;

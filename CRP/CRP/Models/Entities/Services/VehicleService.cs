@@ -78,7 +78,7 @@ namespace CRP.Models.Entities.Services
 			return vehilce;
 		}
 
-		public List<SearchResultJsonModel> findToBook(SearchConditionModel searchConditions)
+		public SearchResultJsonModel findToBook(SearchConditionModel searchConditions)
 		{
 			// Get all vehicles
 			List<Vehicle> vehicles = _repository.getAll();
@@ -144,10 +144,10 @@ namespace CRP.Models.Entities.Services
 			}).ToList();
 
 			// Parse into model suitable to send back to browser
-			List<SearchResultJsonModel> results = new List<JsonModels.SearchResultJsonModel>();
+			List<SearchResultVehicleJsonModel> results = new List<JsonModels.SearchResultVehicleJsonModel>();
 			foreach(Vehicle vehicle in vehicles)
 			{
-				results.Add(new SearchResultJsonModel(vehicle, rentalTime));
+				results.Add(new SearchResultVehicleJsonModel(vehicle, rentalTime));
 			}
 
 			if (searchConditions.MaxPrice != null && searchConditions.MinPrice != null
@@ -159,7 +159,21 @@ namespace CRP.Models.Entities.Services
 				).ToList();
 			}
 
-			return results;
+			// Paginate
+			if ((searchConditions.Page - 1) * Constants.NumberOfSearchResultPerPage < results.Count)
+				searchConditions.Page = 1;
+
+			results = results.Skip((searchConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
+					.Take(Constants.NumberOfSearchResultPerPage)
+					.ToList();
+
+			// Order
+			System.Reflection.PropertyInfo info = typeof(SearchResultVehicleJsonModel).GetProperty(searchConditions.OrderBy);
+			if (info != null)
+				results = results.OrderBy(r => info.GetValue(r)).ToList();
+
+			// Nest into result object
+			return new SearchResultJsonModel(results, results.Count);
 		}
 	}
 }
