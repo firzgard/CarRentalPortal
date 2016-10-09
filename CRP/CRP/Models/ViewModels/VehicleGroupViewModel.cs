@@ -12,12 +12,10 @@ namespace CRP.Models.ViewModels
     {
         public VehicleGroupViewModel() : base() { }
 
-        //public addvehiclegroupviewmodel(vehiclegroup entity) : base(entity) { }
-
-        //public VehicleGroupViewModel(VehicleGroup vg, IMapper mapper) : this()
-        //{
-        //    mapper.Map(vg, this);
-        //}
+        public VehicleGroupViewModel(VehicleGroup vg, IMapper mapper) : this()
+        {
+            mapper.Map(vg, this);
+        }
 
         [StringLength(50, ErrorMessage ="Allow from 1 to 50 characters",MinimumLength =1)]
         public override string Name { get; set; }

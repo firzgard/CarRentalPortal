@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Timers;
+using System.Threading;
 
 namespace CRP.Areas.Customer.Controllers
 {
@@ -25,15 +27,51 @@ namespace CRP.Areas.Customer.Controllers
             string VehicleName = Request.Params["VehicleName"];
             string GarageName = Request.Params["GarageName"];
             string GarageAddress = Request.Params["GarageAddress"];
-            //can 1 cai datetimeformat
             DateTime StartTime = DateTime.Parse(Request.Params["StartTime"]);
             DateTime EndTime = DateTime.Parse(Request.Params["EndTime"]);
-            //van de o cho la lam sao 2 thang hien confirm cung luc, nhung thoi gian booking khac nhau thi van dc booking
+
+            BookingReceipt booking = new BookingReceipt();
+            booking.CustomerID = CustomerID;
+            booking.VehicleID = VehicleID;
+            booking.TotalPrice = TotalPrice;
+            booking.BookingFee = BookingFee;
+            booking.VehicleName = VehicleName;
+            booking.GarageName = GarageName;
+            booking.GarageAddress = GarageAddress;
+            booking.StartTime = StartTime;
+            booking.EndTime = EndTime;
+            booking.IsPending = true;
+            //luu xuoong database
+            int bookingID = _service.addwithPending(booking);
+            //goi api thanh toan, neu ok, thi xet ispending = false, +
+
+            //sau 5 phut kiem tra neu ispending = false thi ko co gi, con is peding = true thi delete booking va return message overtime
+            checkisPending(bookingID);
+            
             return View("~/Areas/CuopenTimeMonstomer/Views/Booking/BookingHistory.cshtml");
 		}
-
-		// Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
-		[Route("bookingReceipt")]
+        public void checkisPending(int bookingID)
+        {
+            Thread aNewThread = new Thread(
+                () => deleteBooking(bookingID));
+            aNewThread.Start();
+        }
+        //cho nay nen return json, de xu ly
+        private void deleteBooking(int bookingID)
+        {
+            TimeSpan span = new TimeSpan(0, 0, 5, 0);
+            Thread.Sleep(span);
+            Boolean isDelete = _service.IsPending(bookingID);
+            if (isDelete)
+            {
+                Boolean result = _service.delete(bookingID);
+            } else
+            {
+                Thread.ResetAbort();
+            }
+        }
+        // Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
+        [Route("bookingReceipt")]
 		public ViewResult BookingReceipt()
 		{
             //lay thong tin booking moi nhat cua thang user
@@ -78,7 +116,7 @@ namespace CRP.Areas.Customer.Controllers
             {
                 BookingReceiptModel jsonBooking = new BookingReceiptModel();
                 jsonBooking.ID = p.ID;
-                jsonBooking.VehicleID = p.VehicleID;
+                jsonBooking.VehicleID = (int) p.VehicleID;
                 jsonBooking.VehicleName = p.VehicleName;
                 jsonBooking.BookingFee = p.BookingFee;
                 jsonBooking.CustomerID = p.CustomerID;
@@ -102,6 +140,7 @@ namespace CRP.Areas.Customer.Controllers
 		[HttpGet]
 		public JsonResult GetBookingCalendarAPI(int vehicleID)
 		{
+            checkisPending(6);
             List<BookingReceipt> booking = _service.findByVehicle(vehicleID);
             List<VehicleCalendarModel> jsonBookings = new List<VehicleCalendarModel>();
             foreach (BookingReceipt p in booking)
