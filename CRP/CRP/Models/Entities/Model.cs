@@ -22,7 +22,7 @@ namespace CRP.Models.Entities
         }
     
         public int ID { get; set; }
-        public string Model1 { get; set; }
+        public string Name { get; set; }
         public int BrandID { get; set; }
         public int NumOfDoor { get; set; }
         public int NumOfSeat { get; set; }
