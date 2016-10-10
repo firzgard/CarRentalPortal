@@ -32,7 +32,7 @@ $(document).ready(function () {
     let table1 = $('#priceGroupItem').DataTable({
         dom: "ltipr",
         ajax: {
-            url: `/api/priceGroup/1`,
+            url: `/api/priceGroup/${groupID}`,
             type: "GET",
         },
         columnDefs: [
@@ -155,7 +155,7 @@ $(document).ready(function () {
 		//data: mockupData,
 	    dom: 'ltipr',
 	    ajax: {
-	        url: "/api/vehicles/datatables",
+	        url: `api/vehicleGroups/vehicles/${groupID}`,
             type: "GET"
 	    },
 		lengthMenu: [ 10, 25, 50 ],

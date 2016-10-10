@@ -52,38 +52,9 @@ namespace CRP.Areas.Provider.Controllers
 		public JsonResult GetVehicleListAPI()
 		{
             //var vehicle = new Vehicle() { Id = 666, Name = "BWM X7" };
-            List<Vehicle> lstVehicle = new List<Vehicle>();
-            List<VehicleModel> jsonVehicles = new List<VehicleModel>();
-            lstVehicle = service.getAll();
-            foreach(Vehicle p in lstVehicle)
-            {
-                VehicleModel jsonVehicle = new VehicleModel();
-                jsonVehicle.ID = p.ID;
-                jsonVehicle.LicenseNumber = p.LicenseNumber;
-                jsonVehicle.Name = p.Name;
-                jsonVehicle.ModelID = p.ModelID;
-                //serviceModel.findBrandID = service(model);
-                jsonVehicle.ModelName = serviceModel.reModelNameByID(jsonVehicle.ModelID);
-                jsonVehicle.BrandID = serviceModel.findBrandID(p.ModelID);
-                jsonVehicle.BrandName = serviceBrand.reBrandNameByID(jsonVehicle.BrandID);
-                jsonVehicle.GarageID = p.GarageID;
-                jsonVehicle.GarageName = serviceGara.reGarageNameByID(jsonVehicle.GarageID);
-                jsonVehicle.VehicleGroupID = p.VehicleGroupID;
-                jsonVehicle.TransmissionTypeID = p.TransmissionType;
-                //jsonVehicle.TransmissionTypeName =;
-                jsonVehicle.FuelTypeID = p.FuelType;
-                //FuelTypeName
-                jsonVehicle.ColorID = p.Color;
-                //color
-                jsonVehicle.Star = p.Star;
-                //NumbOf
-                jsonVehicle.NumOfDoor = serviceModel.reNumOfDoorByID(jsonVehicle.ModelID);
-                jsonVehicle.NumOfSeat = serviceModel.reNumOfSeatByID(jsonVehicle.ModelID);
+            List<VehicleModel> Vehicles = loadAllVehicle();
 
-                jsonVehicles.Add(jsonVehicle);
-            }
-
-            return Json(jsonVehicles, JsonRequestBehavior.AllowGet);
+            return Json(Vehicles, JsonRequestBehavior.AllowGet);
 		}
 
 		// API Route for getting vehicle's detailed infomations (for example, to duplicate vehicle)
@@ -300,6 +271,42 @@ namespace CRP.Areas.Provider.Controllers
                 
             //}
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
+
+        protected List<VehicleModel> loadAllVehicle()
+        {
+            List<Vehicle> lstVehicle = new List<Vehicle>();
+            List<VehicleModel> jsonVehicles = new List<VehicleModel>();
+            lstVehicle = service.getAll();
+            foreach (Vehicle p in lstVehicle)
+            {
+                VehicleModel jsonVehicle = new VehicleModel();
+                jsonVehicle.ID = p.ID;
+                jsonVehicle.LicenseNumber = p.LicenseNumber;
+                jsonVehicle.Name = p.Name;
+                jsonVehicle.ModelID = p.ModelID;
+                //serviceModel.findBrandID = service(model);
+                jsonVehicle.ModelName = serviceModel.reModelNameByID(jsonVehicle.ModelID);
+                jsonVehicle.BrandID = serviceModel.findBrandID(p.ModelID);
+                jsonVehicle.BrandName = serviceBrand.reBrandNameByID(jsonVehicle.BrandID);
+                jsonVehicle.GarageID = p.GarageID;
+                jsonVehicle.GarageName = serviceGara.reGarageNameByID(jsonVehicle.GarageID);
+                jsonVehicle.VehicleGroupID = p.VehicleGroupID;
+                jsonVehicle.TransmissionTypeID = p.TransmissionType;
+                //jsonVehicle.TransmissionTypeName =;
+                jsonVehicle.FuelTypeID = p.FuelType;
+                //FuelTypeName
+                jsonVehicle.ColorID = p.Color;
+                //color
+                jsonVehicle.Star = p.Star;
+                //NumbOf
+                jsonVehicle.NumOfDoor = serviceModel.reNumOfDoorByID(jsonVehicle.ModelID);
+                jsonVehicle.NumOfSeat = serviceModel.reNumOfSeatByID(jsonVehicle.ModelID);
+
+                jsonVehicles.Add(jsonVehicle);
+            }
+
+            return jsonVehicles;
         }
 	}
 }

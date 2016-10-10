@@ -30,9 +30,9 @@ namespace CRP.Models.ViewModels
         }
 
         [StringLength(50, ErrorMessage ="Allow from 1 to 50 characters",MinimumLength =1)]
-        public override string Name { get; set; }
+        //public override string Name { get; set; }
 
-        public override Nullable<int> MaxRentalPeriod { get; set; }
+        //public override Nullable<int> MaxRentalPeriod { get; set; }
 
         public override PriceGroup PriceGroup { get; set; }
 

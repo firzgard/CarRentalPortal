@@ -3,6 +3,7 @@ using CRP.Controllers;
 using CRP.Models;
 using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
+using CRP.Models.JsonModels;
 using CRP.Models.ViewModels;
 using Newtonsoft.Json;
 using System;
@@ -15,7 +16,7 @@ using System.Web.Mvc;
 namespace CRP.Areas.Provider.Controllers
 {
 
-	public class VehicleGroupController : BaseController
+	public class VehicleGroupController : VehicleController
 	{
         //VehicleGroupService service = new VehicleGroupService();
 		// Route to vehicleGroupManagement page
@@ -41,7 +42,7 @@ namespace CRP.Areas.Provider.Controllers
 		public JsonResult GetVehicleGroupListAPI()
 		{
             var service = new VehicleGroupService();
-            var list = service.getAll().ToList();
+            var list = service.getAll();
             var result = list.Select(q => new IConvertible[] {
                 q.ID,
                 q.Name,
@@ -75,7 +76,7 @@ namespace CRP.Areas.Provider.Controllers
             }
             var service = new VehicleGroupService();
             model.IsActive = true;
-            var entity = this.Mapper.Map<VehicleGroup>(model);
+            var entity = model;//this.Mapper.Map<VehicleGroup>(model);
             bool result = service.add(entity);
 
             if(!result)
@@ -100,5 +101,14 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			return Json("");
 		}
-	}
+
+        // Vehicle group detail //
+        // load datatables with VehicleGroupID
+        [Route("api/vehicleGroups/vehicles/{id:int}")]
+        public JsonResult VehiclesInGroup(int id)
+        {
+            var Vehicles = loadAllVehicle().Where(q => q.VehicleGroupID == id);
+            return Json(new { aaData = Vehicles },JsonRequestBehavior.AllowGet);
+        }
+    }
 }

@@ -40,6 +40,7 @@ namespace CRP.Models.Entities
         public Nullable<System.DateTime> IsProviderUntil { get; set; }
         public Nullable<decimal> Star { get; set; }
         public string AvatarURL { get; set; }
+        public string SelfDescription { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookingReceipt> BookingReceipts { get; set; }

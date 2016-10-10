@@ -39,6 +39,7 @@
           <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsProviderUntil" Type="datetime" />
           <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
+          <Property Name="SelfDescription" Type="nvarchar" MaxLength="200" />
           <Property Name="AvatarURL" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="BookingReceipt">
@@ -83,7 +84,7 @@
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
-          <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Phone1" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="Phone2" Type="nvarchar" MaxLength="20" />
           <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
@@ -102,7 +103,6 @@
           <Property Name="CloseTimeSat" Type="datetime" />
           <Property Name="OpenTimeSun" Type="datetime" />
           <Property Name="CloseTimeSun" Type="datetime" />
-          <Property Name="SelfDescription" Type="nvarchar" MaxLength="1000" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -636,6 +636,7 @@
           <NavigationProperty Name="Notifications" Relationship="CRPDBModel.FK_Notification_AspNetUsers" FromRole="AspNetUser" ToRole="Notification" />
           <NavigationProperty Name="Notifications1" Relationship="CRPDBModel.FK_Notification_AspNetUsers1" FromRole="AspNetUser" ToRole="Notification" />
           <NavigationProperty Name="AspNetRoles" Relationship="CRPDBModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
+          <Property Name="SelfDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="BookingReceipt">
           <Key>
@@ -683,7 +684,7 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="Address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Phone1" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Phone2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="Star" Type="Decimal" Precision="2" Scale="1" />
@@ -1039,6 +1040,7 @@
           <EntitySetMapping Name="AspNetUsers">
             <EntityTypeMapping TypeName="CRPDBModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="SelfDescription" ColumnName="SelfDescription" />
                 <ScalarProperty Name="AvatarURL" ColumnName="AvatarURL" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="IsProviderUntil" ColumnName="IsProviderUntil" />
@@ -1097,7 +1099,6 @@
           <EntitySetMapping Name="Garages">
             <EntityTypeMapping TypeName="CRPDBModel.Garage">
               <MappingFragment StoreEntitySet="Garage">
-                <ScalarProperty Name="SelfDescription" ColumnName="SelfDescription" />
                 <ScalarProperty Name="CloseTimeSun" ColumnName="CloseTimeSun" />
                 <ScalarProperty Name="OpenTimeSun" ColumnName="OpenTimeSun" />
                 <ScalarProperty Name="CloseTimeSat" ColumnName="CloseTimeSat" />

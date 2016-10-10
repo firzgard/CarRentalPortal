@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1633cb2c7c394dc3beaa8fdde1032e10" Name="Diagram1">
+      <Diagram DiagramId="1633cb2c7c394dc3beaa8fdde1032e10" Name="Diagram1" ZoomLevel="72">
         <EntityTypeShape EntityType="CRPDBModel.AspNetRole" Width="1.5" PointX="1.5" PointY="31" />
         <EntityTypeShape EntityType="CRPDBModel.AspNetUser" Width="1.5" PointX="0.75" PointY="24.25" />
         <EntityTypeShape EntityType="CRPDBModel.BookingReceipt" Width="1.5" PointX="7.5" PointY="2.875" />
@@ -18,7 +18,7 @@
         <EntityTypeShape EntityType="CRPDBModel.Notification" Width="1.5" PointX="3" PointY="25.5" />
         <EntityTypeShape EntityType="CRPDBModel.PriceGroup" Width="1.5" PointX="0.75" PointY="5.375" />
         <EntityTypeShape EntityType="CRPDBModel.PriceGroupItem" Width="1.5" PointX="3" PointY="6.875" />
-        <EntityTypeShape EntityType="CRPDBModel.Vehicle" Width="1.5" PointX="5.25" PointY="2.625" />
+        <EntityTypeShape EntityType="CRPDBModel.Vehicle" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
         <EntityTypeShape EntityType="CRPDBModel.VehicleGroup" Width="1.5" PointX="3" PointY="3.75" />
         <EntityTypeShape EntityType="CRPDBModel.VehicleImage" Width="1.5" PointX="7.5" PointY="8.875" />
         <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_AspNetUsers" />

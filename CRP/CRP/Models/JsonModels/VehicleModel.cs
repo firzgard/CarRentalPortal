@@ -28,5 +28,6 @@ namespace CRP.Models.JsonModels
         public int NumOfDoor { get; set; }
         public int NumOfSeat { get; set; }
         public int Year { get; set; }
+        public string VehicleType { get; set; }
     }
 }
