@@ -11,6 +11,7 @@ namespace CRP.Models.Entities.Services
     {
 
         VehicleGroupRepository _repository = new VehicleGroupRepository();
+        PriceGroupRepository _pRepository = new PriceGroupRepository();
 
         public List<VehicleGroup> getAll()
         {
@@ -23,11 +24,12 @@ namespace CRP.Models.Entities.Services
         {
             try
             {
+                _pRepository.Add(entity.PriceGroup);
                 _repository.Add(entity);
             }
             catch(Exception e)
             {
-                e.GetHashCode();
+                Console.WriteLine(e);
                 return false;
             }
             return true;
@@ -41,7 +43,7 @@ namespace CRP.Models.Entities.Services
             }
             catch(Exception e)
             {
-                e.GetHashCode();
+                Console.WriteLine(e);
                 return false;
             }
             return true;
@@ -55,7 +57,7 @@ namespace CRP.Models.Entities.Services
             }
             catch(Exception e)
             {
-                e.GetHashCode();
+                Console.WriteLine(e);
                 return false;
             }
             return true;

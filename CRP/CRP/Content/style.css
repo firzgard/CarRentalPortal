@@ -1,5 +1,5 @@
-@import url("./../fonts/open-sans.css");
-@import url("./../fonts/roboto.css");
+@import url("../fonts/open-sans.css");
+@import url("../fonts/roboto.css");
 /*
  *
  *   INSPINIA - Responsive Admin Theme
@@ -8237,3 +8237,89 @@ body.md-skin {
     margin: 0;
   }
 }
+
+/* ============================================================================== */
+/* ============================================================================== */
+/* ============================================================================== */
+/* Custom */
+.fa-beige {
+  color: beige;
+}
+.fa-black {
+  color: black;
+}
+.fa-blue {
+  color: blue;
+}
+.fa-brown {
+  color: brown;
+}
+.fa-green {
+  color: green;
+}
+.fa-orange {
+  color: orange;
+}
+.fa-purple {
+  color: purple;
+}
+.fa-red {
+  color: red;
+}
+.fa-silver {
+  color: silver;
+}
+.fa-white {
+  color: #F2F2F2;
+}
+.fa-yellow {
+  color: yellow;
+}
+
+/* ============================================================================== */
+/* datatables' filters */
+#multiFilter {
+  display: table-header-group;
+}
+#multiFilter .btn-group {
+  min-width: 7em;
+  width: 100%;
+}
+
+.filter-toggle {
+  width: calc(100% - 3em);
+}
+.filter-remove {
+  width: 3em;
+}
+
+.filter-dropdown {
+  left: -2em;
+  margin-bottom: 2em;
+  min-width: initial;
+  padding: 5px;
+}
+.scroller {
+  max-height: 30em;
+    overflow-x: hidden;
+}
+.filter-dropdown input[type=text] {
+  min-width: 20em;
+}
+.filter-dropdown input[type=number] {
+  min-width: 7em;
+}
+.filter-dropdown .checkbox {
+  display: block;
+  padding: 0 15px 0.5em 20px; 
+  white-space: nowrap;
+}
+.filter-dropdown .checkbox:first-child {
+  padding-top: 0.5em;
+}
+
+#modelTree {
+  min-width: 20em;
+}
+
+/* ============================================================================== */

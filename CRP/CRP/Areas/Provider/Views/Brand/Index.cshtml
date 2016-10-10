@@ -1,5 +1,4 @@
 ﻿@model CRP.Models.Entities.Brand
-
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
@@ -18,7 +17,7 @@
         </tr>
 
     </thead>
-    <tbody>
+    <tbody>@Url.
         @{
             foreach (CRP.Models.Entities.Brand brand in lstBrand)
             {

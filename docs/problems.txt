@@ -1,0 +1,2 @@
+Localize the time
+Localize the location name

@@ -1,4 +1,5 @@
-﻿<html>
+﻿<!DOCTYPE html>
+<html>
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,12 +17,10 @@
 		<div id="page-wrapper" class="gray-bg">
 			@Html.Partial("_HeaderBarPartial")
 			@RenderBody()
-		</div>
-		<footer>
-			<div class="text-center">
+			<div class="footer text-center">
 				<strong>Copyright</strong> CarRentalPortal &copy; @DateTime.Now.Year
 			</div>
-		</footer>
+		</div>
 	</div>
 
 	@Scripts.Render("~/bundles/js")

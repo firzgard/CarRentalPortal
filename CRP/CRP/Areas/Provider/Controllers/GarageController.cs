@@ -73,7 +73,7 @@ namespace CRP.Areas.Provider.Controllers
         [HttpPost]
         public JsonResult CreateGarageAPI()
         {
-            MessageViewModels jsonResult = new MessageViewModels();
+			MessageJsonModel jsonResult = new MessageJsonModel();
             int OwnreID = int.Parse(Request.Params["UserID"]);
             string Name = Request.Params["garageName"];
             int LocationID = int.Parse(Request.Params["locationID"]);
@@ -122,13 +122,13 @@ namespace CRP.Areas.Provider.Controllers
             newGarage.CloseTimeSun = closeTimeSun;
             if (service.add(newGarage))
             {
-                jsonResult.StatusCode = 1;
-                jsonResult.Msg = "Create successfully!";
+                jsonResult.Status = 1;
+                jsonResult.Message = "Create successfully!";
             }
             else
             {
-                jsonResult.StatusCode = 0;
-                jsonResult.Msg = "Creare failed!";
+                jsonResult.Status = 0;
+                jsonResult.Message = "Creare failed!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
@@ -138,7 +138,7 @@ namespace CRP.Areas.Provider.Controllers
         [HttpPatch]
         public JsonResult EditGarageAPI()
         {
-            MessageViewModels jsonResult = new MessageViewModels();
+			MessageJsonModel jsonResult = new MessageJsonModel();
             int ID = int.Parse(Request.Params["garageID"]);
             string Name = Request.Params["garageName"];
             int LocationID = int.Parse(Request.Params["locationID"]);
@@ -184,13 +184,13 @@ namespace CRP.Areas.Provider.Controllers
             editGarage.CloseTimeSun = closeTimeSun;
             if (service.Update(editGarage))
             {
-                jsonResult.StatusCode = 1;
-                jsonResult.Msg = "Update successfully!";
+                jsonResult.Status = 1;
+                jsonResult.Message = "Update successfully!";
             }
             else
             {
-                jsonResult.StatusCode = 0;
-                jsonResult.Msg = "Update failed!";
+                jsonResult.Status = 0;
+                jsonResult.Message = "Update failed!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
@@ -200,17 +200,17 @@ namespace CRP.Areas.Provider.Controllers
         [HttpDelete]
         public JsonResult DeleteGarageAPI(int id)
         {
-            MessageViewModels jsonResult = new MessageViewModels();
+			MessageJsonModel jsonResult = new MessageJsonModel();
             Boolean result = service.delete(id);
             if (result)
             {
-                jsonResult.StatusCode = 1;
-                jsonResult.Msg = "Deleted successfully!";
+                jsonResult.Status = 1;
+                jsonResult.Message = "Deleted successfully!";
             }
             else
             {
-                jsonResult.StatusCode = 0;
-                jsonResult.Msg = "Error!";
+                jsonResult.Status = 0;
+                jsonResult.Message = "Error!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
