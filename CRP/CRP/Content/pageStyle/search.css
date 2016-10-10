@@ -40,22 +40,25 @@ body {
 /* Search Results */
 
 .search-result {
-	color: black;
-	text-decoration: none;
-	animation-duration 0.5s: 
+	transition-duration: 0.5s;
 }
 .search-result:hover {
-	color: black;
-	text-decoration: none;
-	box-shadow: 0 0 20px 5px white;
+	box-shadow: 3px 3px 12px 6px #a8a8a8;
 }
 
+.vehicle-img-container{
+	position: relative;
+}
 .vehicle-img {
 	background-position: center;
 	background-size: cover;
 	padding-top: 75%;
 	position: relative;
 	width: 100%;
+}
+
+.carousel-control{
+	opacity: 0;
 }
 
 .vehicle-info {

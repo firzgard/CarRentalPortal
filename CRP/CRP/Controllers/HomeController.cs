@@ -24,12 +24,11 @@ namespace CRP.Controllers
 		[Route("search")]
 		public ActionResult Search()
 		{
-			LocationService locationService = new LocationService();
-			return View(locationService.getAll().OrderBy(l => l.Name).ToList());
+			return View(new SearchPageViewModel());
 		}
 
 		// Route to vehicle's info
-		[Route("vehicleInfo/{id:int}")]
+		[Route("vehicleInfo/{id:int}", Name = "VehicleInfo")]
 		public ActionResult VehicleInfo(int id)
 		{
 			return View();

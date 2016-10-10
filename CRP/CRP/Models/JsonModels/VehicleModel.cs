@@ -29,8 +29,8 @@ namespace CRP.Models.JsonModels
         public decimal Star { get; set; }
         public int NumOfDoor { get; set; }
         public int NumOfSeat { get; set; }
-        public int Year { get; set; }
-        public string Category { get; set; }
+        public int? Year { get; set; }
+        public List<string> Category { get; set; }
 
         // implement IEnumerable
         public VehicleModel(Vehicle vehicle)
@@ -39,6 +39,35 @@ namespace CRP.Models.JsonModels
             this.LicenseNumber = vehicle.LicenseNumber;
             this.Name = vehicle.Name;
             this.ModelID = vehicle.ModelID;
+            this.ModelName = vehicle.Model.Model1;
+            this.BrandID = vehicle.Model.BrandID;
+            this.BrandName = vehicle.Model.Brand.Name;
+            this.GarageID = vehicle.GarageID;
+            this.GarageName = vehicle.Garage.Name;
+            this.VehicleGroupID = vehicle.VehicleGroupID;
+            this.VehicleGroupName = vehicle.VehicleGroup.Name;
+
+            this.TransmissionTypeID = vehicle.TransmissionType;
+            string tmpString = null;
+            Constants.TransmissionType.TryGetValue(vehicle.TransmissionType, out tmpString);
+            this.TransmissionTypeName = tmpString;
+
+            this.FuelTypeID = vehicle.FuelType;
+            tmpString = null;
+            Constants.FuelType.TryGetValue((int)(vehicle.FuelType != null ? vehicle.FuelType : 0), out tmpString);
+            this.FuelTypeName = tmpString;
+
+            this.ColorID = vehicle.Color;
+            tmpString = null;
+            Constants.Color.TryGetValue(vehicle.Color, out tmpString);
+            this.ColorName = tmpString;
+
+            this.Star = vehicle.Star;
+            this.NumOfDoor = vehicle.Model.NumOfDoor;
+            this.NumOfSeat = vehicle.Model.NumOfSeat;
+            this.Year = vehicle.Year;
+            this.Category = vehicle.Model.ModelCategoryMappings.Aggregate(
+                new List<string>(), (categories, mapping) => { categories.Add(mapping.Category.Name); return categories; });
         }
 
         //public VehicleModel this[int index]

@@ -185,7 +185,7 @@ namespace CRP.Models.Entities.Services
 		}
 
         // filter with multi-conditions
-        public List<Vehicle> VehicleFilter(VehicleFilterCondition FilterConditions)
+        public List<VehicleModel> VehicleFilter(VehicleFilterCondition FilterConditions)
         {
             List<Vehicle> Vehicles = _repository.getAll();
 
@@ -283,7 +283,20 @@ namespace CRP.Models.Entities.Services
                 VehicleJson.Add(new VehicleModel(Vehicle));
             }
 
-            return Vehicles;
+            // paginate
+            if ((FilterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage < VehicleJson.Count)
+            {
+                FilterConditions.Page = 1;
+            }
+
+            VehicleJson = VehicleJson.Skip((FilterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
+                    .Take(Constants.NumberOfSearchResultPerPage)
+                    .ToList();
+
+            // OderBy Ascending or Descending
+
+
+            return VehicleJson;
         }
 	}
 }

@@ -101,14 +101,5 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			return Json("");
 		}
-
-        // Vehicle group detail //
-        // load datatables with VehicleGroupID
-        [Route("api/vehicleGroups/vehicles/{id:int}")]
-        public JsonResult VehiclesInGroup(int id)
-        {
-            var Vehicles = loadAllVehicle().Where(q => q.VehicleGroupID == id);
-            return Json(new { aaData = Vehicles },JsonRequestBehavior.AllowGet);
-        }
     }
 }
