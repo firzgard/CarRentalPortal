@@ -184,12 +184,104 @@ namespace CRP.Models.Entities.Services
 			return new SearchResultJsonModel(results, results.Count);
 		}
 
-        //filter with multi-conditions
-        public List<Vehicle> VehicleFilter(SearchConditionModel searchConditions)
+        // filter with multi-conditions
+        public List<Vehicle> VehicleFilter(VehicleFilterCondition FilterConditions)
         {
-            List<Vehicle> Vehicles = new List<Vehicle>();
+            List<Vehicle> Vehicles = _repository.getAll();
 
+            /// FILTER ///
+            // VehicleGroupID
+            if(FilterConditions.VehicleGroupIDList != null)
+            {
+                Vehicles = Vehicles.Where(v => FilterConditions.VehicleGroupIDList.Contains(v.VehicleGroupID)).ToList();
+            }
+            // GarageID
+            if(FilterConditions.GarageIDList != null)
+            {
+                Vehicles = Vehicles.Where(v => FilterConditions.VehicleGroupIDList.Contains(v.GarageID)).ToList();
+            }
+            // License Number
+            if(FilterConditions.LicenseNumber != null)
+            {
+                Vehicles = Vehicles.Where(v => v.LicenseNumber.Contains(FilterConditions.LicenseNumber)).ToList();
+            }
+            // Vehicle Name
+            if(FilterConditions.Name != null)
+            {
+                Vehicles = Vehicles.Where(v => v.Name.Contains(FilterConditions.Name)).ToList();
+            }
+            // Category ?
+            if(FilterConditions.CategoryIDList != null)
+            {
+                Vehicles = Vehicles.Where(v => {
+                    var vehicleCategoryList = v.Model.ModelCategoryMappings.Aggregate(
+                        new List<int>(), (acc, r) => { acc.Add(r.CategoryID); return acc; }
+                    );
 
+                    return FilterConditions.CategoryIDList.Intersect(vehicleCategoryList).Any();
+                }).ToList();
+            }
+            // FuelType
+            if(FilterConditions.FuelTypeIDList != null)
+            {
+                Vehicles = Vehicles.Where(v => FilterConditions.FuelTypeIDList.Contains(v.TransmissionType)).ToList();
+            }
+            // TransmissionType
+            if(FilterConditions.TransmissionTypeIDList != null)
+            {
+                Vehicles = Vehicles.Where(v => FilterConditions.TransmissionTypeIDList.Contains(v.TransmissionType)).ToList();
+            }
+            // Number of seat
+            if(FilterConditions.NumOfSeatFrom != null || FilterConditions.NumOfSeatTo != null)
+            {
+                if(FilterConditions.NumOfSeatFrom == null)
+                {
+                    FilterConditions.NumOfSeatFrom = 0;
+                }
+                if(FilterConditions.NumOfSeatTo == null)
+                {
+                    FilterConditions.NumOfSeatTo = 100;
+                }
+
+                Vehicles = Vehicles.Where(v => (v.Model.NumOfSeat >= FilterConditions.NumOfSeatFrom 
+                && v.Model.NumOfSeat <= FilterConditions.NumOfSeatTo)).ToList();
+            }
+            // Rate
+            if(FilterConditions.RateFrom != null || FilterConditions.RateTo != null)
+            {
+                if(FilterConditions.RateFrom == null)
+                {
+                    FilterConditions.RateFrom = 0.0m;
+                }
+                if(FilterConditions.RateTo == null)
+                {
+                    FilterConditions.RateTo = 5.0m;
+                }
+
+                Vehicles = Vehicles.Where(v => (v.Star >= FilterConditions.RateFrom && v.Star <= FilterConditions.RateTo)).ToList();
+            }
+            // Year
+            if(FilterConditions.YearFrom != null || FilterConditions.YearTo != null)
+            {
+                if(FilterConditions.YearFrom == null)
+                {
+                    FilterConditions.RateFrom = 1900;
+                }
+                if(FilterConditions.YearTo == null)
+                {
+                    FilterConditions.RateTo = int.MaxValue;
+                }
+
+                Vehicles = Vehicles.Where(v => (v.Year >= FilterConditions.YearFrom && v.Year <= FilterConditions.YearTo)).ToList();
+            }
+
+            // parse to VehicleModel Jsonformat
+            List<VehicleModel> VehicleJson = new List<VehicleModel>();
+
+            foreach(Vehicle Vehicle in Vehicles)
+            {
+
+            }
 
             return Vehicles;
         }
