@@ -1,0 +1,2 @@
+a booking's start time must be at least 6 hours after the moment it is made
+a booking's start time must NOT be further than 30 days since the moment it is made

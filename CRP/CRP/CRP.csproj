@@ -231,6 +231,12 @@
     <Compile Include="Models\AutofacModules\RepositoryModule.cs" />
     <Compile Include="Models\AutofacModules\ServiceModule.cs" />
     <Compile Include="Models\ControllerExtensions.cs" />
+    <Compile Include="Models\Entities\Category.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\ModelCategoryMapping.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
