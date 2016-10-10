@@ -38,7 +38,6 @@
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsProviderUntil" Type="datetime" />
-          <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
           <Property Name="AvatarURL" Type="varchar" MaxLength="200" />
         </EntityType>
         <EntityType Name="BookingReceipt">
@@ -55,10 +54,11 @@
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" Nullable="false" />
           <Property Name="IsCanceled" Type="bit" Nullable="false" />
-          <Property Name="VehicleName" Type="nchar" MaxLength="10" Nullable="false" />
-          <Property Name="GarageName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="VehicleName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="GarageName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="GarageAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="IsPending" Type="bit" Nullable="false" />
+          <Property Name="Deposit" Type="float" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -80,12 +80,12 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="OwnerID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="LocationID" Type="int" Nullable="false" />
           <Property Name="Address" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="Phone1" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Phone2" Type="nvarchar" MaxLength="20" />
+          <Property Name="Phone1" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone2" Type="varchar" MaxLength="50" />
           <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="OpenTimeMon" Type="datetime" />
@@ -160,7 +160,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PriceGroupID" Type="int" Nullable="false" />
           <Property Name="MaxTime" Type="int" Nullable="false" />
           <Property Name="Price" Type="float" Nullable="false" />
@@ -171,17 +171,17 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="LicenseNumber" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="ModelID" Type="int" Nullable="false" />
           <Property Name="Year" Type="int" />
           <Property Name="GarageID" Type="int" Nullable="false" />
           <Property Name="VehicleGroupID" Type="int" />
           <Property Name="TransmissionType" Type="int" Nullable="false" />
-          <Property Name="TransmissionDetail" Type="nvarchar" MaxLength="50" />
+          <Property Name="TransmissionDetail" Type="nvarchar" MaxLength="200" />
           <Property Name="FuelType" Type="int" />
-          <Property Name="Engine" Type="nvarchar" MaxLength="50" />
+          <Property Name="Engine" Type="nvarchar" MaxLength="200" />
           <Property Name="Color" Type="int" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" />
           <Property Name="Star" Type="decimal" Precision="2" Scale="1" Nullable="false" />
         </EntityType>
         <EntityType Name="VehicleGroup">
@@ -629,7 +629,6 @@
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsProviderUntil" Type="DateTime" Precision="3" />
-          <Property Name="Star" Type="Decimal" Precision="2" Scale="1" />
           <Property Name="AvatarURL" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="AspNetUser" ToRole="BookingReceipt" />
           <NavigationProperty Name="Garages" Relationship="CRPDBModel.FK_Garage_AspNetUsers" FromRole="AspNetUser" ToRole="Garage" />
@@ -651,10 +650,11 @@
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="IsCanceled" Type="Boolean" Nullable="false" />
-          <Property Name="VehicleName" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="GarageName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="VehicleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="GarageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="GarageAddress" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="IsPending" Type="Boolean" Nullable="false" />
+          <Property Name="Deposit" Type="Double" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="BookingReceipt" ToRole="AspNetUser" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="BookingReceipt" ToRole="Vehicle" />
         </EntityType>
@@ -680,12 +680,12 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OwnerID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="Address" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Phone1" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="Phone2" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="Phone1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Phone2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Star" Type="Decimal" Precision="2" Scale="1" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="OpenTimeMon" Type="DateTime" Precision="3" />
@@ -775,7 +775,7 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PriceGroupID" Type="Int32" Nullable="false" />
           <Property Name="MaxTime" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
@@ -787,17 +787,17 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LicenseNumber" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="ModelID" Type="Int32" Nullable="false" />
           <Property Name="Year" Type="Int32" />
           <Property Name="GarageID" Type="Int32" Nullable="false" />
           <Property Name="VehicleGroupID" Type="Int32" />
           <Property Name="TransmissionType" Type="Int32" Nullable="false" />
-          <Property Name="TransmissionDetail" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TransmissionDetail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="FuelType" Type="Int32" />
-          <Property Name="Engine" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Engine" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Color" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Star" Type="Decimal" Nullable="false" Precision="2" Scale="1" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="Vehicle" ToRole="BookingReceipt" />
           <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_Car_Store" FromRole="Vehicle" ToRole="Garage" />
@@ -1040,7 +1040,6 @@
             <EntityTypeMapping TypeName="CRPDBModel.AspNetUser">
               <MappingFragment StoreEntitySet="AspNetUsers">
                 <ScalarProperty Name="AvatarURL" ColumnName="AvatarURL" />
-                <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="IsProviderUntil" ColumnName="IsProviderUntil" />
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
@@ -1061,6 +1060,7 @@
           <EntitySetMapping Name="BookingReceipts">
             <EntityTypeMapping TypeName="CRPDBModel.BookingReceipt">
               <MappingFragment StoreEntitySet="BookingReceipt">
+                <ScalarProperty Name="Deposit" ColumnName="Deposit" />
                 <ScalarProperty Name="IsPending" ColumnName="IsPending" />
                 <ScalarProperty Name="GarageAddress" ColumnName="GarageAddress" />
                 <ScalarProperty Name="GarageName" ColumnName="GarageName" />
