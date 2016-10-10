@@ -35,7 +35,10 @@ namespace CRP.Models.JsonModels
         // implement IEnumerable
         public VehicleModel(Vehicle vehicle)
         {
-            this.vehicle = vehicle;
+            this.ID = vehicle.ID;
+            this.LicenseNumber = vehicle.LicenseNumber;
+            this.Name = vehicle.Name;
+            this.ModelID = vehicle.ModelID;
         }
 
         //public VehicleModel this[int index]

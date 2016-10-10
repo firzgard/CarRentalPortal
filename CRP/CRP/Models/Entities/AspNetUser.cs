@@ -38,7 +38,6 @@ namespace CRP.Models.Entities
         public string UserName { get; set; }
         public string FullName { get; set; }
         public Nullable<System.DateTime> IsProviderUntil { get; set; }
-        public Nullable<decimal> Star { get; set; }
         public string AvatarURL { get; set; }
         public string SelfDescription { get; set; }
     

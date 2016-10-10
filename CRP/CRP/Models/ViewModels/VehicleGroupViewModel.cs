@@ -18,21 +18,10 @@ namespace CRP.Models.ViewModels
             mapper.Map(vg, this);
         }
 
-        public VehicleGroupViewModel(VehicleGroup model)
-        {
-            this.ID = model.ID;
-            this.Name = model.Name;
-            this.IsActive = model.IsActive;
-            this.MaxRentalPeriod = model.MaxRentalPeriod;
-            this.DefaultPriceGroupID = model.DefaultPriceGroupID;
-            this.PriceGroup = model.PriceGroup;
-            this.Vehicles = model.Vehicles;
-        }
-
         [StringLength(50, ErrorMessage ="Allow from 1 to 50 characters",MinimumLength =1)]
-        //public override string Name { get; set; }
+        public override string Name { get; set; }
 
-        //public override Nullable<int> MaxRentalPeriod { get; set; }
+        public override Nullable<int> MaxRentalPeriod { get; set; }
 
         public override PriceGroup PriceGroup { get; set; }
 

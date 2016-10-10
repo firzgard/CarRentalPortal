@@ -280,7 +280,7 @@ namespace CRP.Models.Entities.Services
 
             foreach(Vehicle Vehicle in Vehicles)
             {
-
+                VehicleJson.Add(new VehicleModel(Vehicle));
             }
 
             return Vehicles;
