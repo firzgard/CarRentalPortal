@@ -50,7 +50,7 @@ namespace CRP.Controllers
 
 			Response.StatusCode = 200;
 			Response.StatusDescription = "Queried successfully";
-			SearchResultJsonModel searchResult = vehicleService.findToBook(searchConditions);
+			SearchResultJsonModel searchResult = vehicleService.FindToBook(searchConditions);
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}
 	}

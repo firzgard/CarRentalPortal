@@ -12,7 +12,7 @@ namespace CRP.Models.Entities.Services
 	public class VehicleService
 	{
 		VehicleRepository _repository = new VehicleRepository();
-		public Boolean add(Vehicle vehicle)
+		public Boolean Add(Vehicle vehicle)
 		{
 			try
 			{
@@ -26,7 +26,7 @@ namespace CRP.Models.Entities.Services
 			return true;
 		}
 
-		public Boolean delete(int ID)
+		public Boolean Delete(int ID)
 		{
 			Vehicle deleteVehicle = _repository.findById(ID);
 			if (deleteVehicle == null)
@@ -48,7 +48,7 @@ namespace CRP.Models.Entities.Services
 			}
 		}
 
-		public List<Vehicle> getAll()
+		public List<Vehicle> GetAll()
 		{
 			List<Vehicle> lstVehicle = new List<Vehicle>();
 			lstVehicle = _repository.getAll();
@@ -72,13 +72,13 @@ namespace CRP.Models.Entities.Services
 			}
 			return true;
 		}
-		public Vehicle findByID(int ID)
+		public Vehicle FindByID(int ID)
 		{
 			Vehicle vehilce = _repository.findById(ID);
 			return vehilce;
 		}
 
-		public SearchResultJsonModel findToBook(SearchConditionModel searchConditions)
+		public SearchResultJsonModel FindToBook(SearchConditionModel searchConditions)
 		{
 			// Get all vehicles
 			List<Vehicle> vehicles = _repository.getAll();
@@ -183,5 +183,15 @@ namespace CRP.Models.Entities.Services
 			// Nest into result object
 			return new SearchResultJsonModel(results, results.Count);
 		}
+
+        //filter with multi-conditions
+        public List<Vehicle> VehicleFilter(SearchConditionModel searchConditions)
+        {
+            List<Vehicle> Vehicles = new List<Vehicle>();
+
+
+
+            return Vehicles;
+        }
 	}
 }
