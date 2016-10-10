@@ -47,16 +47,6 @@ namespace CRP.Models
 			{ 11, "Yellow" }
 		};
 
-		public readonly static Dictionary<int, string> VehicleType = new Dictionary<int, string>
-		{
-			{ 1, "Micro Car" },
-			{ 2, "Minivan" },
-			{ 3, "Pickup Truck" },
-			{ 4, "Station Wagon" },
-			{ 5, "Sedan" },
-			{ 6, "SUV" },
-		};
-
 		public readonly static int[] CommonNumOfSeat = new int[] { 2, 4, 7, 16, 29, 45 };
 
 		public readonly static int NumberOfSearchResultPerPage = 10;
