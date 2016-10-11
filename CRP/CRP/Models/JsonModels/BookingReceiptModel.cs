@@ -12,6 +12,7 @@ namespace CRP.Models.JsonModels
         public int VehicleID { get; set; }
         public double TotalPrice { get; set; }
         public double BookingFee { get; set; }
+        public double Deposit { get; set; }
         public decimal Star { get; set; }
         public string Comment { get; set; }
         public DateTime StartTime { get; set; }

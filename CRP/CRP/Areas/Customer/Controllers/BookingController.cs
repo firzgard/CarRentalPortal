@@ -24,6 +24,7 @@ namespace CRP.Areas.Customer.Controllers
             //can 1 api de xu ly ca totalprice
             float TotalPrice = float.Parse(Request.Params["TotalPrice"]);
             float BookingFee = float.Parse(Request.Params["BookingFee"]);
+            float Deposit = float.Parse(Request.Params["Deposit"]);
             string VehicleName = Request.Params["VehicleName"];
             string GarageName = Request.Params["GarageName"];
             string GarageAddress = Request.Params["GarageAddress"];
@@ -35,6 +36,7 @@ namespace CRP.Areas.Customer.Controllers
             booking.VehicleID = VehicleID;
             booking.TotalPrice = TotalPrice;
             booking.BookingFee = BookingFee;
+            booking.Deposit = Deposit;
             booking.VehicleName = VehicleName;
             booking.GarageName = GarageName;
             booking.GarageAddress = GarageAddress;
@@ -59,6 +61,7 @@ namespace CRP.Areas.Customer.Controllers
         //cho nay nen return json, de xu ly
         private void deleteBooking(int bookingID)
         {
+            // set 5 phut roi kiem tra
             TimeSpan span = new TimeSpan(0, 0, 5, 0);
             Thread.Sleep(span);
             Boolean isDelete = _service.IsPending(bookingID);
@@ -131,6 +134,7 @@ namespace CRP.Areas.Customer.Controllers
                 jsonBooking.VehicleID = (int) p.VehicleID;
                 jsonBooking.VehicleName = p.VehicleName;
                 jsonBooking.BookingFee = p.BookingFee;
+                jsonBooking.Deposit = p.Deposit.GetValueOrDefault();
                 jsonBooking.CustomerID = p.CustomerID;
                 jsonBooking.Comment = p.Comment;
                 jsonBooking.GarageAddress = p.GarageAddress;
