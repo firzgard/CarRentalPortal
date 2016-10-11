@@ -13,7 +13,7 @@ namespace CRP.Areas.Customer.Controllers
 {
 	public class BookingController : Controller
 	{
-        BookingService _service = new BookingService();
+        BookingReceiptService _service = new BookingReceiptService();
 		// Route to bookingConfirm page (Page for confirming booking details before paying)
 		[Route("bookingConfirm")]
 		public ViewResult BookingConfirm()

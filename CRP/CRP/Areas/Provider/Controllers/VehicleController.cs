@@ -12,18 +12,18 @@ namespace CRP.Areas.Provider.Controllers
 {
 	public class VehicleController : Controller
 	{
-        VehicleService service = new VehicleService();
+        VehicleService Service = new VehicleService();
         ModelService serviceModel = new ModelService();
         BrandService serviceBrand = new BrandService();
         GarageService serviceGara = new GarageService();
-        BookingService serviceBook = new BookingService();
+        BookingReceiptService serviceBook = new BookingReceiptService();
 
 		// Route to vehicleManagement page
 		[Route("management/vehicleManagement")]
 		public ViewResult VehicleManagement()
 		{
             List<Vehicle> lstVehicle = new List<Vehicle>();
-            lstVehicle = service.GetAll();
+            lstVehicle = Service.GetAll();
             ViewBag.vehiList = lstVehicle;
             return View("~/Areas/Provider/Views/Vehicle/VehicleManagement.cshtml");
 		}
@@ -32,7 +32,7 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("management/vehicleManagement/{id:int}")]
 		public ViewResult VehihicleDetail(int id)
 		{
-            Vehicle vehicle = service.FindByID(id);
+            Vehicle vehicle = Service.FindByID(id);
             if (vehicle != null)
             {
                 ViewBag.vehiDetail = vehicle;
@@ -47,47 +47,17 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to get a list of vehicle to populate vehicleTable
 		// Only vehicle tables need this API because their possibly huge number of record
 		// So we need this API for server-side pagination
-		[Route("api/vehicles/datatables")]
+		[Route("api/vehicles/datatables", Name = "vehiclesDatatables")]
 		[HttpGet]
-		public JsonResult GetVehicleListAPI(SearchConditionModel searchConditions)
+		public JsonResult GetVehicleListAPI(VehicleFilterCondition filterConditions)
 		{
-            //var vehicle = new Vehicle() { Id = 666, Name = "BWM X7" };
-            List<Vehicle> lstVehicle = new List<Vehicle>();
-            List<VehicleModel> jsonVehicles = new List<VehicleModel>();
-            lstVehicle = service.GetAll();
-            foreach (Vehicle p in lstVehicle)
-            {
-                VehicleModel jsonVehicle = new VehicleModel();
-                jsonVehicle.ID = p.ID;
-                jsonVehicle.LicenseNumber = p.LicenseNumber;
-                jsonVehicle.Name = p.Name;
-                jsonVehicle.ModelID = p.ModelID;
-                //serviceModel.findBrandID = service(model);
-                jsonVehicle.ModelName = serviceModel.reModelNameByID(jsonVehicle.ModelID);
-                jsonVehicle.BrandID = serviceModel.findBrandID(p.ModelID);
-                jsonVehicle.BrandName = serviceBrand.reBrandNameByID(jsonVehicle.BrandID);
-                jsonVehicle.GarageID = p.GarageID;
-                jsonVehicle.GarageName = serviceGara.reGarageNameByID(jsonVehicle.GarageID);
-                jsonVehicle.VehicleGroupID = p.VehicleGroupID;
-                jsonVehicle.TransmissionTypeID = p.TransmissionType;
-                //jsonVehicle.TransmissionTypeName =;
-                jsonVehicle.FuelTypeID = p.FuelType;
-                //FuelTypeName
-                jsonVehicle.ColorID = p.Color;
-                //color
-                jsonVehicle.Star = p.Star;
-                //NumbOf
-                jsonVehicle.NumOfDoor = serviceModel.reNumOfDoorByID(jsonVehicle.ModelID);
-                jsonVehicle.NumOfSeat = serviceModel.reNumOfSeatByID(jsonVehicle.ModelID);
+            List<VehicleModel> Vehicles = Service.VehicleFilter(filterConditions);
 
-                jsonVehicles.Add(jsonVehicle);
-            }
-
-            return Json(jsonVehicles, JsonRequestBehavior.AllowGet);
+            return Json( new { aaData = Vehicles }, JsonRequestBehavior.AllowGet);
 		}
 
 		// API Route for getting vehicle's detailed infomations (for example, to duplicate vehicle)
-		[Route("api/vehicles/{id}")]
+		/*[Route("api/vehicles/{id}")]
 		[HttpGet]
 		public JsonResult GetVehicleDetailAPI(int id)
 		{
@@ -117,7 +87,7 @@ namespace CRP.Areas.Provider.Controllers
             vehiModel.NumOfSeat = serviceModel.reNumOfSeatByID(vehiModel.ModelID);
 
             return Json(vehiModel, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 
 		// API Route to create single new vehicles
 		[Route("api/vehicles")]
@@ -148,7 +118,7 @@ namespace CRP.Areas.Provider.Controllers
             nVehicle.LicenseNumber = LicenNumb;
             nVehicle.Name = Name;
 
-            if (service.Add(nVehicle))
+            if (Service.Add(nVehicle))
             {
                 jsonResult.Status = 1;
                 jsonResult.Message = "Create successfully!";
@@ -170,10 +140,10 @@ namespace CRP.Areas.Provider.Controllers
             string LicenNumb = Request.Params["LicenseNumber"];
             string Name = Request.Params["Name"];
 
-            Vehicle editVehicle = service.FindByID(id);
+            Vehicle editVehicle = Service.FindByID(id);
             editVehicle.LicenseNumber = LicenNumb;
             editVehicle.Name = Name;
-            if (service.Add(editVehicle))
+            if (Service.Add(editVehicle))
             {
                 jsonResult.Status = 1;
                 jsonResult.Message = "Create successfully!";
@@ -192,7 +162,7 @@ namespace CRP.Areas.Provider.Controllers
 		public JsonResult DeleteVehiclesAPI(int id)
 		{
             MessageJsonModel jsonResult = new MessageJsonModel();
-            Boolean result = service.Delete(id);
+            Boolean result = Service.Delete(id);
             if (result)
             {
                 jsonResult.Status = 1;
@@ -211,14 +181,14 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPatch]
 		public JsonResult ChangeGarageAPI(int garageID, List<int> listVehicleId)
 		{
-            List<Vehicle> lstVehicle = service.GetAll();
+            List<Vehicle> lstVehicle = Service.GetAll();
             List<Vehicle> listVehicleNeedChange = new List<Vehicle>();
             // 1 2 3 5 8 
             foreach (var item in listVehicleId)
             {
                 Vehicle v = lstVehicle.FirstOrDefault(a => a.ID == item);
                 v.GarageID = garageID;
-                service.UpdateVehicle(v);
+                Service.UpdateVehicle(v);
             }
             
             return Json(lstVehicle, JsonRequestBehavior.AllowGet);
@@ -229,13 +199,13 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPatch]
 		public JsonResult ChangeGroupAPI(int groupID, List<int> listVehicleId)
 		{
-            List<Vehicle> lstVehicle = service.GetAll();
+            List<Vehicle> lstVehicle = Service.GetAll();
             List<Vehicle> listVehicleNeedChange = new List<Vehicle>();
             foreach (var item in listVehicleId)
             {
                 Vehicle v = lstVehicle.FirstOrDefault(a => a.ID == item);
                 v.VehicleGroupID = groupID;
-                service.UpdateVehicle(v);
+                Service.UpdateVehicle(v);
             }
             return Json(lstVehicle, JsonRequestBehavior.AllowGet);
 		}

@@ -5,46 +5,14 @@ using System.Web;
 
 namespace CRP.Models.Entities.Repositories
 {
-    public class PriceGroupItemRepository : IBaseRepository<PriceGroupItem>
+    public interface IPriceGroupItemRepository : IRepository<PriceGroupItem>
     {
-        CRPEntities _dataContext;
 
-        public PriceGroupItemRepository()
+    }
+    public class PriceGroupItemRepository : BaseRepository<PriceGroupItem>, IPriceGroupItemRepository
+    {
+        public PriceGroupItemRepository(CRPEntities dbContext) : base(dbContext)
         {
-            _dataContext = new CRPEntities();
-        }
-
-
-        public IEnumerable<PriceGroupItem> List
-        {
-            get
-            {
-                return _dataContext.PriceGroupItems;
-            }
-        }
-
-        public void Add(PriceGroupItem entity)
-        {
-            _dataContext.PriceGroupItems.Add(entity);
-            _dataContext.SaveChanges();
-        }
-
-        public void Delete(PriceGroupItem entity)
-        {
-            _dataContext.PriceGroupItems.Remove(entity);
-            _dataContext.SaveChanges();
-        }
-
-        public PriceGroupItem findById(int Id)
-        {
-            var query = (from r in _dataContext.PriceGroupItems where r.ID == Id select r).FirstOrDefault();
-            return query;
-        }
-
-        public void Update(PriceGroupItem entity)
-        {
-            _dataContext.Entry(entity).State = System.Data.Entity.EntityState.Modified;
-            _dataContext.SaveChanges();
         }
     }
 }

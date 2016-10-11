@@ -19,6 +19,7 @@ namespace CRP
     {
         protected void Application_Start()
         {
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
@@ -45,7 +46,7 @@ namespace CRP
             DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
         }
 
-        public void MapperConfig(IMapperConfigurationExpression config)
+        public void MapperConfig(IMapperConfiguration config)
         {
             config.CreateMissingTypeMaps = true;
             config.CreateMap<VehicleGroup, VehicleGroupViewModel>();

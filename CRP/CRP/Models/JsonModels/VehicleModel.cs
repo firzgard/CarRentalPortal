@@ -32,14 +32,13 @@ namespace CRP.Models.JsonModels
         public int? Year { get; set; }
         public List<string> Category { get; set; }
 
-        // implement IEnumerable
         public VehicleModel(Vehicle vehicle)
         {
             this.ID = vehicle.ID;
             this.LicenseNumber = vehicle.LicenseNumber;
             this.Name = vehicle.Name;
             this.ModelID = vehicle.ModelID;
-            this.ModelName = vehicle.Model.Model1;
+            this.ModelName = vehicle.Model.Name;
             this.BrandID = vehicle.Model.BrandID;
             this.BrandName = vehicle.Model.Brand.Name;
             this.GarageID = vehicle.GarageID;

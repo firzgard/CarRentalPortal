@@ -6,61 +6,15 @@ using System.Web;
 
 namespace CRP.Models.Entities.Services
 {
-    public class PriceGroupItemService
+    public interface IPriceGroupItemService : IService<PriceGroupItem>
     {
-        PriceGroupItemRepository _repository = new PriceGroupItemRepository();
-        public List<PriceGroupItem> getAll()
-        {
-            List<PriceGroupItem> listVehicleGroup = new List<PriceGroupItem>();
-            listVehicleGroup = _repository.List.ToList();
-            return listVehicleGroup;
-        }
 
-        public bool add(PriceGroupItem entity)
+    }
+    public class PriceGroupItemService : BaseService<PriceGroupItem>, IPriceGroupItemService
+    {
+        public PriceGroupItemService(IUnitOfWork unitOfWork, IPriceGroupItemRepository repository) : base(unitOfWork, repository)
         {
-            try
-            {
-                _repository.Add(entity);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-            return true;
-        }
 
-        public bool update(PriceGroupItem entity)
-        {
-            try
-            {
-                _repository.Update(entity);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-            return true;
-        }
-
-        public bool delete(PriceGroupItem entity)
-        {
-            try
-            {
-                _repository.Delete(entity);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-            return true;
-        }
-
-        public PriceGroupItem findByID(int id)
-        {
-            return _repository.findById(id);
         }
     }
 }
