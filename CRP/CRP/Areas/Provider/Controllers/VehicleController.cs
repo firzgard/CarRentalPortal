@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-//using CRP.Models;
 using CRP.Models.Entities.Services;
 using CRP.Models.Entities;
 using CRP.Models.JsonModels;
+using CRP.Models;
 
 namespace CRP.Areas.Provider.Controllers
 {
@@ -245,14 +245,32 @@ namespace CRP.Areas.Provider.Controllers
         // Order by booking's startTime, newer to older
 		[Route("api/vehicles/bookings/{vehiceID:int}/{page:int?}")]
 		[HttpGet]
-		public JsonResult CreateBookingAPI(int vehiceID, int page = 1)
+		public JsonResult CreateBookingAPI(int vehiceID, int page)
 		{
-            List<BookingReceipt> br = serviceBook.findByVehicle(vehiceID);
-            br.Sort((x, y) => DateTime.Compare(x.StartTime, y.StartTime));
-			return Json(br, JsonRequestBehavior.AllowGet);
+            List<BookingReceipt> br = new List<BookingReceipt>();
+            br = serviceBook.findByVehicle(vehiceID);
+            //br.Sort((x, y) => DateTime.Compare(x.StartTime, y.StartTime));
+            //if ((page - 1) * Constants.NumberOfSearchResultPerPage < br.Count)
+            //    page = 1;
+            //br = br.Skip((page - 1) * Constants.NumberOfSearchResultPerPage)
+            //        .Take(Constants.NumberOfSearchResultPerPage)
+            //        .ToList();
+            List<BookingReceiptModel> brm = new List<BookingReceiptModel>();
+            foreach(BookingReceipt jsonBook in br)
+            {
+                BookingReceiptModel js = new BookingReceiptModel();
+                js.TotalPrice = jsonBook.TotalPrice;
+                js.BookingFee = jsonBook.BookingFee;
+                js.StartTime = jsonBook.StartTime;
+                js.EndTime = jsonBook.EndTime;
+                brm.Add(js);
+            }
+            brm = brm.OrderBy(x=>x.StartTime).ToList();
+            return Json(brm , JsonRequestBehavior.AllowGet);
 		}
 
 		// API route for creating an own booking
+        // Not yet have provider roles, just booking
 		[Route("api/vehicles/bookings/{vehiceID:int}")]
 		[HttpPost]
 		public JsonResult CreateBookingAPI(int vehiceID)
@@ -262,8 +280,12 @@ namespace CRP.Areas.Provider.Controllers
             DateTime startTime = DateTime.Parse(Request.Params["StartTime"]);
             DateTime endTime = DateTime.Parse(Request.Params["EndTime"]);
             BookingReceipt bookre = new BookingReceipt();
-            bookre.StartTime = startTime;
-            bookre.EndTime = endTime;
+            while (serviceBook.CheckVehicleAvailability(vehiceID, bookre.StartTime, bookre.EndTime))
+            {
+                bookre.VehicleName = vehicleName;
+                bookre.StartTime = startTime;
+                bookre.EndTime = endTime;
+            }
             if (serviceBook.add(bookre) )
             {
                 jsonResult.Status = 1;
@@ -284,21 +306,7 @@ namespace CRP.Areas.Provider.Controllers
 		{
             MessageJsonModel jsonResult = new MessageJsonModel();
             BookingReceipt br = serviceBook.findByID(receiptID);
-            while(serviceBook.CheckVehicleAvailability(br.VehicleID, br.StartTime, br.EndTime))
-            {
-                Boolean result = service.delete(receiptID);
-                if (result)
-                {
-                    jsonResult.Status = 1;
-                    jsonResult.Message = "Deleted successfully!";
-                }
-                else
-                {
-                    jsonResult.Status = 0;
-                    jsonResult.Message = "Error!";
-                }
-                
-            }
+            br.IsCanceled = true;
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
 	}
