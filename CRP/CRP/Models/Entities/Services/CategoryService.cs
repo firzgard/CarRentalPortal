@@ -12,11 +12,8 @@ namespace CRP.Models.Entities.Services
 
 	public class CategoryService : BaseService<Category>, ICategoryService
 	{
-		public CategoryService()
+		public CategoryService(IUnitOfWork unitOfWork, ICategoryRepository repository) : base(unitOfWork, repository)
 		{
-			CRPEntities dbContext = new CRPEntities();
-			this.unitOfWork = new UnitOfWork(dbContext);
-			this.repository = new CategoryRepository(dbContext);
 		}
 	}
 }

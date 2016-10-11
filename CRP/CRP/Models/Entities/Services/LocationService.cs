@@ -12,11 +12,8 @@ namespace CRP.Models.Entities.Services
 
 	public class LocationService : BaseService<Location>, ILocationService
 	{
-		public LocationService()
+		public LocationService(IUnitOfWork unitOfWork, ILocationRepository repository) : base(unitOfWork, repository)
 		{
-			CRPEntities dbContext = new CRPEntities();
-			this.unitOfWork = new UnitOfWork(dbContext);
-			this.repository = new LocationRepository(dbContext);
 		}
 	}
 }

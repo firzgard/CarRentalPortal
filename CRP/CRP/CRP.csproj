@@ -44,16 +44,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.1.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.4.1.1\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Autofac.Integration.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\packages\Autofac.Mvc5.4.0.0\lib\net451\Autofac.Integration.Mvc.dll</HintPath>
+    <Reference Include="Autofac.Integration.Mvc, Version=3.3.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=4.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.2.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=1.2.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -210,10 +210,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
+    <Compile Include="Areas\Provider\Controllers\ModelController.cs" />
+    <Compile Include="Areas\Provider\Controllers\PriceGroupItemController.cs" />
     <Compile Include="Areas\Provider\Controllers\VehicleGroupController.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
     <Compile Include="AutoMapperConfiguration.cs" />
@@ -245,9 +248,14 @@
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\PriceGroupItemRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
+    <Compile Include="Models\Entities\Services\PriceGroupItemService.cs" />
+    <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
+    <Compile Include="Models\Entities\Services\ModelService.cs" />
     <Compile Include="Models\JsonModels\BookingReceiptModel.cs" />
     <Compile Include="Models\JsonModels\HomeJsonModels.cs" />
     <Compile Include="Models\JsonModels\VehicleCalendarModel.cs" />
@@ -302,14 +310,14 @@
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
-    <Compile Include="Models\Entities\Repositories\BookingRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\BookingReceiptRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
     <Compile Include="Models\Entities\Repositories\GarageRepository.cs" />
     <Compile Include="Models\Entities\Repositories\LocationRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleGroupRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleRepository.cs" />
     <Compile Include="Models\Entities\Services\BaseService.cs" />
-    <Compile Include="Models\Entities\Services\BookingService.cs" />
+    <Compile Include="Models\Entities\Services\BookingReceiptService.cs" />
     <Compile Include="Models\Entities\Services\BrandService.cs" />
     <Compile Include="Models\Entities\Services\GarageService.cs" />
     <Compile Include="Models\Entities\Services\LocationService.cs" />
@@ -334,7 +342,6 @@
     <Compile Include="Models\JsonModels\VehicleModel.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
-    <Compile Include="Models\Vehicle.cs" />
     <Compile Include="Models\ViewModels\VehicleGroupViewModel.cs" />
     <Compile Include="Models\ViewModels\VehicleViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1389,6 +1396,7 @@
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
     <Content Include="Content\pageStyle\search.css" />
+    <Content Include="Content\pageStyle\vehicleGroup.css" />
     <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
@@ -1562,6 +1570,7 @@
     </Content>
     <Content Include="Areas\Provider\Views\VehicleGroup\CreatePopup.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupManagement.cshtml" />
+    <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupDetail.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1592,6 +1601,7 @@
     <Content Include="Scripts\pageScript\garageList.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
     <Content Include="Scripts\pageScript\search.js" />
+    <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
     <Content Include="Scripts\prototype.js" />
     <Content Include="Scripts\respond.js" />
@@ -1710,13 +1720,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Areas\Admin\Controllers\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
     <Folder Include="Areas\Provider\Views\Booking\" />
+    <Folder Include="Areas\Provider\Views\PriceGroup\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>
