@@ -5,7 +5,7 @@ let now = moment();
 let searchConditions = {
 	StartTime: now.clone().add(1, 'days').toJSON()
 	, EndTime: now.clone().add(2, 'days').toJSON()
-	, OrderBy: "BestPossibleRentalPeriod"
+	, OrderBy: "BestPossibleRentalPrice"
 	, TransmissionTypeIDList: []
 };
 // StartTime: 
@@ -27,15 +27,18 @@ let searchConditions = {
 function renderSearchResultGrid(domNode, searchResultList){
 	domNode.html(searchResultList.reduce((html, searchResult) => html + renderSearchResultItem(searchResult), ''))
 
+	$('.carousel').carousel()
 }
 
 function renderSearchResultItem(searchResult){
-	return `<div class="col-md-6" >
+	return `<div class="col-xs-6" >
 		<div data-vehicle-id="${searchResult.ID}" class="ibox ibox-content product-box search-result" >
 			<div class="vehicle-img-container">
 				${renderSearchResultImageCarousel(searchResult)}
 				<div class="vehicle-price-tag" ><span class="vehicle-price" >
-					<sup>&#8363;</sup>${searchResult.BestPossibleRentalPrice}/<sub>${searchResult.BestPossibleRentalPeriod}</sub></span>
+					<sup>&#8363;</sup>
+					${searchResult.BestPossibleRentalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/
+					<sub>${searchResult.BestPossibleRentalPeriod}</sub></span>
 				</div>
 			</div>
 			<div class="vehicle-info">
@@ -44,8 +47,10 @@ function renderSearchResultItem(searchResult){
 					<div>${renderStarRating(searchResult.Star)}</div>
 				</a>
 				<hr>
-				<div><i class="fa fa-map-marker"></i> ${searchResult.Location}</div>
-				<div><i class="fa fa-building"></i> ${searchResult.GarageName}</div>
+				<div class="row">
+					<div class="col-xs-6"><i class="fa fa-map-marker"></i>&nbsp;${searchResult.Location}</div>
+					<div class="col-xs-6"><i class="fa fa-building"></i>&nbsp;${searchResult.GarageName}</div>
+				</div>
 				<hr>
 				<div><i class="fa fa-gear"></i> ${searchResult.TransmissionTypeName}</div>
 				<hr>
@@ -80,7 +85,7 @@ function renderSearchResultImageCarousel(searchResult){
 function renderPaginator(domNode, data){
 	// Render search result grid's paginator
 	domNode.twbsPagination({
-		startPage: searchConditions.Page,
+		startPage: searchConditions.Page || 1,
 		totalPages: data.TotalPage,
 		visiblePages: 5,
 		first: '<i class="fa fa-angle-double-left"></i>',
@@ -94,9 +99,9 @@ function renderPaginator(domNode, data){
 }
 
 function renderRecordInfo(domNode, data){
-	let firstResultPosition = (searchConditions.Page - 1) * NumRecordPerPage + 1
-		, lastResultPosition = (searchConditions.Page * NumRecordPerPage) < data.TotalResult
-			? (searchConditions.Page * NumRecordPerPage)
+	let firstResultPosition = ((searchConditions.Page || 1) - 1) * NumRecordPerPage + 1
+		, lastResultPosition = ((searchConditions.Page || 1) * NumRecordPerPage) < data.TotalResult
+			? ((searchConditions.Page || 1) * NumRecordPerPage)
 			: data.TotalResult
 		, newHtml = `${firstResultPosition} - ${lastResultPosition} of ${data.TotalResult} vehicle(s)`;
 
@@ -104,9 +109,9 @@ function renderRecordInfo(domNode, data){
 }
 
 function renderPriceSlider(lowestPriceDisplay, averagePriceDisplay, highestPriceDisplay, data){
-	lowestPriceDisplay.html(`₫&nbsp;${(Number.parseInt(data.LowestPrice) / 1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}k`);
-	averagePriceDisplay.html(`₫&nbsp;${(Number.parseInt(data.AveragePrice) / 1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}k`);
-	highestPriceDisplay.html(`₫&nbsp;${(Number.parseInt(data.HighestPrice) / 1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}k`);
+	lowestPriceDisplay.html(`₫&nbsp;${data.LowestPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
+	averagePriceDisplay.html(`₫&nbsp;${data.AveragePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
+	highestPriceDisplay.html(`₫&nbsp;${data.HighestPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
 }
 
 function renderSearcher({
@@ -136,7 +141,9 @@ function renderSearcher({
 
 			renderPriceSlider(lowestPriceDisplay, averagePriceDisplay, highestPriceDisplay, data);
 		} else {
-			recordInfo.html('<div style="font-size:2em;">No vehicle found!</div>');
+			recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
+					No vehicle fits your parameters. Please try again.
+				</div>`);
 			searchResultGrid.addClass('hidden');
 			paginator.addClass('hidden');
 		}
@@ -277,7 +284,12 @@ $(document).ready(() => {
 
 	// Brand + model filter
 	const brandModelOptionFormat = (state, container) => {
-		return $(`<span><i class="fa fa-car fa-building}"></i>&nbsp;&nbsp;${state.text}</span>`);
+		console.log(state);
+		console.log(container);
+		if(state.element.dataset.lvl == 0)
+			return $(`<span><i class="fa fa-building}"></i>&nbsp;&nbsp;${state.text}</span>`);
+		else
+			return $(`<span><i class="fa fa-car}"></i>&nbsp;&nbsp;${state.text}</span>`);
 	};
 
 	$('#modelFilter').select2({
@@ -335,8 +347,8 @@ $(document).ready(() => {
 	let priceSlider = noUiSlider.create(document.getElementById('priceFilter'), {
 		connect: true,
 		format: {
-			to: value => `₫&nbsp;${(Number.parseInt(value) / 1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}k`,
-			from: value => Number.parseInt(value.replace('₫&nbsp;', '').replace('k', '').replace(',', ''))
+			to: value => `₫&nbsp;${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+			from: value => Number.parseInt(value.replace('₫&nbsp;', '').replace(',', ''))
 		},
 		margin: 100000,
 		start: [100000, 10000000],

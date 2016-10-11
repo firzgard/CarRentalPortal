@@ -15,8 +15,8 @@ namespace CRP.Models.Entities
     public partial class Notification
     {
         public int ID { get; set; }
-        public int SenderID { get; set; }
-        public int ReceiverID { get; set; }
+        public string SenderID { get; set; }
+        public string ReceiverID { get; set; }
         public string NotificationContent { get; set; }
         public System.DateTime SentTime { get; set; }
         public bool IsRead { get; set; }
