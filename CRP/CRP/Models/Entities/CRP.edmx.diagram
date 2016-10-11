@@ -12,7 +12,6 @@
         <EntityTypeShape EntityType="CRPDBModel.Category" Width="1.5" PointX="3" PointY="34.75" />
         <EntityTypeShape EntityType="CRPDBModel.Garage" Width="1.5" PointX="3" PointY="12.5" />
         <EntityTypeShape EntityType="CRPDBModel.Location" Width="1.5" PointX="0.75" PointY="11.875" />
-        <EntityTypeShape EntityType="CRPDBModel.Model" Width="1.5" PointX="3" PointY="31.25" />
         <EntityTypeShape EntityType="CRPDBModel.ModelCategoryMapping" Width="1.5" PointX="5.25" PointY="31.5" />
         <EntityTypeShape EntityType="CRPDBModel.Nation" Width="1.5" PointX="1.5" PointY="20" />
         <EntityTypeShape EntityType="CRPDBModel.Notification" Width="1.5" PointX="3" PointY="23.75" />
@@ -26,18 +25,19 @@
         <AssociationConnector Association="CRPDBModel.FK_Notification_AspNetUsers" />
         <AssociationConnector Association="CRPDBModel.FK_Notification_AspNetUsers1" />
         <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_Vehicle" />
-        <AssociationConnector Association="CRPDBModel.FK_CarModel_CarBrand" />
         <AssociationConnector Association="CRPDBModel.FK_ModelCategoryMapping_Category" />
         <AssociationConnector Association="CRPDBModel.FK_Car_Store" />
         <AssociationConnector Association="CRPDBModel.FK_Garage_Location" />
         <AssociationConnector Association="CRPDBModel.FK_Location_Nation" />
-        <AssociationConnector Association="CRPDBModel.FK_ModelCategoryMapping_Model" />
-        <AssociationConnector Association="CRPDBModel.FK_Vehicle_Model" />
         <AssociationConnector Association="CRPDBModel.FK_PriceGroupItem_PriceGroup" />
         <AssociationConnector Association="CRPDBModel.FK_VehicleGroup_PriceGroup" />
         <AssociationConnector Association="CRPDBModel.FK_Car_CarGroup" />
         <AssociationConnector Association="CRPDBModel.FK_CarImage_Car" />
         <AssociationConnector Association="CRPDBModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="CRPDBModel.Model" Width="1.5" PointX="3" PointY="31.25" />
+        <AssociationConnector Association="CRPDBModel.FK_CarModel_CarBrand" />
+        <AssociationConnector Association="CRPDBModel.FK_ModelCategoryMapping_Model" />
+        <AssociationConnector Association="CRPDBModel.FK_Vehicle_Model" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

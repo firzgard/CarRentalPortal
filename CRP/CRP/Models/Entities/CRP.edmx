@@ -117,7 +117,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Model" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="BrandID" Type="int" Nullable="false" />
           <Property Name="NumOfDoor" Type="int" Nullable="false" />
           <Property Name="NumOfSeat" Type="int" Nullable="false" />
@@ -525,7 +525,6 @@
           <EntitySet Name="Categories" EntityType="CRPDBModel.Category" />
           <EntitySet Name="Garages" EntityType="CRPDBModel.Garage" />
           <EntitySet Name="Locations" EntityType="CRPDBModel.Location" />
-          <EntitySet Name="Models" EntityType="CRPDBModel.Model" />
           <EntitySet Name="ModelCategoryMappings" EntityType="CRPDBModel.ModelCategoryMapping" />
           <EntitySet Name="Nations" EntityType="CRPDBModel.Nation" />
           <EntitySet Name="Notifications" EntityType="CRPDBModel.Notification" />
@@ -554,10 +553,6 @@
             <End Role="Vehicle" EntitySet="Vehicles" />
             <End Role="BookingReceipt" EntitySet="BookingReceipts" />
           </AssociationSet>
-          <AssociationSet Name="FK_CarModel_CarBrand" Association="CRPDBModel.FK_CarModel_CarBrand">
-            <End Role="Brand" EntitySet="Brands" />
-            <End Role="Model" EntitySet="Models" />
-          </AssociationSet>
           <AssociationSet Name="FK_ModelCategoryMapping_Category" Association="CRPDBModel.FK_ModelCategoryMapping_Category">
             <End Role="Category" EntitySet="Categories" />
             <End Role="ModelCategoryMapping" EntitySet="ModelCategoryMappings" />
@@ -573,14 +568,6 @@
           <AssociationSet Name="FK_Location_Nation" Association="CRPDBModel.FK_Location_Nation">
             <End Role="Nation" EntitySet="Nations" />
             <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-          <AssociationSet Name="FK_ModelCategoryMapping_Model" Association="CRPDBModel.FK_ModelCategoryMapping_Model">
-            <End Role="Model" EntitySet="Models" />
-            <End Role="ModelCategoryMapping" EntitySet="ModelCategoryMappings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Vehicle_Model" Association="CRPDBModel.FK_Vehicle_Model">
-            <End Role="Model" EntitySet="Models" />
-            <End Role="Vehicle" EntitySet="Vehicles" />
           </AssociationSet>
           <AssociationSet Name="FK_PriceGroupItem_PriceGroup" Association="CRPDBModel.FK_PriceGroupItem_PriceGroup">
             <End Role="PriceGroup" EntitySet="PriceGroups" />
@@ -601,6 +588,19 @@
           <AssociationSet Name="AspNetUserRoles" Association="CRPDBModel.AspNetUserRoles">
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="Models" EntityType="CRPDBModel.Model" />
+          <AssociationSet Name="FK_CarModel_CarBrand" Association="CRPDBModel.FK_CarModel_CarBrand">
+            <End Role="Brand" EntitySet="Brands" />
+            <End Role="Model" EntitySet="Models" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ModelCategoryMapping_Model" Association="CRPDBModel.FK_ModelCategoryMapping_Model">
+            <End Role="Model" EntitySet="Models" />
+            <End Role="ModelCategoryMapping" EntitySet="ModelCategoryMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Vehicle_Model" Association="CRPDBModel.FK_Vehicle_Model">
+            <End Role="Model" EntitySet="Models" />
+            <End Role="Vehicle" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="AspNetRole">
@@ -717,19 +717,6 @@
           <NavigationProperty Name="Garages" Relationship="CRPDBModel.FK_Garage_Location" FromRole="Location" ToRole="Garage" />
           <NavigationProperty Name="Nation" Relationship="CRPDBModel.FK_Location_Nation" FromRole="Location" ToRole="Nation" />
         </EntityType>
-        <EntityType Name="Model">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Model1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="BrandID" Type="Int32" Nullable="false" />
-          <Property Name="NumOfDoor" Type="Int32" Nullable="false" />
-          <Property Name="NumOfSeat" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Brand" Relationship="CRPDBModel.FK_CarModel_CarBrand" FromRole="Model" ToRole="Brand" />
-          <NavigationProperty Name="ModelCategoryMappings" Relationship="CRPDBModel.FK_ModelCategoryMapping_Model" FromRole="Model" ToRole="ModelCategoryMapping" />
-          <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Vehicle_Model" FromRole="Model" ToRole="Vehicle" />
-        </EntityType>
         <EntityType Name="ModelCategoryMapping">
           <Key>
             <PropertyRef Name="ID" />
@@ -801,9 +788,9 @@
           <Property Name="Star" Type="Decimal" Nullable="false" Precision="2" Scale="1" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="Vehicle" ToRole="BookingReceipt" />
           <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_Car_Store" FromRole="Vehicle" ToRole="Garage" />
-          <NavigationProperty Name="Model" Relationship="CRPDBModel.FK_Vehicle_Model" FromRole="Vehicle" ToRole="Model" />
           <NavigationProperty Name="VehicleGroup" Relationship="CRPDBModel.FK_Car_CarGroup" FromRole="Vehicle" ToRole="VehicleGroup" />
           <NavigationProperty Name="VehicleImages" Relationship="CRPDBModel.FK_CarImage_Car" FromRole="Vehicle" ToRole="VehicleImage" />
+          <NavigationProperty Name="Model" Relationship="CRPDBModel.FK_Vehicle_Model" FromRole="Vehicle" ToRole="Model" />
         </EntityType>
         <EntityType Name="VehicleGroup">
           <Key>
@@ -886,18 +873,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CarModel_CarBrand">
-          <End Type="CRPDBModel.Brand" Role="Brand" Multiplicity="1" />
-          <End Type="CRPDBModel.Model" Role="Model" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Brand">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Model">
-              <PropertyRef Name="BrandID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_ModelCategoryMapping_Category">
           <End Type="CRPDBModel.Category" Role="Category" Multiplicity="1" />
           <End Type="CRPDBModel.ModelCategoryMapping" Role="ModelCategoryMapping" Multiplicity="*" />
@@ -943,30 +918,6 @@
             </Principal>
             <Dependent Role="Location">
               <PropertyRef Name="NationID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_ModelCategoryMapping_Model">
-          <End Type="CRPDBModel.Model" Role="Model" Multiplicity="1" />
-          <End Type="CRPDBModel.ModelCategoryMapping" Role="ModelCategoryMapping" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Model">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ModelCategoryMapping">
-              <PropertyRef Name="ModelID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Vehicle_Model">
-          <End Type="CRPDBModel.Model" Role="Model" Multiplicity="1" />
-          <End Type="CRPDBModel.Vehicle" Role="Vehicle" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Model">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="Vehicle">
-              <PropertyRef Name="ModelID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1021,6 +972,55 @@
         <Association Name="AspNetUserRoles">
           <End Type="CRPDBModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Model">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BrandID" Type="Int32" Nullable="false" />
+          <Property Name="NumOfDoor" Type="Int32" Nullable="false" />
+          <Property Name="NumOfSeat" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Brand" Relationship="CRPDBModel.FK_CarModel_CarBrand" FromRole="Model" ToRole="Brand" />
+          <NavigationProperty Name="ModelCategoryMappings" Relationship="CRPDBModel.FK_ModelCategoryMapping_Model" FromRole="Model" ToRole="ModelCategoryMapping" />
+          <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Vehicle_Model" FromRole="Model" ToRole="Vehicle" />
+        </EntityType>
+        <Association Name="FK_CarModel_CarBrand">
+          <End Type="CRPDBModel.Brand" Role="Brand" Multiplicity="1" />
+          <End Type="CRPDBModel.Model" Role="Model" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Brand">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Model">
+              <PropertyRef Name="BrandID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ModelCategoryMapping_Model">
+          <End Type="CRPDBModel.Model" Role="Model" Multiplicity="1" />
+          <End Type="CRPDBModel.ModelCategoryMapping" Role="ModelCategoryMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Model">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ModelCategoryMapping">
+              <PropertyRef Name="ModelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Vehicle_Model">
+          <End Type="CRPDBModel.Model" Role="Model" Multiplicity="1" />
+          <End Type="CRPDBModel.Vehicle" Role="Vehicle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Model">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Vehicle">
+              <PropertyRef Name="ModelID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1134,17 +1134,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Models">
-            <EntityTypeMapping TypeName="CRPDBModel.Model">
-              <MappingFragment StoreEntitySet="Model">
-                <ScalarProperty Name="NumOfSeat" ColumnName="NumOfSeat" />
-                <ScalarProperty Name="NumOfDoor" ColumnName="NumOfDoor" />
-                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
-                <ScalarProperty Name="Model1" ColumnName="Model" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="ModelCategoryMappings">
             <EntityTypeMapping TypeName="CRPDBModel.ModelCategoryMapping">
               <MappingFragment StoreEntitySet="ModelCategoryMapping">
@@ -1241,6 +1230,17 @@
               <ScalarProperty Name="Id" ColumnName="RoleId" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="Models">
+            <EntityTypeMapping TypeName="CRPDBModel.Model">
+              <MappingFragment StoreEntitySet="Model">
+                <ScalarProperty Name="NumOfSeat" ColumnName="NumOfSeat" />
+                <ScalarProperty Name="NumOfDoor" ColumnName="NumOfDoor" />
+                <ScalarProperty Name="BrandID" ColumnName="BrandID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
