@@ -27,7 +27,7 @@ namespace CRP.Models.Entities.Services
                 || (startTime <= q.StartTime && endTime >= q.EndTime)) );
             return list.Count() == 0;
         }
-        public BookingReceiptModel GetBookingHistory(int customerID, int page, int recordPerPage)
+        public BookingReceiptModel GetBookingHistory(string customerID, int page, int recordPerPage)
         {
             BookingReceiptModel bookingModel = new BookingReceiptModel();
             var bookingRecieptList = this.repository.Get();

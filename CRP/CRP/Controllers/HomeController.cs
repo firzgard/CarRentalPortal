@@ -10,9 +10,8 @@ using CRP.Models.ViewModels;
 
 namespace CRP.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : BaseController
 	{
-		VehicleService vehicleService = new VehicleService();
 
 		// Route to homepage
 		public ActionResult Index()
@@ -41,6 +40,7 @@ namespace CRP.Controllers
 		[Route("api/search", Name = "SearchVehiclesAPI")]
 		public ActionResult SearchVehiclesAPI(SearchConditionModel searchConditions)
 		{
+            var service = this.Service<IVehicleService>();
 			if (searchConditions == null
 					|| searchConditions.StartTime == null
 					|| searchConditions.EndTime == null
@@ -49,7 +49,7 @@ namespace CRP.Controllers
 
 			Response.StatusCode = 200;
 			Response.StatusDescription = "Queried successfully";
-			SearchResultJsonModel searchResult = vehicleService.FindToBook(searchConditions);
+			SearchResultJsonModel searchResult = service.FindToBook(searchConditions);
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}
 	}

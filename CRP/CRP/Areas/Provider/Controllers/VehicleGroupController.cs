@@ -47,7 +47,7 @@ namespace CRP.Areas.Provider.Controllers
                 q.ID,
                 q.Name,
                 q.MaxRentalPeriod != null ? q.MaxRentalPeriod : null,
-                q.PriceGroup.Deposit,
+                q.PriceGroup.DepositPercentage,
                 q.PriceGroup.PerDayPrice,
                 q.Vehicles.Count,
                 q.IsActive

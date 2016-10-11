@@ -8,16 +8,17 @@ using System.Web;
 using System.Web.Mvc;
 using System.Timers;
 using System.Threading;
+using CRP.Controllers;
 
 namespace CRP.Areas.Customer.Controllers
 {
-	public class BookingController : Controller
+	public class BookingController : BaseController
 	{
-        BookingReceiptService _service = new BookingReceiptService();
 		// Route to bookingConfirm page (Page for confirming booking details before paying)
 		[Route("bookingConfirm")]
 		public ViewResult BookingConfirm()
 		{
+            /*
             //dau moa chua ro xu ly sao, chua lam
             string CustomerID = Request.Params["UserID"];
             int VehicleID = int.Parse(Request.Params["VehicleID"]);
@@ -46,7 +47,7 @@ namespace CRP.Areas.Customer.Controllers
             //goi api thanh toan, neu ok, thi xet ispending = false, +
 
             //sau 5 phut kiem tra neu ispending = false thi ko co gi, con is peding = true thi delete booking va return message overtime
-            checkisPending(bookingID);
+            checkisPending(bookingID);*/
             
             return View("~/Areas/CuopenTimeMonstomer/Views/Booking/BookingHistory.cshtml");
 		}
@@ -59,6 +60,7 @@ namespace CRP.Areas.Customer.Controllers
         //cho nay nen return json, de xu ly
         private void deleteBooking(int bookingID)
         {
+            /*
             TimeSpan span = new TimeSpan(0, 0, 5, 0);
             Thread.Sleep(span);
             Boolean isDelete = _service.IsPending(bookingID);
@@ -68,12 +70,13 @@ namespace CRP.Areas.Customer.Controllers
             } else
             {
                 Thread.ResetAbort();
-            }
+            }*/
         }
         // Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
         [Route("bookingReceipt")]
 		public ViewResult BookingReceipt()
 		{
+            /*
             //lay thong tin booking moi nhat cua thang user
             string CustomerID = "1";
             BookingReceipt lastBooking = _service.getLastBooking(CustomerID);
@@ -91,7 +94,7 @@ namespace CRP.Areas.Customer.Controllers
             {
                 _service.delete(lastBooking.ID);
                 ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
-            }
+            }*/
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
@@ -99,16 +102,16 @@ namespace CRP.Areas.Customer.Controllers
 		[Route("management/bookingHistory")]
 		public ViewResult BookingHistory()
 		{
-            //
+            /*
             //Lay ID cua thang User hien hanh
             string userID = "1";
             //lay tat booking cua thang User hien hanh
             List<BookingReceipt> lstBooking = new List<BookingReceipt>();
             lstBooking = _service.getByUser(userID);
-            ViewBag.BookingList = lstBooking;
+            ViewBag.BookingList = lstBooking;*/
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
-
+        /*
         // API route for getting this user's booking receipts
         // Pagination needed
         // Order by startTime, from newer to older
@@ -211,6 +214,6 @@ namespace CRP.Areas.Customer.Controllers
                 jsonResult.Message = "Error!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 	}
 }

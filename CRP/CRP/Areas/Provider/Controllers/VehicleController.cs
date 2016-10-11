@@ -7,41 +7,38 @@ using System.Web.Mvc;
 using CRP.Models.Entities.Services;
 using CRP.Models.Entities;
 using CRP.Models.JsonModels;
+using CRP.Controllers;
+using CRP.Models;
+using System.Threading.Tasks;
 
 namespace CRP.Areas.Provider.Controllers
 {
-	public class VehicleController : Controller
+	public class VehicleController : BaseController
 	{
-        VehicleService Service = new VehicleService();
-        ModelService serviceModel = new ModelService();
-        BrandService serviceBrand = new BrandService();
-        GarageService serviceGara = new GarageService();
-        BookingReceiptService serviceBook = new BookingReceiptService();
+        //VehicleService Service = new VehicleService();
+        //ModelService serviceModel = new ModelService();
+        //BrandService serviceBrand = new BrandService();
+        //GarageService serviceGara = new GarageService();
+        //BookingReceiptService serviceBook = new BookingReceiptService();
 
 		// Route to vehicleManagement page
 		[Route("management/vehicleManagement")]
 		public ViewResult VehicleManagement()
 		{
+            var service = this.Service<IVehicleService>();
             List<Vehicle> lstVehicle = new List<Vehicle>();
-            lstVehicle = Service.GetAll();
-            ViewBag.vehiList = lstVehicle;
-            return View("~/Areas/Provider/Views/Vehicle/VehicleManagement.cshtml");
+            lstVehicle = service.Get().ToList();
+            //ViewBag.vehiList = lstVehicle;
+            return View("~/Areas/Provider/Views/Vehicle/VehicleManagement.cshtml", lstVehicle);
 		}
 
 		// Route to vehicle's detailed info page
 		[Route("management/vehicleManagement/{id:int}")]
 		public ViewResult VehihicleDetail(int id)
 		{
-            Vehicle vehicle = Service.FindByID(id);
-            if (vehicle != null)
-            {
-                ViewBag.vehiDetail = vehicle;
-            }
-            else
-            {
-                return View("errorNull");
-            }
-            return View("~/Areas/Provider/Views/Vehicle/VehicleDetail.cshtml");
+            var service = this.Service<IVehicleService>();
+            Vehicle vehicle = service.Get(id);
+            return View("~/Areas/Provider/Views/Vehicle/VehicleDetail.cshtml", vehicle);
 		}
 
 		// API Route to get a list of vehicle to populate vehicleTable
@@ -51,7 +48,8 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetVehicleListAPI(VehicleFilterCondition filterConditions)
 		{
-            List<VehicleModel> Vehicles = Service.VehicleFilter(filterConditions);
+            var service = this.Service<IVehicleService>();
+            List<VehicleModel> Vehicles = service.VehicleFilter(filterConditions);
 
             return Json( new { aaData = Vehicles }, JsonRequestBehavior.AllowGet);
 		}
@@ -90,7 +88,7 @@ namespace CRP.Areas.Provider.Controllers
         }*/
 
 		// API Route to create single new vehicles
-		[Route("api/vehicles")]
+		/*[Route("api/vehicles")]
 		[HttpPost]
 		public JsonResult CreateVehicleAPI()
 		{
@@ -154,17 +152,19 @@ namespace CRP.Areas.Provider.Controllers
                 jsonResult.Message = "Creare failed!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 
 		// API Route to delete 1 or multiple vehicles
 		[Route("api/vehicles")]
 		[HttpDelete]
-		public JsonResult DeleteVehiclesAPI(int id)
+		public async Task<JsonResult> DeleteVehiclesAPI(int id)
 		{
+            var service = this.Service<IVehicleService>();
             MessageJsonModel jsonResult = new MessageJsonModel();
-            Boolean result = Service.Delete(id);
-            if (result)
+            var entity = await service.GetAsync(id);
+            if (entity != null)
             {
+                await service.DeleteAsync(entity);
                 jsonResult.Status = 1;
                 jsonResult.Message = "Deleted successfully!";
             }
@@ -181,15 +181,16 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPatch]
 		public JsonResult ChangeGarageAPI(int garageID, List<int> listVehicleId)
 		{
-            List<Vehicle> lstVehicle = Service.GetAll();
+            var service = this.Service<IVehicleService>();
+            List<Vehicle> lstVehicle = service.Get().ToList();
             List<Vehicle> listVehicleNeedChange = new List<Vehicle>();
             // 1 2 3 5 8 
-            foreach (var item in listVehicleId)
+            /*foreach (var item in listVehicleId)
             {
                 Vehicle v = lstVehicle.FirstOrDefault(a => a.ID == item);
                 v.GarageID = garageID;
                 Service.UpdateVehicle(v);
-            }
+            }*/
             
             return Json(lstVehicle, JsonRequestBehavior.AllowGet);
 		}
@@ -199,14 +200,15 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPatch]
 		public JsonResult ChangeGroupAPI(int groupID, List<int> listVehicleId)
 		{
-            List<Vehicle> lstVehicle = Service.GetAll();
+            var service = this.Service<IVehicleService>();
+            List<Vehicle> lstVehicle = service.Get().ToList();
             List<Vehicle> listVehicleNeedChange = new List<Vehicle>();
-            foreach (var item in listVehicleId)
+            /*foreach (var item in listVehicleId)
             {
                 Vehicle v = lstVehicle.FirstOrDefault(a => a.ID == item);
                 v.VehicleGroupID = groupID;
                 Service.UpdateVehicle(v);
-            }
+            }*/
             return Json(lstVehicle, JsonRequestBehavior.AllowGet);
 		}
 
@@ -217,16 +219,18 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult CreateBookingAPI(int vehiceID, int page = 1)
 		{
-            List<BookingReceipt> br = serviceBook.findByVehicle(vehiceID);
+            var service = this.Service<IBookingReceiptService>();
+            List<BookingReceipt> br = service.Get(q => q.VehicleID == vehiceID).ToList();
             br.Sort((x, y) => DateTime.Compare(x.StartTime, y.StartTime));
 			return Json(br, JsonRequestBehavior.AllowGet);
 		}
 
 		// API route for creating an own booking
-		[Route("api/vehicles/bookings/{vehiceID:int}")]
+		/*[Route("api/vehicles/bookings/{vehiceID:int}")]
 		[HttpPost]
 		public JsonResult CreateBookingAPI(int vehiceID)
 		{
+            var service = this.Service<IBookingReceiptService>();
             MessageJsonModel jsonResult = new MessageJsonModel();
             string vehicleName = Request.Params["VehicleName"];
             DateTime startTime = DateTime.Parse(Request.Params["StartTime"]);
@@ -245,15 +249,16 @@ namespace CRP.Areas.Provider.Controllers
                 jsonResult.Message = "Creare failed!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 
 		// API route for canceling an own booking
 		[Route("api/vehicles/bookings/{receiptID:int}")]
 		[HttpDelete]
 		public JsonResult CancelBookingAPI(int receiptID)
 		{
+            var service = this.Service<IBookingReceiptService>();
             MessageJsonModel jsonResult = new MessageJsonModel();
-            BookingReceipt br = serviceBook.findByID(receiptID);
+            BookingReceipt br = service.Get(receiptID);
             //while(serviceBook.CheckVehicleAvailability(br.VehicleID, br.StartTime, br.EndTime))
             //{
             //    Boolean result = service.delete(receiptID);
