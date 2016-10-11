@@ -74,7 +74,7 @@ namespace CRP.Areas.Provider.Controllers
 		public JsonResult CreateGarageAPI()
 		{
 			MessageJsonModel jsonResult = new MessageJsonModel();
-			int OwnreID = int.Parse(Request.Params["UserID"]);
+			string OwnerID = Request.Params["UserID"];
 			string Name = Request.Params["garageName"];
 			int LocationID = int.Parse(Request.Params["locationID"]);
 			string Address = Request.Params["address"];
@@ -97,7 +97,7 @@ namespace CRP.Areas.Provider.Controllers
 			DateTime closeTimeSun = setDayFromParam(Request.Params["closeTimeSun"]);
 
 			Garage newGarage = new Garage();
-			newGarage.OwnerID = OwnreID;
+			newGarage.OwnerID = OwnerID;
 			newGarage.Name = Name;
 			newGarage.LocationID = LocationID;
 			newGarage.Address = Address;

@@ -25,7 +25,7 @@ namespace CRP.Models.Entities
         public string LicenseNumber { get; set; }
         public string Name { get; set; }
         public int ModelID { get; set; }
-        public Nullable<int> Year { get; set; }
+        public int Year { get; set; }
         public int GarageID { get; set; }
         public Nullable<int> VehicleGroupID { get; set; }
         public int TransmissionType { get; set; }
@@ -39,9 +39,9 @@ namespace CRP.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookingReceipt> BookingReceipts { get; set; }
         public virtual Garage Garage { get; set; }
+        public virtual Model Model { get; set; }
         public virtual VehicleGroup VehicleGroup { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VehicleImage> VehicleImages { get; set; }
-        public virtual Model Model { get; set; }
     }
 }

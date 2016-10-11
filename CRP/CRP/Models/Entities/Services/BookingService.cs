@@ -107,17 +107,17 @@ namespace CRP.Models.Entities.Services
             List<BookingReceipt> bookingReceiptList = _repository.findBookingOfVehicleInPeriod(vehicleID, startTime, endTime);
             return bookingReceiptList.Count() == 0;
         }
-        public List<BookingReceipt> getByUser(int UserID)
+        public List<BookingReceipt> getByUser(string UserID)
         {
             List<BookingReceipt> lstBooking = _repository.getByUser(UserID);
             return lstBooking;
         }
-        public List<BookingReceipt> getBookingOfUserWithRecord(int customerID, int record)
+        public List<BookingReceipt> getBookingOfUserWithRecord(string customerID, int record)
         {
             List<BookingReceipt> lstBooking = _repository.getBookingOfUserWithRecord(customerID, record);
             return lstBooking;
         }
-        public int getNumberPage(int CustomerID)
+        public int getNumberPage(string CustomerID)
         {
             int numberPage = _repository.getNumberPage(CustomerID);
             return numberPage;
@@ -168,7 +168,7 @@ namespace CRP.Models.Entities.Services
             return lstBookingDuring;
         }
         //xoa
-        public BookingReceipt getLastBooking(int customerID)
+        public BookingReceipt getLastBooking(string customerID)
         {
             BookingReceipt lastBooking = _repository.getLastBooking(customerID);
             return lastBooking;

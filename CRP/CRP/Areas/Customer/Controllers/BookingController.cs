@@ -19,7 +19,7 @@ namespace CRP.Areas.Customer.Controllers
 		public ViewResult BookingConfirm()
 		{
             //dau moa chua ro xu ly sao, chua lam
-            int CustomerID = int.Parse(Request.Params["UserID"]);
+            string CustomerID = Request.Params["UserID"];
             int VehicleID = int.Parse(Request.Params["VehicleID"]);
             //can 1 api de xu ly ca totalprice
             float TotalPrice = float.Parse(Request.Params["TotalPrice"]);
@@ -33,7 +33,7 @@ namespace CRP.Areas.Customer.Controllers
             BookingReceipt booking = new BookingReceipt();
             booking.CustomerID = CustomerID;
             booking.VehicleID = VehicleID;
-            booking.TotalPrice = TotalPrice;
+            booking.RentalPrice = TotalPrice;
             booking.BookingFee = BookingFee;
             booking.VehicleName = VehicleName;
             booking.GarageName = GarageName;
@@ -75,7 +75,7 @@ namespace CRP.Areas.Customer.Controllers
 		public ViewResult BookingReceipt()
 		{
             //lay thong tin booking moi nhat cua thang user
-            int CustomerID = 1;
+            string CustomerID = "1";
             BookingReceipt lastBooking = _service.getLastBooking(CustomerID);
             //khi addBooking thi xuat ra ID
             Boolean paySuccess = true;
@@ -101,7 +101,7 @@ namespace CRP.Areas.Customer.Controllers
 		{
             //
             //Lay ID cua thang User hien hanh
-            int userID = 1;
+            string userID = "1";
             //lay tat booking cua thang User hien hanh
             List<BookingReceipt> lstBooking = new List<BookingReceipt>();
             lstBooking = _service.getByUser(userID);
@@ -117,7 +117,7 @@ namespace CRP.Areas.Customer.Controllers
         public JsonResult GetBookingReceiptAPI(int page = 1)
         {
             //lay id user
-            int customerID = 1;
+            string customerID = "1";
             //set cung 10 record la 1 page
             int numberPage = (int) Math.Ceiling((_service.getNumberPage(customerID))/10.0);
             List<BookingReceipt> lstBooking = new List<BookingReceipt>();
@@ -137,7 +137,7 @@ namespace CRP.Areas.Customer.Controllers
                 jsonBooking.GarageName = p.GarageName;
                 jsonBooking.IsCanceled = p.IsCanceled;
                 jsonBooking.Star = p.Star.GetValueOrDefault();
-                jsonBooking.TotalPrice = p.TotalPrice;
+                jsonBooking.TotalPrice = p.RentalPrice;
                 jsonBooking.StartTime = p.StartTime;
                 jsonBooking.EndTime = p.EndTime;
                 jsonBooking.numberPage = numberPage;

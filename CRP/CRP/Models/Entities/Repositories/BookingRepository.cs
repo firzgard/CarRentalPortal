@@ -64,7 +64,7 @@ namespace CRP.Models.Entities.Repositories
 			_dataContext.Entry(entity).State = System.Data.Entity.EntityState.Modified;
 			_dataContext.SaveChanges();
 		}
-		public List<BookingReceipt> getByUser(int userID)
+		public List<BookingReceipt> getByUser(string userID)
 		{
 			var query = (from r in _dataContext.BookingReceipts where r.CustomerID == userID select r).ToList<BookingReceipt>();
 			return query;
@@ -75,21 +75,21 @@ namespace CRP.Models.Entities.Repositories
 			return query;
 		}
 		
-		public List<BookingReceipt> getBookingOfUserWithRecord(int customerID, int record)
+		public List<BookingReceipt> getBookingOfUserWithRecord(string customerID, int record)
 		{
 			var query = (from r in _dataContext.BookingReceipts where r.CustomerID == customerID orderby r.ID descending select r).Skip((record - 1) * 10).Take(10).ToList<BookingReceipt>();
 			return query;
 		}
 
 		//getNumberPAge
-		public int getNumberPage(int customerID)
+		public int getNumberPage(string customerID)
 		{
 			var query = (from r in _dataContext.BookingReceipts where r.CustomerID == customerID select r).Count();
 			return query;
 		}
 
 		//chua chac, lay booking moi nhat cua no
-		public BookingReceipt getLastBooking(int customerID)
+		public BookingReceipt getLastBooking(string customerID)
 		{
 			var query = (from r in _dataContext.BookingReceipts where r.CustomerID == customerID orderby r.ID descending select r).FirstOrDefault();
 			return query;
