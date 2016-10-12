@@ -8,24 +8,23 @@ using System.Web;
 using System.Web.Mvc;
 using System.Timers;
 using System.Threading;
+using CRP.Controllers;
 
 namespace CRP.Areas.Customer.Controllers
 {
-	public class BookingController : Controller
+	public class BookingController : BaseController
 	{
-        BookingService _service = new BookingService();
 		// Route to bookingConfirm page (Page for confirming booking details before paying)
 		[Route("bookingConfirm")]
 		public ViewResult BookingConfirm()
 		{
+            /*
             //dau moa chua ro xu ly sao, chua lam
-            int CustomerID = int.Parse(Request.Params["UserID"]);
+            string CustomerID = Request.Params["UserID"];
             int VehicleID = int.Parse(Request.Params["VehicleID"]);
             //can 1 api de xu ly ca totalprice
             float TotalPrice = float.Parse(Request.Params["TotalPrice"]);
             float BookingFee = float.Parse(Request.Params["BookingFee"]);
-            //deposit tinh lai
-            float Deposit = float.Parse(Request.Params["Deposit"]);
             string VehicleName = Request.Params["VehicleName"];
             string GarageName = Request.Params["GarageName"];
             string GarageAddress = Request.Params["GarageAddress"];
@@ -35,9 +34,8 @@ namespace CRP.Areas.Customer.Controllers
             BookingReceipt booking = new BookingReceipt();
             booking.CustomerID = CustomerID;
             booking.VehicleID = VehicleID;
-            booking.TotalPrice = TotalPrice;
+            booking.RentalPrice = TotalPrice;
             booking.BookingFee = BookingFee;
-            booking.Deposit = Deposit;
             booking.VehicleName = VehicleName;
             booking.GarageName = GarageName;
             booking.GarageAddress = GarageAddress;
@@ -49,7 +47,7 @@ namespace CRP.Areas.Customer.Controllers
             //goi api thanh toan, neu ok, thi xet ispending = false, +
 
             //sau 5 phut kiem tra neu ispending = false thi ko co gi, con is peding = true thi delete booking va return message overtime
-            checkisPending(bookingID);
+            checkisPending(bookingID);*/
             
             return View("~/Areas/CuopenTimeMonstomer/Views/Booking/BookingHistory.cshtml");
 		}
@@ -62,7 +60,7 @@ namespace CRP.Areas.Customer.Controllers
         //cho nay nen return json, de xu ly
         private void deleteBooking(int bookingID)
         {
-            // set 5 phut roi kiem tra
+            /*
             TimeSpan span = new TimeSpan(0, 0, 5, 0);
             Thread.Sleep(span);
             Boolean isDelete = _service.IsPending(bookingID);
@@ -72,14 +70,15 @@ namespace CRP.Areas.Customer.Controllers
             } else
             {
                 Thread.ResetAbort();
-            }
+            }*/
         }
         // Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
         [Route("bookingReceipt")]
 		public ViewResult BookingReceipt()
 		{
+            /*
             //lay thong tin booking moi nhat cua thang user
-            int CustomerID = 1;
+            string CustomerID = "1";
             BookingReceipt lastBooking = _service.getLastBooking(CustomerID);
             //khi addBooking thi xuat ra ID
             Boolean paySuccess = true;
@@ -95,7 +94,7 @@ namespace CRP.Areas.Customer.Controllers
             {
                 _service.delete(lastBooking.ID);
                 ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
-            }
+            }*/
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
@@ -103,16 +102,16 @@ namespace CRP.Areas.Customer.Controllers
 		[Route("management/bookingHistory")]
 		public ViewResult BookingHistory()
 		{
-            //
+            /*
             //Lay ID cua thang User hien hanh
-            int userID = 1;
+            string userID = "1";
             //lay tat booking cua thang User hien hanh
             List<BookingReceipt> lstBooking = new List<BookingReceipt>();
             lstBooking = _service.getByUser(userID);
-            ViewBag.BookingList = lstBooking;
+            ViewBag.BookingList = lstBooking;*/
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
-
+        /*
         // API route for getting this user's booking receipts
         // Pagination needed
         // Order by startTime, from newer to older
@@ -121,7 +120,7 @@ namespace CRP.Areas.Customer.Controllers
         public JsonResult GetBookingReceiptAPI(int page = 1)
         {
             //lay id user
-            int customerID = 1;
+            string customerID = "1";
             //set cung 10 record la 1 page
             int numberPage = (int) Math.Ceiling((_service.getNumberPage(customerID))/10.0);
             List<BookingReceipt> lstBooking = new List<BookingReceipt>();
@@ -135,14 +134,13 @@ namespace CRP.Areas.Customer.Controllers
                 jsonBooking.VehicleID = (int) p.VehicleID;
                 jsonBooking.VehicleName = p.VehicleName;
                 jsonBooking.BookingFee = p.BookingFee;
-                jsonBooking.Deposit = p.Deposit.GetValueOrDefault();
                 jsonBooking.CustomerID = p.CustomerID;
                 jsonBooking.Comment = p.Comment;
                 jsonBooking.GarageAddress = p.GarageAddress;
                 jsonBooking.GarageName = p.GarageName;
                 jsonBooking.IsCanceled = p.IsCanceled;
                 jsonBooking.Star = p.Star.GetValueOrDefault();
-                jsonBooking.TotalPrice = p.TotalPrice;
+                jsonBooking.TotalPrice = p.RentalPrice;
                 jsonBooking.StartTime = p.StartTime;
                 jsonBooking.EndTime = p.EndTime;
                 jsonBooking.numberPage = numberPage;
@@ -157,6 +155,7 @@ namespace CRP.Areas.Customer.Controllers
 		[HttpGet]
 		public JsonResult GetBookingCalendarAPI(int vehicleID)
 		{
+            checkisPending(6);
             List<BookingReceipt> booking = _service.findByVehicle(vehicleID);
             List<VehicleCalendarModel> jsonBookings = new List<VehicleCalendarModel>();
             foreach (BookingReceipt p in booking)
@@ -215,6 +214,6 @@ namespace CRP.Areas.Customer.Controllers
                 jsonResult.Message = "Error!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }
+        }*/
 	}
 }
