@@ -24,6 +24,7 @@ namespace CRP.Areas.Customer.Controllers
             //can 1 api de xu ly ca totalprice
             float TotalPrice = float.Parse(Request.Params["TotalPrice"]);
             float BookingFee = float.Parse(Request.Params["BookingFee"]);
+            //deposit tinh lai
             float Deposit = float.Parse(Request.Params["Deposit"]);
             string VehicleName = Request.Params["VehicleName"];
             string GarageName = Request.Params["GarageName"];
@@ -156,7 +157,6 @@ namespace CRP.Areas.Customer.Controllers
 		[HttpGet]
 		public JsonResult GetBookingCalendarAPI(int vehicleID)
 		{
-            checkisPending(6);
             List<BookingReceipt> booking = _service.findByVehicle(vehicleID);
             List<VehicleCalendarModel> jsonBookings = new List<VehicleCalendarModel>();
             foreach (BookingReceipt p in booking)
