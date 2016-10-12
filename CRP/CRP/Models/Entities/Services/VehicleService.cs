@@ -122,7 +122,7 @@ namespace CRP.Models.Entities.Services
 					v => searchConditions.LocationIDList.Contains(v.Garage.LocationID))
 				.ToList();
 
-			if (searchConditions.BrandIDList != null || searchConditions.ModelIDList != null)
+			if (searchConditions.BrandIDList.Any() || searchConditions.ModelIDList.Any())
 				vehicles = vehicles.Where(v => searchConditions.BrandIDList.Contains(v.Model.BrandID)
 								|| searchConditions.ModelIDList.Contains(v.ModelID)).ToList();
 

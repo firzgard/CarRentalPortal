@@ -21,8 +21,13 @@ namespace CRP.Models.ViewModels
 			LocationList = locationService.Get().OrderBy(l => l.Name).ToList();
 
 			BrandService brandService = new BrandService();
-			BrandList = brandService.Get(b => b.ID != 1).OrderBy(b => b.Name).ToList();
-			foreach(Brand brand in BrandList)
+			BrandList = brandService.Get(
+				b => b.ID != 1 // Not unlisted
+				&& b.Models.Where(m => m.Vehicles.Any()).Any() // check if it has any model and vehicle
+			).OrderBy(b => b.Name).ToList();
+
+			// Reorder each brand's models by name
+			foreach (Brand brand in BrandList)
 			{
 				brand.Models = brand.Models.OrderBy(m => m.Name).ToList();
 			}

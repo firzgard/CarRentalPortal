@@ -18,6 +18,13 @@ body {
 
 /* ====================================== */
 /* Filters */
+#filters .panel-heading {
+    color: black;
+	background-color: #B2DFDB;
+    font-size: 1.5em;
+    text-shadow: 0 1px 1px white;
+}
+
 .input-group-addon {
 	font-weight: bold;
 	text-align: left;
@@ -28,8 +35,12 @@ body {
 	margin: 1em 2em 0;
 }
 
-#colorSelector .fa-car, .select2-results .fa-car {
+#custom-select2 .fa, .select2-results .fa {
 	font-size: 1.2em;
+}
+
+.select2-container--default .select2-results__option[aria-disabled=true] {
+    display: none;
 }
 
 .result-count {
@@ -58,8 +69,9 @@ body {
 	width: 100%;
 }
 
-.carousel-control{
+.carousel-control, .carousel-control:focus{
 	opacity: 0;
+	transition-duration: 0.5s
 }
 
 .vehicle-info {

@@ -16,8 +16,8 @@ namespace CRP.Models.JsonModels
 		public double? MaxPrice { get; set; }
 		public double? MinPrice { get; set; }
 		public int[] LocationIDList { get; set; }
-		public int[] BrandIDList { get; set; }
-		public int[] ModelIDList { get; set; }
+		public int[] BrandIDList { get; set; } = new int[0];
+		public int[] ModelIDList { get; set; } = new int[0];
 		public int[] VehicleTypeList { get; set; }
 		public int[] NumberOfSeatList { get; set; }
 		public int[] TransmissionTypeIDList { get; set; }
