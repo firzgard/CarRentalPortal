@@ -1,131 +1,163 @@
 ﻿@using CRP.Models
 @using CRP.Models.Entities
+@using CRP.Models.ViewModels
 
-@model List<CRP.Models.Entities.Location>
+@model SearchPageViewModel
 
 @{
-		ViewBag.Title = "Search";
+	ViewBag.Title = "Search";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="wrapper-content row" style="padding-bottom: 20px;position: relative;height: calc(100vh - 100px);">
+<div class="wrapper-content row" style="padding-top:0;padding-bottom:0;position: relative;height: calc(100vh - 100px);">
 	<!-- filter -->
-	<div class="col-md-5 scroll-container" id="filters" style="padding-left: 4em; direction: rtl;">
-		<div class="animated fadeInLeft" style="direction: ltr;">
-			<!-- Time -->
-			<div class="form-group row">
-				<label class="col-xs-2">Time</label>
-				<div class="col-xs-10">
-					<div class="input-group" id="timeFilter">
-						<span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
-						<input type="text" id="startTimeFilter" class="form-control" data-default-value="@DateTime.Now" />
-						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-						<input type="text" id="endTimeFilter" class="form-control" data-default-value="@DateTime.Now" />
-					</div>
-				</div>
-			</div>
-			<hr>
-			<!-- Location -->
-			<div class="form-group row">
-				<label class="col-xs-2">Location</label>
-				<div class="col-xs-10">
-					<select data-placeholder="Please select categories..." id="locationFilter" class="form-control" multiple>
-						@foreach (Location entry in Model)
-						{
-							<option value="@entry.ID">@entry.Name</option>
-						}
-					</select>
-				</div>
-			</div>
-			<hr>
-			<!-- Price -->
-			<div class="form-group row">
-				<label class="col-xs-12">Price</label>
-				<div id="minPriceDisplay" class="col-xs-6"></div>
-				<div id="maxPriceDisplay" class="col-xs-6 text-right"></div>
-				<div class="col-xs-12"><div id="priceFilter"></div></div>
-				<div id="lowestPriceDisplay" class="col-xs-4"></div>
-				<div id="averagePriceDisplay" class="col-xs-4 text-center"></div>
-				<div id="highestPriceDisplay" class="col-xs-4 text-right"></div>
-			</div>
-			<!-- Model + Brand -->
-			<div id="modelFilter">
-			</div>
-			<hr>
-			<!-- Category -->
-			<div class="form-group row" >
-				<label class="col-xs-2">Category</label>
-				<div class="col-xs-10">
-					<select data-placeholder="Please select categories..." id="categoryFilter" class="form-control" multiple>
-						@foreach (KeyValuePair<int, string> entry in Constants.VehicleType)
-						{
-							<option value="@entry.Key">@entry.Value</option>
-						}
-					</select>
-				</div>
-			</div>
-			<hr>
-			<!-- NumOfSeat -->
-			<div class="form-group row">
-				<label class="col-xs-2">Seat</label>
-				<div class="col-xs-10">
-					<select data-placeholder="Please select number of seat..." id="seatFilter" class="form-control" multiple>
-						@foreach (int entry in Constants.CommonNumOfSeat)
-						{
-							<option value="@entry">@entry</option>
-						}
-					</select>
-				</div>
-			</div>
-			<hr>
-			<!-- Transmission -->
-			<div id="transmissionFilter" class="form-group row">
-				<label class="col-xs-3">Transmission</label>
-				@foreach (KeyValuePair<int, string> entry in Constants.TransmissionType)
-				{
-					<div class="col-xs-4">
-						<div class="checkbox checkbox-inline checkbox-primary">
-							<input value="@entry.Key" id="transmission@(entry.Value)" type="checkbox" >
-							<label for="transmission@(entry.Value)">@entry.Value</label>
-						</div>
-					</div>
-				}
-			</div>
-			<hr>
-			<!-- Color -->
-			<div class="form-group row" id="colorSelector">
-				<label class="col-xs-2">Color</label>
-				<div class="col-xs-10">
-					<select data-placeholder="Please select a color..." id="colorFilter" class="form-control" multiple>
-						@for(int i = 1; i < Constants.Color.Count(); i++)
-						{
-							<option value="@i">@Constants.Color[i]</option>
-						}
-						<option value="0">@Constants.Color[0]</option>
-					</select>
-				</div>
-			</div>
-			<hr>
-			<!-- Fuel -->
-			<div class="form-group row">
-				<label class="col-xs-2">Fuel</label>
-				<div class="col-xs-10">
-					<select data-placeholder="Please select fuel type..." id="fuelFilter" class="form-control" multiple>
-						@foreach(KeyValuePair<int, string> entry in Constants.FuelType){
-							<option value="@entry.Key">@entry.Value</option>
-						}
-					</select>
+	<div class="col-md-5 scroll-container animated fadeInLeft" id="filters" style="border-right: 1px solid #d0d0d0;padding: 2em 2em 0;">
+		<!-- Time -->
+		<div class="form-group row">
+			<label class="col-xs-2">Time</label>
+			<div class="col-xs-10">
+				<div class="input-group" id="timeFilter">
+					<span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+					<input type="text" id="startTimeFilter" class="form-control" data-default-value="@DateTime.Now" />
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					<input type="text" id="endTimeFilter" class="form-control" data-default-value="@DateTime.Now" />
 				</div>
 			</div>
 		</div>
+		<hr>
+		<!-- Location -->
+		<div class="form-group row">
+			<label class="col-xs-2">Location</label>
+			<div class="col-xs-10">
+				<select data-placeholder="Please select locations..." id="locationFilter" class="form-control" style="width: 100%;"  multiple>
+					@foreach (Location entry in Model.LocationList)
+					{
+						<option value="@entry.ID">@entry.Name</option>
+					}
+				</select>
+			</div>
+		</div>
+		<hr>
+		<!-- Price -->
+		<div class="form-group row">
+			<label class="col-xs-12">Price</label>
+			<div id="minPriceDisplay" class="col-xs-6"></div>
+			<div id="maxPriceDisplay" class="col-xs-6 text-right"></div>
+			<div class="col-xs-12"><div id="priceFilter"></div></div>
+			<div id="lowestPriceDisplay" class="col-xs-4"></div>
+			<div id="averagePriceDisplay" class="col-xs-4 text-center"></div>
+			<div id="highestPriceDisplay" class="col-xs-4 text-right"></div>
+		</div>
+
+		<!-- Additional filters -->
+		<div class="panel panel-default">
+			<a data-toggle="collapse" href="#additionalFilters" >
+				<div class="panel-heading">
+					<h4 class="panel-title text-center"><i class="fa fa-angle-double-down"></i></h4>
+				</div>
+			</a>
+			<div id="additionalFilters" class="panel-collapse collapse" >
+				<div class="panel-body">
+					<!-- Model + Brand -->
+					<div class="form-group row">
+						<label class="col-xs-2">Model</label>
+						<div class="col-xs-10">
+							<select data-placeholder="Please select..." id="modelFilter" class="form-control" style="width: 100%;" multiple>
+								@* List all option except Unlisted *@
+								@for (int i = 1, length = Model.BrandList.Count; i < length; i++)
+								{
+									if(Model.BrandList[i].Models.Count != 0){
+										<option value="@Model.BrandList[i].ID" data-lvl="0">@Model.BrandList[i].Name</option>
+										foreach (Model entry in Model.BrandList[i].Models)
+										{
+											<option value="@entry.ID" data-lvl="1">@entry.Name</option>
+										}
+									}
+								}
+							</select>
+						</div>
+					</div>
+					<hr>
+					<!-- Category -->
+					<div class="form-group row" >
+						<label class="col-xs-2">Category</label>
+						<div class="col-xs-10">
+							<select data-placeholder="Please select categories..." id="categoryFilter" class="form-control" style="width: 100%;"  multiple>
+								@foreach (Category entry in Model.CategoryList)
+								{
+									<option value="@entry.ID">@entry.Name</option>
+								}
+							</select>
+						</div>
+					</div>
+					<hr>
+					<!-- NumOfSeat -->
+					<div class="form-group row">
+						<label class="col-xs-2">Seat</label>
+						<div class="col-xs-10">
+							<select data-placeholder="Please select number of seat..." id="seatFilter" class="form-control" style="width: 100%;"  multiple>
+								@foreach (int entry in Constants.CommonNumOfSeat)
+								{
+									<option value="@entry">@entry</option>
+								}
+							</select>
+						</div>
+					</div>
+					<hr>
+					<!-- Transmission -->
+					<div id="transmissionFilter" class="form-group row">
+						<label class="col-xs-3">Transmission</label>
+						@foreach (KeyValuePair<int, string> entry in Constants.TransmissionType)
+						{
+							<div class="col-xs-4">
+								<div class="checkbox checkbox-inline checkbox-primary">
+									<input value="@entry.Key" id="transmission@(entry.Value)" type="checkbox" >
+									<label for="transmission@(entry.Value)">@entry.Value</label>
+								</div>
+							</div>
+						}
+					</div>
+					<hr>
+					<!-- Color -->
+					<div class="form-group row" id="colorSelector">
+						<label class="col-xs-2">Color</label>
+						<div class="col-xs-10">
+							<select data-placeholder="Please select a color..." id="colorFilter" class="form-control" style="width: 100%;"  multiple>
+								@for(int i = 1; i < Constants.Color.Count(); i++)
+								{
+									<option value="@i">@Constants.Color[i]</option>
+								}
+								<option value="0">@Constants.Color[0]</option>
+							</select>
+						</div>
+					</div>
+					<hr>
+					<!-- Fuel -->
+					<div class="form-group row">
+						<label class="col-xs-2">Fuel</label>
+						<div class="col-xs-10">
+							<select data-placeholder="Please select fuel type..." id="fuelFilter" class="form-control" style="width: 100%;"  multiple>
+								@foreach(KeyValuePair<int, string> entry in Constants.FuelType){
+									<option value="@entry.Key">@entry.Value</option>
+								}
+							</select>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>	
 	</div>
 	<!-- results -->
-	<div class="col-md-7 scroll-container">
-		<div class="ibox animated fadeInRight">
-			<div id="searchResultGrid" class="row" data-source="@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })" ></div>
-			<div id="recordInfo"></div>
+	<div class="col-md-7 scroll-container animated fadeInRight">
+		<div class="ibox" style="padding-top: 1em;">
+			<div id="recordInfo" style="margin-bottom: 1em;"></div>
+			<div class="row" id="searchResultGrid"
+					data-source="@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })"
+					data-result-url="@Url.RouteUrl("VehicleInfo", new { controller = "Home" })">
+			</div>
 			<div class="text-center">
-				<ul id="paginatior" class="pagination-lg"></ul>
+				<ul id="paginatior" class="pagination"></ul>
 			</div>
 		</div>
 	</div>

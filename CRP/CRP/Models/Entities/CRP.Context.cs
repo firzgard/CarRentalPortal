@@ -26,6 +26,8 @@ namespace CRP.Models.Entities
         }
     
         public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<BookingReceipt> BookingReceipts { get; set; }
         public virtual DbSet<Brand> Brands { get; set; }

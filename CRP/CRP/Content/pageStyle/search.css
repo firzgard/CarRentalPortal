@@ -2,6 +2,10 @@ body {
 	position: relative;
 }
 
+.custom-page-wrapper{
+	background-color: #ffffff;
+}
+
 .footer {
 	position: relative;
 }
@@ -13,10 +17,6 @@ body {
 }
 
 /* ====================================== */
-.custom-page-wrapper{
-	background-color: #ffffff;
-}
-
 /* Filters */
 .input-group-addon {
 	font-weight: bold;
@@ -40,16 +40,16 @@ body {
 /* Search Results */
 
 .search-result {
-	color: black;
-	text-decoration: none;
-	animation-duration 0.5s: 
+	border: 1px solid #A8B5BC;
+	transition-duration: 0.5s;
 }
 .search-result:hover {
-	color: black;
-	text-decoration: none;
-	box-shadow: 0 0 20px 5px white;
+	box-shadow: 3px 3px 12px 6px #a8a8a8;
 }
 
+.vehicle-img-container{
+	position: relative;
+}
 .vehicle-img {
 	background-position: center;
 	background-size: cover;
@@ -58,8 +58,12 @@ body {
 	width: 100%;
 }
 
+.carousel-control{
+	opacity: 0;
+}
+
 .vehicle-info {
-	padding: 10px 15px 5px;
+	padding: 1em 1em 0.5em;
 }
 .vehicle-info hr {
 	border-color: #BFBFBF;
@@ -69,9 +73,9 @@ body {
 .vehicle-price-tag {
 	background-color: #1ab394;
 	bottom: 0;
-	color: #ffffff;
-	font-weight: 600;
-	padding: 0.3em 1em 0.3em 2em;
+	color: black;
+	font-weight: bold;
+	padding: 0.5em 1em;
 	position: absolute;
 	right: 0;
 }

@@ -25,7 +25,7 @@ namespace CRP.Models.Entities
         public string LicenseNumber { get; set; }
         public string Name { get; set; }
         public int ModelID { get; set; }
-        public Nullable<int> Year { get; set; }
+        public int Year { get; set; }
         public int GarageID { get; set; }
         public Nullable<int> VehicleGroupID { get; set; }
         public int TransmissionType { get; set; }

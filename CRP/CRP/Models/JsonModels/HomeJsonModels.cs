@@ -75,13 +75,25 @@ namespace CRP.Models.JsonModels
 			Location = vehicle.Garage.Location.Name;
 			Star = vehicle.Star;
 
-			foreach (ModelCategoryMapping categoryMapping in vehicle.Model.ModelCategoryMappings)
+			if (vehicle.Model.ModelCategoryMappings.Any())
 			{
-				CategoryList.Add(categoryMapping.Category.Name);
+				CategoryList = new List<string>();
+
+				foreach (ModelCategoryMapping categoryMapping in vehicle.Model.ModelCategoryMappings)
+				{
+					CategoryList.Add(categoryMapping.Category.Name);
+				}
 			}
-			foreach (VehicleImage image in vehicle.VehicleImages)
+
+			if (vehicle.VehicleImages.Any())
 			{
-				ImageList.Add(image.URL);
+				ImageList = new List<string>();
+
+				foreach (VehicleImage image in vehicle.VehicleImages)
+				{
+					ImageList.Add(image.URL);
+				}
+
 			}
 
 			string tempTransmissionTypeName = "";
@@ -94,7 +106,7 @@ namespace CRP.Models.JsonModels
 			{
 				if(item.MaxTime >= rentalTime)
 				{
-					BestPossibleRentalPeriod = item.MaxTime + (item.MaxTime == 1 ? "hour" : "hours");
+					BestPossibleRentalPeriod = item.MaxTime + (item.MaxTime == 1 ? " hour" : " hours");
 					BestPossibleRentalPrice = item.Price;
 					break;
 				}

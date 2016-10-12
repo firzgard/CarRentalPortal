@@ -10,9 +10,8 @@ using CRP.Models.ViewModels;
 
 namespace CRP.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : BaseController
 	{
-		VehicleService vehicleService = new VehicleService();
 
 		// Route to homepage
 		public ActionResult Index()
@@ -24,12 +23,11 @@ namespace CRP.Controllers
 		[Route("search")]
 		public ActionResult Search()
 		{
-			LocationService locationService = new LocationService();
-			return View(locationService.getAll().OrderBy(l => l.Name).ToList());
+			return View(new SearchPageViewModel());
 		}
 
 		// Route to vehicle's info
-		[Route("vehicleInfo/{id:int}")]
+		[Route("vehicleInfo/{id:int}", Name = "VehicleInfo")]
 		public ActionResult VehicleInfo(int id)
 		{
 			return View();
@@ -42,6 +40,7 @@ namespace CRP.Controllers
 		[Route("api/search", Name = "SearchVehiclesAPI")]
 		public ActionResult SearchVehiclesAPI(SearchConditionModel searchConditions)
 		{
+            var service = this.Service<IVehicleService>();
 			if (searchConditions == null
 					|| searchConditions.StartTime == null
 					|| searchConditions.EndTime == null
@@ -50,7 +49,7 @@ namespace CRP.Controllers
 
 			Response.StatusCode = 200;
 			Response.StatusDescription = "Queried successfully";
-			SearchResultJsonModel searchResult = vehicleService.findToBook(searchConditions);
+			SearchResultJsonModel searchResult = service.FindToBook(searchConditions);
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}
 	}
