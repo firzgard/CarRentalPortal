@@ -21,7 +21,7 @@ namespace CRP.Models.Entities
         }
     
         public int ID { get; set; }
-        public int OwnerID { get; set; }
+        public string OwnerID { get; set; }
         public string Name { get; set; }
         public int LocationID { get; set; }
         public string Address { get; set; }

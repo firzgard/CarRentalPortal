@@ -19,9 +19,9 @@ namespace CRP.Models.AutofacModules
 
         protected override void Load(ContainerBuilder builder)
         {
-            //builder.RegisterType<UnitOfWork>()
-            //    .AsImplementedInterfaces()
-            //    .InstancePerRequest();
+            builder.RegisterType<UnitOfWork>()
+                .AsImplementedInterfaces()
+                .InstancePerRequest();
 
             builder.RegisterType<CRPEntities>()
                 .InstancePerRequest();

@@ -3,6 +3,7 @@ using CRP.Controllers;
 using CRP.Models;
 using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
+using CRP.Models.JsonModels;
 using CRP.Models.ViewModels;
 using Newtonsoft.Json;
 using System;
@@ -19,31 +20,34 @@ namespace CRP.Areas.Provider.Controllers
 	{
         //VehicleGroupService service = new VehicleGroupService();
 		// Route to vehicleGroupManagement page
-		[Route("management/vehicleGroupManagement")]
-		public ViewResult VehicleGroupManagement()
-		{
-			return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupManagement.cshtml");
-		}
+		//[Route("management/vehicleGroupManagement")]
+		//public ViewResult VehicleGroupManagement()
+		//{
+		//	return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupManagement.cshtml");
+		//}
 
-		// Route to group's detailed info page
-		[Route("management/vehicleGroupManagement/{id:int}")]
-		public ViewResult VehicleGroupDetail()
-		{
-			return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupDetail.cshtml");
-		}
+		//// Route to group's detailed info page
+		//[Route("management/vehicleGroupManagement/{id:int}")]
+		//public ViewResult VehicleGroupDetail(int id)
+		//{
+  //          var service = new VehicleGroupService();
+  //          VehicleGroup model = service.findByID(id);
+  //          VehicleGroupViewModel viewModel = new VehicleGroupViewModel(model);
+		//	return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupDetail.cshtml", viewModel);
+		//}
 
 		// API Route to get list of group
 		[Route("api/vehicleGroups")]
 		[HttpGet]
 		public JsonResult GetVehicleGroupListAPI()
 		{
-            var service = new VehicleGroupService();
-            var list = service.getAll().ToList();
+            var service = this.Service<IVehicleGroupService>();
+            var list = service.Get().ToList();
             var result = list.Select(q => new IConvertible[] {
                 q.ID,
                 q.Name,
                 q.MaxRentalPeriod != null ? q.MaxRentalPeriod : null,
-                q.PriceGroup.Deposit,
+                q.PriceGroup.DepositPercentage,
                 q.PriceGroup.PerDayPrice,
                 q.Vehicles.Count,
                 q.IsActive
@@ -60,27 +64,27 @@ namespace CRP.Areas.Provider.Controllers
             return View("~/Areas/Provider/Views/VehicleGroup/CreatePopup.cshtml", viewModel);
         }
 
-		// API Route to create single new group
-		[Route("api/vehicleGroups")]
-		[HttpPost]
-        [ValidateAntiForgeryToken]
-		public JsonResult CreateVehicleGroupAPI(VehicleGroupViewModel model)
-		{
-            if (!this.ModelState.IsValid)
-            {
-                return Json(new { result = false, message = "Invalid!" });
-            }
-            var service = new VehicleGroupService();
-            model.IsActive = true;
-            var entity = this.Mapper.Map<VehicleGroup>(model);
-            bool result = service.add(entity);
+		//// API Route to create single new group
+		//[Route("api/vehicleGroups")]
+		//[HttpPost]
+  //      [ValidateAntiForgeryToken]
+		//public JsonResult CreateVehicleGroupAPI(VehicleGroupViewModel model)
+		//{
+  //          if (!this.ModelState.IsValid)
+  //          {
+  //              return Json(new { result = false, message = "Invalid!" });
+  //          }
+  //          var service = new VehicleGroupService();
+  //          model.IsActive = true;
+  //          var entity = model;//this.Mapper.Map<VehicleGroup>(model);
+  //          bool result = service.add(entity);
 
-            if(!result)
-            {
-                return Json(new { result = false, message = "Create failed!" });
-            }
-            return Json(new { result = true, message = "Create successful!" });
-        }
+  //          if(!result)
+  //          {
+  //              return Json(new { result = false, message = "Create failed!" });
+  //          }
+  //          return Json(new { result = true, message = "Create successful!" });
+  //      }
 
 		// API Route to edit single group
 		[Route("api/vehicleGroups")]
@@ -97,5 +101,5 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			return Json("");
 		}
-	}
+    }
 }
