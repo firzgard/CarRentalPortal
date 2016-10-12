@@ -10,21 +10,25 @@ let searchConditions = {
 	, TransmissionTypeIDList: []
 	, OrderBy: "BestPossibleRentalPrice"
 };
+
+// TransmissionTypeIDList:
+// ColorIDList:
+// FuelTypeIDList:
+// LocationIDList:
+// CategoryIDList:
+// MaxProductionYear
+// MinProductionYear
+// BrandIDList:
+// ModelIDList:
+// OrderBy:
+// IsDescendingOrder:
+// Page:
+
+// NumberOfSeatList:
 // StartTime: 
 // EndTime:
 // MaxPrice:
 // MinPrice:
-// LocationIDList:
-// BrandIDList:
-// ModelIDList:
-// VehicleTypeList:
-// NumberOfSeatList:
-// TransmissionTypeIDList:
-// ColorIDList:
-// FuelTypeIDList:
-// OrderBy:
-// IsAscOrder:
-// Page:
 
 function renderSearchResultGrid(domNode, searchResultList){
 	domNode.html(searchResultList.reduce((html, searchResult) => html + renderSearchResultItem(searchResult), ''))
@@ -335,7 +339,7 @@ $(document).ready(() => {
 	$('#categoryFilter')
 	.select2()
 	.on('change', function() {
-		searchConditions.VehicleTypeList = $(this).val();
+		searchConditions.CategoryIDList = $(this).val();
 		delete searchConditions.Page;
 
 		renderSearcher(jQueryNodes);

@@ -8,21 +8,25 @@ using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
 using CRP.Models.JsonModels;
 using Newtonsoft.Json;
+using CRP.Controllers;
+using AutoMapper.QueryableExtensions;
+using System.Threading.Tasks;
 
 namespace CRP.Areas.Provider.Controllers
 {
-	public class GarageController : Controller
+	public class GarageController : BaseController
 	{
-		GarageService service = new GarageService();
-		LocationService locationService = new LocationService();
 		// Route to garageManagement page
 		[Route("management/garageManagement")]
 		public ViewResult GarageManagement()
 		{
+            var service = this.Service<IGarageService>();
+            var locationService = this.Service<ILocationService>();
+
 			List<Garage> lstGarage = new List<Garage>();
 			List<Location> lstLocation = new List<Location>();
 			lstLocation = locationService.Get().ToList();
-			lstGarage = service.getAll();
+			lstGarage = service.Get().ToList();
 			ViewBag.locationList = lstLocation;
 			ViewBag.garaList = lstGarage;
 			return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
@@ -32,7 +36,8 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("management/garageManagement/{id:int}")]
 		public ViewResult GarageManagement(int id)
 		{
-			Garage garage = service.findByID(id);
+            var service = this.Service<IGarageService>();
+			Garage garage = service.Get(id);
 			if (garage != null)
 			{
 				ViewBag.garaDetail = garage;
@@ -49,32 +54,45 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetGarageListAPI()
 		{
-			List<Garage> lstGarage = new List<Garage>();
+            var service = this.Service<IGarageService>();
+			//List<Garage> lstGarage = new List<Garage>();
 			List<GarageModel> jsonGarages = new List<GarageModel>();
 			//cho nay se get theo user
-			lstGarage = service.getAll();
-			foreach (Garage p in lstGarage)
-			{
-				GarageModel jsonGarage = new GarageModel();
-				jsonGarage.ID = p.ID;
-				jsonGarage.Name = p.Name;
-				jsonGarage.LocationID = p.LocationID;
-				jsonGarage.LocationName = p.Location.Name;
-				jsonGarage.Address = p.Address;
-				jsonGarage.Star = p.Star.GetValueOrDefault();
-				jsonGarage.IsActive = p.IsActive;
-				jsonGarages.Add(jsonGarage);
-			}
+			jsonGarages = service.Get().ProjectTo<GarageModel>(this.MapperConfig).ToList();
+			//foreach (Garage p in lstGarage)
+			//{
+			//	GarageModel jsonGarage = new GarageModel();
+			//	jsonGarage.ID = p.ID;
+			//	jsonGarage.Name = p.Name;
+			//	jsonGarage.LocationID = p.LocationID;
+			//	jsonGarage.LocationName = p.Location.Name;
+			//	jsonGarage.Address = p.Address;
+			//	jsonGarage.Star = p.Star.GetValueOrDefault();
+			//	jsonGarage.IsActive = p.IsActive;
+			//	jsonGarages.Add(jsonGarage);
+			//}
 			return Json(jsonGarages, JsonRequestBehavior.AllowGet);
 		}
 
 		// API Route to create single new garage
+        // garageViewModel
 		[Route("api/garages")]
 		[HttpPost]
-		public JsonResult CreateGarageAPI()
+		public async Task<JsonResult> CreateGarageAPI(Garage model)
 		{
-			MessageJsonModel jsonResult = new MessageJsonModel();
-			string OwnerID = Request.Params["UserID"];
+            MessageJsonModel jsonResult = new MessageJsonModel();
+            if (!this.ModelState.IsValid)
+            {
+                jsonResult.Status = 0;
+                jsonResult.Message = "Creare failed!";
+                return Json(jsonResult, JsonRequestBehavior.AllowGet);
+            }
+
+            var service = this.Service<IGarageService>();
+
+            Garage newGarage = this.Mapper.Map<Garage>(model);
+
+            /*string OwnerID = Request.Params["UserID"];
 			string Name = Request.Params["garageName"];
 			int LocationID = int.Parse(Request.Params["locationID"]);
 			string Address = Request.Params["address"];
@@ -119,27 +137,41 @@ namespace CRP.Areas.Provider.Controllers
 			newGarage.CloseTimeThur = closeTimeThur;
 			newGarage.CloseTimeFri = closeTimeFri;
 			newGarage.CloseTimeSat = closeTimeSat;
-			newGarage.CloseTimeSun = closeTimeSun;
-			if (service.add(newGarage))
-			{
-				jsonResult.Status = 1;
-				jsonResult.Message = "Create successfully!";
-			}
-			else
-			{
-				jsonResult.Status = 0;
-				jsonResult.Message = "Creare failed!";
-			}
+			newGarage.CloseTimeSun = closeTimeSun;*/
+
+            await service.CreateAsync(newGarage);
+
+            jsonResult.Status = 1;
+            jsonResult.Message = "Create successfully!";
 			return Json(jsonResult, JsonRequestBehavior.AllowGet);
 		}
 
 		// API Route to edit single garage
+        // GarageViewModel
 		[Route("api/garages")]
 		[HttpPatch]
-		public JsonResult EditGarageAPI()
+		public async Task<JsonResult> EditGarageAPI(Garage model)
 		{
-			MessageJsonModel jsonResult = new MessageJsonModel();
-			int ID = int.Parse(Request.Params["garageID"]);
+            MessageJsonModel jsonResult = new MessageJsonModel();
+            if (!this.ModelState.IsValid)
+            {
+                jsonResult.Status = 0;
+                jsonResult.Message = "Update failed!";
+                return Json(jsonResult, JsonRequestBehavior.AllowGet);
+            }
+
+            var service = this.Service<IGarageService>();
+            var entity = await service.GetAsync(model?.ID);
+            if(entity == null)
+            {
+                jsonResult.Status = 0;
+                jsonResult.Message = "Update failed!";
+                return Json(jsonResult, JsonRequestBehavior.AllowGet);
+            }
+
+            this.Mapper.Map(model, entity);
+
+			/*int ID = int.Parse(Request.Params["garageID"]);
 			string Name = Request.Params["garageName"];
 			int LocationID = int.Parse(Request.Params["locationID"]);
 			string Address = Request.Params["address"];
@@ -181,29 +213,26 @@ namespace CRP.Areas.Provider.Controllers
 			editGarage.CloseTimeThur = closeTimeThur;
 			editGarage.CloseTimeFri = closeTimeFri;
 			editGarage.CloseTimeSat = closeTimeSat;
-			editGarage.CloseTimeSun = closeTimeSun;
-			if (service.Update(editGarage))
-			{
-				jsonResult.Status = 1;
-				jsonResult.Message = "Update successfully!";
-			}
-			else
-			{
-				jsonResult.Status = 0;
-				jsonResult.Message = "Update failed!";
-			}
+			editGarage.CloseTimeSun = closeTimeSun;*/
+
+            await service.UpdateAsync(entity);
+
+			jsonResult.Status = 0;
+			jsonResult.Message = "Update failed!";
 			return Json(jsonResult, JsonRequestBehavior.AllowGet);
 		}
 
 		// API Route to delete single garage
 		[Route("api/garages/{id:int}")]
 		[HttpDelete]
-		public JsonResult DeleteGarageAPI(int id)
+		public async Task<JsonResult> DeleteGarageAPI(int id)
 		{
+            var service = this.Service<IGarageService>();
 			MessageJsonModel jsonResult = new MessageJsonModel();
-			Boolean result = service.delete(id);
-			if (result)
+            var entity = await service.GetAsync(id);
+            if(entity != null)
 			{
+                await service.DeleteAsync(entity);
 				jsonResult.Status = 1;
 				jsonResult.Message = "Deleted successfully!";
 			}
@@ -218,8 +247,9 @@ namespace CRP.Areas.Provider.Controllers
 		//// GET: Brand
 		public ActionResult Index()
 		{
+            var service = this.Service<IGarageService>();
 			List<Garage> lstGara = new List<Garage>();
-			lstGara = service.getAll();
+			lstGara = service.Get().ToList();
 			ViewBag.garaList = lstGara;
 			return View();
 		}

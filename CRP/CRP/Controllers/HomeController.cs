@@ -4,15 +4,15 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CRP.Models;
+using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
 using CRP.Models.JsonModels;
 using CRP.Models.ViewModels;
 
 namespace CRP.Controllers
 {
-	public class HomeController : Controller
+	public class HomeController : BaseController
 	{
-		VehicleService vehicleService = new VehicleService();
 
 		// Route to homepage
 		public ActionResult Index()
@@ -24,7 +24,25 @@ namespace CRP.Controllers
 		[Route("search")]
 		public ActionResult Search()
 		{
-			return View(new SearchPageViewModel());
+			IBrandService brandService = this.Service<IBrandService>();
+			var brandList = brandService.Get(
+				b => b.ID != 1 // Exclude unlisted brand
+				&& b.Models.Where(m => m.Vehicles.Any()).Any() // check if it has any model and vehicle
+			).OrderBy(b => b.Name).ToList();
+
+			// Reorder each brand's models by name
+			foreach (Brand brand in brandList)
+			{
+				brand.Models = brand.Models.OrderBy(m => m.Name).ToList();
+			}
+
+			ICategoryService categoryService = this.Service<ICategoryService>();
+			var categoryList = categoryService.Get().OrderBy(c => c.Name).ToList();
+
+			ILocationService locationService = this.Service<ILocationService>();
+			var locationList = locationService.Get().OrderBy(l => l.Name).ToList();
+
+			return View(new SearchPageViewModel(brandList, categoryList, locationList));
 		}
 
 		// Route to vehicle's info
@@ -41,6 +59,7 @@ namespace CRP.Controllers
 		[Route("api/search", Name = "SearchVehiclesAPI")]
 		public ActionResult SearchVehiclesAPI(SearchConditionModel searchConditions)
 		{
+			var service = this.Service<IVehicleService>();
 			if (searchConditions == null
 					|| searchConditions.StartTime == null
 					|| searchConditions.EndTime == null
@@ -49,7 +68,7 @@ namespace CRP.Controllers
 
 			Response.StatusCode = 200;
 			Response.StatusDescription = "Queried successfully";
-			SearchResultJsonModel searchResult = vehicleService.findToBook(searchConditions);
+			SearchResultJsonModel searchResult = (SearchResultJsonModel) service.FilterVehicle(searchConditions);
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}
 	}

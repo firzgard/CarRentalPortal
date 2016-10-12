@@ -12,11 +12,9 @@ namespace CRP.Models.Entities.Services
 
 	public class BrandService : BaseService<Brand>, IBrandService
 	{
-		public BrandService()
-		{
-			CRPEntities dbContext = new CRPEntities();
-			this.unitOfWork = new UnitOfWork(dbContext);
-			this.repository = new BrandRepository(dbContext);
-		}
+		public BrandService(IUnitOfWork unitOfWork, IBrandRepository repository) : base(unitOfWork, repository)
+        {
+
+        }
 	}
 }
