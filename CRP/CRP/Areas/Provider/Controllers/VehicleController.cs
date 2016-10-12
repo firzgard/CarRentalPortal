@@ -55,46 +55,30 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API Route for getting vehicle's detailed infomations (for example, to duplicate vehicle)
-		/*[Route("api/vehicles/{id}")]
+		[Route("api/vehicles/{id}")]
 		[HttpGet]
 		public JsonResult GetVehicleDetailAPI(int id)
 		{
             //var vehicle = new Vehicle() { id = 666, Name = "BWM X7" };
-            Vehicle nVehicle = new Vehicle();
-            VehicleModel vehiModel = new VehicleModel();
-            nVehicle = service.FindByID(id);
-            vehiModel.ID = nVehicle.ID;
-            vehiModel.LicenseNumber = nVehicle.LicenseNumber;
-            vehiModel.Name = nVehicle.Name;
-            vehiModel.ModelID = nVehicle.ModelID;
-            vehiModel.ModelName = serviceModel.reModelNameByID(vehiModel.ModelID);
-            vehiModel.BrandID = serviceModel.findBrandID(nVehicle.ModelID);
-            vehiModel.BrandName = serviceBrand.reBrandNameByID(vehiModel.BrandID);
-            vehiModel.GarageID = nVehicle.GarageID;
-            vehiModel.GarageName = serviceGara.reGarageNameByID(vehiModel.GarageID);
-            vehiModel.VehicleGroupID = nVehicle.VehicleGroupID;
-            vehiModel.TransmissionTypeID = nVehicle.TransmissionType;
-            //jsonVehicle.TransmissionTypeName =;
-            vehiModel.FuelTypeID = nVehicle.FuelType;
-            //FuelTypeName
-            vehiModel.ColorID = nVehicle.Color;
-            //color
-            vehiModel.Star = nVehicle.Star;
-            //NumbOf
-            vehiModel.NumOfDoor = serviceModel.reNumOfDoorByID(vehiModel.ModelID);
-            vehiModel.NumOfSeat = serviceModel.reNumOfSeatByID(vehiModel.ModelID);
+            var service = this.Service<IVehicleService>();
 
-            return Json(vehiModel, JsonRequestBehavior.AllowGet);
-        }*/
+            Vehicle vehicle = service.Get(id);
 
-		// API Route to create single new vehicles
-		/*[Route("api/vehicles")]
-		[HttpPost]
-		public JsonResult CreateVehicleAPI()
-		{
-            MessageJsonModel jsonResult = new MessageJsonModel();
-            string LicenNumb = Request.Params["LicenseNumber"];
-            string Name = Request.Params["Name"];
+            VehicleModel vehicleModel = new VehicleModel(vehicle);
+
+            return Json(vehicleModel, JsonRequestBehavior.AllowGet);
+        }
+
+        // API Route to create single new vehicles
+        [Route("api/vehicles")]
+        [HttpPost]
+        public JsonResult CreateVehicleAPI(Vehicle vehicle)
+        {
+            var service = this.Service<IVehicleService>();
+            VehicleModel vehicleModel = new VehicleModel(vehicle);
+            //MessageJsonModel jsonResult = new MessageJsonModel();
+            //string LicenNumb = Request.Params["LicenseNumber"];
+            //string Name = Request.Params["Name"];
             //int ModelID = int.Parse(Request.Params["ModelID"]);
             //string ModelName = Request.Params["ModelName"];
             //int BrandID = int.Parse(Request.Params["BrandID"]);
@@ -112,50 +96,50 @@ namespace CRP.Areas.Provider.Controllers
             //int NumOfDoor = int.Parse(Request.Params["NumOfDoor"]);
             //int NumOfSeat = int.Parse(Request.Params["NumOfSeat"]);
 
-            Vehicle nVehicle = new Vehicle();
-            nVehicle.LicenseNumber = LicenNumb;
-            nVehicle.Name = Name;
+            //Vehicle nVehicle = new Vehicle();
+            //nVehicle.LicenseNumber = LicenNumb;
+            //nVehicle.Name = Name;
 
-            if (Service.Add(nVehicle))
-            {
-                jsonResult.Status = 1;
-                jsonResult.Message = "Create successfully!";
-            }
-            else
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Creare failed!";
-            }
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+            //if (Service.Add(nVehicle))
+            //{
+            //    jsonResult.Status = 1;
+            //    jsonResult.Message = "Create successfully!";
+            //}
+            //else
+            //{
+            //    jsonResult.Status = 0;
+            //    jsonResult.Message = "Creare failed!";
+            //}
+            return Json(vehicleModel, JsonRequestBehavior.AllowGet);
         }
 
-		// API Route to edit single vehicle
-		[Route("api/vehicles")]
-		[HttpPatch]
-		public JsonResult EditVehicleAPI(int id)
-		{
-            MessageJsonModel jsonResult = new MessageJsonModel();
-            string LicenNumb = Request.Params["LicenseNumber"];
-            string Name = Request.Params["Name"];
+       // API Route to edit single vehicle
+       //[Route("api/vehicles")]
+       // [HttpPatch]
+       // public JsonResult EditVehicleAPI(int id)
+       // {
+       //     MessageJsonModel jsonResult = new MessageJsonModel();
+       //     string LicenNumb = Request.Params["LicenseNumber"];
+       //     string Name = Request.Params["Name"];
 
-            Vehicle editVehicle = Service.FindByID(id);
-            editVehicle.LicenseNumber = LicenNumb;
-            editVehicle.Name = Name;
-            if (Service.Add(editVehicle))
-            {
-                jsonResult.Status = 1;
-                jsonResult.Message = "Create successfully!";
-            }
-            else
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Creare failed!";
-            }
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }*/
+       //     Vehicle editVehicle = Service.FindByID(id);
+       //     editVehicle.LicenseNumber = LicenNumb;
+       //     editVehicle.Name = Name;
+       //     if (Service.Add(editVehicle))
+       //     {
+       //         jsonResult.Status = 1;
+       //         jsonResult.Message = "Create successfully!";
+       //     }
+       //     else
+       //     {
+       //         jsonResult.Status = 0;
+       //         jsonResult.Message = "Creare failed!";
+       //     }
+       //     return Json(jsonResult, JsonRequestBehavior.AllowGet);
+       // }*/
 
-		// API Route to delete 1 or multiple vehicles
-		[Route("api/vehicles")]
+        // API Route to delete 1 or multiple vehicles
+        [Route("api/vehicles")]
 		[HttpDelete]
 		public async Task<JsonResult> DeleteVehiclesAPI(int id)
 		{
@@ -185,12 +169,12 @@ namespace CRP.Areas.Provider.Controllers
             List<Vehicle> lstVehicle = service.Get().ToList();
             List<Vehicle> listVehicleNeedChange = new List<Vehicle>();
             // 1 2 3 5 8 
-            /*foreach (var item in listVehicleId)
+            foreach (var item in listVehicleId)
             {
                 Vehicle v = lstVehicle.FirstOrDefault(a => a.ID == item);
                 v.GarageID = garageID;
-                Service.UpdateVehicle(v);
-            }*/
+                service.Update(v);
+            }
             
             return Json(lstVehicle, JsonRequestBehavior.AllowGet);
 		}
@@ -203,12 +187,12 @@ namespace CRP.Areas.Provider.Controllers
             var service = this.Service<IVehicleService>();
             List<Vehicle> lstVehicle = service.Get().ToList();
             List<Vehicle> listVehicleNeedChange = new List<Vehicle>();
-            /*foreach (var item in listVehicleId)
+            foreach (var item in listVehicleId)
             {
                 Vehicle v = lstVehicle.FirstOrDefault(a => a.ID == item);
                 v.VehicleGroupID = groupID;
-                Service.UpdateVehicle(v);
-            }*/
+                service.Update(v);
+            }
             return Json(lstVehicle, JsonRequestBehavior.AllowGet);
 		}
 
@@ -259,21 +243,8 @@ namespace CRP.Areas.Provider.Controllers
             var service = this.Service<IBookingReceiptService>();
             MessageJsonModel jsonResult = new MessageJsonModel();
             BookingReceipt br = service.Get(receiptID);
-            //while(serviceBook.CheckVehicleAvailability(br.VehicleID, br.StartTime, br.EndTime))
-            //{
-            //    Boolean result = service.delete(receiptID);
-            //    if (result)
-            //    {
-            //        jsonResult.Status = 1;
-            //        jsonResult.Message = "Deleted successfully!";
-            //    }
-            //    else
-            //    {
-            //        jsonResult.Status = 0;
-            //        jsonResult.Message = "Error!";
-            //    }
-                
-            //}
+            br.IsCanceled = true;
+            service.Update(br);
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
 	}
