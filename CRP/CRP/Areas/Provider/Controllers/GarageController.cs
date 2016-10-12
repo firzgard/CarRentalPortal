@@ -11,13 +11,14 @@ using Newtonsoft.Json;
 using CRP.Controllers;
 using AutoMapper.QueryableExtensions;
 using System.Threading.Tasks;
+using System.Web.Security;
 
 namespace CRP.Areas.Provider.Controllers
 {
 	public class GarageController : BaseController
 	{
-		// Route to garageManagement page
-		[Route("management/garageManagement")]
+        // Route to garageManagement page
+        [Route("management/garageManagement")]
 		public ViewResult GarageManagement()
 		{
             var service = this.Service<IGarageService>();
@@ -29,7 +30,7 @@ namespace CRP.Areas.Provider.Controllers
 			lstGarage = service.Get().ToList();
 			ViewBag.locationList = lstLocation;
 			ViewBag.garaList = lstGarage;
-			return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
+            return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
 		}
 
 		// Route to garage's detailed info page

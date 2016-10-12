@@ -249,6 +249,7 @@
     <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
     <Compile Include="Models\Entities\Services\PriceGroupItemService.cs" />
     <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
+    <Compile Include="Models\Entities\Services\UserService.cs" />
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
@@ -1392,7 +1393,9 @@
     <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
+    <Content Include="Content\pageStyle\login.css" />
     <Content Include="Content\pageStyle\search.css" />
+    <Content Include="Content\pageStyle\signUp.css" />
     <Content Include="Content\pageStyle\vehicleGroup.css" />
     <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
     <Content Include="Content\patterns\1.png" />
