@@ -6,78 +6,15 @@ using System.Web;
 
 namespace CRP.Models.Entities.Services
 {
-    public class BrandService
-    {
-        BrandRepository _repository = new BrandRepository();
-        public Boolean add(Brand brand)
-        {
-            try
-            {
-                _repository.Add(brand);
-            }
-            catch (Exception e)
-            {
-                e.GetHashCode();
-                return false;
-            }
-            return true;
-        }
+	public interface IBrandService : IService<Brand>
+	{
+	}
 
-        public Boolean delete(int ID)
+	public class BrandService : BaseService<Brand>, IBrandService
+	{
+		public BrandService(IUnitOfWork unitOfWork, IBrandRepository repository) : base(unitOfWork, repository)
         {
-            Brand deleteBrand = _repository.findById(ID);
-            if (deleteBrand == null)
-            {
-                return false;
-            }
-            else
-            {
-                try
-                {
-                    _repository.Delete(deleteBrand);
-                }
-                catch (Exception e)
-                {
-                    e.GetHashCode();
-                    return false;
-                }
-                return true;
-            }
+
         }
-        public List<Brand> getAll()
-        {
-            List<Brand> lstBrand = new List<Brand>();
-            lstBrand = _repository.getList();
-            return lstBrand;
-        }
-        public Boolean UpdateBrand(Brand brand)
-        {
-            Brand sBrand = _repository.findById(brand.ID);
-            if (sBrand == null)
-            {
-                return false;
-            }
-            try
-            {
-                _repository.Update(brand);
-            }
-            catch (Exception e)
-            {
-                e.GetBaseException();
-                return false;
-            }
-            return true;
-        }
-        public Brand findByID(int ID)
-        {
-            Brand brand = _repository.findById(ID);
-            return brand;
-        }
-        public String reBrandNameByID (int ID)
-        {
-            Brand brand = _repository.findById(ID);
-            return brand.Name;
-        }
-       
-    }
+	}
 }
