@@ -10,11 +10,23 @@ namespace CRP.Models.ViewModels
 {
     public class VehicleGroupViewModel : VehicleGroup
     {
+
         public VehicleGroupViewModel() : base() { }
 
         public VehicleGroupViewModel(VehicleGroup vg, IMapper mapper) : this()
         {
             mapper.Map(vg, this);
         }
+         public VehicleGroupViewModel(VehicleGroup vg)
+        {
+            this.ID = vg.ID;
+            this.Name = vg.Name;
+            this.IsActive = vg.IsActive;
+            this.MaxRentalPeriod = vg.MaxRentalPeriod;
+            this.DefaultPriceGroupID = vg.DefaultPriceGroupID;
+            this.PriceGroup = vg.PriceGroup;
+            this.Vehicles = vg.Vehicles;
+        }
+
     }
 }
