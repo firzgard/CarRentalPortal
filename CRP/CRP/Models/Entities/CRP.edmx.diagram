@@ -13,7 +13,6 @@
         <EntityTypeShape EntityType="CRPDBModel.Brand" Width="1.5" PointX="3.75" PointY="6.625" />
         <EntityTypeShape EntityType="CRPDBModel.Category" Width="1.5" PointX="3.75" PointY="4.375" />
         <EntityTypeShape EntityType="CRPDBModel.Garage" Width="1.5" PointX="5.25" PointY="12.25" />
-        <EntityTypeShape EntityType="CRPDBModel.GarageWorkingTime" Width="1.5" PointX="7.5" PointY="18.625" />
         <EntityTypeShape EntityType="CRPDBModel.Location" Width="1.5" PointX="3" PointY="17.25" />
         <EntityTypeShape EntityType="CRPDBModel.Model" Width="1.5" PointX="6" PointY="4.875" />
         <EntityTypeShape EntityType="CRPDBModel.Nation" Width="1.5" PointX="0.75" PointY="17.375" />
@@ -34,7 +33,6 @@
         <AssociationConnector Association="CRPDBModel.FK_CarModel_CarBrand" />
         <AssociationConnector Association="CRPDBModel.FK_Car_Store" />
         <AssociationConnector Association="CRPDBModel.FK_Garage_Location" />
-        <AssociationConnector Association="CRPDBModel.FK_GarageWorkingTime_Garage" />
         <AssociationConnector Association="CRPDBModel.FK_Location_Nation" />
         <AssociationConnector Association="CRPDBModel.FK_Vehicle_Model" />
         <AssociationConnector Association="CRPDBModel.FK_PriceGroupItem_PriceGroup1" />
@@ -43,6 +41,8 @@
         <AssociationConnector Association="CRPDBModel.FK_CarImage_Car" />
         <AssociationConnector Association="CRPDBModel.AspNetUserRoles" />
         <AssociationConnector Association="CRPDBModel.ModelCategoryMapping" />
+        <EntityTypeShape EntityType="CRPDBModel.GarageWorkingTime" Width="1.5" PointX="7.5" PointY="17.25" />
+        <AssociationConnector Association="CRPDBModel.FK_GarageWorkingTime_Garage" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -16,8 +16,8 @@ namespace CRP.Models.Entities
     {
         public int GarageID { get; set; }
         public int DayOfWeek { get; set; }
-        public int StartTimeInMinute { get; set; }
-        public int EndTimeInMinute { get; set; }
+        public int OpenTimeInMinute { get; set; }
+        public int CloseTimeInMinute { get; set; }
     
         public virtual Garage Garage { get; set; }
     }

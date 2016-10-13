@@ -68,7 +68,7 @@ namespace CRP.Controllers
 
 			Response.StatusCode = 200;
 			Response.StatusDescription = "Queried successfully";
-			SearchResultJsonModel searchResult = (SearchResultJsonModel) service.FilterVehicle(searchConditions);
+			SearchResultJsonModel searchResult = service.SearchVehicle(searchConditions);
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}
 	}
