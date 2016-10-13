@@ -20,21 +20,21 @@ namespace CRP.Areas.Provider.Controllers
 	{
         //VehicleGroupService service = new VehicleGroupService();
 		// Route to vehicleGroupManagement page
-		//[Route("management/vehicleGroupManagement")]
-		//public ViewResult VehicleGroupManagement()
-		//{
-		//	return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupManagement.cshtml");
-		//}
+		[Route("management/vehicleGroupManagement")]
+		public ViewResult VehicleGroupManagement()
+		{
+			return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupManagement.cshtml");
+		}
 
 		//// Route to group's detailed info page
-		//[Route("management/vehicleGroupManagement/{id:int}")]
-		//public ViewResult VehicleGroupDetail(int id)
-		//{
-  //          var service = new VehicleGroupService();
-  //          VehicleGroup model = service.findByID(id);
-  //          VehicleGroupViewModel viewModel = new VehicleGroupViewModel(model);
-		//	return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupDetail.cshtml", viewModel);
-		//}
+		[Route("management/vehicleGroupManagement/{id:int}")]
+		public ViewResult VehicleGroupDetail(int id)
+		{
+            var service = this.Service<IVehicleGroupService>();
+            VehicleGroupViewModel viewModel = this.Mapper.Map<VehicleGroupViewModel> (service.Get(id));
+
+            return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupDetail.cshtml", viewModel);
+		}
 
 		// API Route to get list of group
 		[Route("api/vehicleGroups")]
@@ -64,78 +64,119 @@ namespace CRP.Areas.Provider.Controllers
             return View("~/Areas/Provider/Views/VehicleGroup/CreatePopup.cshtml", viewModel);
         }
 
-		//// API Route to create single new group
-		//[Route("api/vehicleGroups")]
-		//[HttpPost]
-  //      [ValidateAntiForgeryToken]
-		//public JsonResult CreateVehicleGroupAPI(VehicleGroupViewModel model)
-		//{
-  //          if (!this.ModelState.IsValid)
-  //          {
-  //              return Json(new { result = false, message = "Invalid!" });
-  //          }
-  //          var service = new VehicleGroupService();
-  //          model.IsActive = true;
-  //          var entity = model;//this.Mapper.Map<VehicleGroup>(model);
-  //          bool result = service.add(entity);
+		// API Route to create single new group
+		[Route("api/vehicleGroups")]
+		[HttpPost]
+        [ValidateAntiForgeryToken]
+		public async Task<JsonResult> CreateVehicleGroupAPI(VehicleGroupViewModel model)
+		{
+            if (!this.ModelState.IsValid)
+            {
+                return Json(new { result = false, message = "Invalid!" });
+            }
+            var service = this.Service<IVehicleGroupService>();
+            var priceGroupService = this.Service<IPriceGroupService>();
+            var priceGroupItemService = this.Service<IPriceGroupItemService>();
+            model.IsActive = true;
+            
+            var entity = this.Mapper.Map<VehicleGroup>(model);
+            var priceGroupEntity = this.Mapper.Map<PriceGroup>(model.PriceGroup);
+            var priceGroupItemEntity = this.Mapper.Map<PriceGroupItem>(model.PriceGroup.PriceGroupItems);
 
-  //          if(!result)
-  //          {
-  //              return Json(new { result = false, message = "Create failed!" });
-  //          }
-  //          return Json(new { result = true, message = "Create successful!" });
-  //      }
+            if(entity == null || priceGroupEntity == null || priceGroupItemEntity == null)
+            {
+                return Json(new { result = false, message = "Create failed!" });
+            }
+
+            // create follow this step
+            // 1
+            await priceGroupItemService.CreateAsync(priceGroupItemEntity);
+            //2
+            await priceGroupService.CreateAsync(priceGroupEntity);
+            //3
+            await service.CreateAsync(entity);
+
+            return Json(new { result = true, message = "Create successful!" });
+        }
 
 		// API Route to edit single group
 		[Route("api/vehicleGroups")]
 		[HttpPatch]
-        public async Task<JsonResult> EditVehicleGroupAPI(VehicleGroup model)
-        {
-            MessageJsonModel jsonResult = new MessageJsonModel();
+		public async Task<JsonResult> EditVehicleGroupAPI(VehicleGroupViewModel model)
+		{
             if (!this.ModelState.IsValid)
             {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Update failed!";
-                return Json(jsonResult, JsonRequestBehavior.AllowGet);
+                return Json(new { result = false, message = "Invalid!" });
             }
             var service = this.Service<IVehicleGroupService>();
-            var entity = await service.GetAsync(model?.ID);
-            if (entity == null)
+            var priceGroupService = this.Service<IPriceGroupService>();
+            var priceGroupItemService = this.Service<IPriceGroupItemService>();
+
+            var entity = this.Mapper.Map<VehicleGroup>(model);
+            var priceGroupEntity = this.Mapper.Map<PriceGroup>(model.PriceGroup);
+            var priceGroupItemEntity = this.Mapper.Map<PriceGroupItem>(model.PriceGroup.PriceGroupItems);
+
+            if (entity == null || priceGroupEntity == null || priceGroupItemEntity == null)
             {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Update failed!";
-                return Json(jsonResult, JsonRequestBehavior.AllowGet);
+                return Json(new { result = false, message = "Update failed!" });
             }
 
-            this.Mapper.Map(model, entity);
-
+            // update follow this step
+            // 1
+            await priceGroupItemService.UpdateAsync(priceGroupItemEntity);
+            // 2
+            await priceGroupService.UpdateAsync(priceGroupEntity);
+            // 3
             await service.UpdateAsync(entity);
 
-            jsonResult.Status = 0;
-            jsonResult.Message = "Update failed!";
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+            return Json(new { result = true, message = "Update success!" });
         }
 
-        // API Route to delete single group
-        [Route("api/vehicleGroups/{id:int}")]
+		// API Route to delete single group
+		[Route("api/vehicleGroups/{id:int}")]
 		[HttpDelete]
-        public async Task<JsonResult> DeleteVehicleGroupsAPI(int id)
+		public async Task<JsonResult> DeleteVehicleGroupAPI(int id)
+		{
+            var service = this.Service<IVehicleGroupService>();
+            var priceGroupService = this.Service<IPriceGroupService>();
+            var priceGroupItemService = this.Service<IPriceGroupItemService>();
+
+            var entity = await service.GetAsync(id);
+            if(entity != null)
+            {
+                var priceGroupEntity = await priceGroupService.GetAsync(entity.PriceGroup.ID);
+                await service.DeleteAsync(entity);
+                if(priceGroupEntity != null)
+                {
+                    var listPriceGroupItemEntity = priceGroupItemService.Get(q => q.PriceGroupID == priceGroupEntity.ID);
+                    await priceGroupService.DeleteAsync(priceGroupEntity);
+                    foreach(var item in listPriceGroupItemEntity)
+                    {
+                        await priceGroupItemService.DeleteAsync(item);
+                    }
+
+                    return Json(new { result = true, message = "Delete success!" });
+                }
+            }
+
+            return Json(new { result = false, message = "Delete failed!" });
+        }
+
+        // API Route to deactive/active vehicle group
+        [Route("api/vehicleGroups/status/{id:int}")]
+        [HttpPatch]
+        public async Task<JsonResult> ChangeStatus(int id)
         {
             var service = this.Service<IVehicleGroupService>();
-            MessageJsonModel jsonResult = new MessageJsonModel();
             var entity = await service.GetAsync(id);
-            if (entity != null)
+            if(entity != null)
             {
-                await service.DeleteAsync(entity);
-                jsonResult.Status = 1;
-                jsonResult.Message = "Deleted successfully!";
+                entity.IsActive = !entity.IsActive;
+                await service.UpdateAsync(entity);
+                return Json(new { result = true, message = "Change status success!" });
             }
-            else
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Error!";
-            }
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+
+            return Json(new { result = false, message = "Change status failed!" });
         }
     }
 }

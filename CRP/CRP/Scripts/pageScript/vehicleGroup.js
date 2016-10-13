@@ -301,4 +301,12 @@ $(document).ready(function () {
 			break;
 		}
 	});
+
+});
+
+// display percent
+$('#depositDisplay').val($('#deposit').val() * 100);
+
+$('#depositDisplay').on('focusout', function () {
+    $('#deposit').val(parseFloat($('#depositDisplay').val() / 100));
 });
