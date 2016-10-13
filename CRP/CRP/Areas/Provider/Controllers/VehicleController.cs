@@ -44,7 +44,7 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to get a list of vehicle to populate vehicleTable
 		// Only vehicle tables need this API because their possibly huge number of record
 		// So we need this API for server-side pagination
-		[Route("api/vehicles/datatables", Name = "vehiclesDatatables")]
+		[Route("api/vehicles", Name = "GetVehicleListAPI")]
 		[HttpGet]
 		public JsonResult GetVehicleListAPI(VehicelFilterConditionModel filterConditions)
 		{

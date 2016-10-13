@@ -114,21 +114,17 @@
           <Property Name="Phone2" Type="varchar" MaxLength="50" />
           <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="OpenTimeMon" Type="datetime" />
-          <Property Name="CloseTimeMon" Type="datetime" />
-          <Property Name="OpenTimeTue" Type="datetime" />
-          <Property Name="CloseTimeTue" Type="datetime" />
-          <Property Name="OpenTImeWed" Type="datetime" />
-          <Property Name="CloseTImeWed" Type="datetime" />
-          <Property Name="OpenTimeThur" Type="datetime" />
-          <Property Name="CloseTimeThur" Type="datetime" />
-          <Property Name="OpenTimeFri" Type="datetime" />
-          <Property Name="CloseTimeFri" Type="datetime" />
-          <Property Name="OpenTimeSat" Type="datetime" />
-          <Property Name="CloseTimeSat" Type="datetime" />
-          <Property Name="OpenTimeSun" Type="datetime" />
-          <Property Name="CloseTimeSun" Type="datetime" />
           <Property Name="SelfDescription" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="GarageWorkingTime">
+          <Key>
+            <PropertyRef Name="GarageID" />
+            <PropertyRef Name="DayOfWeek" />
+          </Key>
+          <Property Name="GarageID" Type="int" Nullable="false" />
+          <Property Name="DayOfWeek" Type="int" Nullable="false" />
+          <Property Name="StartTimeInMinute" Type="int" Nullable="false" />
+          <Property Name="EndTimeInMinute" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -184,9 +180,9 @@
         </EntityType>
         <EntityType Name="PriceGroupItem">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="PriceGroupID" />
+            <PropertyRef Name="MaxTime" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="PriceGroupID" Type="int" Nullable="false" />
           <Property Name="MaxTime" Type="int" Nullable="false" />
           <Property Name="Price" Type="float" Nullable="false" />
@@ -222,9 +218,9 @@
         </EntityType>
         <EntityType Name="VehicleImage">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="URL" />
+            <PropertyRef Name="CarID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="URL" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CarID" Type="int" Nullable="false" />
         </EntityType>
@@ -392,6 +388,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_GarageWorkingTime_Garage">
+          <End Role="Garage" Type="Self.Garage" Multiplicity="1" />
+          <End Role="GarageWorkingTime" Type="Self.GarageWorkingTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Garage">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GarageWorkingTime">
+              <PropertyRef Name="GarageID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Location_Nation">
           <End Role="Nation" Type="Self.Nation" Multiplicity="1" />
           <End Role="Location" Type="Self.Location" Multiplicity="*" />
@@ -498,6 +506,7 @@
           <EntitySet Name="Brand" EntityType="Self.Brand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Garage" EntityType="Self.Garage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GarageWorkingTime" EntityType="Self.GarageWorkingTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Model" EntityType="Self.Model" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ModelCategoryMapping" EntityType="Self.ModelCategoryMapping" Schema="dbo" store:Type="Tables" />
@@ -560,6 +569,10 @@
             <End Role="Location" EntitySet="Location" />
             <End Role="Garage" EntitySet="Garage" />
           </AssociationSet>
+          <AssociationSet Name="FK_GarageWorkingTime_Garage" Association="Self.FK_GarageWorkingTime_Garage">
+            <End Role="Garage" EntitySet="Garage" />
+            <End Role="GarageWorkingTime" EntitySet="GarageWorkingTime" />
+          </AssociationSet>
           <AssociationSet Name="FK_Location_Nation" Association="Self.FK_Location_Nation">
             <End Role="Nation" EntitySet="Nation" />
             <End Role="Location" EntitySet="Location" />
@@ -606,6 +619,7 @@
           <EntitySet Name="Brands" EntityType="CRPDBModel.Brand" />
           <EntitySet Name="Categories" EntityType="CRPDBModel.Category" />
           <EntitySet Name="Garages" EntityType="CRPDBModel.Garage" />
+          <EntitySet Name="GarageWorkingTimes" EntityType="CRPDBModel.GarageWorkingTime" />
           <EntitySet Name="Locations" EntityType="CRPDBModel.Location" />
           <EntitySet Name="Models" EntityType="CRPDBModel.Model" />
           <EntitySet Name="Nations" EntityType="CRPDBModel.Nation" />
@@ -658,6 +672,10 @@
           <AssociationSet Name="FK_Garage_Location" Association="CRPDBModel.FK_Garage_Location">
             <End Role="Location" EntitySet="Locations" />
             <End Role="Garage" EntitySet="Garages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GarageWorkingTime_Garage" Association="CRPDBModel.FK_GarageWorkingTime_Garage">
+            <End Role="Garage" EntitySet="Garages" />
+            <End Role="GarageWorkingTime" EntitySet="GarageWorkingTimes" />
           </AssociationSet>
           <AssociationSet Name="FK_Location_Nation" Association="CRPDBModel.FK_Location_Nation">
             <End Role="Nation" EntitySet="Nations" />
@@ -808,24 +826,22 @@
           <Property Name="Phone2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Star" Type="Decimal" Precision="2" Scale="1" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="OpenTimeMon" Type="DateTime" Precision="3" />
-          <Property Name="CloseTimeMon" Type="DateTime" Precision="3" />
-          <Property Name="OpenTimeTue" Type="DateTime" Precision="3" />
-          <Property Name="CloseTimeTue" Type="DateTime" Precision="3" />
-          <Property Name="OpenTImeWed" Type="DateTime" Precision="3" />
-          <Property Name="CloseTImeWed" Type="DateTime" Precision="3" />
-          <Property Name="OpenTimeThur" Type="DateTime" Precision="3" />
-          <Property Name="CloseTimeThur" Type="DateTime" Precision="3" />
-          <Property Name="OpenTimeFri" Type="DateTime" Precision="3" />
-          <Property Name="CloseTimeFri" Type="DateTime" Precision="3" />
-          <Property Name="OpenTimeSat" Type="DateTime" Precision="3" />
-          <Property Name="CloseTimeSat" Type="DateTime" Precision="3" />
-          <Property Name="OpenTimeSun" Type="DateTime" Precision="3" />
-          <Property Name="CloseTimeSun" Type="DateTime" Precision="3" />
           <Property Name="SelfDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_Garage_AspNetUsers" FromRole="Garage" ToRole="AspNetUser" />
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Car_Store" FromRole="Garage" ToRole="Vehicle" />
           <NavigationProperty Name="Location" Relationship="CRPDBModel.FK_Garage_Location" FromRole="Garage" ToRole="Location" />
+          <NavigationProperty Name="GarageWorkingTimes" Relationship="CRPDBModel.FK_GarageWorkingTime_Garage" FromRole="Garage" ToRole="GarageWorkingTime" />
+        </EntityType>
+        <EntityType Name="GarageWorkingTime">
+          <Key>
+            <PropertyRef Name="GarageID" />
+            <PropertyRef Name="DayOfWeek" />
+          </Key>
+          <Property Name="GarageID" Type="Int32" Nullable="false" />
+          <Property Name="DayOfWeek" Type="Int32" Nullable="false" />
+          <Property Name="StartTimeInMinute" Type="Int32" Nullable="false" />
+          <Property Name="EndTimeInMinute" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_GarageWorkingTime_Garage" FromRole="GarageWorkingTime" ToRole="Garage" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -884,9 +900,9 @@
         </EntityType>
         <EntityType Name="PriceGroupItem">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="PriceGroupID" />
+            <PropertyRef Name="MaxTime" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="PriceGroupID" Type="Int32" Nullable="false" />
           <Property Name="MaxTime" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
@@ -930,9 +946,9 @@
         </EntityType>
         <EntityType Name="VehicleImage">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="URL" />
+            <PropertyRef Name="CarID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="URL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CarID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_CarImage_Car" FromRole="VehicleImage" ToRole="Vehicle" />
@@ -1070,6 +1086,18 @@
             </Principal>
             <Dependent Role="Garage">
               <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GarageWorkingTime_Garage">
+          <End Type="CRPDBModel.Garage" Role="Garage" Multiplicity="1" />
+          <End Type="CRPDBModel.GarageWorkingTime" Role="GarageWorkingTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Garage">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GarageWorkingTime">
+              <PropertyRef Name="GarageID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1255,20 +1283,6 @@
             <EntityTypeMapping TypeName="CRPDBModel.Garage">
               <MappingFragment StoreEntitySet="Garage">
                 <ScalarProperty Name="SelfDescription" ColumnName="SelfDescription" />
-                <ScalarProperty Name="CloseTimeSun" ColumnName="CloseTimeSun" />
-                <ScalarProperty Name="OpenTimeSun" ColumnName="OpenTimeSun" />
-                <ScalarProperty Name="CloseTimeSat" ColumnName="CloseTimeSat" />
-                <ScalarProperty Name="OpenTimeSat" ColumnName="OpenTimeSat" />
-                <ScalarProperty Name="CloseTimeFri" ColumnName="CloseTimeFri" />
-                <ScalarProperty Name="OpenTimeFri" ColumnName="OpenTimeFri" />
-                <ScalarProperty Name="CloseTimeThur" ColumnName="CloseTimeThur" />
-                <ScalarProperty Name="OpenTimeThur" ColumnName="OpenTimeThur" />
-                <ScalarProperty Name="CloseTImeWed" ColumnName="CloseTImeWed" />
-                <ScalarProperty Name="OpenTImeWed" ColumnName="OpenTImeWed" />
-                <ScalarProperty Name="CloseTimeTue" ColumnName="CloseTimeTue" />
-                <ScalarProperty Name="OpenTimeTue" ColumnName="OpenTimeTue" />
-                <ScalarProperty Name="CloseTimeMon" ColumnName="CloseTimeMon" />
-                <ScalarProperty Name="OpenTimeMon" ColumnName="OpenTimeMon" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="Phone2" ColumnName="Phone2" />
@@ -1279,6 +1293,16 @@
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GarageWorkingTimes">
+            <EntityTypeMapping TypeName="CRPDBModel.GarageWorkingTime">
+              <MappingFragment StoreEntitySet="GarageWorkingTime">
+                <ScalarProperty Name="EndTimeInMinute" ColumnName="EndTimeInMinute" />
+                <ScalarProperty Name="StartTimeInMinute" ColumnName="StartTimeInMinute" />
+                <ScalarProperty Name="DayOfWeek" ColumnName="DayOfWeek" />
+                <ScalarProperty Name="GarageID" ColumnName="GarageID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1337,7 +1361,6 @@
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="MaxTime" ColumnName="MaxTime" />
                 <ScalarProperty Name="PriceGroupID" ColumnName="PriceGroupID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1377,7 +1400,6 @@
               <MappingFragment StoreEntitySet="VehicleImage">
                 <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="URL" ColumnName="URL" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

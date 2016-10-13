@@ -20,7 +20,6 @@ namespace CRP.Areas.Provider.Controllers
             var result = list
                 .Where(q => q.PriceGroupID == id )
                 .Select(q => new IConvertible[] {
-                q.ID,
                 q.MaxTime,
                 q.Price,
             });

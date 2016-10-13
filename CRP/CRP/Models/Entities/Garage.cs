@@ -18,6 +18,7 @@ namespace CRP.Models.Entities
         public Garage()
         {
             this.Vehicles = new HashSet<Vehicle>();
+            this.GarageWorkingTimes = new HashSet<GarageWorkingTime>();
         }
     
         public int ID { get; set; }
@@ -30,25 +31,13 @@ namespace CRP.Models.Entities
         public string Phone2 { get; set; }
         public Nullable<decimal> Star { get; set; }
         public bool IsActive { get; set; }
-        public Nullable<System.DateTime> OpenTimeMon { get; set; }
-        public Nullable<System.DateTime> CloseTimeMon { get; set; }
-        public Nullable<System.DateTime> OpenTimeTue { get; set; }
-        public Nullable<System.DateTime> CloseTimeTue { get; set; }
-        public Nullable<System.DateTime> OpenTImeWed { get; set; }
-        public Nullable<System.DateTime> CloseTImeWed { get; set; }
-        public Nullable<System.DateTime> OpenTimeThur { get; set; }
-        public Nullable<System.DateTime> CloseTimeThur { get; set; }
-        public Nullable<System.DateTime> OpenTimeFri { get; set; }
-        public Nullable<System.DateTime> CloseTimeFri { get; set; }
-        public Nullable<System.DateTime> OpenTimeSat { get; set; }
-        public Nullable<System.DateTime> CloseTimeSat { get; set; }
-        public Nullable<System.DateTime> OpenTimeSun { get; set; }
-        public Nullable<System.DateTime> CloseTimeSun { get; set; }
         public string SelfDescription { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehicle> Vehicles { get; set; }
         public virtual Location Location { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<GarageWorkingTime> GarageWorkingTimes { get; set; }
     }
 }
