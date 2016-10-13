@@ -12,12 +12,13 @@ namespace CRP.Models.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class PriceGroupItem
+    public partial class GarageWorkingTime
     {
-        public int PriceGroupID { get; set; }
-        public int MaxTime { get; set; }
-        public double Price { get; set; }
+        public int GarageID { get; set; }
+        public int DayOfWeek { get; set; }
+        public int StartTimeInMinute { get; set; }
+        public int EndTimeInMinute { get; set; }
     
-        public virtual PriceGroup PriceGroup { get; set; }
+        public virtual Garage Garage { get; set; }
     }
 }
