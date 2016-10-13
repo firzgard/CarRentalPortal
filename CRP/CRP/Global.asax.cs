@@ -1,11 +1,13 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using AutoMapper;
+using CRP.Models;
 using CRP.Models.AutofacModules;
 using CRP.Models.Entities;
 using CRP.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
@@ -27,6 +29,7 @@ namespace CRP
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            Database.SetInitializer<ApplicationDbContext>(null);
             this.InitializeAutofac();
         }
 
