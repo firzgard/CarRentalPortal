@@ -244,14 +244,12 @@
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Services\CategoryService.cs" />
-    <Compile Include="Models\Entities\ModelCategoryMapping.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupItemRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
     <Compile Include="Models\Entities\Services\PriceGroupItemService.cs" />
     <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
+    <Compile Include="Models\Entities\Services\UserService.cs" />
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
@@ -260,6 +258,7 @@
     <Compile Include="Models\JsonModels\HomeJsonModels.cs" />
     <Compile Include="Models\JsonModels\VehicleCalendarModel.cs" />
     <Compile Include="Models\JsonModels\MessageJsonModel.cs" />
+    <Compile Include="Models\JsonModels\VehicleJsonModels.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>CRP.tt</DependentUpon>
@@ -339,7 +338,6 @@
     <Compile Include="Models\JsonModels\PriceGroupItemModel.cs" />
     <Compile Include="Models\JsonModels\PriceGroupModel.cs" />
     <Compile Include="Models\JsonModels\VehicleGroupModel.cs" />
-    <Compile Include="Models\JsonModels\VehicleModel.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\VehicleGroupViewModel.cs" />
@@ -1395,7 +1393,9 @@
     <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
+    <Content Include="Content\pageStyle\login.css" />
     <Content Include="Content\pageStyle\search.css" />
+    <Content Include="Content\pageStyle\signUp.css" />
     <Content Include="Content\pageStyle\vehicleGroup.css" />
     <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
     <Content Include="Content\patterns\1.png" />

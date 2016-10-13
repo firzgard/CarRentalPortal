@@ -43,22 +43,7 @@ const mockupData3 = [
 
 ];
 
-function addVehicleGroup() {
-    $.ajax({
-        type: "GET",
-        url: "/management/vehicleGroupManagement/create",
-        success: function (data) {
-            $('#myModal').html(data);
-            $('#myModal').modal('show');
-        },
-        eror: function (e) {
-
-        }
-    });
-    //$('#myModal').modal('show');
-}
-
-$(document).ready(() => {
+$(document).ready(function(){
     var table1 = $('#groupPop').DataTable({
                 data: mockupData3
                 , columnDefs: [
@@ -129,13 +114,17 @@ $(document).ready(() => {
 		}
 	});
     
+	var searchCondition = {
+	    
+	};
 	// Render table
 	let table = $('#garages').DataTable({
         dom: "ltipr",
 	    //data: mockupData,
         ajax: {
             url: "/api/vehicleGroups",
-            type: "GET"
+            type: "GET",
+            //data: searchCondition
         },
 		columnDefs: [
 			{
@@ -160,8 +149,8 @@ $(document).ready(() => {
 						</button>
 						<ul class="dropdown-menu">
 							<li><a href="/management/vehicleGroupManagement/${row[0]}">Edit</a></li>
-                            <li><a href="#">${row[6] === "Active" ? "Deactivate": "Reactivate"}</a></li>
-                            <li><a href="#">Delete</a></li>
+                            <li><a class="changeStatus" data-vehicle-id="${row[0]}" href="#">${row[6] === true ? "Deactivate": "Reactivate"}</a></li>
+                            <li><a class="deleteVehicle" data-vehicle-id="${row[0]}" href="#">Delete</a></li>
 						</ul>
 					</div>`;
 				}
@@ -197,7 +186,6 @@ $(document).ready(() => {
     // status checkbox filter
     createCheckboxFilter(table, $('#status'), 5);
     
-    
 	// Render confirmation modal for actions
 	$('#mdModal').on('show.bs.modal', function(event) {
 		let button = $(event.relatedTarget),
@@ -221,9 +209,6 @@ $(document).ready(() => {
 			<button type="button" class="btn btn-danger">Yes</button>
 		</div>`);
 	});
-
-
-
     
     $('#addGarage').on('show.bs.modal', function(event) {
         $(this).find('.modal-content').html(`
@@ -266,5 +251,53 @@ $(document).ready(() => {
             width: "100%",
             no_results_text: "No result!"
         });
+    });
+
+    $('#btnAddVehiclePopup').on('click', function () {
+        $.ajax({
+            type: "GET",
+            url: "/management/vehicleGroupManagement/create",
+            success: function (data) {
+                $('#myModal').html(data);
+                $('#myModal').modal('show');
+            },
+            eror: function (e) {
+
+            }
+        });
+    });
+});
+
+$(document).on('focusout', '#depositDisplay', function () {
+    $('#deposit').val(parseFloat($('#depositDisplay').val() / 100));
+});
+
+// change status
+$(document).on('click', "a.changeStatus", function () {
+    let id = $(this).data("vehicle-id");
+    $.ajax({
+        url: `/api/vehicleGroups/status/${id}`,
+        type: "PATCH",
+        success: function (data) {
+            alert("ok");
+        },
+        eror: function (data) {
+            alert("fail");
+        }
+    });
+});
+
+// change status
+$(document).on('click', "a.deleteVehicle", function () {
+    let id = $(this).data("vehicle-id");
+    $.ajax({
+        url: `/api/vehicleGroups/${id}`,
+        type: "DELETE",
+        success: function (data) {
+            alert("ok");
+        },
+        eror: function (data) {
+            alert("fail");
+        }
     });
 });
