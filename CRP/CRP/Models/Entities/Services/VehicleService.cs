@@ -10,247 +10,195 @@ using CRP.Models.ViewModels;
 namespace CRP.Models.Entities.Services
 {
 	public interface IVehicleService : IService<Vehicle>
-    {
-        SearchResultJsonModel FindToBook(SearchConditionModel searchConditions);
+	{
+		IVehicleFilterJsonModel FilterVehicle(VehicelFilterConditionModel filterConditions);
+	}
 
-        List<VehicleModel> VehicleFilter(VehicleFilterCondition FilterConditions);
-    }
+	public class VehicleService : BaseService<Vehicle>, IVehicleService
+	{
+		public VehicleService(IUnitOfWork unitOfWork, IVehicleRepository repository) : base(unitOfWork, repository)
+		{
 
-    public class VehicleService : BaseService<Vehicle>, IVehicleService
-    {
-        public VehicleService(IUnitOfWork unitOfWork, IVehicleRepository repository) : base(unitOfWork, repository)
-        {
+		}
 
-        }
+		public IVehicleFilterJsonModel FilterVehicle(VehicelFilterConditionModel filterConditions)
+		{
+			// Filters that can take out the most records with the least work go first
 
-        public SearchResultJsonModel FindToBook(SearchConditionModel searchConditions)
-        {
-            // Get all vehicles
-            List<Vehicle> vehicles = this.repository.Get().ToList();
+			IEnumerable<Vehicle> vehicles;
+			int totalResult;
 
-            // Filters, go!!
-            if (searchConditions.TransmissionTypeIDList != null)
-                vehicles = vehicles.Where(
-                    v => searchConditions.TransmissionTypeIDList.Contains(v.TransmissionType)
-                ).ToList();
+			// ========================================================
+			// ========================================================
+			if (filterConditions is VehicleManagementFilterConditionModel)
+			{
+				var resolvedFilterCondition = (VehicleManagementFilterConditionModel)filterConditions;
 
-            if (searchConditions.NumberOfSeatList != null)
-                vehicles = vehicles.Where(
-                    v => searchConditions.NumberOfSeatList.Contains(v.Model.NumOfSeat)
-                ).ToList();
+				// Get only vehicles belonged to this user
+				vehicles = this.repository.Get(
+					v => v.Garage.OwnerID == resolvedFilterCondition.ProviderID
+				);
 
-            // First, use intersect() to join 2 array<int> that contain CategoryIDs
-            // Then check if the array is empty or not
-            if (searchConditions.VehicleTypeList != null)
-                vehicles = vehicles.Where(
-                    v => {
-                        var vehicleCategoryList = v.Model.ModelCategoryMappings.Aggregate(
-                            new List<int>(), (acc, r) => { acc.Add(r.CategoryID); return acc; }
-                        );
+				// LicenseNumber condition
+				if (resolvedFilterCondition.LicenseNumber != null)
+				{
+					vehicles = vehicles.Where(v => v.LicenseNumber.Contains(resolvedFilterCondition.LicenseNumber));
+				}
 
-                        return searchConditions.VehicleTypeList.Intersect(vehicleCategoryList).Any();
-                    }
-                ).ToList();
+				// Name condtion
+				if (resolvedFilterCondition.Name != null)
+				{
+					vehicles = vehicles.Where(v => v.Name.Contains(resolvedFilterCondition.Name));
+				}
 
-            if (searchConditions.ColorIDList != null)
-                vehicles = vehicles.Where(
-                    v => searchConditions.ColorIDList.Contains(v.Color)
-                ).ToList();
+				// GarageIDList condition
+				if (resolvedFilterCondition.GarageIDList != null)
+				{
+					vehicles = vehicles.Where(v => resolvedFilterCondition.VehicleGroupIDList.Contains(v.GarageID));
+				}
 
-            if (searchConditions.FuelTypeIDList != null)
-                vehicles = vehicles.Where(
-                    v => searchConditions.FuelTypeIDList.Contains(v.FuelType)
-                ).ToList();
+				// VehicleGroupIDList condtion
+				if (resolvedFilterCondition.VehicleGroupIDList != null)
+				{
+					vehicles = vehicles.Where(v => resolvedFilterCondition.VehicleGroupIDList.Contains(v.VehicleGroupID));
+				}
 
-            if (searchConditions.LocationIDList != null)
-                vehicles = vehicles.Where(
-                    v => searchConditions.LocationIDList.Contains(v.Garage.LocationID))
-                .ToList();
+				// Max Rating condition
+				if (resolvedFilterCondition.MaxRating != null)
+				{
+					vehicles = vehicles.Where(v => v.Star <= resolvedFilterCondition.MaxRating);
+				}
 
-            if (searchConditions.BrandIDList != null || searchConditions.ModelIDList != null)
-                vehicles = vehicles.Where(v => searchConditions.BrandIDList.Contains(v.Model.BrandID)
-                                || searchConditions.ModelIDList.Contains(v.ModelID)).ToList();
+				// Min Rating condition
+				if (resolvedFilterCondition.MinRating != null)
+				{
+					vehicles = vehicles.Where(v => v.Star >= resolvedFilterCondition.MinRating);
+				}
+			}
+			else {
+				vehicles = this.repository.Get();
+			}
 
-            // Get the rental time in hour
-            TimeSpan rentalTimeSpan = (DateTime)searchConditions.EndTime - (DateTime)searchConditions.StartTime;
-            int rentalTime = (int)Math.Ceiling(rentalTimeSpan.TotalHours);
+			// Other Filters, go!!
 
-            vehicles = vehicles.Where(v => !(v.VehicleGroup.MaxRentalPeriod * 24 < rentalTime)).ToList();
+			// Transmission condition
+			if (filterConditions.TransmissionTypeIDList != null)
+				vehicles = vehicles.Where(v => filterConditions.TransmissionTypeIDList.Contains(v.TransmissionType));
 
-            vehicles = vehicles.Where(v =>
-            {
-                bool isValid = true;
-                foreach (BookingReceipt br in v.BookingReceipts)
-                {
-                    if ((searchConditions.StartTime > br.StartTime
-                                && searchConditions.StartTime < br.EndTime)
-                            || (searchConditions.EndTime > br.StartTime
-                                && searchConditions.EndTime < br.EndTime)
-                            || (searchConditions.StartTime <= br.StartTime
-                                && searchConditions.EndTime >= br.EndTime))
-                    {
-                        isValid = false;
-                        break;
-                    }
-                }
-                return isValid;
-            }).ToList();
+			// Color condition
+			if (filterConditions.ColorIDList != null)
+				vehicles = vehicles.Where(v => filterConditions.ColorIDList.Contains(v.Color));
 
-            // Parse into model suitable to send back to browser
-            List<SearchResultVehicleJsonModel> results = new List<JsonModels.SearchResultVehicleJsonModel>();
-            foreach (Vehicle vehicle in vehicles)
-            {
-                results.Add(new SearchResultVehicleJsonModel(vehicle, rentalTime));
-            }
+			// FuelType condition
+			if (filterConditions.FuelTypeIDList != null)
+				vehicles = vehicles.Where(v => filterConditions.FuelTypeIDList.Contains(v.FuelType));
 
-            if (searchConditions.MaxPrice != null && searchConditions.MinPrice != null
-                    && searchConditions.MaxPrice > searchConditions.MinPrice)
-            {
-                results = results.Where(
-                    r => searchConditions.MaxPrice >= r.BestPossibleRentalPrice
-                        && searchConditions.MinPrice <= r.BestPossibleRentalPrice
-                ).ToList();
-            }
+			// Location condition
+			if (filterConditions.LocationIDList != null)
+				vehicles = vehicles.Where(v => filterConditions.LocationIDList.Contains(v.Garage.LocationID));
 
-            // Paginate
-            if ((searchConditions.Page - 1) * Constants.NumberOfSearchResultPerPage < results.Count)
-                searchConditions.Page = 1;
+			vehicles.ToList();
+			if (filterConditions.CategoryIDList != null)
+				vehicles.Where(v =>
+				{
+					IEnumerable<Category> a = v.Model.Categories.Where(r => filterConditions.CategoryIDList.Contains(r.ID));
+					return a.Any();
+				});
 
-            results = results.Skip((searchConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
-                    .Take(Constants.NumberOfSearchResultPerPage)
-                    .ToList();
+			// Category condition
+			if (filterConditions.CategoryIDList != null)
+				vehicles = vehicles.Where(v => v.Model.Categories.Where(r => filterConditions.CategoryIDList.Contains(r.ID)).Any());
 
-            // Order
-            System.Reflection.PropertyInfo info = typeof(SearchResultVehicleJsonModel).GetProperty(searchConditions.OrderBy);
-            if (info != null)
-                results = results.OrderBy(r => info.GetValue(r)).ToList();
+			// Max ProductionYear condition
+			if (filterConditions.MaxProductionYear != null)
+				vehicles = vehicles.Where(v => v.Year <= filterConditions.MaxProductionYear);
 
-            // Nest into result object
-            return new SearchResultJsonModel(results, results.Count);
-        }
+			// Min ProductionYear condition
+			if (filterConditions.MinProductionYear != null)
+				vehicles = vehicles.Where(v => v.Year >= filterConditions.MinProductionYear);
 
-        // filter with multi-conditions
-        public List<VehicleModel> VehicleFilter(VehicleFilterCondition FilterConditions)
-        {
-            List<Vehicle> Vehicles = this.repository.Get().ToList();
+			// Brand and Model condition
+			if (filterConditions.BrandIDList.Any() || filterConditions.ModelIDList.Any())
+				vehicles = vehicles.Where(v => filterConditions.BrandIDList.Contains(v.Model.BrandID)
+											|| filterConditions.ModelIDList.Contains(v.ModelID));
+			
+			// ========================================================
+			// ========================================================
+			if (filterConditions is SearchConditionModel)
+			{
+				var resolvedFilterCondition = (SearchConditionModel)filterConditions;
 
-            /// FILTER ///
-            // VehicleGroupID
-            if (FilterConditions.VehicleGroupIDList != null)
-            {
-                Vehicles = Vehicles.Where(v => FilterConditions.VehicleGroupIDList.Contains(v.VehicleGroupID)).ToList();
-            }
-            // GarageID
-            if (FilterConditions.GarageIDList != null)
-            {
-                Vehicles = Vehicles.Where(v => FilterConditions.VehicleGroupIDList.Contains(v.GarageID)).ToList();
-            }
-            // License Number
-            if (FilterConditions.LicenseNumber != null)
-            {
-                Vehicles = Vehicles.Where(v => v.LicenseNumber.Contains(FilterConditions.LicenseNumber)).ToList();
-            }
-            // Vehicle Name
-            if (FilterConditions.Name != null)
-            {
-                Vehicles = Vehicles.Where(v => v.Name.Contains(FilterConditions.Name)).ToList();
-            }
-            // Category
-            if (FilterConditions.CategoryIDList != null)
-            {
-                Vehicles = Vehicles.Where(v => {
-                    var vehicleCategoryList = v.Model.ModelCategoryMappings.Aggregate(
-                        new List<int>(), (acc, r) => { acc.Add(r.CategoryID); return acc; }
-                    );
+				// NumOfSeatList condition
+				if (resolvedFilterCondition.NumberOfSeatList != null)
+					vehicles = vehicles.Where(v => ((SearchConditionModel)filterConditions).NumberOfSeatList.Contains(v.Model.NumOfSeat));
+				
+				// Get the rental time in hour
+				TimeSpan rentalTimeSpan = (DateTime)resolvedFilterCondition.EndTime - (DateTime)resolvedFilterCondition.StartTime;
+				int rentalTime = (int)Math.Ceiling(rentalTimeSpan.TotalHours);
 
-                    return FilterConditions.CategoryIDList.Intersect(vehicleCategoryList).Any();
-                }).ToList();
-            }
-            // FuelType
-            if (FilterConditions.FuelTypeIDList != null)
-            {
-                Vehicles = Vehicles.Where(v => FilterConditions.FuelTypeIDList.Contains(v.TransmissionType)).ToList();
-            }
-            // TransmissionType
-            if (FilterConditions.TransmissionTypeIDList != null)
-            {
-                Vehicles = Vehicles.Where(v => FilterConditions.TransmissionTypeIDList.Contains(v.TransmissionType)).ToList();
-            }
-            // Number of seat
-            if (FilterConditions.NumOfSeatFrom != null || FilterConditions.NumOfSeatTo != null)
-            {
-                if (FilterConditions.NumOfSeatFrom == null)
-                {
-                    FilterConditions.NumOfSeatFrom = 0;
-                }
-                if (FilterConditions.NumOfSeatTo == null)
-                {
-                    FilterConditions.NumOfSeatTo = 100;
-                }
+				// vehicleGroup's max rental time constraint
+				vehicles = vehicles.Where(v => v.VehicleGroup.MaxRentalPeriod == null
+											|| v.VehicleGroup.MaxRentalPeriod * 24 > rentalTime);
+				
+				// get only vehicles that are free in the booking period condition
+				vehicles = vehicles.Where(v =>
+					!(v.BookingReceipts.Where(br => (resolvedFilterCondition.StartTime > br.StartTime && resolvedFilterCondition.StartTime < br.EndTime)
+											   || (resolvedFilterCondition.EndTime > br.StartTime && resolvedFilterCondition.EndTime < br.EndTime)
+											   || (resolvedFilterCondition.StartTime <= br.StartTime && resolvedFilterCondition.EndTime >= br.EndTime)
+					).Any())
+				);
 
-                Vehicles = Vehicles.Where(v => (v.Model.NumOfSeat >= FilterConditions.NumOfSeatFrom
-                && v.Model.NumOfSeat <= FilterConditions.NumOfSeatTo)).ToList();
-            }
-            // Rate
-            if (FilterConditions.RateFrom != null || FilterConditions.RateTo != null)
-            {
-                if (FilterConditions.RateFrom == null)
-                {
-                    FilterConditions.RateFrom = 0.0m;
-                }
-                if (FilterConditions.RateTo == null)
-                {
-                    FilterConditions.RateTo = 5.0m;
-                }
+				// Parse into model suitable to send back to browser
+				var results = new List<JsonModels.SearchResultItemJsonModel>();
+				foreach (Vehicle vehicle in vehicles)
+					results.Add(new SearchResultItemJsonModel(vehicle, rentalTime));
 
-                Vehicles = Vehicles.Where(v => (v.Star >= FilterConditions.RateFrom && v.Star <= FilterConditions.RateTo)).ToList();
-            }
-            // Year
-            if (FilterConditions.YearFrom != null || FilterConditions.YearTo != null)
-            {
-                if (FilterConditions.YearFrom == null)
-                {
-                    FilterConditions.RateFrom = 1900;
-                }
-                if (FilterConditions.YearTo == null)
-                {
-                    FilterConditions.RateTo = int.MaxValue;
-                }
+				// Max/Min Price conditions
+				if (resolvedFilterCondition.MaxPrice != null && resolvedFilterCondition.MinPrice != null
+						&& resolvedFilterCondition.MaxPrice > resolvedFilterCondition.MinPrice)
+				{
+					results = results.Where(
+						r => resolvedFilterCondition.MaxPrice >= r.BestPossibleRentalPrice
+						  && resolvedFilterCondition.MinPrice <= r.BestPossibleRentalPrice
+					).ToList();
+				}
 
-                Vehicles = Vehicles.Where(v => (v.Year >= FilterConditions.YearFrom && v.Year <= FilterConditions.YearTo)).ToList();
-            }
-            // parse to VehicleModel Jsonformat
-            List<VehicleModel> VehicleJson = new List<VehicleModel>();
+				// Paginate
+				totalResult = results.Count;
+				if (resolvedFilterCondition.Page < 1 || (resolvedFilterCondition.Page - 1) * Constants.NumberOfSearchResultPerPage > totalResult)
+					resolvedFilterCondition.Page = 1;
 
-            foreach (Vehicle Vehicle in Vehicles)
-            {
-                VehicleJson.Add(new VehicleModel(Vehicle));
-            }
+				results = results.Skip((resolvedFilterCondition.Page - 1) * Constants.NumberOfSearchResultPerPage)
+						.Take(Constants.NumberOfSearchResultPerPage)
+						.ToList();
 
-            // paginate
-            if ((FilterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage < VehicleJson.Count)
-            {
-                FilterConditions.Page = 1;
-            }
+				// Order
+				System.Reflection.PropertyInfo prop1 = typeof(SearchResultItemJsonModel).GetProperty(resolvedFilterCondition.OrderBy);
+				if (resolvedFilterCondition.IsDescendingOrder)
+					results = results.OrderByDescending(r => prop1.GetValue(r)).ToList();
+				else
+					results = results.OrderBy(r => prop1.GetValue(r)).ToList();
 
-            VehicleJson = VehicleJson.Skip((FilterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
-                    .Take(Constants.NumberOfSearchResultPerPage)
-                    .ToList();
+				// Nest into result object
+				return new SearchResultJsonModel(results, totalResult);
+			}
 
-            // OderBy Ascending or Descending
-            System.Reflection.PropertyInfo prop = typeof(VehicleModel).GetProperty(FilterConditions.OrderBy);
+			// Paginate
+			totalResult = vehicles.Count();
+			if ((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage > totalResult)
+				filterConditions.Page = 1;
 
-            if (FilterConditions.IsAscending)
-            {
-                VehicleJson = VehicleJson.OrderBy(x => prop.GetValue(x, null)).ToList();
-            }
-            else
-            {
-                VehicleJson = VehicleJson.OrderByDescending(x => prop.GetValue(x, null)).ToList();
-            }
+			vehicles = vehicles.Skip((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
+					.Take(Constants.NumberOfSearchResultPerPage);
 
+			// Order
+			System.Reflection.PropertyInfo prop2 = typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy);
+			if (filterConditions.IsDescendingOrder)
+				vehicles = vehicles.OrderByDescending(r => prop2.GetValue(r));
+			else
+				vehicles = vehicles.OrderBy(r => prop2.GetValue(r));
 
-            return VehicleJson;
-        }
-    }
+			return new VehicleDataTablesJsonModel(vehicles.ToList(), totalResult);
+		}
+	}
 }

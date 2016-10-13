@@ -5,29 +5,41 @@ let now = moment();
 let searchConditions = {
 	StartTime: now.clone().add(1, 'days').toJSON()
 	, EndTime: now.clone().add(2, 'days').toJSON()
-	, OrderBy: "BestPossibleRentalPrice"
+	, BrandIDList: []
+	, ModelIDList: []
 	, TransmissionTypeIDList: []
+	, OrderBy: "BestPossibleRentalPrice"
 };
+
+// TransmissionTypeIDList:
+// ColorIDList:
+// FuelTypeIDList:
+// LocationIDList:
+// CategoryIDList:
+// MaxProductionYear
+// MinProductionYear
+// BrandIDList:
+// ModelIDList:
+// OrderBy:
+// IsDescendingOrder:
+// Page:
+
+// NumberOfSeatList:
 // StartTime: 
 // EndTime:
 // MaxPrice:
 // MinPrice:
-// LocationIDList:
-// BrandIDList:
-// ModelIDList:
-// VehicleTypeList:
-// NumberOfSeatList:
-// TransmissionTypeIDList:
-// ColorIDList:
-// FuelTypeIDList:
-// OrderBy:
-// IsAscOrder:
-// Page:
 
 function renderSearchResultGrid(domNode, searchResultList){
 	domNode.html(searchResultList.reduce((html, searchResult) => html + renderSearchResultItem(searchResult), ''))
 
 	$('.carousel').carousel()
+
+	domNode
+	.addClass('animated fadeIn')
+	.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
+		domNode.removeClass('animated fadeIn')
+	});
 }
 
 function renderSearchResultItem(searchResult){
@@ -96,6 +108,12 @@ function renderPaginator(domNode, data){
 			// Ajax here to load the next page's content
 		}
 	});
+
+	domNode
+	.addClass('animated fadeIn')
+	.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
+		domNode.removeClass('animated fadeIn')
+	});
 }
 
 function renderRecordInfo(domNode, data){
@@ -106,16 +124,23 @@ function renderRecordInfo(domNode, data){
 		, newHtml = `${firstResultPosition} - ${lastResultPosition} of ${data.TotalResult} vehicle(s)`;
 
 	domNode.html(newHtml);
+
+	domNode
+	.addClass('animated fadeIn')
+	.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
+		domNode.removeClass('animated fadeIn')
+	});
 }
 
 function renderPriceSlider(lowestPriceDisplay, averagePriceDisplay, highestPriceDisplay, data){
-	lowestPriceDisplay.html(`₫&nbsp;${data.LowestPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
-	averagePriceDisplay.html(`₫&nbsp;${data.AveragePrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
-	highestPriceDisplay.html(`₫&nbsp;${data.HighestPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
+	lowestPriceDisplay.html(`₫&nbsp;${Number.parseInt(data.LowestPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
+	averagePriceDisplay.html(`₫&nbsp;${Number.parseInt(data.AveragePrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
+	highestPriceDisplay.html(`₫&nbsp;${Number.parseInt(data.HighestPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
 }
 
 function renderSearcher({
-		searchResultGrid
+		resultContainer
+		,searchResultGrid
 		, paginator
 		, recordInfo
 		, lowestPriceDisplay
@@ -123,6 +148,9 @@ function renderSearcher({
 		, highestPriceDisplay
 	} = jqueryNodes)
 {
+	console.log(searchConditions);
+
+	resultContainer.scrollTop(0);
 	$.ajax({
 		url: $('#searchResultGrid').data('source'),
 		type: 'GET',
@@ -165,7 +193,10 @@ $(document).ready(() => {
 	jQuery.ajaxSettings.traditional = true;
 
 	let jQueryNodes = {
-		filters: $('#filters')
+		resultContainer: $('#resultContainer')
+		, filters: $('#filters')
+		, brandFilter: $('#brandFilter')
+		, modelFilter: $('#modelFilter')
 		, searchResultGrid: $('#searchResultGrid')
 		, paginator: $('#paginatior')
 		, recordInfo: $('#recordInfo')
@@ -175,6 +206,7 @@ $(document).ready(() => {
 	}
 
 	// Time range filter
+	// Start time
 	let startTimeFilter = $('#startTimeFilter').datetimepicker({
 		useCurrent: false,
 		defaultDate: now.clone().add(1, 'days'),
@@ -205,6 +237,7 @@ $(document).ready(() => {
 		console.log(data);
 	});
 
+	// End time
 	let endTimeFilter = $('#endTimeFilter').datetimepicker({
 		useCurrent: false,
 		defaultDate: now.clone().add(2, 'days'),
@@ -243,76 +276,80 @@ $(document).ready(() => {
 		});
 	});
 
-	// $('#timeFilter').daterangepicker({
-	// 	minDate: moment(),
-	// 	maxDate: moment().add(30, 'days'),
-	// 	dateLimit: { days: 30 }
-	// 	applyClass: 'btn-primary',
-	// 	cancelClass: 'btn-default',
-	// 	opens: 'right',
-	// 	drops: 'down',
-	// 	buttonClasses: ['btn', 'btn-sm'],
-	// 	locale: {
-	// 		applyLabel: 'Apply',
-	// 		cancelLabel: 'Cancel',
-	// 		format: 'YYYY-MM-DD h:mm A',
-	// 		fromLabel: 'From',
-	// 		toLabel: 'To',
-	// 		customRangeLabel: 'Custom',
-	// 		daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-	// 		monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-	// 		firstDay: 1
-	// 	},
-	// 	showDropdowns: true,
-	// 	timePicker: true,
-	// }, (start, end, label) => {
-	// 	$('#startTimeDisplay').val(start.format('YYYY-MM-DD h:mm A'));
-	// 	$('#endTimeDisplay').val(end.format('YYYY-MM-DD h:mm A'));
-	// 	searchConditions.StartTime = start.toDate();
-	// 	searchConditions.EndTime = end.toDate();
-	// });
-
-	// Chosen selector
-
+	// Chosen selectors
 	// Location
-	$('#locationFilter').select2().on('change', (evt) => {
-		searchConditions.LocationIDList = $(evt.currentTarget).val();
+	$('#locationFilter')
+	.select2()
+	.on('change', function() {
+		searchConditions.LocationIDList = $(this).val();
 		delete searchConditions.Page;
 
 		renderSearcher(jQueryNodes);
 	});
 
-	// Brand + model filter
-	const brandModelOptionFormat = (state, container) => {
-		console.log(state);
-		console.log(container);
-		if(state.element.dataset.lvl == 0)
-			return $(`<span><i class="fa fa-building}"></i>&nbsp;&nbsp;${state.text}</span>`);
-		else
-			return $(`<span><i class="fa fa-car}"></i>&nbsp;&nbsp;${state.text}</span>`);
-	};
+	// Brand filter
+	jQueryNodes.brandFilter
+	.select2()
+	.on('change', function() {
+		// Remove modelFilter before regenerate it
+		jQueryNodes.modelFilter.select2("destroy");
 
-	$('#modelFilter').select2({
-		templateSelection: brandModelOptionFormat,
-		templateResult: brandModelOptionFormat
-	}).on('change', (evt) => {
-		//searchConditions.LocationIDList = $(evt.currentTarget).val();
+		// Enable all model options before
+		// disabling only model options belonged to selected brands
+		jQueryNodes.modelFilter.find('option').each((i, el) => {
+			el.disabled = false
+		});
+
+		// Get the brandIdList
+		searchConditions.BrandIDList = $(this).val();
+
+		let disabledModelIDList = [];
+		for(let brandID of searchConditions.BrandIDList){
+			let optgroup = jQueryNodes.modelFilter.find(`optgroup[data-brand="${brandID}"]`)
+			
+			optgroup.find('option').each((i, el) => {
+				// Disable only model options belonged to selected brands
+				el.selected = false;
+				el.disabled = true;
+
+				disabledModelIDList.push(Number.parseInt(el.value));
+			});
+		}
+		// Filter out models belonged to selected brands in searchConditions
+		searchConditions.ModelIDList = searchConditions.ModelIDList.filter((el) => disabledModelIDList.includes(el));
+
+		// Regenerate modelFilter
+		jQueryNodes.modelFilter.select2();
+
 		delete searchConditions.Page;
+		renderSearcher(jQueryNodes);
+	});
 
+	// Model filter
+	jQueryNodes.modelFilter
+	.select2()
+	.on('change', function() {
+		searchConditions.ModelIDList = $(this).val();
+
+		delete searchConditions.Page;
 		renderSearcher(jQueryNodes);
 	});
 
 	// Category
-	$('#categoryFilter').select2().on('change', (evt) => {
-		searchConditions.VehicleTypeList = $(evt.currentTarget).val();
+	$('#categoryFilter')
+	.select2()
+	.on('change', function() {
+		searchConditions.CategoryIDList = $(this).val();
 		delete searchConditions.Page;
 
 		renderSearcher(jQueryNodes);
 	});
 
 	// Seat
-	$('#seatFilter').select2().on('change', (evt) => {
-		searchConditions.NumberOfSeatList = $(evt.currentTarget).val();
+	$('#seatFilter')
+	.select2()
+	.on('change', function() {
+		searchConditions.NumberOfSeatList = $(this).val();
 		delete searchConditions.Page;
 
 		renderSearcher(jQueryNodes);
@@ -323,20 +360,23 @@ $(document).ready(() => {
 		return $(`<span><i class="fa fa-car fa-${state.text.toLowerCase()}"></i>&nbsp;&nbsp;${state.text}</span>`);
 	};
 
-	$('#colorFilter').select2({
+	$('#colorFilter')
+	.select2({
 		templateSelection: colorOptionFormat,
 		templateResult: colorOptionFormat
 	})
-	.on('change', function(evt){
-		searchConditions.ColorIDList = $(evt.currentTarget).val();
+	.on('change', function(){
+		searchConditions.ColorIDList = $(this).val();
 		delete searchConditions.Page;
 
 		renderSearcher(jQueryNodes);
 	});
 
 	// Fuel
-	$('#fuelFilter').select2().on('change', (evt) => {
-		searchConditions.FuelTypeIDList = $(evt.currentTarget).val();
+	$('#fuelFilter')
+	.select2()
+	.on('change', function() {
+		searchConditions.FuelTypeIDList = $(this).val();
 		delete searchConditions.Page;
 
 		renderSearcher(jQueryNodes);
@@ -347,7 +387,7 @@ $(document).ready(() => {
 	let priceSlider = noUiSlider.create(document.getElementById('priceFilter'), {
 		connect: true,
 		format: {
-			to: value => `₫&nbsp;${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+			to: value => `₫&nbsp;${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
 			from: value => Number.parseInt(value.replace('₫&nbsp;', '').replace(',', ''))
 		},
 		margin: 100000,
