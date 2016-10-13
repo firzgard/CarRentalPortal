@@ -9,20 +9,19 @@
         <EntityTypeShape EntityType="CRPDBModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="25.75" />
         <EntityTypeShape EntityType="CRPDBModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="28.5" />
         <EntityTypeShape EntityType="CRPDBModel.AspNetUser" Width="1.5" PointX="3" PointY="10" />
-        <EntityTypeShape EntityType="CRPDBModel.BookingReceipt" Width="1.5" PointX="8.25" PointY="9.75" />
-        <EntityTypeShape EntityType="CRPDBModel.Brand" Width="1.5" PointX="3.75" PointY="5" />
-        <EntityTypeShape EntityType="CRPDBModel.Category" Width="1.5" PointX="6" PointY="2" />
-        <EntityTypeShape EntityType="CRPDBModel.Garage" Width="1.5" PointX="5.25" PointY="12.5" />
-        <EntityTypeShape EntityType="CRPDBModel.Location" Width="1.5" PointX="3" PointY="16.75" />
-        <EntityTypeShape EntityType="CRPDBModel.Model" Width="1.5" PointX="6" PointY="4.375" />
-        <EntityTypeShape EntityType="CRPDBModel.ModelCategoryMapping" Width="1.5" PointX="8.25" PointY="4.75" />
-        <EntityTypeShape EntityType="CRPDBModel.Nation" Width="1.5" PointX="0.75" PointY="16.875" />
-        <EntityTypeShape EntityType="CRPDBModel.Notification" Width="1.5" PointX="5.25" PointY="8.75" />
-        <EntityTypeShape EntityType="CRPDBModel.PriceGroup" Width="1.5" PointX="3" PointY="20.375" />
-        <EntityTypeShape EntityType="CRPDBModel.PriceGroupItem" Width="1.5" PointX="5.25" PointY="31.375" />
-        <EntityTypeShape EntityType="CRPDBModel.Vehicle" Width="1.5" PointX="7.5" PointY="16.375" />
-        <EntityTypeShape EntityType="CRPDBModel.VehicleGroup" Width="1.5" PointX="5.25" PointY="20.125" />
-        <EntityTypeShape EntityType="CRPDBModel.VehicleImage" Width="1.5" PointX="9.75" PointY="17.75" />
+        <EntityTypeShape EntityType="CRPDBModel.BookingReceipt" Width="1.5" PointX="5.25" PointY="9.75" />
+        <EntityTypeShape EntityType="CRPDBModel.Brand" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="CRPDBModel.Category" Width="1.5" PointX="0.75" PointY="7.125" />
+        <EntityTypeShape EntityType="CRPDBModel.Garage" Width="1.5" PointX="8.25" PointY="9.5" />
+        <EntityTypeShape EntityType="CRPDBModel.Location" Width="1.5" PointX="6" PointY="16.75" />
+        <EntityTypeShape EntityType="CRPDBModel.Model" Width="1.5" PointX="3" PointY="5.375" />
+        <EntityTypeShape EntityType="CRPDBModel.Nation" Width="1.5" PointX="3.75" PointY="16.875" />
+        <EntityTypeShape EntityType="CRPDBModel.Notification" Width="1.5" PointX="5.25" PointY="22.5" />
+        <EntityTypeShape EntityType="CRPDBModel.PriceGroup" Width="1.5" PointX="6" PointY="6.375" />
+        <EntityTypeShape EntityType="CRPDBModel.PriceGroupItem" Width="1.5" PointX="8.25" PointY="3.375" />
+        <EntityTypeShape EntityType="CRPDBModel.Vehicle" Width="1.5" PointX="10.5" PointY="10.375" />
+        <EntityTypeShape EntityType="CRPDBModel.VehicleGroup" Width="1.5" PointX="8.25" PointY="6.125" />
+        <EntityTypeShape EntityType="CRPDBModel.VehicleImage" Width="1.5" PointX="12.75" PointY="11.75" />
         <AssociationConnector Association="CRPDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="CRPDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_AspNetUsers" />
@@ -32,17 +31,16 @@
         <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_Model" />
         <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_Vehicle" />
         <AssociationConnector Association="CRPDBModel.FK_CarModel_CarBrand" />
-        <AssociationConnector Association="CRPDBModel.FK_ModelCategoryMapping_Category" />
         <AssociationConnector Association="CRPDBModel.FK_Car_Store" />
         <AssociationConnector Association="CRPDBModel.FK_Garage_Location" />
         <AssociationConnector Association="CRPDBModel.FK_Location_Nation" />
-        <AssociationConnector Association="CRPDBModel.FK_ModelCategoryMapping_Model" />
         <AssociationConnector Association="CRPDBModel.FK_Vehicle_Model" />
-        <AssociationConnector Association="CRPDBModel.FK_PriceGroupItem_PriceGroup" />
-        <AssociationConnector Association="CRPDBModel.FK_VehicleGroup_PriceGroup" />
+        <AssociationConnector Association="CRPDBModel.FK_PriceGroupItem_PriceGroup1" />
+        <AssociationConnector Association="CRPDBModel.FK_VehicleGroup_PriceGroup1" />
         <AssociationConnector Association="CRPDBModel.FK_Car_CarGroup" />
         <AssociationConnector Association="CRPDBModel.FK_CarImage_Car" />
         <AssociationConnector Association="CRPDBModel.AspNetUserRoles" />
+        <AssociationConnector Association="CRPDBModel.ModelCategoryMapping" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

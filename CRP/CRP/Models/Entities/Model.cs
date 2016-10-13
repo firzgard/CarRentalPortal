@@ -18,8 +18,8 @@ namespace CRP.Models.Entities
         public Model()
         {
             this.BookingReceipts = new HashSet<BookingReceipt>();
-            this.ModelCategoryMappings = new HashSet<ModelCategoryMapping>();
             this.Vehicles = new HashSet<Vehicle>();
+            this.Categories = new HashSet<Category>();
         }
     
         public int ID { get; set; }
@@ -32,8 +32,8 @@ namespace CRP.Models.Entities
         public virtual ICollection<BookingReceipt> BookingReceipts { get; set; }
         public virtual Brand Brand { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ModelCategoryMapping> ModelCategoryMappings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehicle> Vehicles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Category> Categories { get; set; }
     }
 }

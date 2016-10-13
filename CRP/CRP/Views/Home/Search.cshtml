@@ -58,21 +58,34 @@
 			</a>
 			<div id="additionalFilters" class="panel-collapse collapse" >
 				<div class="panel-body">
-					<!-- Model + Brand -->
+					<!-- Brand -->
+					<div class="form-group row">
+						<label class="col-xs-2">Brand</label>
+						<div class="col-xs-10">
+							<select data-placeholder="Please select..." id="brandFilter" class="form-control" style="width: 100%;" multiple>
+								@foreach (Brand brand in Model.BrandList)
+								{
+									<option value="@brand.ID">@brand.Name</option>
+								}
+							</select>
+						</div>
+					</div>
+					<hr>
+					<!-- Model -->
 					<div class="form-group row">
 						<label class="col-xs-2">Model</label>
 						<div class="col-xs-10">
 							<select data-placeholder="Please select..." id="modelFilter" class="form-control" style="width: 100%;" multiple>
-								@* List all option except Unlisted *@
-								@for (int i = 1, length = Model.BrandList.Count; i < length; i++)
+								@foreach (Brand brand in Model.BrandList)
 								{
-									if(Model.BrandList[i].Models.Count != 0){
-										<option value="@Model.BrandList[i].ID" data-lvl="0">@Model.BrandList[i].Name</option>
-										foreach (Model entry in Model.BrandList[i].Models)
+									<optgroup label="@brand.Name" data-brand="@brand.ID">
+										@foreach (Model entry in brand.Models)
 										{
-											<option value="@entry.ID" data-lvl="1">@entry.Name</option>
+											<option value="@entry.ID">
+												@brand.Name&nbsp;@entry.Name
+											</option>
 										}
-									}
+									</optgroup>
 								}
 							</select>
 						</div>
@@ -122,7 +135,7 @@
 					<div class="form-group row" id="colorSelector">
 						<label class="col-xs-2">Color</label>
 						<div class="col-xs-10">
-							<select data-placeholder="Please select a color..." id="colorFilter" class="form-control" style="width: 100%;"  multiple>
+							<select data-placeholder="Please select a color..." id="colorFilter" class="form-control custom-select2" style="width: 100%;"  multiple>
 								@for(int i = 1; i < Constants.Color.Count(); i++)
 								{
 									<option value="@i">@Constants.Color[i]</option>
@@ -149,13 +162,13 @@
 		</div>	
 	</div>
 	<!-- results -->
-	<div class="col-md-7 scroll-container animated fadeInRight">
+	<div class="col-md-7 scroll-container animated fadeInRight" id="resultContainer">
 		<div class="ibox" style="padding-top: 1em;">
-			<div id="recordInfo" style="margin-bottom: 1em;"></div>
 			<div class="row" id="searchResultGrid"
 					data-source="@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })"
 					data-result-url="@Url.RouteUrl("VehicleInfo", new { controller = "Home" })">
 			</div>
+			<div id="recordInfo" style="margin-bottom: 1em;"></div>
 			<div class="text-center">
 				<ul id="paginatior" class="pagination"></ul>
 			</div>

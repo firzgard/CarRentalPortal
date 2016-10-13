@@ -17,13 +17,13 @@ namespace CRP.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Category()
         {
-            this.ModelCategoryMappings = new HashSet<ModelCategoryMapping>();
+            this.Models = new HashSet<Model>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ModelCategoryMapping> ModelCategoryMappings { get; set; }
+        public virtual ICollection<Model> Models { get; set; }
     }
 }

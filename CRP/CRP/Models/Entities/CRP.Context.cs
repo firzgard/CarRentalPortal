@@ -35,7 +35,6 @@ namespace CRP.Models.Entities
         public virtual DbSet<Garage> Garages { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Model> Models { get; set; }
-        public virtual DbSet<ModelCategoryMapping> ModelCategoryMappings { get; set; }
         public virtual DbSet<Nation> Nations { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
         public virtual DbSet<PriceGroup> PriceGroups { get; set; }

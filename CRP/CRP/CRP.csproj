@@ -244,9 +244,6 @@
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Services\CategoryService.cs" />
-    <Compile Include="Models\Entities\ModelCategoryMapping.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupItemRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
@@ -261,6 +258,7 @@
     <Compile Include="Models\JsonModels\HomeJsonModels.cs" />
     <Compile Include="Models\JsonModels\VehicleCalendarModel.cs" />
     <Compile Include="Models\JsonModels\MessageJsonModel.cs" />
+    <Compile Include="Models\JsonModels\VehicleJsonModels.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>CRP.tt</DependentUpon>
@@ -340,7 +338,6 @@
     <Compile Include="Models\JsonModels\PriceGroupItemModel.cs" />
     <Compile Include="Models\JsonModels\PriceGroupModel.cs" />
     <Compile Include="Models\JsonModels\VehicleGroupModel.cs" />
-    <Compile Include="Models\JsonModels\VehicleModel.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\ViewModels\VehicleGroupViewModel.cs" />
