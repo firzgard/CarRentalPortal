@@ -89,17 +89,53 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to edit single group
 		[Route("api/vehicleGroups")]
 		[HttpPatch]
-		public JsonResult EditVehicleGroupAPI()
-		{
-			return Json("");
-		}
+        public async Task<JsonResult> EditVehicleGroupAPI(VehicleGroup model)
+        {
+            MessageJsonModel jsonResult = new MessageJsonModel();
+            if (!this.ModelState.IsValid)
+            {
+                jsonResult.Status = 0;
+                jsonResult.Message = "Update failed!";
+                return Json(jsonResult, JsonRequestBehavior.AllowGet);
+            }
+            var service = this.Service<IVehicleGroupService>();
+            var entity = await service.GetAsync(model?.ID);
+            if (entity == null)
+            {
+                jsonResult.Status = 0;
+                jsonResult.Message = "Update failed!";
+                return Json(jsonResult, JsonRequestBehavior.AllowGet);
+            }
 
-		// API Route to delete single group
-		[Route("api/vehicleGroups/{id:int}")]
+            this.Mapper.Map(model, entity);
+
+            await service.UpdateAsync(entity);
+
+            jsonResult.Status = 0;
+            jsonResult.Message = "Update failed!";
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
+
+        // API Route to delete single group
+        [Route("api/vehicleGroups/{id:int}")]
 		[HttpDelete]
-		public JsonResult DeleteVehicleGroupAPI(int id)
-		{
-			return Json("");
-		}
+        public async Task<JsonResult> DeleteVehicleGroupsAPI(int id)
+        {
+            var service = this.Service<IVehicleGroupService>();
+            MessageJsonModel jsonResult = new MessageJsonModel();
+            var entity = await service.GetAsync(id);
+            if (entity != null)
+            {
+                await service.DeleteAsync(entity);
+                jsonResult.Status = 1;
+                jsonResult.Message = "Deleted successfully!";
+            }
+            else
+            {
+                jsonResult.Status = 0;
+                jsonResult.Message = "Error!";
+            }
+            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        }
     }
 }
