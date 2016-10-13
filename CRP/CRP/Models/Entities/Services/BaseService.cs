@@ -81,7 +81,7 @@ namespace CRP.Models.Entities.Services
 
 		public virtual IQueryable<TEntity> Get()
 		{
-			return this.repository.Get();
+			return (IQueryable<TEntity>) this.repository.Get();
 		}
 
 		public virtual TEntity Get(object key)
@@ -91,7 +91,7 @@ namespace CRP.Models.Entities.Services
 
 		public virtual IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
 		{
-			return this.repository.Get(predicate);
+			return (IQueryable<TEntity>) this.repository.Get(predicate);
 		}
 
 		public virtual async Task<TEntity> GetAsync(object key)

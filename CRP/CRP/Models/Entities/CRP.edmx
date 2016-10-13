@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUserClaims">
@@ -37,7 +37,7 @@
             <PropertyRef Name="RoleId" />
           </Key>
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="RoleId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="AspNetUsers">
           <Key>
@@ -48,14 +48,14 @@
           <Property Name="EmailConfirmed" Type="bit" Nullable="false" />
           <Property Name="PasswordHash" Type="nvarchar(max)" />
           <Property Name="SecurityStamp" Type="nvarchar(max)" />
-          <Property Name="PhoneNumber" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
           <Property Name="PhoneNumberConfirmed" Type="bit" Nullable="false" />
           <Property Name="TwoFactorEnabled" Type="bit" Nullable="false" />
           <Property Name="LockoutEndDateUtc" Type="datetime" />
           <Property Name="LockoutEnabled" Type="bit" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="FullName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="50" />
           <Property Name="IsProviderUntil" Type="datetime" />
           <Property Name="AvatarURL" Type="varchar" MaxLength="200" />
         </EntityType>
@@ -150,9 +150,9 @@
         </EntityType>
         <EntityType Name="ModelCategoryMapping">
           <Key>
-            <PropertyRef Name="ID" />
+            <PropertyRef Name="ModelID" />
+            <PropertyRef Name="CategoryID" />
           </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ModelID" Type="int" Nullable="false" />
           <Property Name="CategoryID" Type="int" Nullable="false" />
         </EntityType>
@@ -452,7 +452,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PriceGroupItem_PriceGroup">
+        <Association Name="FK_PriceGroupItem_PriceGroup1">
           <End Role="PriceGroup" Type="Self.PriceGroup" Multiplicity="1" />
           <End Role="PriceGroupItem" Type="Self.PriceGroupItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -476,7 +476,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_VehicleGroup_PriceGroup">
+        <Association Name="FK_VehicleGroup_PriceGroup1">
           <End Role="PriceGroup" Type="Self.PriceGroup" Multiplicity="1" />
           <End Role="VehicleGroup" Type="Self.VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
@@ -580,7 +580,7 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="Notification" EntitySet="Notification" />
           </AssociationSet>
-          <AssociationSet Name="FK_PriceGroupItem_PriceGroup" Association="Self.FK_PriceGroupItem_PriceGroup">
+          <AssociationSet Name="FK_PriceGroupItem_PriceGroup1" Association="Self.FK_PriceGroupItem_PriceGroup1">
             <End Role="PriceGroup" EntitySet="PriceGroup" />
             <End Role="PriceGroupItem" EntitySet="PriceGroupItem" />
           </AssociationSet>
@@ -588,7 +588,7 @@
             <End Role="Model" EntitySet="Model" />
             <End Role="Vehicle" EntitySet="Vehicle" />
           </AssociationSet>
-          <AssociationSet Name="FK_VehicleGroup_PriceGroup" Association="Self.FK_VehicleGroup_PriceGroup">
+          <AssociationSet Name="FK_VehicleGroup_PriceGroup1" Association="Self.FK_VehicleGroup_PriceGroup1">
             <End Role="PriceGroup" EntitySet="PriceGroup" />
             <End Role="VehicleGroup" EntitySet="VehicleGroup" />
           </AssociationSet>
@@ -608,7 +608,6 @@
           <EntitySet Name="Garages" EntityType="CRPDBModel.Garage" />
           <EntitySet Name="Locations" EntityType="CRPDBModel.Location" />
           <EntitySet Name="Models" EntityType="CRPDBModel.Model" />
-          <EntitySet Name="ModelCategoryMappings" EntityType="CRPDBModel.ModelCategoryMapping" />
           <EntitySet Name="Nations" EntityType="CRPDBModel.Nation" />
           <EntitySet Name="Notifications" EntityType="CRPDBModel.Notification" />
           <EntitySet Name="PriceGroups" EntityType="CRPDBModel.PriceGroup" />
@@ -652,10 +651,6 @@
             <End Role="Brand" EntitySet="Brands" />
             <End Role="Model" EntitySet="Models" />
           </AssociationSet>
-          <AssociationSet Name="FK_ModelCategoryMapping_Category" Association="CRPDBModel.FK_ModelCategoryMapping_Category">
-            <End Role="Category" EntitySet="Categories" />
-            <End Role="ModelCategoryMapping" EntitySet="ModelCategoryMappings" />
-          </AssociationSet>
           <AssociationSet Name="FK_Car_Store" Association="CRPDBModel.FK_Car_Store">
             <End Role="Garage" EntitySet="Garages" />
             <End Role="Vehicle" EntitySet="Vehicles" />
@@ -668,19 +663,15 @@
             <End Role="Nation" EntitySet="Nations" />
             <End Role="Location" EntitySet="Locations" />
           </AssociationSet>
-          <AssociationSet Name="FK_ModelCategoryMapping_Model" Association="CRPDBModel.FK_ModelCategoryMapping_Model">
-            <End Role="Model" EntitySet="Models" />
-            <End Role="ModelCategoryMapping" EntitySet="ModelCategoryMappings" />
-          </AssociationSet>
           <AssociationSet Name="FK_Vehicle_Model" Association="CRPDBModel.FK_Vehicle_Model">
             <End Role="Model" EntitySet="Models" />
             <End Role="Vehicle" EntitySet="Vehicles" />
           </AssociationSet>
-          <AssociationSet Name="FK_PriceGroupItem_PriceGroup" Association="CRPDBModel.FK_PriceGroupItem_PriceGroup">
+          <AssociationSet Name="FK_PriceGroupItem_PriceGroup1" Association="CRPDBModel.FK_PriceGroupItem_PriceGroup1">
             <End Role="PriceGroup" EntitySet="PriceGroups" />
             <End Role="PriceGroupItem" EntitySet="PriceGroupItems" />
           </AssociationSet>
-          <AssociationSet Name="FK_VehicleGroup_PriceGroup" Association="CRPDBModel.FK_VehicleGroup_PriceGroup">
+          <AssociationSet Name="FK_VehicleGroup_PriceGroup1" Association="CRPDBModel.FK_VehicleGroup_PriceGroup1">
             <End Role="PriceGroup" EntitySet="PriceGroups" />
             <End Role="VehicleGroup" EntitySet="VehicleGroups" />
           </AssociationSet>
@@ -696,12 +687,16 @@
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <AssociationSet Name="ModelCategoryMapping" Association="CRPDBModel.ModelCategoryMapping">
+            <End Role="Category" EntitySet="Categories" />
+            <End Role="Model" EntitySet="Models" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AspNetRole">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUsers" Relationship="CRPDBModel.AspNetUserRoles" FromRole="AspNetRole" ToRole="AspNetUser" />
         </EntityType>
@@ -735,14 +730,14 @@
           <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
           <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="PhoneNumber" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
           <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
           <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <Property Name="FullName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsProviderUntil" Type="DateTime" Precision="3" />
           <Property Name="AvatarURL" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="AspNetUserClaims" Relationship="CRPDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
@@ -797,7 +792,7 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="ModelCategoryMappings" Relationship="CRPDBModel.FK_ModelCategoryMapping_Category" FromRole="Category" ToRole="ModelCategoryMapping" />
+          <NavigationProperty Name="Models" Relationship="CRPDBModel.ModelCategoryMapping" FromRole="Category" ToRole="Model" />
         </EntityType>
         <EntityType Name="Garage">
           <Key>
@@ -853,18 +848,8 @@
           <Property Name="NumOfSeat" Type="Int32" Nullable="false" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_Model" FromRole="Model" ToRole="BookingReceipt" />
           <NavigationProperty Name="Brand" Relationship="CRPDBModel.FK_CarModel_CarBrand" FromRole="Model" ToRole="Brand" />
-          <NavigationProperty Name="ModelCategoryMappings" Relationship="CRPDBModel.FK_ModelCategoryMapping_Model" FromRole="Model" ToRole="ModelCategoryMapping" />
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Vehicle_Model" FromRole="Model" ToRole="Vehicle" />
-        </EntityType>
-        <EntityType Name="ModelCategoryMapping">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ModelID" Type="Int32" Nullable="false" />
-          <Property Name="CategoryID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Category" Relationship="CRPDBModel.FK_ModelCategoryMapping_Category" FromRole="ModelCategoryMapping" ToRole="Category" />
-          <NavigationProperty Name="Model" Relationship="CRPDBModel.FK_ModelCategoryMapping_Model" FromRole="ModelCategoryMapping" ToRole="Model" />
+          <NavigationProperty Name="Categories" Relationship="CRPDBModel.ModelCategoryMapping" FromRole="Model" ToRole="Category" />
         </EntityType>
         <EntityType Name="Nation">
           <Key>
@@ -894,8 +879,8 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DepositPercentage" Type="Decimal" Nullable="false" Precision="3" Scale="2" />
           <Property Name="PerDayPrice" Type="Double" Nullable="false" />
-          <NavigationProperty Name="PriceGroupItems" Relationship="CRPDBModel.FK_PriceGroupItem_PriceGroup" FromRole="PriceGroup" ToRole="PriceGroupItem" />
-          <NavigationProperty Name="VehicleGroups" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup" FromRole="PriceGroup" ToRole="VehicleGroup" />
+          <NavigationProperty Name="PriceGroupItems" Relationship="CRPDBModel.FK_PriceGroupItem_PriceGroup1" FromRole="PriceGroup" ToRole="PriceGroupItem" />
+          <NavigationProperty Name="VehicleGroups" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup1" FromRole="PriceGroup" ToRole="VehicleGroup" />
         </EntityType>
         <EntityType Name="PriceGroupItem">
           <Key>
@@ -905,7 +890,7 @@
           <Property Name="PriceGroupID" Type="Int32" Nullable="false" />
           <Property Name="MaxTime" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
-          <NavigationProperty Name="PriceGroup" Relationship="CRPDBModel.FK_PriceGroupItem_PriceGroup" FromRole="PriceGroupItem" ToRole="PriceGroup" />
+          <NavigationProperty Name="PriceGroup" Relationship="CRPDBModel.FK_PriceGroupItem_PriceGroup1" FromRole="PriceGroupItem" ToRole="PriceGroup" />
         </EntityType>
         <EntityType Name="Vehicle">
           <Key>
@@ -940,7 +925,7 @@
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="MaxRentalPeriod" Type="Int32" />
           <Property Name="DefaultPriceGroupID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="PriceGroup" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup" FromRole="VehicleGroup" ToRole="PriceGroup" />
+          <NavigationProperty Name="PriceGroup" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup1" FromRole="VehicleGroup" ToRole="PriceGroup" />
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Car_CarGroup" FromRole="VehicleGroup" ToRole="Vehicle" />
         </EntityType>
         <EntityType Name="VehicleImage">
@@ -1064,18 +1049,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ModelCategoryMapping_Category">
-          <End Type="CRPDBModel.Category" Role="Category" Multiplicity="1" />
-          <End Type="CRPDBModel.ModelCategoryMapping" Role="ModelCategoryMapping" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Category">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ModelCategoryMapping">
-              <PropertyRef Name="CategoryID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Car_Store">
           <End Type="CRPDBModel.Garage" Role="Garage" Multiplicity="1" />
           <End Type="CRPDBModel.Vehicle" Role="Vehicle" Multiplicity="*" />
@@ -1112,18 +1085,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_ModelCategoryMapping_Model">
-          <End Type="CRPDBModel.Model" Role="Model" Multiplicity="1" />
-          <End Type="CRPDBModel.ModelCategoryMapping" Role="ModelCategoryMapping" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Model">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="ModelCategoryMapping">
-              <PropertyRef Name="ModelID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Vehicle_Model">
           <End Type="CRPDBModel.Model" Role="Model" Multiplicity="1" />
           <End Type="CRPDBModel.Vehicle" Role="Vehicle" Multiplicity="*" />
@@ -1136,7 +1097,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_PriceGroupItem_PriceGroup">
+        <Association Name="FK_PriceGroupItem_PriceGroup1">
           <End Type="CRPDBModel.PriceGroup" Role="PriceGroup" Multiplicity="1" />
           <End Type="CRPDBModel.PriceGroupItem" Role="PriceGroupItem" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1148,7 +1109,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_VehicleGroup_PriceGroup">
+        <Association Name="FK_VehicleGroup_PriceGroup1">
           <End Type="CRPDBModel.PriceGroup" Role="PriceGroup" Multiplicity="1" />
           <End Type="CRPDBModel.VehicleGroup" Role="VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1187,6 +1148,10 @@
         <Association Name="AspNetUserRoles">
           <End Type="CRPDBModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <Association Name="ModelCategoryMapping">
+          <End Type="CRPDBModel.Category" Role="Category" Multiplicity="*" />
+          <End Type="CRPDBModel.Model" Role="Model" Multiplicity="*" />
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1337,15 +1302,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ModelCategoryMappings">
-            <EntityTypeMapping TypeName="CRPDBModel.ModelCategoryMapping">
-              <MappingFragment StoreEntitySet="ModelCategoryMapping">
-                <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
-                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Nations">
             <EntityTypeMapping TypeName="CRPDBModel.Nation">
               <MappingFragment StoreEntitySet="Nation">
@@ -1431,6 +1387,14 @@
             </EndProperty>
             <EndProperty Name="AspNetRole">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ModelCategoryMapping" TypeName="CRPDBModel.ModelCategoryMapping" StoreEntitySet="ModelCategoryMapping">
+            <EndProperty Name="Model">
+              <ScalarProperty Name="ID" ColumnName="ModelID" />
+            </EndProperty>
+            <EndProperty Name="Category">
+              <ScalarProperty Name="ID" ColumnName="CategoryID" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>
