@@ -18,6 +18,7 @@ namespace CRP.Areas.Provider.Controllers
 	public class GarageController : BaseController
 	{
         // Route to garageManagement page
+        [Authorize(Roles = "Provider")]
         [Route("management/garageManagement")]
 		public ViewResult GarageManagement()
 		{

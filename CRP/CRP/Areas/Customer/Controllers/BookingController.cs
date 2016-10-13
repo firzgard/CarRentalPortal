@@ -9,49 +9,38 @@ using System.Web.Mvc;
 using System.Timers;
 using System.Threading;
 using CRP.Controllers;
+using CRP.Models;
+using CRP.Models.ViewModels;
 
 namespace CRP.Areas.Customer.Controllers
 {
 	public class BookingController : BaseController
 	{
-		// Route to bookingConfirm page (Page for confirming booking details before paying)
-		[Route("bookingConfirm")]
-		public ViewResult BookingConfirm()
-		{
-            /*
-            //dau moa chua ro xu ly sao, chua lam
-            string CustomerID = Request.Params["UserID"];
-            int VehicleID = int.Parse(Request.Params["VehicleID"]);
-            //can 1 api de xu ly ca totalprice
-            float TotalPrice = float.Parse(Request.Params["TotalPrice"]);
-            float BookingFee = float.Parse(Request.Params["BookingFee"]);
-            string VehicleName = Request.Params["VehicleName"];
-            string GarageName = Request.Params["GarageName"];
-            string GarageAddress = Request.Params["GarageAddress"];
-            DateTime StartTime = DateTime.Parse(Request.Params["StartTime"]);
-            DateTime EndTime = DateTime.Parse(Request.Params["EndTime"]);
-
-            BookingReceipt booking = new BookingReceipt();
-            booking.CustomerID = CustomerID;
-            booking.VehicleID = VehicleID;
-            booking.RentalPrice = TotalPrice;
-            booking.BookingFee = BookingFee;
-            booking.VehicleName = VehicleName;
-            booking.GarageName = GarageName;
-            booking.GarageAddress = GarageAddress;
-            booking.StartTime = StartTime;
-            booking.EndTime = EndTime;
-            booking.IsPending = true;
-            //luu xuoong database
-            int bookingID = _service.addwithPending(booking);
+        //luu lai ID cua booking vua luu xuong databse
+        private int lastBooking;
+        //trong thoi gian 5 phut nen booking da duoc xoa thi ko chay luong
+        private Boolean DeleteBookingThread = false;
+        // Route to bookingConfirm page (Page for confirming booking details before paying)
+        [Route("bookingConfirm")]
+        public async System.Threading.Tasks.Task<ViewResult> BookingConfirm(BookingReceiptViewModel model)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+            model.IsPending = true;
+            var service = this.Service<IBookingReceiptService>();
+            var entity = this.Mapper.Map<BookingReceipt>(model);
+            //luu booking xuong database, nhung 
+            await service.CreateAsync(entity);
+            lastBooking = entity.ID;
             //goi api thanh toan, neu ok, thi xet ispending = false, +
-
             //sau 5 phut kiem tra neu ispending = false thi ko co gi, con is peding = true thi delete booking va return message overtime
-            checkisPending(bookingID);*/
-            
+            checkisPending(entity.ID);
+
             return View("~/Areas/CuopenTimeMonstomer/Views/Booking/BookingHistory.cshtml");
-		}
-        public void checkisPending(int bookingID)
+        }
+        private void checkisPending(int bookingID)
         {
             Thread aNewThread = new Thread(
                 () => deleteBooking(bookingID));
@@ -60,41 +49,53 @@ namespace CRP.Areas.Customer.Controllers
         //cho nay nen return json, de xu ly
         private void deleteBooking(int bookingID)
         {
-            /*
+            
             TimeSpan span = new TimeSpan(0, 0, 5, 0);
             Thread.Sleep(span);
-            Boolean isDelete = _service.IsPending(bookingID);
-            if (isDelete)
-            {
-                Boolean result = _service.delete(bookingID);
-            } else
+            if (DeleteBookingThread == true)
             {
                 Thread.ResetAbort();
-            }*/
+            } 
+            else
+            {
+                var service = this.Service<IBookingReceiptService>();
+                var entity = service.Get(bookingID);
+                //neu ispending van bang true thi xoa booking do
+                Boolean isDelete = entity.IsPending;
+                if (isDelete)
+                {
+                    service.Delete(entity);
+                }
+                else
+                {
+                    Thread.ResetAbort();
+                }
+            } 
         }
         // Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
         [Route("bookingReceipt")]
 		public ViewResult BookingReceipt()
 		{
-            /*
-            //lay thong tin booking moi nhat cua thang user
-            string CustomerID = "1";
-            BookingReceipt lastBooking = _service.getLastBooking(CustomerID);
-            //khi addBooking thi xuat ra ID
+
+            var service = this.Service<IBookingReceiptService>();
+            var entity = service.Get(lastBooking);
+            //kiem tra xem da thanh toan thanh cong hay chua
             Boolean paySuccess = true;
             //xuong databse ispending = false neu thanh toan thanh cong, xoa booking neu no ko thanh cong
-            ViewBag.BookingReceipt = lastBooking;
             //neu thanh toan thanh cong
             if (paySuccess)
             {
-                lastBooking.IsPending = false;
-                _service.Update(lastBooking);
-                ViewBag.BookingReceipt = lastBooking;
+                entity.IsPending = false;
+                service.Update(entity);
+               //tra ve model cua entity booking moi nhat
+
             } else
             {
-                _service.delete(lastBooking.ID);
+                service.Delete(entity);
+                //stop stread sau 5p kiem tra
+                DeleteBookingThread = true;
                 ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
-            }*/
+            }
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
@@ -168,16 +169,19 @@ namespace CRP.Areas.Customer.Controllers
             }
             return Json(jsonBookings, JsonRequestBehavior.AllowGet);
 		}
-
+        */
 		// API route for canceling a booking
 		[Route("api/bookings/{id:int}")]
 		[HttpDelete]
 		public JsonResult CancelBookingAPI(int id)
 		{
             MessageJsonModel jsonResult = new MessageJsonModel();
-            Boolean result = _service.cancleBooking(id);
-            if (result)
+            var service = this.Service<IBookingReceiptService>();
+            var entity = service.Get(id);
+            if (entity != null)
             {
+                entity.IsCanceled = true;
+                service.Update(entity);
                 jsonResult.Status = 1;
                 jsonResult.Message = "Cancle successfully!";
             }
@@ -199,21 +203,23 @@ namespace CRP.Areas.Customer.Controllers
             string comment = Request.Params["comment"];
             //cach tinh star cho vehicle hay cho Provider?
             decimal Star = decimal.Parse(Request.Params["star"]);
-            BookingReceipt booking = _service.findByID(id);
-            booking.Comment = comment;
-            booking.Star = Star;
-            Boolean result = _service.rateForBooking(booking);
-            if (result)
+            var service = this.Service<IBookingReceiptService>();
+            var entity = service.Get(id);
+            if (entity != null)
             {
+                entity.Comment = comment;
+                entity.Star = Star;
+                service.Update(entity);
                 jsonResult.Status = 1;
                 jsonResult.Message = "Rate successfully!";
             }
             else
             {
+
                 jsonResult.Status = 0;
                 jsonResult.Message = "Error!";
             }
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }*/
+        }
 	}
 }
