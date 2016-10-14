@@ -46,10 +46,10 @@ namespace CRP.Areas.Provider.Controllers
 		// So we need this API for server-side pagination
 		[Route("api/vehicles", Name = "GetVehicleListAPI")]
 		[HttpGet]
-		public JsonResult GetVehicleListAPI(VehicelFilterConditionModel filterConditions)
+		public JsonResult GetVehicleListAPI(VehicleManagementFilterConditionModel filterConditions)
 		{
 			var service = this.Service<IVehicleService>();
-			VehicleDataTablesJsonModel vehicles = (VehicleDataTablesJsonModel) service.FilterVehicle(filterConditions);
+			VehicleDataTablesJsonModel vehicles = service.FilterVehicle(filterConditions);
 
 			return Json(vehicles, JsonRequestBehavior.AllowGet);
 		}

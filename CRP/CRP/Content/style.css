@@ -3321,7 +3321,7 @@ body {
 }
 body.full-height-layout #wrapper,
 body.full-height-layout #page-wrapper {
-  height: 100%;
+  min-height: 100%;
 }
 #page-wrapper {
   min-height: auto;
@@ -3446,14 +3446,16 @@ video {
 }
 /* WRAPPERS */
 #wrapper {
-  width: 100%;
   overflow-x: hidden;
+  position: relative;
+  width: 100%;
 }
 .wrapper {
   padding: 0 20px;
 }
 .wrapper-content {
   padding: 20px 10px 40px;
+  position: relative;
 }
 #page-wrapper {
   padding: 0 15px;

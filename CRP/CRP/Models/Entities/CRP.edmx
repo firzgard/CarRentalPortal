@@ -123,8 +123,8 @@
           </Key>
           <Property Name="GarageID" Type="int" Nullable="false" />
           <Property Name="DayOfWeek" Type="int" Nullable="false" />
-          <Property Name="StartTimeInMinute" Type="int" Nullable="false" />
-          <Property Name="EndTimeInMinute" Type="int" Nullable="false" />
+          <Property Name="OpenTimeInMinute" Type="int" Nullable="false" />
+          <Property Name="CloseTimeInMinute" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -619,7 +619,6 @@
           <EntitySet Name="Brands" EntityType="CRPDBModel.Brand" />
           <EntitySet Name="Categories" EntityType="CRPDBModel.Category" />
           <EntitySet Name="Garages" EntityType="CRPDBModel.Garage" />
-          <EntitySet Name="GarageWorkingTimes" EntityType="CRPDBModel.GarageWorkingTime" />
           <EntitySet Name="Locations" EntityType="CRPDBModel.Location" />
           <EntitySet Name="Models" EntityType="CRPDBModel.Model" />
           <EntitySet Name="Nations" EntityType="CRPDBModel.Nation" />
@@ -673,10 +672,6 @@
             <End Role="Location" EntitySet="Locations" />
             <End Role="Garage" EntitySet="Garages" />
           </AssociationSet>
-          <AssociationSet Name="FK_GarageWorkingTime_Garage" Association="CRPDBModel.FK_GarageWorkingTime_Garage">
-            <End Role="Garage" EntitySet="Garages" />
-            <End Role="GarageWorkingTime" EntitySet="GarageWorkingTimes" />
-          </AssociationSet>
           <AssociationSet Name="FK_Location_Nation" Association="CRPDBModel.FK_Location_Nation">
             <End Role="Nation" EntitySet="Nations" />
             <End Role="Location" EntitySet="Locations" />
@@ -708,6 +703,11 @@
           <AssociationSet Name="ModelCategoryMapping" Association="CRPDBModel.ModelCategoryMapping">
             <End Role="Category" EntitySet="Categories" />
             <End Role="Model" EntitySet="Models" />
+          </AssociationSet>
+          <EntitySet Name="GarageWorkingTimes" EntityType="CRPDBModel.GarageWorkingTime" />
+          <AssociationSet Name="FK_GarageWorkingTime_Garage" Association="CRPDBModel.FK_GarageWorkingTime_Garage">
+            <End Role="Garage" EntitySet="Garages" />
+            <End Role="GarageWorkingTime" EntitySet="GarageWorkingTimes" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="AspNetRole">
@@ -831,17 +831,6 @@
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Car_Store" FromRole="Garage" ToRole="Vehicle" />
           <NavigationProperty Name="Location" Relationship="CRPDBModel.FK_Garage_Location" FromRole="Garage" ToRole="Location" />
           <NavigationProperty Name="GarageWorkingTimes" Relationship="CRPDBModel.FK_GarageWorkingTime_Garage" FromRole="Garage" ToRole="GarageWorkingTime" />
-        </EntityType>
-        <EntityType Name="GarageWorkingTime">
-          <Key>
-            <PropertyRef Name="GarageID" />
-            <PropertyRef Name="DayOfWeek" />
-          </Key>
-          <Property Name="GarageID" Type="Int32" Nullable="false" />
-          <Property Name="DayOfWeek" Type="Int32" Nullable="false" />
-          <Property Name="StartTimeInMinute" Type="Int32" Nullable="false" />
-          <Property Name="EndTimeInMinute" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_GarageWorkingTime_Garage" FromRole="GarageWorkingTime" ToRole="Garage" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -1089,18 +1078,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_GarageWorkingTime_Garage">
-          <End Type="CRPDBModel.Garage" Role="Garage" Multiplicity="1" />
-          <End Type="CRPDBModel.GarageWorkingTime" Role="GarageWorkingTime" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Garage">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="GarageWorkingTime">
-              <PropertyRef Name="GarageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Location_Nation">
           <End Type="CRPDBModel.Nation" Role="Nation" Multiplicity="1" />
           <End Type="CRPDBModel.Location" Role="Location" Multiplicity="*" />
@@ -1180,6 +1157,29 @@
         <Association Name="ModelCategoryMapping">
           <End Type="CRPDBModel.Category" Role="Category" Multiplicity="*" />
           <End Type="CRPDBModel.Model" Role="Model" Multiplicity="*" />
+        </Association>
+        <EntityType Name="GarageWorkingTime">
+          <Key>
+            <PropertyRef Name="GarageID" />
+            <PropertyRef Name="DayOfWeek" />
+          </Key>
+          <Property Name="GarageID" Type="Int32" Nullable="false" />
+          <Property Name="DayOfWeek" Type="Int32" Nullable="false" />
+          <Property Name="OpenTimeInMinute" Type="Int32" Nullable="false" />
+          <Property Name="CloseTimeInMinute" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_GarageWorkingTime_Garage" FromRole="GarageWorkingTime" ToRole="Garage" />
+        </EntityType>
+        <Association Name="FK_GarageWorkingTime_Garage">
+          <End Type="CRPDBModel.Garage" Role="Garage" Multiplicity="1" />
+          <End Type="CRPDBModel.GarageWorkingTime" Role="GarageWorkingTime" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Garage">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="GarageWorkingTime">
+              <PropertyRef Name="GarageID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1296,16 +1296,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="GarageWorkingTimes">
-            <EntityTypeMapping TypeName="CRPDBModel.GarageWorkingTime">
-              <MappingFragment StoreEntitySet="GarageWorkingTime">
-                <ScalarProperty Name="EndTimeInMinute" ColumnName="EndTimeInMinute" />
-                <ScalarProperty Name="StartTimeInMinute" ColumnName="StartTimeInMinute" />
-                <ScalarProperty Name="DayOfWeek" ColumnName="DayOfWeek" />
-                <ScalarProperty Name="GarageID" ColumnName="GarageID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="CRPDBModel.Location">
               <MappingFragment StoreEntitySet="Location">
@@ -1419,6 +1409,16 @@
               <ScalarProperty Name="ID" ColumnName="CategoryID" />
             </EndProperty>
           </AssociationSetMapping>
+          <EntitySetMapping Name="GarageWorkingTimes">
+            <EntityTypeMapping TypeName="CRPDBModel.GarageWorkingTime">
+              <MappingFragment StoreEntitySet="GarageWorkingTime">
+                <ScalarProperty Name="CloseTimeInMinute" ColumnName="CloseTimeInMinute" />
+                <ScalarProperty Name="OpenTimeInMinute" ColumnName="OpenTimeInMinute" />
+                <ScalarProperty Name="DayOfWeek" ColumnName="DayOfWeek" />
+                <ScalarProperty Name="GarageID" ColumnName="GarageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
