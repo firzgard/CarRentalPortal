@@ -14,7 +14,6 @@ namespace CRP.Models.Entities
     
     public partial class PriceGroupItem
     {
-        public int ID { get; set; }
         public int PriceGroupID { get; set; }
         public int MaxTime { get; set; }
         public double Price { get; set; }

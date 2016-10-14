@@ -14,7 +14,6 @@ namespace CRP.Models.Entities
     
     public partial class VehicleImage
     {
-        public int ID { get; set; }
         public string URL { get; set; }
         public int CarID { get; set; }
     
