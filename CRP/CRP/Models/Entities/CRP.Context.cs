@@ -33,7 +33,6 @@ namespace CRP.Models.Entities
         public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Garage> Garages { get; set; }
-        public virtual DbSet<GarageWorkingTime> GarageWorkingTimes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Model> Models { get; set; }
         public virtual DbSet<Nation> Nations { get; set; }
@@ -43,5 +42,6 @@ namespace CRP.Models.Entities
         public virtual DbSet<Vehicle> Vehicles { get; set; }
         public virtual DbSet<VehicleGroup> VehicleGroups { get; set; }
         public virtual DbSet<VehicleImage> VehicleImages { get; set; }
+        public virtual DbSet<GarageWorkingTime> GarageWorkingTimes { get; set; }
     }
 }
