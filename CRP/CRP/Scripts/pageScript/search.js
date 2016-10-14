@@ -1,7 +1,7 @@
 // Renderers
 //==================================
-const NumRecordPerPage = 10;
 let now = moment();
+let jQueryNodes;
 let searchConditions = {
 	StartTime: now.clone().add(1, 'days').toJSON()
 	, EndTime: now.clone().add(2, 'days').toJSON()
@@ -11,22 +11,13 @@ let searchConditions = {
 	, OrderBy: "BestPossibleRentalPrice"
 };
 
-// TransmissionTypeIDList:
-// ColorIDList:
-// FuelTypeIDList:
-// LocationIDList:
-// CategoryIDList:
+
 // MaxProductionYear
 // MinProductionYear
-// BrandIDList:
-// ModelIDList:
 // OrderBy:
 // IsDescendingOrder:
 // Page:
 
-// NumberOfSeatList:
-// StartTime: 
-// EndTime:
 // MaxPrice:
 // MinPrice:
 
@@ -138,19 +129,10 @@ function renderPriceSlider(lowestPriceDisplay, averagePriceDisplay, highestPrice
 	highestPriceDisplay.html(`₫&nbsp;${Number.parseInt(data.HighestPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
 }
 
-function renderSearcher({
-		resultContainer
-		,searchResultGrid
-		, paginator
-		, recordInfo
-		, lowestPriceDisplay
-		, averagePriceDisplay
-		, highestPriceDisplay
-	} = jqueryNodes)
-{
+function renderSearcher(){
 	console.log(searchConditions);
 
-	resultContainer.scrollTop(0);
+	jQueryNodes.resultContainer.scrollTop(0);
 	$.ajax({
 		url: $('#searchResultGrid').data('source'),
 		type: 'GET',
@@ -159,21 +141,21 @@ function renderSearcher({
 	})
 	.done(function(data) {
 		if(data.SearchResultList.length){
-			searchResultGrid.removeClass('hidden');
-			renderSearchResultGrid(searchResultGrid, data.SearchResultList);
+			jQueryNodes.searchResultGrid.removeClass('hidden');
+			renderSearchResultGrid(jQueryNodes.searchResultGrid, data.SearchResultList);
 
-			paginator.removeClass('hidden');
-			renderPaginator(paginator, data);
+			jQueryNodes.paginator.removeClass('hidden');
+			renderPaginator(jQueryNodes.paginator, data);
 
-			renderRecordInfo(recordInfo, data);
+			renderRecordInfo(jQueryNodes.recordInfo, data);
 
-			renderPriceSlider(lowestPriceDisplay, averagePriceDisplay, highestPriceDisplay, data);
+			renderPriceSlider(jQueryNodes.lowestPriceDisplay, jQueryNodes.averagePriceDisplay, jQueryNodes.highestPriceDisplay, data);
 		} else {
-			recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
+			jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
 					No vehicle fits your parameters. Please try again.
 				</div>`);
-			searchResultGrid.addClass('hidden');
-			paginator.addClass('hidden');
+			jQueryNodes.searchResultGrid.addClass('hidden');
+			jQueryNodes.paginator.addClass('hidden');
 		}
 		console.log(data);
 	})
@@ -192,9 +174,11 @@ $(document).ready(() => {
 	// http://api.jquery.com/jquery.ajax/
 	jQuery.ajaxSettings.traditional = true;
 
-	let jQueryNodes = {
+	jQueryNodes = {
 		resultContainer: $('#resultContainer')
 		, filters: $('#filters')
+		, startTimeFilter: $('#startTimeFilter')
+		, endTimeFilter: $('#endTimeFilter')
 		, brandFilter: $('#brandFilter')
 		, modelFilter: $('#modelFilter')
 		, searchResultGrid: $('#searchResultGrid')
@@ -207,44 +191,53 @@ $(document).ready(() => {
 
 	// Time range filter
 	// Start time
-	let startTimeFilter = $('#startTimeFilter').datetimepicker({
+	jQueryNodes.startTimeFilter.datetimepicker({
 		useCurrent: false,
 		defaultDate: now.clone().add(1, 'days'),
-		minDate: now.clone().add(6, 'hours'),
-		maxDate: now.clone().add(30, 'days'),
+		minDate: now.clone().add(SoonestPossibleBookingStartTimeFromNowInHour, 'hours').subtract(1, 'minutes'),
+		maxDate: now.clone().add(LatestPossibleBookingStartTimeFromNowInDay, 'days').add(1, 'minutes'),
 		format: 'YYYY/MM/DD HH:mm',
+		ignoreReadonly: true,
 		showClose: true,
 		widgetParent: 'body',
 	})
+	// This on is for rendering the popup at the correct position
 	.on('dp.show', function() {
-		var datepicker = $('.bootstrap-datetimepicker-widget:last');
+		let datepicker = $('.bootstrap-datetimepicker-widget:last');
 		datepicker.css({
 			'top': `${$(this).offset().top + $(this).outerHeight()}px`,
 			'bottom': 'auto',
 			'left': `${$(this).offset().left}px`
 		});
 	})
-	.on('dp.change', function(data){
+	.on('dp.change', (data)=>{
 	})
 	.on('dp.hide', (data)=>{
-		console.log(data);
 		searchConditions.StartTime = data.date.toJSON();
-		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		if(data.date.isAfter(jQueryNodes.endTimeFilter.data('DateTimePicker').date())){
+			let newEndTime = data.date.clone().add(1, 'hours')
+			jQueryNodes.endTimeFilter.data('DateTimePicker').date(newEndTime);
+			searchConditions.EndTime = newEndTime.toJSON();
+		}
+
+		delete searchConditions.Page;
+		renderSearcher();
 	})
 	.on('dp.error', (data)=>{
 		console.log(data);
 	});
 
 	// End time
-	let endTimeFilter = $('#endTimeFilter').datetimepicker({
+	jQueryNodes.endTimeFilter.datetimepicker({
 		useCurrent: false,
 		defaultDate: now.clone().add(2, 'days'),
-		minDate: now.clone().add(6, 'hours'),
+		minDate: now.clone().add(SoonestPossibleBookingEndTimeFromNowInHour, 'hours').subtract(1, 'minutes'),
 		format: 'YYYY/MM/DD HH:mm',
+		ignoreReadonly: true,
 		widgetParent: 'body',
 	})
+	// This on is for rendering the popup at the correct position
 	.on('dp.show', function() {
 		var datepicker = $('.bootstrap-datetimepicker-widget:last');
 		datepicker.css({
@@ -254,13 +247,18 @@ $(document).ready(() => {
 		});
 	})
 	.on('dp.change', (data)=>{
-		console.log(data);
 	})
 	.on('dp.hide', (data)=>{
 		searchConditions.EndTime = data.date.toJSON();
-		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		if(data.date.isBefore(jQueryNodes.startTimeFilter.data('DateTimePicker').date())){
+			let newStartTime = data.date.clone().subtract(1, 'hours')
+			jQueryNodes.startTimeFilter.data('DateTimePicker').date(newStartTime);
+			searchConditions.StartTime = newStartTime.toJSON();
+		}
+
+		delete searchConditions.Page;
+		renderSearcher();
 	})
 	.on('dp.error', (data)=>{
 		console.log(data);
@@ -284,7 +282,7 @@ $(document).ready(() => {
 		searchConditions.LocationIDList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Brand filter
@@ -322,7 +320,7 @@ $(document).ready(() => {
 		jQueryNodes.modelFilter.select2();
 
 		delete searchConditions.Page;
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Model filter
@@ -332,7 +330,7 @@ $(document).ready(() => {
 		searchConditions.ModelIDList = $(this).val();
 
 		delete searchConditions.Page;
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Category
@@ -342,7 +340,7 @@ $(document).ready(() => {
 		searchConditions.CategoryIDList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Seat
@@ -352,7 +350,7 @@ $(document).ready(() => {
 		searchConditions.NumberOfSeatList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Color
@@ -369,7 +367,7 @@ $(document).ready(() => {
 		searchConditions.ColorIDList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Fuel
@@ -379,7 +377,7 @@ $(document).ready(() => {
 		searchConditions.FuelTypeIDList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	//=================================================
@@ -407,8 +405,31 @@ $(document).ready(() => {
 		searchConditions.MaxPrice = Number.parseInt(unencoded[1]);
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
+
+	// Year filter slider
+	// let yearSlider = noUiSlider.create(document.getElementById('yearFilter'), {
+	// 	connect: true,
+	// 	margin: 1,
+	// 	start: [MinProductionYear, now.year()],
+	// 	step: 1,
+	// 	range: {
+	// 		'min': [MinProductionYear],
+	// 		'max': [now.year()]
+	// 	}
+	// });
+	// yearSlider.on('update', (values, handle, unencoded) => {
+	// 	$('#minYearDisplay').html(values[0]);
+	// 	$('#maxYearDisplay').html(values[1]);
+	// });
+	// yearSlider.on('set', (values, handle, unencoded) => {
+	// 	searchConditions.MinPrice = Number.parseInt(unencoded[0]);
+	// 	searchConditions.MaxPrice = Number.parseInt(unencoded[1]);
+	// 	delete searchConditions.Page;
+
+	// 	renderSearcher();
+	// });
 
 	// Transmission's checkbox
 	$('#transmissionFilter input[type=checkbox]').change(function(evt) {
@@ -419,10 +440,10 @@ $(document).ready(() => {
 		}
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// ========================================================
 	// Render search result grid
-	renderSearcher(jQueryNodes);
+	renderSearcher();
 });

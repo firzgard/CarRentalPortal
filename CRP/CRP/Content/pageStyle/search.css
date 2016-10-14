@@ -31,6 +31,10 @@ body {
 	background-color: #B2DFDB;
 }
 
+.form-control[readonly] {
+	background-color: white;
+}
+
 #priceFilter {
 	margin: 1em 2em 0;
 }

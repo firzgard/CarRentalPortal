@@ -60,15 +60,14 @@ namespace CRP.Controllers
 		public ActionResult SearchVehiclesAPI(SearchConditionModel searchConditions)
 		{
 			var service = this.Service<IVehicleService>();
-			if (searchConditions == null
-					|| searchConditions.StartTime == null
-					|| searchConditions.EndTime == null
-					|| searchConditions.StartTime >= searchConditions.EndTime)
+			if (searchConditions?.StartTime == null
+				|| searchConditions.EndTime == null
+				|| searchConditions.StartTime >= searchConditions.EndTime)
 				return new HttpStatusCodeResult(400, "Invalid time span");
 
 			Response.StatusCode = 200;
 			Response.StatusDescription = "Queried successfully";
-			SearchResultJsonModel searchResult = service.SearchVehicle(searchConditions);
+			var searchResult = service.SearchVehicle(searchConditions);
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}
 	}

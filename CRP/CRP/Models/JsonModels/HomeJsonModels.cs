@@ -27,6 +27,8 @@ namespace CRP.Models.JsonModels
 		public double? LowestPrice { get; set; }
 		public double? HighestPrice { get; set; }
 		public double? AveragePrice { get; set; }
+		public int? SoonestProductionYear { get; set; }
+		public int? LatestProductionYear { get; set; }
 		
 		public SearchResultJsonModel(List<SearchResultItemJsonModel> searchResultList, int totalResult)
 		{
@@ -36,6 +38,8 @@ namespace CRP.Models.JsonModels
 			LowestPrice = searchResultList.Min(r => r.BestPossibleRentalPrice);
 			HighestPrice = searchResultList.Max(r => r.BestPossibleRentalPrice);
 			AveragePrice = searchResultList.Average(r => r.BestPossibleRentalPrice);
+			SoonestProductionYear = searchResultList.Min(v => v.Year);
+			LatestProductionYear = searchResultList.Max(v => v.Year);
 		}
 	}
 
@@ -58,7 +62,7 @@ namespace CRP.Models.JsonModels
 
 			// Find the best PriceGroupItem that match the search
 			var items = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.OrderBy(x => x.MaxTime);
-			foreach (PriceGroupItem item in items)
+			foreach (var item in items)
 			{
 				if(item.MaxTime >= rentalTime)
 				{

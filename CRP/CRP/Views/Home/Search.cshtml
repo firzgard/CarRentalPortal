@@ -18,9 +18,9 @@
 			<div class="col-xs-10">
 				<div class="input-group" id="timeFilter">
 					<span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
-					<input type="text" id="startTimeFilter" class="form-control" data-default-value="@DateTime.Now" />
+					<input type="text" id="startTimeFilter" class="form-control" data-default-value="@DateTime.Now" readonly/>
 					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-					<input type="text" id="endTimeFilter" class="form-control" data-default-value="@DateTime.Now" />
+					<input type="text" id="endTimeFilter" class="form-control" data-default-value="@DateTime.Now" readonly/>
 				</div>
 			</div>
 		</div>
@@ -89,6 +89,14 @@
 								}
 							</select>
 						</div>
+					</div>
+					<hr>
+					<!-- Year -->
+					<div class="form-group row">
+						<label class="col-xs-12">Model Year</label>
+						<div id="minYearDisplay" class="col-xs-6"></div>
+						<div id="maxYearDisplay" class="col-xs-6 text-right"></div>
+						<div class="col-xs-12"><div id="yearFilter"></div></div>
 					</div>
 					<hr>
 					<!-- Category -->
@@ -175,6 +183,14 @@
 		</div>
 	</div>
 </div>
+
+<!-- Page's constansts -->
+<script>
+	const NumRecordPerPage = @Constants.NumberOfSearchResultPerPage
+		, SoonestPossibleBookingStartTimeFromNowInHour = @Constants.SoonestPossibleBookingStartTimeFromNowInHour
+		, SoonestPossibleBookingEndTimeFromNowInHour = @Constants.SoonestPossibleBookingEndTimeFromNowInHour
+		, LatestPossibleBookingStartTimeFromNowInDay = @Constants.LatestPossibleBookingStartTimeFromNowInDay
+</script>
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/Search")
 	 .Include("~/Content/awesome-bootstrap-checkbox.css",

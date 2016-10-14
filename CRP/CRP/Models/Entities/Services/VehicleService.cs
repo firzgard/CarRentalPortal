@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Web;
 using CRP.Models.Entities.Repositories;
 using CRP.Models.JsonModels;
@@ -24,7 +23,7 @@ namespace CRP.Models.Entities.Services
 
 		public SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions)
 		{
-			IEnumerable<Vehicle> vehicles = this.repository.Get();
+			var vehicles = repository.Get();
 
 			// Run basic common filters
 			vehicles = BasicFilter(vehicles, filterConditions);
@@ -34,8 +33,8 @@ namespace CRP.Models.Entities.Services
 				vehicles = vehicles.Where(v => filterConditions.NumberOfSeatList.Contains(v.Model.NumOfSeat));
 
 			// Get the rental time in hour
-			TimeSpan rentalTimeSpan = (DateTime)filterConditions.EndTime - (DateTime)filterConditions.StartTime;
-			int rentalTime = (int)Math.Ceiling(rentalTimeSpan.TotalHours);
+			var rentalTimeSpan = (DateTime)filterConditions.EndTime - (DateTime)filterConditions.StartTime;
+			var rentalTime = (int)Math.Ceiling(rentalTimeSpan.TotalHours);
 
 			// vehicleGroup's max rental time constraint
 			vehicles = vehicles.Where(v => v.VehicleGroup.MaxRentalPeriod == null
@@ -43,13 +42,12 @@ namespace CRP.Models.Entities.Services
 
 			// get only vehicles that are free in the booking period condition
 			vehicles = vehicles.Where(v =>
-				!(v.BookingReceipts.Where(br => !br.IsCanceled
+				!(v.BookingReceipts.Any(br => !br.IsCanceled
 					&& (
 						   (filterConditions.StartTime > br.StartTime && filterConditions.StartTime < br.EndTime)
 						|| (filterConditions.EndTime > br.StartTime && filterConditions.EndTime < br.EndTime)
 						|| (filterConditions.StartTime <= br.StartTime && filterConditions.EndTime >= br.EndTime)
-					)
-				).Any())
+					)))
 			);
 
 			// Check StartTime/EndTime to be within garage's OpenTime ~ CloseTime
@@ -57,27 +55,23 @@ namespace CRP.Models.Entities.Services
 			// Max margin of error: 60 secs vs CloseTime (Because we do not validate to second)
 
 			// Booking StartTime
+			var startDayInDoW = (int) filterConditions.StartTime.Value.DayOfWeek;
 			vehicles = vehicles.Where(v =>
-				v.Garage.GarageWorkingTimes
-					.Where(gwt => gwt.DayOfWeek == (int)filterConditions.StartTime.Value.DayOfWeek
+				v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == startDayInDoW
 							  && (filterConditions.StartTime.Value.Minute + filterConditions.StartTime.Value.Hour * 60) >= gwt.OpenTimeInMinute
-							  && (filterConditions.StartTime.Value.Minute + filterConditions.StartTime.Value.Hour * 60) <= gwt.CloseTimeInMinute
-					).Any()
+							  && (filterConditions.StartTime.Value.Minute + filterConditions.StartTime.Value.Hour * 60) <= gwt.CloseTimeInMinute)
 			);
 
 			// Booking EndTime
+			var endDayInDoW = (int) filterConditions.EndTime.Value.DayOfWeek;
 			vehicles = vehicles.Where(v =>
-				v.Garage.GarageWorkingTimes
-					.Where(gwt => gwt.DayOfWeek == (int)filterConditions.EndTime.Value.DayOfWeek
+				v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == endDayInDoW
 							  && (filterConditions.EndTime.Value.Minute + filterConditions.EndTime.Value.Hour * 60) >= gwt.OpenTimeInMinute
-							  && (filterConditions.EndTime.Value.Minute + filterConditions.EndTime.Value.Hour * 60) <= gwt.CloseTimeInMinute
-					).Any()
+							  && (filterConditions.EndTime.Value.Minute + filterConditions.EndTime.Value.Hour * 60) <= gwt.CloseTimeInMinute)
 			);
 
 			// Parse into model suitable to send back to browser
-			var results = new List<JsonModels.SearchResultItemJsonModel>();
-			foreach (Vehicle vehicle in vehicles)
-				results.Add(new SearchResultItemJsonModel(vehicle, rentalTime));
+			var results = vehicles.ToList().Select(vehicle => new SearchResultItemJsonModel(vehicle, rentalTime)).ToList();
 
 			// Max/Min Price conditions
 			if (filterConditions.MaxPrice != null && filterConditions.MinPrice != null
@@ -90,7 +84,7 @@ namespace CRP.Models.Entities.Services
 			}
 
 			// Paginate
-			int filteredRecords = results.Count;
+			var filteredRecords = results.Count;
 			if (filterConditions.Page < 1 || (filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage > filteredRecords)
 				filterConditions.Page = 1;
 
@@ -100,10 +94,9 @@ namespace CRP.Models.Entities.Services
 
 			// Order
 			System.Reflection.PropertyInfo prop1 = typeof(SearchResultItemJsonModel).GetProperty(filterConditions.OrderBy);
-			if (filterConditions.IsDescendingOrder)
-				results = results.OrderByDescending(r => prop1.GetValue(r)).ToList();
-			else
-				results = results.OrderBy(r => prop1.GetValue(r)).ToList();
+			results = filterConditions.IsDescendingOrder
+				? results.OrderByDescending(r => prop1.GetValue(r)).ToList()
+				: results.OrderBy(r => prop1.GetValue(r)).ToList();
 
 			// Nest into result object
 			return new SearchResultJsonModel(results, filteredRecords);
@@ -112,11 +105,11 @@ namespace CRP.Models.Entities.Services
 		public VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions)
 		{
 			// Get only vehicles belonged to this user
-			IEnumerable<Vehicle> vehicles = this.repository.Get(
+			var vehicles = repository.Get(
 				v => v.Garage.OwnerID == filterConditions.ProviderID
 			);
 
-			int recordsTotal = vehicles.Count(), filteredRecords;
+			var recordsTotal = vehicles.Count();
 
 			// Filters, GO!!
 			// Filters that can take out the most records with the least work go first
@@ -161,7 +154,7 @@ namespace CRP.Models.Entities.Services
 			vehicles = BasicFilter(vehicles, filterConditions);
 
 			// Paginate
-			filteredRecords = vehicles.Count();
+			var filteredRecords = vehicles.Count();
 			if ((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage > filteredRecords)
 				filterConditions.Page = 1;
 
@@ -169,17 +162,16 @@ namespace CRP.Models.Entities.Services
 					.Take(Constants.NumberOfSearchResultPerPage);
 
 			// Order
-			System.Reflection.PropertyInfo prop2 = typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy);
-			if (filterConditions.IsDescendingOrder)
-				vehicles = vehicles.OrderByDescending(r => prop2.GetValue(r));
-			else
-				vehicles = vehicles.OrderBy(r => prop2.GetValue(r));
+			var prop2 = typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy);
+			vehicles = filterConditions.IsDescendingOrder
+				? vehicles.OrderByDescending(r => prop2.GetValue(r))
+				: vehicles.OrderBy(r => prop2.GetValue(r));
 
 			return new VehicleDataTablesJsonModel(vehicles.ToList(), recordsTotal, filteredRecords);
 		}
 
 		// Run common filters on a vehicle list
-		protected IEnumerable<Vehicle> BasicFilter(IEnumerable<Vehicle> vehicles , VehicelFilterConditionModel filterConditions)
+		protected IQueryable<Vehicle> BasicFilter(IQueryable<Vehicle> vehicles , VehicelFilterConditionModel filterConditions)
 		{
 			// Transmission condition
 			if (filterConditions.TransmissionTypeIDList != null)
@@ -197,17 +189,9 @@ namespace CRP.Models.Entities.Services
 			if (filterConditions.LocationIDList != null)
 				vehicles = vehicles.Where(v => filterConditions.LocationIDList.Contains(v.Garage.LocationID));
 
-			vehicles.ToList();
-			if (filterConditions.CategoryIDList != null)
-				vehicles.Where(v =>
-				{
-					IEnumerable<Category> a = v.Model.Categories.Where(r => filterConditions.CategoryIDList.Contains(r.ID));
-					return a.Any();
-				});
-
 			// Category condition
 			if (filterConditions.CategoryIDList != null)
-				vehicles = vehicles.Where(v => v.Model.Categories.Where(r => filterConditions.CategoryIDList.Contains(r.ID)).Any());
+				vehicles = vehicles.Where(v => v.Model.Categories.Any(r => filterConditions.CategoryIDList.Contains(r.ID)));
 
 			// Max ProductionYear condition
 			if (filterConditions.MaxProductionYear != null)
@@ -226,9 +210,9 @@ namespace CRP.Models.Entities.Services
 		}
 
 		// Check to see if the vehicle is available
-		public Boolean CheckVehicleAvailability(int vehicleID, DateTime startTime, DateTime endTime)
+		public bool CheckVehicleAvailability(int vehicleId, DateTime startTime, DateTime endTime)
 		{
-			var vehicle = this.repository.Get(v => v.ID == vehicleID);
+			var vehicle = this.repository.Get(v => v.ID == vehicleId);
 
 			if (vehicle.Any())
 			{
@@ -237,33 +221,29 @@ namespace CRP.Models.Entities.Services
 				// Max margin of error: 60 secs vs CloseTime (Because we do not validate to second)
 
 				// Booking StartTime
+				var startTimeDoW = (int) startTime.DayOfWeek;
 				vehicle = vehicle.Where(v =>
-					v.Garage.GarageWorkingTimes
-						.Where(gwt => gwt.DayOfWeek == (int)startTime.DayOfWeek
+					v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == startTimeDoW
 								  && (startTime.Minute + startTime.Hour * 60) >= gwt.OpenTimeInMinute
-								  && (startTime.Minute + startTime.Hour * 60) <= gwt.CloseTimeInMinute
-						).Any());
+								  && (startTime.Minute + startTime.Hour * 60) <= gwt.CloseTimeInMinute));
 
 				// Booking EndTime
+				var endTimeDoW = (int) endTime.DayOfWeek;
 				vehicle = vehicle.Where(v =>
-					v.Garage.GarageWorkingTimes
-						.Where(gwt => gwt.DayOfWeek == (int)endTime.DayOfWeek
+					v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == endTimeDoW
 								  && (endTime.Minute + endTime.Hour * 60) >= gwt.OpenTimeInMinute
-								  && (endTime.Minute + endTime.Hour * 60) <= gwt.CloseTimeInMinute
-						).Any());
+								  && (endTime.Minute + endTime.Hour * 60) <= gwt.CloseTimeInMinute));
 
 				if (vehicle.Any())
 				{
 					// Check if this vehicle has any other bookings in the timespan of this booking
 					vehicle = vehicle.Where(v =>
-						v.BookingReceipts
-							.Where(br => !br.IsCanceled
+						v.BookingReceipts.Any(br => !br.IsCanceled
 								&& (
 										(startTime > br.StartTime && startTime < br.EndTime)
 									 || (endTime > br.StartTime && endTime < br.EndTime)
 									 || (startTime <= br.StartTime && endTime >= br.EndTime)
-								)
-							).Any());
+								)));
 				}
 			}
 
