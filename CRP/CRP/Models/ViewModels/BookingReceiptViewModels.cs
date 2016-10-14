@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CRP.Models.Entities;
 
 namespace CRP.Models.ViewModels
 {
@@ -38,4 +39,22 @@ namespace CRP.Models.ViewModels
         public bool IsCanceled { get; set; }
         public bool IsPending { get; set; }
     }
+
+	public class BookingReceiptModel
+	{
+		public List<BookingReceipt> listReceipt { get; set; }
+		public int numberPage { get; set; }
+
+		public BookingReceiptModel()
+		{
+			listReceipt = new List<BookingReceipt>();
+		}
+	}
+
+	public class BookingCommentModel
+	{
+		public int ID { get; set; }
+		public decimal Star { get; set; }
+		public string Comment { get; set; }
+	}
 }

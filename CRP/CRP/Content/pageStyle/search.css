@@ -73,7 +73,7 @@ body {
 	width: 100%;
 }
 
-.carousel-control, .carousel-control:focus{
+.carousel-control {
 	opacity: 0;
 	transition-duration: 0.5s
 }

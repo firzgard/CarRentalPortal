@@ -5,10 +5,10 @@ using System.Web;
 
 namespace CRP.Models.JsonModels
 {
-    public class VehicleCalendarModel
+    public class PriceGroupViewModel
     {
         public int ID { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public double Deposit { get; set; }
+        public double PerDayPrice { get; set; }
     }
 }
