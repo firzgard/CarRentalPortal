@@ -312,11 +312,11 @@ $(document).ready(() => {
 				el.selected = false;
 				el.disabled = true;
 
-				disabledModelIDList.push(Number.parseInt(el.value));
+				disabledModelIDList.push(el.value.toString());
 			});
 		}
 		// Filter out models belonged to selected brands in searchConditions
-		searchConditions.ModelIDList = searchConditions.ModelIDList.filter((el) => disabledModelIDList.includes(el));
+		searchConditions.ModelIDList = searchConditions.ModelIDList.filter((el) => !disabledModelIDList.includes(el.toString()));
 
 		// Regenerate modelFilter
 		jQueryNodes.modelFilter.select2();

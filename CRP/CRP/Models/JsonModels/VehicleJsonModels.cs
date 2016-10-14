@@ -39,18 +39,18 @@ namespace CRP.Models.JsonModels
 
 	public class VehicleDataTablesJsonModel : IVehicleFilterJsonModel
 	{
-		public List<VehicleManagementItemJsonModel> SearchResultList { get; set; }
-		public int TotalResult { get; set; }
-		public int TotalPage { get; set; }
+		public List<VehicleManagementItemJsonModel> data { get; set; }
+		public int recordsTotal { get; set; }
+		public int recordsFiltered { get; set; }
 
-		public VehicleDataTablesJsonModel(List<Vehicle> vehicleList, int totalResult)
+		public VehicleDataTablesJsonModel(List<Vehicle> vehicleList, int totalRecords, int filteredRecords)
 		{
-			SearchResultList = new List<VehicleManagementItemJsonModel>();
+			data = new List<VehicleManagementItemJsonModel>();
 			foreach (Vehicle vehicle in vehicleList)
-				SearchResultList.Add(new VehicleManagementItemJsonModel(vehicle));
+				data.Add(new VehicleManagementItemJsonModel(vehicle));
 
-			TotalResult = totalResult;
-			TotalPage = (int)Math.Ceiling((float)totalResult / Constants.NumberOfSearchResultPerPage);
+			recordsTotal = totalRecords;
+			recordsFiltered = filteredRecords;
 		}
 	}
 

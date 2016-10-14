@@ -26,7 +26,7 @@ namespace CRP.Models.Entities.Services
 			// Filters that can take out the most records with the least work go first
 
 			IEnumerable<Vehicle> vehicles;
-			int totalResult;
+			int recordsTotal = 0, filteredRecords;
 
 			// ========================================================
 			// ========================================================
@@ -38,6 +38,7 @@ namespace CRP.Models.Entities.Services
 				vehicles = this.repository.Get(
 					v => v.Garage.OwnerID == resolvedFilterCondition.ProviderID
 				);
+				recordsTotal = vehicles.Count();
 
 				// LicenseNumber condition
 				if (resolvedFilterCondition.LicenseNumber != null)
@@ -148,6 +149,13 @@ namespace CRP.Models.Entities.Services
 					).Any())
 				);
 
+				// ================
+				
+				//vehicles = vehicles.Where(v =>
+				//	v.Garage.)
+				//);
+				// ================
+
 				// Parse into model suitable to send back to browser
 				var results = new List<JsonModels.SearchResultItemJsonModel>();
 				foreach (Vehicle vehicle in vehicles)
@@ -164,8 +172,8 @@ namespace CRP.Models.Entities.Services
 				}
 
 				// Paginate
-				totalResult = results.Count;
-				if (resolvedFilterCondition.Page < 1 || (resolvedFilterCondition.Page - 1) * Constants.NumberOfSearchResultPerPage > totalResult)
+				filteredRecords = results.Count;
+				if (resolvedFilterCondition.Page < 1 || (resolvedFilterCondition.Page - 1) * Constants.NumberOfSearchResultPerPage > filteredRecords)
 					resolvedFilterCondition.Page = 1;
 
 				results = results.Skip((resolvedFilterCondition.Page - 1) * Constants.NumberOfSearchResultPerPage)
@@ -180,12 +188,12 @@ namespace CRP.Models.Entities.Services
 					results = results.OrderBy(r => prop1.GetValue(r)).ToList();
 
 				// Nest into result object
-				return new SearchResultJsonModel(results, totalResult);
+				return new SearchResultJsonModel(results, filteredRecords);
 			}
 
 			// Paginate
-			totalResult = vehicles.Count();
-			if ((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage > totalResult)
+			filteredRecords = vehicles.Count();
+			if ((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage > filteredRecords)
 				filterConditions.Page = 1;
 
 			vehicles = vehicles.Skip((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
@@ -198,7 +206,7 @@ namespace CRP.Models.Entities.Services
 			else
 				vehicles = vehicles.OrderBy(r => prop2.GetValue(r));
 
-			return new VehicleDataTablesJsonModel(vehicles.ToList(), totalResult);
+			return new VehicleDataTablesJsonModel(vehicles.ToList(), recordsTotal, filteredRecords);
 		}
 	}
 }
