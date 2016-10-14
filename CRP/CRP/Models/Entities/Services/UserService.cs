@@ -11,8 +11,8 @@ namespace CRP.Models.Entities.Services
     {
 
     }
-    public class UserService : BaseService<AspNetUser>, IBookingReceiptService
-    {
+    public class UserService : BaseService<AspNetUser>, IUserReceiptService
+	{
         public UserService(IUnitOfWork unitOfWork, IUserReceiptService repository) : base(unitOfWork, repository)
         {
 
@@ -76,21 +76,6 @@ namespace CRP.Models.Entities.Services
         }
 
         public Task UpdateAsync(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        IQueryable<BookingReceipt> IService<BookingReceipt>.Get()
-        {
-            throw new NotImplementedException();
-        }
-
-        BookingReceipt IService<BookingReceipt>.Get(object key)
-        {
-            throw new NotImplementedException();
-        }
-
-        Task<BookingReceipt> IService<BookingReceipt>.GetAsync(object key)
         {
             throw new NotImplementedException();
         }
