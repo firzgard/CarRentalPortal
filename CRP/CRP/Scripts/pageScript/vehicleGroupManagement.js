@@ -201,62 +201,72 @@ $(document).ready(()=>{
             url: "/management/vehicleGroupManagement/create",
             success: function (data) {
                 $('#myModal').html(data);
-
-                let table1 = $('#groupPop').DataTable({
-                    dom: "ti",
-                    displayLength: 24,
-                    ordering: false,
-                    //data: mockupData3,
-                    /*ajax: {
-                        url: `/api/priceGroup/${groupID}`,
-                        type: "GET",
-                    },*/
-                    columnDefs: [
-                        {
-                            // Render action button
-                            targets: 0
-                            , render: (data, type, row) => {
-                                return `
-        <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus" data-field="quant[2]">
-        <i class="fa fa-minus"></i>
-        </button>`;
-                            }
-                        }
-                    ],
-                    columns: [
-                        {
-                            searchable: false,
-                            sortable: false,
-                            width: '24%'
-                        },
-                        {
-                            title: 'Max time',
-                            width: '38%',
-                            data: "MaxTime"
-                        },
-                        {
-                            title: 'Price',
-                            width: '38%',
-                            data: "Price"
-                        }
-
-                    ]
-                });
+                let table1 = null;
 
                 function bindMinusBtn() {
                     $('.minus-btn').unbind('click').click(function () {
                         table1.row($(this).parents('tr')).remove().draw();
+                        if ($('.max-time').length == 0) {
+                            table1.destroy();
+                            $('#groupPop').empty();
+                            table1 = null;
+                        }
                     });
                 }
                 bindMinusBtn();
                 (function bindPlusBtn() {
                     $('.plus-btn').unbind('click').click(function () {
+                        if (table1 == null) {
+                            table1 = $('#groupPop').DataTable({
+                                dom: "ti",
+                                displayLength: 23,
+                                ordering: false,
+                                //data: mockupData3,
+                                /*ajax: {
+                                    url: `/api/priceGroup/${groupID}`,
+                                    type: "GET",
+                                },*/
+                                columnDefs: [
+                                    {
+                                        // Render action button
+                                        targets: 0
+                                        , render: (data, type, row) => {
+                                            return `
+        <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus" data-field="quant[2]">
+        <i class="fa fa-minus"></i>
+        </button>`;
+                                        }
+                                    }
+                                ],
+                                columns: [
+                                    {
+                                        searchable: false,
+                                        sortable: false,
+                                        width: '24%'
+                                    },
+                                    {
+                                        title: 'Max time',
+                                        width: '38%',
+                                        data: "MaxTime"
+                                    },
+                                    {
+                                        title: 'Price',
+                                        width: '38%',
+                                        data: "Price"
+                                    }
+
+                                ]
+                            });
+                        }
                         $('.minus-btn').css("display", "inline-block");
-                        table1.row.add({
-                            "MaxTime": `<input type="text" class="max-time form-control" value="0" />`,
-                            "Price": `<input type="text" class="price form-control" value="0" />`,
-                        }).draw();
-                        bindMinusBtn();
+                        // limit 23 row
+                        if($('.max-time').length < 23) {
+                            table1.row.add({
+                                "MaxTime": `<input type="number" min="1" max="23" class="max-time form-control" value="" />`,
+                                "Price": `<input type="number" class="price form-control" value="" />`,
+                            }).draw();
+                            bindMinusBtn();
+                        }
                     });
                 })();
                 $('#myModal').modal('show');
@@ -287,7 +297,7 @@ $(document).on('click', "a.changeStatus", function () {
     });
 });
 
-// change status
+// delete vehicle
 $(document).on('click', "a.deleteVehicle", function () {
     let id = $(this).data("vehicle-id");
     $.ajax({
@@ -297,6 +307,101 @@ $(document).on('click', "a.deleteVehicle", function () {
             alert("ok");
         },
         eror: function (data) {
+            alert("fail");
+        }
+    });
+});
+
+// add to object priceGroupItem
+$(document).on('click', "#btnCreate", function () {
+    let priceGroupItemList = [];
+    let checkTimeArray = [];
+    for (var i = 0; i < $('.max-time').length; i++) {
+        if ($(`.max-time:eq(${i})`).val() && !$(`.price:eq(${i})`).val()) {
+            alert("chua nhap tien");
+        }
+        if (!$(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
+            alert("chua nhap gio");
+        }
+        if ($(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
+            var item = {};
+            item.MaxTime = parseInt($(`.max-time:eq(${i})`).val());
+            item.Price = parseInt($(`.price:eq(${i})`).val());
+            if (item.MaxTime < 1 || item.MaxTime > 23) {
+                alert("so gio bi sai");
+            } else {
+                if (jQuery.inArray(item.MaxTime,checkTimeArray) >= 0) {
+                    alert("trung gio");
+                } else {
+                    if (item.Price < 0) {
+                        alert("so tien bi am");
+                    } else {
+                        priceGroupItemList.push(item);
+                        checkTimeArray.push(item.MaxTime);
+                    }
+                }
+            }
+        }
+    }
+
+    let model = {};
+    model.Name = null;
+    model.MaxRentalPeriod = null;
+    model.PriceGroup = {};
+    model.PriceGroup.DepositPercentage = null;
+    model.PriceGroup.PerDayPrice = null;
+    model.PriceGroup.PriceGroupItems = null;
+
+    if (!$('#group-name').val()) {
+        alert("Name is required!");
+        return false;
+    } else if ($('#group-name').val().length > 50) {
+        alert("Name's length is over");
+        return false;
+    } else {
+        model.Name = $('#group-name').val();
+    }
+
+    if (!$('#deposit').val()) {
+        alert("Deposit is required!");
+        return false;
+    } else if (parseFloat($('#deposit').val()) < 0 || parseFloat($('#deposit').val()) > 100) {
+        alert("Deposit must in range 0~100");
+        return false;
+    } else {
+        model.PriceGroup.DepositPercentage = parseFloat($('#deposit').val());
+    }
+
+    if (!$('#per-day-price').val()) {
+        alert("Per day price is required");
+        return false;
+    } else if (parseInt($('#per-day-price').val()) < 0) {
+        alert("not allow negative number");
+        return false;
+    } else {
+        model.PriceGroup.PerDayPrice = parseInt($('#per-day-price').val());
+    }
+    if ($('#max-rent').val()) {
+        model.MaxRentalPeriod = parseInt($('#max-rent').val());
+        if (model.MaxRentalPeriod < 0) {
+            alert("not allow negative number");
+            return false;
+        }
+    }
+    //if (model.PriceGroup.PriceGroupItems.length == 0) {
+    //    alert("request input price rental");
+    //    return false;
+    //}
+
+
+    $.ajax({
+        url: "/api/vehicleGroups",
+        type: "POST",
+        //data: model,
+        success: function (data) {
+            alert("ok");
+        },
+        error: function (e) {
             alert("fail");
         }
     });

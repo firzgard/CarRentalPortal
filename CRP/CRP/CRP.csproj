@@ -337,12 +337,14 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\JsonModels\BrandModel.cs" />
     <Compile Include="Models\JsonModels\GarageModel.cs" />
+    <Compile Include="Models\ViewModels\BookingReceiptViewModel.cs" />
     <Compile Include="Models\ViewModels\HomeViewModels.cs" />
     <Compile Include="Models\JsonModels\PriceGroupItemModel.cs" />
     <Compile Include="Models\JsonModels\PriceGroupModel.cs" />
     <Compile Include="Models\JsonModels\VehicleGroupModel.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
+    <Compile Include="Models\ViewModels\MessageViewModel.cs" />
     <Compile Include="Models\ViewModels\VehicleGroupViewModel.cs" />
     <Compile Include="Models\ViewModels\VehicleViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
