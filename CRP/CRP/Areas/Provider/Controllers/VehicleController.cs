@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-//using CRP.Models;
+using CRP.Models.ViewModels;
 using CRP.Models.Entities.Services;
 using CRP.Models.Entities;
 using CRP.Models.JsonModels;
@@ -82,28 +82,31 @@ namespace CRP.Areas.Provider.Controllers
                 return Json(jsonResult, JsonRequestBehavior.AllowGet);
             }
             var service = this.Service<IVehicleService>();
+            var ModelService = this.Service<IModelService>();
+            var BrandService = this.Service<IBrandService>();
+            var GarageService = this.Service<IGarageService>();
+            var VehicleGroupService = this.Service<IVehicleGroupService>();
+            var VehicleImageService = this.Service<IVehicleImageService>();
 
-            Vehicle newVehicle = this.Mapper.Map<Vehicle>(model);
-            //string LicenNumb = Request.Params["LicenseNumber"];
-            //string Name = Request.Params["Name"];
-            //int ModelID = int.Parse(Request.Params["ModelID"]);
-            //string ModelName = Request.Params["ModelName"];
-            //int BrandID = int.Parse(Request.Params["BrandID"]);
-            //string BrandName = Request.Params["BrandName"];
-            //int GarageID = int.Parse(Request.Params["GarageID"]);
-            //string GarageName = Request.Params["GarageName"];
-            //int VehicleGroupID = int.Parse(Request.Params["VehicleGroupID"]);
-            //string VehicleName = Request.Params["VehicleName"];
-            //int TransmissionTypeID = int.Parse(Request.Params["TransmissionTypeID"]);
-            //string TransmissionTypeName = Request.Params["TransmissionTypeName"];
-            //int FuelTypeID = int.Parse(Request.Params["FuelTypeID"]);
-            //string FuelTypeName = Request.Params["FuelTypeName"];
-            //int ColorID = int.Parse(Request.Params["ColorID"]);
-            //string ColorName = Request.Params["ColorName"];
-            //int NumOfDoor = int.Parse(Request.Params["NumOfDoor"]);
-            //int NumOfSeat = int.Parse(Request.Params["NumOfSeat"]);
+            var entity = this.Mapper.Map<Vehicle>(model);
+            var ModelEntity = this.Mapper.Map<Model>(model.Model);
+            var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
+            var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
+            var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
+            var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
 
-            await service.CreateAsync(newVehicle);
+            if (entity == null || ModelEntity == null || BrandEntity == null 
+                || GarageEntity == null || VehicleGroupEntity == null || VehicleImageEntity == null)
+            {
+                return Json(new { result = false, message = "Create failed!" });
+            }
+
+            await BrandService.CreateAsync(BrandEntity);
+            await ModelService.CreateAsync(ModelEntity);
+            await GarageService.CreateAsync(GarageEntity);
+            await VehicleGroupService.CreateAsync(VehicleGroupEntity);
+            await VehicleImageService.CreateAsync(VehicleImageEntity);
+            await service.CreateAsync(entity);
 
             jsonResult.Status = 1;
             jsonResult.Message = "Create successfully!";
@@ -123,20 +126,33 @@ namespace CRP.Areas.Provider.Controllers
                 return Json(jsonResult, JsonRequestBehavior.AllowGet);
             }
             var service = this.Service<IVehicleService>();
-            var entity = await service.GetAsync(model?.ID);
-            if (entity == null)
+            var ModelService = this.Service<IModelService>();
+            var BrandService = this.Service<IBrandService>();
+            var GarageService = this.Service<IGarageService>();
+            var VehicleGroupService = this.Service<IVehicleGroupService>();
+            var VehicleImageService = this.Service<IVehicleImageService>();
+
+            var entity = this.Mapper.Map<Vehicle>(model);
+            var ModelEntity = this.Mapper.Map<Model>(model.Model);
+            var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
+            var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
+            var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
+            var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
+
+            if (entity == null || ModelEntity == null || BrandEntity == null
+                || GarageEntity == null || VehicleGroupEntity == null || VehicleImageEntity == null)
             {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Update failed!";
-                return Json(jsonResult, JsonRequestBehavior.AllowGet);
+                return Json(new { result = false, message = "Update failed!" });
             }
-
-            this.Mapper.Map(model, entity);
-
+            await BrandService.UpdateAsync(BrandEntity);
+            await ModelService.UpdateAsync(ModelEntity);
+            await GarageService.UpdateAsync(GarageEntity);
+            await VehicleGroupService.UpdateAsync(VehicleGroupEntity);
+            await VehicleImageService.UpdateAsync(VehicleImageEntity);
             await service.UpdateAsync(entity);
 
-            jsonResult.Status = 0;
-            jsonResult.Message = "Update failed!";
+            jsonResult.Status = 1;
+            jsonResult.Message = "Create successfully!";
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
         }
 
@@ -146,23 +162,23 @@ namespace CRP.Areas.Provider.Controllers
 		public async Task<JsonResult> DeleteVehiclesAPI(int id)
 		{
 			var service = this.Service<IVehicleService>();
-			MessageJsonModel jsonResult = new MessageJsonModel();
+            var VehicleImageService = this.Service<IVehicleImageService>();
 			var entity = await service.GetAsync(id);
-            VehicleImage vi = new VehicleImage();
-
 			if (entity != null)
 			{
-				await service.DeleteAsync(entity);
-				jsonResult.Status = 1;
-				jsonResult.Message = "Deleted successfully!";
-			}
-			else
-			{
-				jsonResult.Status = 0;
-				jsonResult.Message = "Error!";
-			}
-			return Json(jsonResult, JsonRequestBehavior.AllowGet);
-		}
+                var VehicleImageEntity = VehicleImageService.Get(q => q.CarID == id);
+                if (VehicleImageEntity != null)
+                {
+                    foreach (var item in VehicleImageEntity)
+                    {
+                        VehicleImageService.DeleteAsync(item);
+                    }
+                }
+                await service.DeleteAsync(entity);
+                return Json(new { result = true, message = "Delete success!" });
+            }
+            return Json(new { result = true, message = "Delete fail!" });
+        }
 
 		// API Route to change garage of multiple vehicles
 		[Route("api/vehicles/changeGarage/{garageID:int}")]
@@ -235,24 +251,6 @@ namespace CRP.Areas.Provider.Controllers
 
             jsonResult.Status = 1;
             jsonResult.Message = "Create successfully!";
-            //var service = this.Service<IBookingReceiptService>();
-            //MessageJsonModel jsonResult = new MessageJsonModel();
-            //string vehicleName = Request.Params["VehicleName"];
-            //DateTime startTime = DateTime.Parse(Request.Params["StartTime"]);
-            //DateTime endTime = DateTime.Parse(Request.Params["EndTime"]);
-            //BookingReceipt bookre = new BookingReceipt();
-            //bookre.StartTime = startTime;
-            //bookre.EndTime = endTime;
-            //if (serviceBook.add(bookre) )
-            //{
-            //	jsonResult.Status = 1;
-            //	jsonResult.Message = "Create successfully!";
-            //}
-            //else
-            //{
-            //	jsonResult.Status = 0;
-            //	jsonResult.Message = "Creare failed!";
-            //}
             return Json(jsonResult, JsonRequestBehavior.AllowGet);
 		}
 
