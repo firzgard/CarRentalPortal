@@ -246,6 +246,7 @@
     <Compile Include="Models\Entities\GarageWorkingTime.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Repositories\VehicleImageRepository.cs" />
     <Compile Include="Models\Entities\Services\CategoryService.cs" />
     <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupItemRepository.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Models\Entities\Services\PriceGroupItemService.cs" />
     <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
     <Compile Include="Models\Entities\Services\UserService.cs" />
+    <Compile Include="Models\Entities\Services\VehicleImageService.cs" />
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
@@ -261,6 +263,8 @@
     <Compile Include="Models\JsonModels\HomeJsonModels.cs" />
     <Compile Include="Models\JsonModels\VehicleCalendarModel.cs" />
     <Compile Include="Models\JsonModels\MessageJsonModel.cs" />
+    <Compile Include="Models\JsonModels\VehicleDetailInfoModel.cs" />
+    <Compile Include="Models\JsonModels\VehicleImageModel.cs" />
     <Compile Include="Models\JsonModels\VehicleJsonModels.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
