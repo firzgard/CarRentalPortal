@@ -27,81 +27,23 @@ const mockupData2 = [
 const mockupData3 = [
         {
             "class": 1
-            , "time": "1"
-            , "price": "100000"
+            , "MaxTime": "1"
+            , "Price": "100000"
         }
         , {
             "class": 2
-            , "time": "2"
-            , "price": "100000"
+            , "MaxTime": "2"
+            , "Price": "100000"
         }
         , {
             "class": 4
-            , "time": "4"
-            , "price": "100000"
+            , "MaxTime": "4"
+            , "Price": "100000"
         }
 
 ];
 
-$(document).ready(function(){
-    var table1 = $('#groupPop').DataTable({
-                data: mockupData3
-                , columnDefs: [
-                    {
-                        // Render action button
-                        targets: 3
-                        , render: (data, type, row) => {
-                            return `<span class="input-group-btn">
-              <button type="button" class="btn btn-danger btn-number minus-btn"  data-type="minus" data-field="quant[2]">
-                <span class="glyphicon glyphicon-minus"></span>
-              </button>
-          </span>
-
-          <span class="input-group-btn">
-              <button type="button" class="btn btn-success btn-number plus-btn" data-type="plus" data-field="quant[2]">
-                  <span class="glyphicon glyphicon-plus"></span>
-              </button>q
-          </span>`;
-                        }
-                    }
-                ]
-                , columns: [
-                    {
-                        data: 'class'
-                        , visible: false
-                    }
-                    , {
-                        title: 'Max time'
-                        , data: 'time'
-                        , width: '50%'
-                    }
-                    , {
-                        title: 'Price'
-                        , data: 'price'
-                        , width: '50%'
-                    }
-
-                ]
-            });
-
-            function bindMinusBtn() {
-                $('.minus-btn').unbind('click').click(function () {
-                    table1.row($(this).parents('tr')).remove().draw();
-                });
-            }
-            bindMinusBtn();
-            (function bindPlusBtn() {
-                $('.plus-btn').unbind('click').click(function () {
-                    table1.row.add({
-                        "class": 0
-                        , "time": 0
-                        , "price": 0
-                    }).draw();
-                    bindPlusBtn();
-                    bindMinusBtn();
-                });
-            })();
-    
+$(document).ready(()=>{
     // set toogling dropdown event for filter dropdown buttons
 	$('#multiFilter .filter-toggle').on('click', function (event) {
 		let dropdownContainer = $(this).parent();
@@ -259,6 +201,64 @@ $(document).ready(function(){
             url: "/management/vehicleGroupManagement/create",
             success: function (data) {
                 $('#myModal').html(data);
+
+                let table1 = $('#groupPop').DataTable({
+                    dom: "ti",
+                    displayLength: 24,
+                    ordering: false,
+                    //data: mockupData3,
+                    /*ajax: {
+                        url: `/api/priceGroup/${groupID}`,
+                        type: "GET",
+                    },*/
+                    columnDefs: [
+                        {
+                            // Render action button
+                            targets: 0
+                            , render: (data, type, row) => {
+                                return `
+        <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus" data-field="quant[2]">
+        <i class="fa fa-minus"></i>
+        </button>`;
+                            }
+                        }
+                    ],
+                    columns: [
+                        {
+                            searchable: false,
+                            sortable: false,
+                            width: '24%'
+                        },
+                        {
+                            title: 'Max time',
+                            width: '38%',
+                            data: "MaxTime"
+                        },
+                        {
+                            title: 'Price',
+                            width: '38%',
+                            data: "Price"
+                        }
+
+                    ]
+                });
+
+                function bindMinusBtn() {
+                    $('.minus-btn').unbind('click').click(function () {
+                        table1.row($(this).parents('tr')).remove().draw();
+                    });
+                }
+                bindMinusBtn();
+                (function bindPlusBtn() {
+                    $('.plus-btn').unbind('click').click(function () {
+                        $('.minus-btn').css("display", "inline-block");
+                        table1.row.add({
+                            "MaxTime": `<input type="text" class="max-time form-control" value="0" />`,
+                            "Price": `<input type="text" class="price form-control" value="0" />`,
+                        }).draw();
+                        bindMinusBtn();
+                    });
+                })();
                 $('#myModal').modal('show');
             },
             eror: function (e) {
