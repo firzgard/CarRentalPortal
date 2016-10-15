@@ -18,9 +18,9 @@
 			<div class="col-xs-10">
 				<div class="input-group" id="timeFilter">
 					<span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
-					<input type="text" id="startTimeFilter" class="form-control" data-default-value="@DateTime.Now" readonly/>
+					<input type="text" id="startTimeFilter" class="form-control" readonly/>
 					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-					<input type="text" id="endTimeFilter" class="form-control" data-default-value="@DateTime.Now" readonly/>
+					<input type="text" id="endTimeFilter" class="form-control" readonly/>
 				</div>
 			</div>
 		</div>
@@ -29,7 +29,7 @@
 		<div class="form-group row">
 			<label class="col-xs-2">Location</label>
 			<div class="col-xs-10">
-				<select data-placeholder="Please select locations..." id="locationFilter" class="form-control" style="width: 100%;"  multiple>
+				<select id="locationFilter" class="form-control" style="width: 100%;"  multiple>
 					@foreach (Location entry in Model.LocationList)
 					{
 						<option value="@entry.ID">@entry.Name</option>
@@ -80,7 +80,7 @@
 					<div class="form-group row">
 						<label class="col-xs-2">Brand</label>
 						<div class="col-xs-10">
-							<select data-placeholder="Please select..." id="brandFilter" class="form-control" style="width: 100%;" multiple>
+							<select id="brandFilter" class="form-control" style="width: 100%;" multiple>
 								@foreach (Brand brand in Model.BrandList)
 								{
 									<option value="@brand.ID">@brand.Name</option>
@@ -93,7 +93,7 @@
 					<div class="form-group row">
 						<label class="col-xs-2">Model</label>
 						<div class="col-xs-10">
-							<select data-placeholder="Please select..." id="modelFilter" class="form-control" style="width: 100%;" multiple>
+							<select id="modelFilter" class="form-control" style="width: 100%;" multiple>
 								@foreach (Brand brand in Model.BrandList)
 								{
 									<optgroup label="@brand.Name" data-brand="@brand.ID">
@@ -121,7 +121,7 @@
 					<div class="form-group row" >
 						<label class="col-xs-2">Category</label>
 						<div class="col-xs-10">
-							<select data-placeholder="Please select categories..." id="categoryFilter" class="form-control" style="width: 100%;"  multiple>
+							<select id="categoryFilter" class="form-control" style="width: 100%;"  multiple>
 								@foreach (Category entry in Model.CategoryList)
 								{
 									<option value="@entry.ID">@entry.Name</option>
@@ -134,7 +134,7 @@
 					<div class="form-group row">
 						<label class="col-xs-2">Seat</label>
 						<div class="col-xs-10">
-							<select data-placeholder="Please select number of seat..." id="seatFilter" class="form-control" style="width: 100%;"  multiple>
+							<select id="seatFilter" class="form-control" style="width: 100%;"  multiple>
 								@foreach (int entry in Constants.CommonNumOfSeat)
 								{
 									<option value="@entry">@entry</option>
@@ -161,7 +161,7 @@
 					<div class="form-group row" id="colorSelector">
 						<label class="col-xs-2">Color</label>
 						<div class="col-xs-10">
-							<select data-placeholder="Please select a color..." id="colorFilter" class="form-control custom-select2" style="width: 100%;"  multiple>
+							<select id="colorFilter" class="form-control custom-select2" style="width: 100%;"  multiple>
 								@for(int i = 1; i < Constants.Color.Count(); i++)
 								{
 									<option value="@i">@Constants.Color[i]</option>
@@ -175,7 +175,7 @@
 					<div class="form-group row">
 						<label class="col-xs-2">Fuel</label>
 						<div class="col-xs-10">
-							<select data-placeholder="Please select fuel type..." id="fuelFilter" class="form-control" style="width: 100%;"  multiple>
+							<select id="fuelFilter" class="form-control" style="width: 100%;"  multiple>
 								@foreach(KeyValuePair<int, string> entry in Constants.FuelType){
 									<option value="@entry.Key">@entry.Value</option>
 								}
@@ -198,19 +198,6 @@
 		</div>
 	</div>
 </div>
-
-<!-- Page's constansts -->
-<script>
-	const NumRecordPerPage = @Constants.NumberOfSearchResultPerPage
-		, SoonestPossibleBookingStartTimeFromNowInHour = @Constants.SoonestPossibleBookingStartTimeFromNowInHour
-		, SoonestPossibleBookingEndTimeFromNowInHour = @Constants.SoonestPossibleBookingEndTimeFromNowInHour
-		, LatestPossibleBookingStartTimeFromNowInDay = @Constants.LatestPossibleBookingStartTimeFromNowInDay
-		, queryApiUrl = '@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })'
-		, vehicleInfoUrl = '/vehicleInfo'
-		, yearSliderMax = @Model.MaxYear
-		, yearSliderMin = @Model.MinYear
-		, priceSliderMax = @Model.MaxPrice;
-</script>
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/Search")
 	 .Include("~/Content/awesome-bootstrap-checkbox.css",
@@ -238,5 +225,16 @@
 		"~/Scripts/pageScript/search.js"));
 }
 @section Scripts {
+	<script type="text/javascript">
+		const NumRecordPerPage = @Constants.NumberOfSearchResultPerPage
+			, SoonestPossibleBookingStartTimeFromNowInHour = @Constants.SoonestPossibleBookingStartTimeFromNowInHour
+			, SoonestPossibleBookingEndTimeFromNowInHour = @Constants.SoonestPossibleBookingEndTimeFromNowInHour
+			, LatestPossibleBookingStartTimeFromNowInDay = @Constants.LatestPossibleBookingStartTimeFromNowInDay
+			, queryApiUrl = '@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })'
+			, vehicleInfoUrl = '/vehicleInfo'
+			, yearSliderMax = @Model.MaxYear
+			, yearSliderMin = @Model.MinYear
+			, priceSliderMax = @Model.MaxPrice;
+	</script>
 	@Scripts.Render("~/Scripts/Search")
 }

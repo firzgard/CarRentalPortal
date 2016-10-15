@@ -2,10 +2,6 @@
 //==================================
 let now, jQueryNodes, searchConditions;
 
-// MaxProductionYear
-// MinProductionYear
-// Page:
-
 function renderSearchResultGrid(domNode, searchResultList){
 	domNode.removeClass('hidden');
 	domNode.html(searchResultList.reduce((html, searchResult) => html + renderSearchResultItem(searchResult), ''))
@@ -178,6 +174,7 @@ function renderPriceSlider(data){
 }
 
 function renderSearcher(){
+	console.log(searchConditions);
 	jQueryNodes.searchResultGrid.addClass('hidden');
 	jQueryNodes.paginator.addClass('hidden');
 	jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
@@ -207,13 +204,11 @@ function renderSearcher(){
 				No vehicle fits your parameters. Please try again.
 			</div>`);
 		}
-
-		console.log(data);
 	})
 	.fail(function(err, textStatus, errorThrown) {
 		console.log(err, textStatus, errorThrown);
 		jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
-			Unexpected error happenned. Please reload the web page.
+			No vehicle fits your parameters. Please try again.
 		</div>`);
 	})
 }
@@ -233,6 +228,7 @@ $(document).ready(() => {
 		, endTimeFilter: $('#endTimeFilter')
 		, sorter: $('#sorter')
 		, sortDirector: $('#sortDirector')
+		, locationFilter : $('#locationFilter')
 		, brandFilter: $('#brandFilter')
 		, modelFilter: $('#modelFilter')
 		, searchResultGrid: $('#searchResultGrid')
@@ -241,22 +237,51 @@ $(document).ready(() => {
 	}
 
 	searchConditions = {
-		StartTime: now.clone().add(1, 'days').toJSON()
-		, EndTime: now.clone().add(2, 'days').toJSON()
-		, BrandIDList: []
+		BrandIDList: []
 		, ModelIDList: []
 		, TransmissionTypeIDList: []
 		, OrderBy: jQueryNodes.sorter.val()
 		, IsDescendingOrder: jQueryNodes.sortDirector.val()
 	};
 
+	let soonestPossibleBookingStartTimeFromNow = now.clone().add(SoonestPossibleBookingStartTimeFromNowInHour, 'hours').subtract(1, 'minutes'),
+		latestPossibleBookingStartTimeFromNow = now.clone().add(LatestPossibleBookingStartTimeFromNowInDay, 'days').add(1, 'minutes'),
+		soonestPossibleBookingEndTimeFromNow = now.clone().add(SoonestPossibleBookingEndTimeFromNowInHour, 'hours').subtract(1, 'minutes');
+
+	let sessionStartTime = sessionStorage.getItem('startTime');
+	sessionStartTime = sessionStartTime && moment(sessionStartTime);
+
+	if(sessionStartTime
+			&& sessionStartTime.isBefore(soonestPossibleBookingStartTimeFromNow)
+			&& sessionStartTime.isAfter(latestPossibleBookingStartTimeFromNow))
+		sessionStartTime = now.clone().add(1, 'days');
+
+	let sessionEndTime = sessionStorage.getItem('endTime');
+	sessionEndTime = sessionEndTime && moment(sessionEndTime);
+
+	if(sessionEndTime && sessionEndTime.isBefore(soonestPossibleBookingEndTimeFromNow))
+		sessionEndTime = now.clone().add(2, 'days');
+
+	searchConditions.StartTime = sessionStartTime.toJSON()
+	searchConditions.EndTime = sessionEndTime.toJSON()
+
+	sessionStorage.setItem('startTime', sessionEndTime.toJSON());
+	sessionStorage.setItem('endTime', sessionEndTime.toJSON());
+
+	let sessionLocationID = sessionStorage.getItem('locationID');
+	if(sessionLocationID){
+		jQueryNodes.locationFilter.val(sessionLocationID);
+		searchConditions.LocationIDList = jQueryNodes.locationFilter.val();
+	}
+
+	// ============================================================
 	// Time range filter
 	// Start time
 	jQueryNodes.startTimeFilter.datetimepicker({
 		useCurrent: false,
-		defaultDate: now.clone().add(1, 'days'),
-		minDate: now.clone().add(SoonestPossibleBookingStartTimeFromNowInHour, 'hours').subtract(1, 'minutes'),
-		maxDate: now.clone().add(LatestPossibleBookingStartTimeFromNowInDay, 'days').add(1, 'minutes'),
+		defaultDate: sessionStartTime,
+		minDate: soonestPossibleBookingStartTimeFromNow,
+		maxDate: latestPossibleBookingStartTimeFromNow,
 		format: 'YYYY/MM/DD HH:mm',
 		ignoreReadonly: true,
 		showClose: true,
@@ -270,8 +295,6 @@ $(document).ready(() => {
 			'bottom': 'auto',
 			'left': `${$(this).offset().left}px`
 		});
-	})
-	.on('dp.change', (data)=>{
 	})
 	.on('dp.hide', (data)=>{
 		searchConditions.StartTime = data.date.toJSON();
@@ -292,8 +315,8 @@ $(document).ready(() => {
 	// End time
 	jQueryNodes.endTimeFilter.datetimepicker({
 		useCurrent: false,
-		defaultDate: now.clone().add(2, 'days'),
-		minDate: now.clone().add(SoonestPossibleBookingEndTimeFromNowInHour, 'hours').subtract(1, 'minutes'),
+		defaultDate: sessionEndTime,
+		minDate: soonestPossibleBookingEndTimeFromNow,
 		format: 'YYYY/MM/DD HH:mm',
 		ignoreReadonly: true,
 		widgetParent: 'body',
@@ -306,8 +329,6 @@ $(document).ready(() => {
 			'bottom': 'auto',
 			'left': `${$(this).offset().left}px`
 		});
-	})
-	.on('dp.change', (data)=>{
 	})
 	.on('dp.hide', (data)=>{
 		searchConditions.EndTime = data.date.toJSON();
@@ -335,10 +356,13 @@ $(document).ready(() => {
 		});
 	});
 
+	// ============================================================
 	// Select2 selectors
 	// Location
-	$('#locationFilter')
-	.select2()
+	
+	jQueryNodes.locationFilter.select2({
+		placeholder: 'Please select a location...'
+	})
 	.on('change', function() {
 		searchConditions.LocationIDList = $(this).val();
 		delete searchConditions.Page;
@@ -370,7 +394,9 @@ $(document).ready(() => {
 
 	// Brand
 	jQueryNodes.brandFilter
-	.select2()
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		// Remove modelFilter before regenerate it
 		jQueryNodes.modelFilter.select2("destroy");
@@ -408,7 +434,9 @@ $(document).ready(() => {
 
 	// Model
 	jQueryNodes.modelFilter
-	.select2()
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		searchConditions.ModelIDList = $(this).val();
 
@@ -418,7 +446,9 @@ $(document).ready(() => {
 
 	// Category
 	$('#categoryFilter')
-	.select2()
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		searchConditions.CategoryIDList = $(this).val();
 		delete searchConditions.Page;
@@ -428,7 +458,9 @@ $(document).ready(() => {
 
 	// Seat
 	$('#seatFilter')
-	.select2()
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		searchConditions.NumberOfSeatList = $(this).val();
 		delete searchConditions.Page;
@@ -443,6 +475,7 @@ $(document).ready(() => {
 
 	$('#colorFilter')
 	.select2({
+		placeholder: 'Please select...',
 		templateSelection: colorOptionFormat,
 		templateResult: colorOptionFormat
 	})
@@ -455,7 +488,9 @@ $(document).ready(() => {
 
 	// Fuel
 	$('#fuelFilter')
-	.select2()
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		searchConditions.FuelTypeIDList = $(this).val();
 		delete searchConditions.Page;

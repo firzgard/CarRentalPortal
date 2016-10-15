@@ -13,17 +13,26 @@ namespace CRP.Controllers
 {
 	public class HomeController : BaseController
 	{
-
 		// Route to homepage
 		public ActionResult Index()
 		{
-			return View();
+			var locationService = this.Service<ILocationService>();
+			return View(locationService.Get().OrderBy(l => l.Name).ToList());
 		}
 
 		// Route to vehicle search results
-		[Route("search")]
-		public ActionResult Search()
+		[Route("search", Name = "SearchPage")]
+		public ActionResult Search(DateTime? startTime, DateTime? endTime, int? locationID)
 		{
+			if(startTime != null)
+				Response.Cookies["searchConditions"]["startTime"] = startTime.ToString();
+			if (endTime != null)
+				Response.Cookies["searchConditions"]["endTime"] = endTime.ToString();
+			if (locationID != null)
+				Response.Cookies["searchConditions"]["locationID"] = locationID.ToString();
+			if(startTime != null || endTime != null || locationID != null)
+				Response.Cookies["searchConditions"].Expires = DateTime.Now.AddHours(1);
+
 			var brandService = this.Service<IBrandService>();
 			var brandList = brandService.Get(
 				b => b.ID != 1 // Exclude unlisted brand
