@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace CRP.Models.JsonModels
+namespace CRP.Models.ViewModels
 {
-    public class PriceGroupItemModel
+    public class PriceGroupItemViewModel
     {
         public int ID { get; set; }
         public int PriceGroupID { get; set; }

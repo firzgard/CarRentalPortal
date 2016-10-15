@@ -8,12 +8,12 @@ namespace CRP.Models
 {
 	public class Constants
 	{
-		public readonly static Dictionary<int, string> TransmissionType = new Dictionary<int, string> {
+		public static readonly Dictionary<int, string> TransmissionType = new Dictionary<int, string> {
 			{ 1, "Automatic" },
 			{ 2, "Manual" }
 		};
 
-		public readonly static Dictionary<int, string> FuelType = new Dictionary<int, string>{
+		public static readonly Dictionary<int, string> FuelType = new Dictionary<int, string>{
 			{ 1, "Amonia" },
 			{ 2, "Bioalcohol" },
 			{ 3, "Biodiesel" },
@@ -31,7 +31,7 @@ namespace CRP.Models
 			{ 15, "Stream Wood Gas" }
 		};
 
-		public readonly static Dictionary<int, string> Color = new Dictionary<int, string>
+		public static readonly Dictionary<int, string> Color = new Dictionary<int, string>
 		{
 			{ 0, "Another color" },
 			{ 1, "Beige" },
@@ -47,8 +47,11 @@ namespace CRP.Models
 			{ 11, "Yellow" }
 		};
 
-		public readonly static int[] CommonNumOfSeat = new int[] { 2, 4, 7, 16, 29, 45 };
+		public static readonly int[] CommonNumOfSeat = new int[] { 2, 4, 7, 16, 29, 45 };
 
-		public readonly static int NumberOfSearchResultPerPage = 10;
+		public static readonly int NumberOfSearchResultPerPage = 10;
+		public static readonly int SoonestPossibleBookingStartTimeFromNowInHour = 6;
+		public static readonly int SoonestPossibleBookingEndTimeFromNowInHour = 7;
+		public static readonly int LatestPossibleBookingStartTimeFromNowInDay = 30;
 	}
 }

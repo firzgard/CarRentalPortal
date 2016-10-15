@@ -31,6 +31,10 @@ body {
 	background-color: #B2DFDB;
 }
 
+.form-control[readonly] {
+	background-color: white;
+}
+
 #priceFilter {
 	margin: 1em 2em 0;
 }
@@ -69,7 +73,7 @@ body {
 	width: 100%;
 }
 
-.carousel-control, .carousel-control:focus{
+.carousel-control {
 	opacity: 0;
 	transition-duration: 0.5s
 }
@@ -83,17 +87,23 @@ body {
 }
 
 .vehicle-price-tag {
-	background-color: #1ab394;
+	background-color: #00604B;
 	bottom: 0;
-	color: black;
-	font-weight: bold;
-	padding: 0.5em 1em;
+	color: white;
+	font-size: 1.7em;
+	padding: 0.2em 1em;
 	position: absolute;
 	right: 0;
 }
-
-.vehicle-price {
-	font-size: 1.2em;
+.vehicle-price-tag up{
+	font-size: 0.5em;
+	position: relative;
+	top: -0.7em;
+}
+.vehicle-price-tag down{
+	font-size: 0.5em;
+}.vehicle-price-tag per{
+	font-size: 0.7em;
 }
 
 .vehicle-name {
@@ -103,6 +113,14 @@ body {
 
 .br-theme-fontawesome-stars .br-widget a {
 	font-size: 1.3em;
+}
+
+.num-of-seat {
+	font-size: 1.3em;
+	text-align: left;
+}
+.num-of-seat .fa {
+	font-size: 1.8em;
 }
 
 .license-number {

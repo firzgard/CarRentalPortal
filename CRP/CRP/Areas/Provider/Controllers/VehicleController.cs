@@ -54,136 +54,119 @@ namespace CRP.Areas.Provider.Controllers
 			return Json(vehicles, JsonRequestBehavior.AllowGet);
 		}
 
-        // API Route for getting vehicle's detailed infomations (for example, to duplicate vehicle)
-        [Route("api/vehicles/{id}")]
-        [HttpGet]
-        public JsonResult getvehicledetailapi(int id)
-        {
-            //var vehicle = new vehicle() { id = 666, name = "bwm x7" };
-            var service = this.Service<IVehicleService>();
-            Vehicle vehicle = service.Get(id);
+		// API Route for getting vehicle's detailed infomations (for example, to duplicate vehicle)
+		[Route("api/vehicles/{id}")]
+		[HttpGet]
+		public JsonResult GetVehicleDetailAPI(int id)
+		{
+			//var vehicle = new vehicle() { id = 666, name = "bwm x7" };
+			var service = this.Service<IVehicleService>();
+			Vehicle vehicle = service.Get(id);
 
-            VehicleDetailInfoModel vehiclemodel = new VehicleDetailInfoModel(vehicle);
+			VehicleDetailInfoModel vehiclemodel = new VehicleDetailInfoModel(vehicle);
 
-            return Json(vehiclemodel, JsonRequestBehavior.AllowGet);
+			return Json(vehiclemodel, JsonRequestBehavior.AllowGet);
 
-        }
+		}
 
-        // API Route to create single new vehicles
-        [Route("api/vehicles")]
+		// API Route to create single new vehicles
+		[Route("api/vehicles")]
 		[HttpPost]
-		public async Task<JsonResult> CreateVehicleAPI(Vehicle model)
-        {
-			MessageJsonModel jsonResult = new MessageJsonModel();
-            if (!this.ModelState.IsValid)
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Creare failed!";
-                return Json(jsonResult, JsonRequestBehavior.AllowGet);
-            }
-            var service = this.Service<IVehicleService>();
-            var ModelService = this.Service<IModelService>();
-            var BrandService = this.Service<IBrandService>();
-            var GarageService = this.Service<IGarageService>();
-            var VehicleGroupService = this.Service<IVehicleGroupService>();
-            var VehicleImageService = this.Service<IVehicleImageService>();
+		public async Task<ActionResult> CreateVehicleAPI(Vehicle model)
+		{
+			if (!this.ModelState.IsValid)
+				return new HttpStatusCodeResult(403, "Created unsuccessfully");
+			var service = this.Service<IVehicleService>();
+			var ModelService = this.Service<IModelService>();
+			var BrandService = this.Service<IBrandService>();
+			var GarageService = this.Service<IGarageService>();
+			var VehicleGroupService = this.Service<IVehicleGroupService>();
+			var VehicleImageService = this.Service<IVehicleImageService>();
 
-            var entity = this.Mapper.Map<Vehicle>(model);
-            var ModelEntity = this.Mapper.Map<Model>(model.Model);
-            var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
-            var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
-            var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
-            var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
+			var entity = this.Mapper.Map<Vehicle>(model);
+			var ModelEntity = this.Mapper.Map<Model>(model.Model);
+			var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
+			var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
+			var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
+			var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
 
-            if (entity == null || ModelEntity == null || BrandEntity == null 
-                || GarageEntity == null || VehicleGroupEntity == null || VehicleImageEntity == null)
-            {
-                return Json(new { result = false, message = "Create failed!" });
-            }
+			if (entity == null || ModelEntity == null || BrandEntity == null 
+					|| GarageEntity == null || VehicleGroupEntity == null || VehicleImageEntity == null)
+				return new HttpStatusCodeResult(403, "Created unsuccessfully");
 
-            await BrandService.CreateAsync(BrandEntity);
-            await ModelService.CreateAsync(ModelEntity);
-            await GarageService.CreateAsync(GarageEntity);
-            await VehicleGroupService.CreateAsync(VehicleGroupEntity);
-            await VehicleImageService.CreateAsync(VehicleImageEntity);
-            await service.CreateAsync(entity);
+			await BrandService.CreateAsync(BrandEntity);
+			await ModelService.CreateAsync(ModelEntity);
+			await GarageService.CreateAsync(GarageEntity);
+			await VehicleGroupService.CreateAsync(VehicleGroupEntity);
+			await VehicleImageService.CreateAsync(VehicleImageEntity);
+			await service.CreateAsync(entity);
 
-            jsonResult.Status = 1;
-            jsonResult.Message = "Create successfully!";
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }
+			return new HttpStatusCodeResult(200, "Created successfully.");
+		}
 
 		// API Route to edit single vehicle
 		[Route("api/vehicles")]
 		[HttpPatch]
-        public async Task<JsonResult> EditVehicleAPI(Vehicle model)
-        {
-			MessageJsonModel jsonResult = new MessageJsonModel();
-            if (!this.ModelState.IsValid)
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Update failed!";
-                return Json(jsonResult, JsonRequestBehavior.AllowGet);
-            }
-            var service = this.Service<IVehicleService>();
-            var ModelService = this.Service<IModelService>();
-            var BrandService = this.Service<IBrandService>();
-            var GarageService = this.Service<IGarageService>();
-            var VehicleGroupService = this.Service<IVehicleGroupService>();
-            var VehicleImageService = this.Service<IVehicleImageService>();
+		public async Task<ActionResult> EditVehicleAPI(Vehicle model)
+		{
+			if (!this.ModelState.IsValid)
+				return new HttpStatusCodeResult(400, "Updated unsuccessfully.");
 
-            var entity = this.Mapper.Map<Vehicle>(model);
-            var ModelEntity = this.Mapper.Map<Model>(model.Model);
-            var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
-            var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
-            var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
-            var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
+			var service = this.Service<IVehicleService>();
+			var ModelService = this.Service<IModelService>();
+			var BrandService = this.Service<IBrandService>();
+			var GarageService = this.Service<IGarageService>();
+			var VehicleGroupService = this.Service<IVehicleGroupService>();
+			var VehicleImageService = this.Service<IVehicleImageService>();
 
-            if (entity == null || ModelEntity == null || BrandEntity == null
-                || GarageEntity == null || VehicleGroupEntity == null || VehicleImageEntity == null)
-            {
-                return Json(new { result = false, message = "Update failed!" });
-            }
-            await BrandService.UpdateAsync(BrandEntity);
-            await ModelService.UpdateAsync(ModelEntity);
-            await GarageService.UpdateAsync(GarageEntity);
-            await VehicleGroupService.UpdateAsync(VehicleGroupEntity);
-            await VehicleImageService.UpdateAsync(VehicleImageEntity);
-            await service.UpdateAsync(entity);
+			var entity = this.Mapper.Map<Vehicle>(model);
+			var ModelEntity = this.Mapper.Map<Model>(model.Model);
+			var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
+			var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
+			var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
+			var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
 
-            jsonResult.Status = 1;
-            jsonResult.Message = "Create successfully!";
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }
+			if (entity == null || ModelEntity == null || BrandEntity == null
+					|| GarageEntity == null || VehicleGroupEntity == null || VehicleImageEntity == null)
+				return new HttpStatusCodeResult(403, "Updated unsuccessfully.");
 
-        // API Route to delete 1 or multiple vehicles
-        [Route("api/vehicles")]
+			await BrandService.UpdateAsync(BrandEntity);
+			await ModelService.UpdateAsync(ModelEntity);
+			await GarageService.UpdateAsync(GarageEntity);
+			await VehicleGroupService.UpdateAsync(VehicleGroupEntity);
+			await VehicleImageService.UpdateAsync(VehicleImageEntity);
+			await service.UpdateAsync(entity);
+
+			return new HttpStatusCodeResult(200, "Updated successfully.");
+		}
+
+		// API Route to delete 1 or multiple vehicles
+		[Route("api/vehicles")]
 		[HttpDelete]
-		public async Task<JsonResult> DeleteVehiclesAPI(int id)
+		public async Task<ActionResult> DeleteVehiclesAPI(int id)
 		{
 			var service = this.Service<IVehicleService>();
-            var VehicleImageService = this.Service<IVehicleImageService>();
+			var VehicleImageService = this.Service<IVehicleImageService>();
 			var entity = await service.GetAsync(id);
-			if (entity != null)
+			if (entity == null)
+				return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
+
+			var VehicleImageEntity = VehicleImageService.Get(q => q.CarID == id);
+			if (VehicleImageEntity != null)
 			{
-                var VehicleImageEntity = VehicleImageService.Get(q => q.CarID == id);
-                if (VehicleImageEntity != null)
-                {
-                    foreach (var item in VehicleImageEntity)
-                    {
-                        VehicleImageService.DeleteAsync(item);
-                    }
-                }
-                await service.DeleteAsync(entity);
-                return Json(new { result = true, message = "Delete success!" });
-            }
-            return Json(new { result = true, message = "Delete fail!" });
-        }
+				foreach (var item in VehicleImageEntity)
+				{
+					VehicleImageService.DeleteAsync(item);
+				}
+			}
+			await service.DeleteAsync(entity);
+			return new HttpStatusCodeResult(200, "Deleted successfully.");
+		}
 
 		// API Route to change garage of multiple vehicles
 		[Route("api/vehicles/changeGarage/{garageID:int}")]
 		[HttpPatch]
-		public JsonResult ChangeGarageAPI(int garageID, List<int> listVehicleId)
+		public ActionResult ChangeGarageAPI(int garageID, List<int> listVehicleId)
 		{
 			var service = this.Service<IVehicleService>();
 			List<Vehicle> lstVehicle = service.Get().ToList();
@@ -195,14 +178,14 @@ namespace CRP.Areas.Provider.Controllers
 				v.GarageID = garageID;
 				service.Update(v);
 			}
-			
-			return Json(lstVehicle, JsonRequestBehavior.AllowGet);
+
+			return new HttpStatusCodeResult(200, "Garage changed successfully.");
 		}
 
 		// API Route to change group of multiple vehicles
 		[Route("api/vehicles/changeGroup/{groupID:int}")]
 		[HttpPatch]
-		public JsonResult ChangeGroupAPI(int groupID, List<int> listVehicleId)
+		public ActionResult ChangeGroupAPI(int groupID, List<int> listVehicleId)
 		{
 			var service = this.Service<IVehicleService>();
 			List<Vehicle> lstVehicle = service.Get().ToList();
@@ -213,7 +196,7 @@ namespace CRP.Areas.Provider.Controllers
 				v.VehicleGroupID = groupID;
 				service.Update(v);
 			}
-			return Json(lstVehicle, JsonRequestBehavior.AllowGet);
+			return new HttpStatusCodeResult(200, "Group changed successfully.");
 		}
 
 		// API route for getting booking receipts of a vehicle
@@ -230,41 +213,36 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API route for creating an own booking
-        //need provider role
+		//need provider role
 		[Route("api/vehicles/bookings/{vehiceID:int}")]
 		[HttpPost]
-        public async Task<JsonResult> CreateBookingAPI(BookingReceipt model, int vehicleID)
-        {
-            MessageJsonModel jsonResult = new MessageJsonModel();
-            if (!this.ModelState.IsValid)
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Creare failed!";
-                return Json(jsonResult, JsonRequestBehavior.AllowGet);
-            }
+		public async Task<HttpStatusCodeResult> CreateBookingAPI(BookingReceipt model, int vehicleID)
+		{
+			if (!this.ModelState.IsValid)
+			{
+				return new HttpStatusCodeResult(403, "Created unsuccessfully.");
+			}
 
-            var service = this.Service<IBookingReceiptService>();
+			var service = this.Service<IBookingReceiptService>();
 
-            BookingReceipt newBooking = this.Mapper.Map<BookingReceipt>(model);
-            newBooking.VehicleID = vehicleID;
-            await service.CreateAsync(newBooking);
+			BookingReceipt newBooking = this.Mapper.Map<BookingReceipt>(model);
+			newBooking.VehicleID = vehicleID;
+			await service.CreateAsync(newBooking);
 
-            jsonResult.Status = 1;
-            jsonResult.Message = "Create successfully!";
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+			return new HttpStatusCodeResult(200, "Created successfully.");
 		}
 
 		// API route for canceling an own booking
 		[Route("api/vehicles/bookings/{receiptID:int}")]
 		[HttpDelete]
-		public JsonResult CancelBookingAPI(int receiptID)
+		public ActionResult CancelBookingAPI(int receiptID)
 		{
 			var service = this.Service<IBookingReceiptService>();
-			MessageJsonModel jsonResult = new MessageJsonModel();
 			BookingReceipt br = service.Get(receiptID);
-            br.IsCanceled = true;
-            service.Update(br);
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+			br.IsCanceled = true;
+			service.Update(br);
+
+			return new HttpStatusCodeResult(200, "Deleted successfully");
 		}
 	}
 }
