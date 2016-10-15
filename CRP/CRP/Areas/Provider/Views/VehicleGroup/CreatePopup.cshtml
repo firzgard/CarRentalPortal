@@ -18,21 +18,21 @@
                 <div class="row">
                     <div class="col-md-6">
                         <label>Name</label>
-                        @Html.TextBoxFor(q => q.Name, new { @class = "form-control required input-lg", required = "true" })
+                        @Html.TextBoxFor(q => q.Name, new { @id="group-name", @class = "form-control required input-lg", required = "true" })
                         <label>Deposit</label>
                         <div class="input-group m-b boxForm text-center">
                             @Html.HiddenFor(q => q.PriceGroup.DepositPercentage, new { @id = "deposit" })
-                            <input type="text" id="depositDisplay" class="form-control" /> <span class="input-group-addon">%</span>
+                            <input type="number" id="depositDisplay" class="form-control" /> <span class="input-group-addon">%</span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label>Max rental period</label>
                         <div class="input-group m-b boxForm text-center">
-                            @Html.TextBoxFor(q => q.MaxRentalPeriod, new { @type = "number", @class = "form-control" }) <span class="input-group-addon">day</span>
+                            @Html.TextBoxFor(q => q.MaxRentalPeriod, new { @id="max-rent", @type = "number", @class = "form-control" }) <span class="input-group-addon">day</span>
                         </div>
                         <label>Per day price</label>
                         <div class="input-group m-b boxForm text-center">
-                            @Html.TextBoxFor(q => q.PriceGroup.PerDayPrice, new { @type = "number", @class = "form-control" }) <span class="input-group-addon">&#8363;</span>
+                            @Html.TextBoxFor(q => q.PriceGroup.PerDayPrice, new { @id="per-day-price", @type = "number", @class = "form-control" }) <span class="input-group-addon">&#8363;</span>
                         </div>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary" type="submit">Save changes</button>
+                <button id="btnCreate" class="btn btn-primary" type="button">Create</button>
             </div>
         </form>
     </div>
