@@ -41,20 +41,38 @@
 		<!-- Price -->
 		<div class="form-group row">
 			<label class="col-xs-12">Price</label>
-			<div id="minPriceDisplay" class="col-xs-6"></div>
-			<div id="maxPriceDisplay" class="col-xs-6 text-right"></div>
-			<div class="col-xs-12"><div id="priceFilter"></div></div>
-			<div id="lowestPriceDisplay" class="col-xs-4"></div>
-			<div id="averagePriceDisplay" class="col-xs-4 text-center"></div>
-			<div id="highestPriceDisplay" class="col-xs-4 text-right"></div>
+			<div id="minPriceDisplay" class="col-xs-6" style="padding-left: 1.5em; font-size: 1.2em"></div>
+			<div id="maxPriceDisplay" class="col-xs-6 text-right" style="padding-right: 1.5em; font-size: 1.2em"></div>
+			<div class="col-xs-12" style="position: relative; padding: 1em 3em 2em" >
+				<div id="priceFilter"></div>
+			</div>
+		</div>
+		<hr>
+		<!-- Sorting -->
+		<div class="form-group row">
+			<label class="col-xs-2">Sort by</label>
+			<div class="col-xs-6">
+				<select id="sorter" class="form-control" style="width: 100%;">
+					@for (int i=0, l = Constants.AllowedSortingPropsInSearchPage.Count(); i < l; i++)
+					{
+						<option value="@i" @(Constants.AllowedSortingPropsInSearchPage[i].Value == "BestPossibleRentalPeriod" ? "selected" : "") >
+							@Constants.AllowedSortingPropsInSearchPage[i].Name
+						</option>
+					}
+				</select>
+			</div>
+			<div class="col-xs-4">
+				<select id="sortDirector" class="form-control" style="width: 100%;">
+					<option value="false">Ascending</option>
+					<option value="true">Descending</option>
+				</select>
+			</div>
 		</div>
 
 		<!-- Additional filters -->
 		<div class="panel panel-default">
-			<a data-toggle="collapse" href="#additionalFilters" >
-				<div class="panel-heading">
-					<h4 class="panel-title text-center"><i class="fa fa-angle-double-down"></i></h4>
-				</div>
+			<a data-toggle="collapse" href="#additionalFilters" class="btn btn-info btn-block" >
+				<i class="fa fa-angle-double-down"></i>
 			</a>
 			<div id="additionalFilters" class="panel-collapse collapse" >
 				<div class="panel-body">
@@ -94,9 +112,9 @@
 					<!-- Year -->
 					<div class="form-group row">
 						<label class="col-xs-12">Model Year</label>
-						<div id="minYearDisplay" class="col-xs-6"></div>
-						<div id="maxYearDisplay" class="col-xs-6 text-right"></div>
-						<div class="col-xs-12"><div id="yearFilter"></div></div>
+						<div id="minYearDisplay" class="col-xs-6" style="padding-left: 1.5em; font-size: 1.2em"></div>
+						<div id="maxYearDisplay" class="col-xs-6 text-right" style="padding-right: 1.5em; font-size: 1.2em"></div>
+						<div class="col-xs-12" style="position: relative; padding: 1em 3em"><div id="yearFilter"></div></div>
 					</div>
 					<hr>
 					<!-- Category -->
@@ -172,10 +190,7 @@
 	<!-- results -->
 	<div class="col-md-7 scroll-container animated fadeInRight" id="resultContainer">
 		<div class="ibox" style="padding-top: 1em;">
-			<div class="row" id="searchResultGrid"
-					data-source="@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })"
-					data-result-url="@Url.RouteUrl("VehicleInfo", new { controller = "Home" })">
-			</div>
+			<div class="row" id="searchResultGrid"></div>
 			<div id="recordInfo" style="margin-bottom: 1em;"></div>
 			<div class="text-center">
 				<ul id="paginatior" class="pagination"></ul>
@@ -190,6 +205,11 @@
 		, SoonestPossibleBookingStartTimeFromNowInHour = @Constants.SoonestPossibleBookingStartTimeFromNowInHour
 		, SoonestPossibleBookingEndTimeFromNowInHour = @Constants.SoonestPossibleBookingEndTimeFromNowInHour
 		, LatestPossibleBookingStartTimeFromNowInDay = @Constants.LatestPossibleBookingStartTimeFromNowInDay
+		, queryApiUrl = '@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })'
+		, vehicleInfoUrl = '/vehicleInfo'
+		, yearSliderMax = @Model.MaxYear
+		, yearSliderMin = @Model.MinYear
+		, priceSliderMax = @Model.MaxPrice;
 </script>
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/Search")

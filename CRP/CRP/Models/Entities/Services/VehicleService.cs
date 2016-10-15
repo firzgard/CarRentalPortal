@@ -52,7 +52,7 @@ namespace CRP.Models.Entities.Services
 
 			// Check StartTime/EndTime to be within garage's OpenTime ~ CloseTime
 			// Compare by convert time to the number of minute from 00:00
-			// Max margin of error: 60 secs vs CloseTime (Because we do not validate to second)
+			// Max margin of error: 60 secs w/ CloseTime (Because we do not validate to second)
 
 			// Booking StartTime
 			var startDayInDoW = (int)filterConditions.StartTime.Value.DayOfWeek;
@@ -73,35 +73,65 @@ namespace CRP.Models.Entities.Services
 			);
 
 			// Parse into model suitable to send back to browser
-			var results = vehicles.ToList().Select(vehicle => new SearchResultItemJsonModel(vehicle, rentalTime)).ToList();
+			var results = vehicles.ToList().Select(vehicle => new SearchResultItemJsonModel(vehicle, rentalTime));
+
+			double? averagePrice = null;
+			if (results.Any())
+				averagePrice = results.Average(r => r.BestPossibleRentalPrice);
 
 			// Max/Min Price conditions
-			if (filterConditions.MaxPrice != null && filterConditions.MinPrice != null
-					&& filterConditions.MaxPrice > filterConditions.MinPrice)
+			// Do not validate MaxPrice > MinPrice here. Do it before this in the controller
+			if (filterConditions.MaxPrice != null
+			    && filterConditions.MinPrice != null)
 			{
 				results = results.Where(
 					r => filterConditions.MaxPrice >= r.BestPossibleRentalPrice
 						&& filterConditions.MinPrice <= r.BestPossibleRentalPrice
-				).ToList();
+				);
+			}
+
+			// Sort
+			// Validate OrderBy in the controller
+			var sortingProp = typeof(SearchResultItemJsonModel).GetProperty(Constants.AllowedSortingPropsInSearchPage[filterConditions.OrderBy].Value);
+
+			// Keep the order descending for star and comment if those are not the main sorting prop
+			if (filterConditions.IsDescendingOrder)
+			{
+				if (Constants.AllowedSortingPropsInSearchPage.FindIndex(p => p.Name == "Star") == filterConditions.OrderBy)
+					results = results.OrderByDescending(r => r.Star)
+									.ThenByDescending(r => r.NumOfComment);
+				else if (Constants.AllowedSortingPropsInSearchPage.FindIndex(p => p.Name == "NumOfComment") == filterConditions.OrderBy)
+					results = results.OrderByDescending(r => r.NumOfComment)
+									.ThenByDescending(r => r.Star);
+				else
+					results = results.OrderByDescending(r => sortingProp.GetValue(r))
+									.ThenByDescending(r => r.Star)
+									.ThenByDescending(r => r.NumOfComment);
+			}
+			else
+			{
+				if (Constants.AllowedSortingPropsInSearchPage.FindIndex(p => p.Name == "Star") == filterConditions.OrderBy)
+					results = results.OrderBy(r => r.Star)
+									.ThenBy(r => r.NumOfComment);
+				else if (Constants.AllowedSortingPropsInSearchPage.FindIndex(p => p.Name == "NumOfComment") == filterConditions.OrderBy)
+					results = results.OrderBy(r => r.NumOfComment)
+									.ThenBy(r => r.Star);
+				else
+					results = results.OrderBy(r => sortingProp.GetValue(r))
+									.ThenByDescending(r => r.Star)
+									.ThenByDescending(r => r.NumOfComment);
 			}
 
 			// Paginate
-			var filteredRecords = results.Count;
+			var filteredRecords = results.Count();
 			if (filterConditions.Page < 1 || (filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage > filteredRecords)
 				filterConditions.Page = 1;
 
 			results = results.Skip((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
-					.Take(Constants.NumberOfSearchResultPerPage)
-					.ToList();
-
-			// Order
-			System.Reflection.PropertyInfo prop1 = typeof(SearchResultItemJsonModel).GetProperty(filterConditions.OrderBy);
-			results = filterConditions.IsDescendingOrder
-				? results.OrderByDescending(r => prop1.GetValue(r)).ToList()
-				: results.OrderBy(r => prop1.GetValue(r)).ToList();
+					.Take(Constants.NumberOfSearchResultPerPage);
 
 			// Nest into result object
-			return new SearchResultJsonModel(results, filteredRecords);
+			return new SearchResultJsonModel(results.ToList(), averagePrice, filteredRecords, filterConditions.Page);
 		}
 
 		public VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions)
@@ -140,20 +170,24 @@ namespace CRP.Models.Entities.Services
 				vehicles = vehicles.Where(v => filterConditions.VehicleGroupIDList.Contains(v.VehicleGroupID));
 			}
 
-			// Max Rating condition
-			if (filterConditions.MaxRating != null)
+			// Max/Min Rating condition
+			// Do not validate Max > Min here. Do it before this in the controller
+			if (filterConditions.MaxRating != null &&
+				filterConditions.MinRating != null)
 			{
-				vehicles = vehicles.Where(v => v.Star <= filterConditions.MaxRating);
-			}
-
-			// Min Rating condition
-			if (filterConditions.MinRating != null)
-			{
-				vehicles = vehicles.Where(v => v.Star >= filterConditions.MinRating);
+				vehicles = vehicles.Where(v => v.Star <= filterConditions.MaxRating
+											&& v.Star >= filterConditions.MinRating);
 			}
 
 			// Run basic common filters
 			vehicles = BasicFilter(vehicles, filterConditions);
+
+			// Sort
+			var sortingProp = typeof(VehicleManagementItemJsonModel)
+				.GetProperty(Constants.AllowedSortingPropsInVehicleManagement[filterConditions.OrderBy]);
+			vehicles = filterConditions.IsDescendingOrder
+				? vehicles.OrderByDescending(r => sortingProp.GetValue(r))
+				: vehicles.OrderBy(r => sortingProp.GetValue(r));
 
 			// Paginate
 			var filteredRecords = vehicles.Count();
@@ -162,12 +196,6 @@ namespace CRP.Models.Entities.Services
 
 			vehicles = vehicles.Skip((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
 					.Take(Constants.NumberOfSearchResultPerPage);
-
-			// Order
-			var prop2 = typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy);
-			vehicles = filterConditions.IsDescendingOrder
-				? vehicles.OrderByDescending(r => prop2.GetValue(r))
-				: vehicles.OrderBy(r => prop2.GetValue(r));
 
 			return new VehicleDataTablesJsonModel(vehicles.ToList(), recordsTotal, filteredRecords);
 		}
@@ -195,13 +223,12 @@ namespace CRP.Models.Entities.Services
 			if (filterConditions.CategoryIDList != null)
 				vehicles = vehicles.Where(v => v.Model.Categories.Any(r => filterConditions.CategoryIDList.Contains(r.ID)));
 
-			// Max ProductionYear condition
-			if (filterConditions.MaxProductionYear != null)
-				vehicles = vehicles.Where(v => v.Year <= filterConditions.MaxProductionYear);
 
-			// Min ProductionYear condition
-			if (filterConditions.MinProductionYear != null)
-				vehicles = vehicles.Where(v => v.Year >= filterConditions.MinProductionYear);
+			// Max/Min ProductionYear condition
+			// Do not validate Max > Min here. Do it before this in the controller
+			if (filterConditions.MaxProductionYear != null && filterConditions.MinProductionYear != null)
+				vehicles = vehicles.Where(v => v.Year <= filterConditions.MaxProductionYear
+											&& v.Year >= filterConditions.MinProductionYear);
 
 			// Brand and Model condition
 			if (filterConditions.BrandIDList.Any() || filterConditions.ModelIDList.Any())
@@ -214,6 +241,14 @@ namespace CRP.Models.Entities.Services
 		// Check to see if the vehicle is available
 		public bool CheckVehicleAvailability(int vehicleId, DateTime startTime, DateTime endTime)
 		{
+			// Check if startTime is after SoonestPossibleBookingStartTimeFromNow
+			// Check if startTime is before LatestPossibleBookingStartTimeFromNow
+			// Check if endTime is after SoonestPossibleBookingEndTimeFromNow
+			if (startTime < DateTime.Now.AddHours(Constants.SoonestPossibleBookingStartTimeFromNowInHour)
+					|| startTime > DateTime.Now.AddDays(Constants.LatestPossibleBookingStartTimeFromNowInDay)
+					|| endTime < DateTime.Now.AddHours(Constants.SoonestPossibleBookingEndTimeFromNowInHour))
+				return false;
+
 			var vehicle = this.repository.Get(v => v.ID == vehicleId);
 
 			if (vehicle.Any())

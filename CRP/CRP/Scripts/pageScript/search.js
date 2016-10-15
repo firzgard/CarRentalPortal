@@ -1,30 +1,18 @@
 // Renderers
 //==================================
-let now = moment();
-let jQueryNodes;
-let searchConditions = {
-	StartTime: now.clone().add(1, 'days').toJSON()
-	, EndTime: now.clone().add(2, 'days').toJSON()
-	, BrandIDList: []
-	, ModelIDList: []
-	, TransmissionTypeIDList: []
-	, OrderBy: "BestPossibleRentalPrice"
-};
-
+let now, jQueryNodes, searchConditions;
 
 // MaxProductionYear
 // MinProductionYear
-// OrderBy:
-// IsDescendingOrder:
 // Page:
 
-// MaxPrice:
-// MinPrice:
-
 function renderSearchResultGrid(domNode, searchResultList){
+	domNode.removeClass('hidden');
 	domNode.html(searchResultList.reduce((html, searchResult) => html + renderSearchResultItem(searchResult), ''))
 
-	$('.carousel').carousel()
+	for(let searchResult of searchResultList){
+		bindImageCarouselControls(searchResult)
+	}
 
 	domNode
 	.addClass('animated fadeIn')
@@ -35,24 +23,39 @@ function renderSearchResultGrid(domNode, searchResultList){
 
 function renderSearchResultItem(searchResult){
 	return `<div class="col-xs-6" >
-		<div class="ibox ibox-content product-box search-result" >
+		<div class="ibox ibox-content product-box search-result" id="vehicle${searchResult.ID}">
 			<div class="vehicle-img-container">
-				${renderSearchResultImageCarousel(searchResult)}
+				<div>
+					<div class="vehicle-img"
+							${searchResult.ImageList
+								&& searchResult.ImageList.length != 0
+								&& `style="background-image:url('${searchResult.ImageList[0]}');"`} >
+					</div>
+					<!-- Controls -->
+					<a class="left carousel-control">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
 				<div class="vehicle-price-tag" >
-					<up>&#8363;&nbsp;</up>${Math.ceil(Number.parseInt(searchResult.BestPossibleRentalPrice)/1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}<down>,000</down>/<per>${searchResult.BestPossibleRentalPeriod}</per>
+					<up>&#8363;</up>${Math.ceil(Number.parseInt(searchResult.BestPossibleRentalPrice)/1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}<down>,000</down>/<per>${searchResult.BestPossibleRentalPeriod}</per>
 				</div>
 			</div>
 			<div class="vehicle-info">
-				<a href="/vehicleInfo/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
-					<div><b>${searchResult.NumOfSeat}</b><i class="fa fa-child"></i> · ${renderStarRating(searchResult.Star)} · ${searchResult.NumOfReview} reviews</div>
-				
+				<a href="${vehicleInfoUrl}/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
+				<div class="center-flex">${renderStarRating(searchResult.Star)} · ${searchResult.NumOfComment} ${searchResult.NumOfComment > 1 ? 'reviews' : 'review' }</div>
 				<hr>
 				<div>
 					<i class="fa fa-building"></i>&nbsp;${searchResult.GarageName}&nbsp;·&nbsp;<i class="fa fa-map-marker"></i>&nbsp;${searchResult.Location}
 				</div>
 				<hr>
-				<div>
-					<span class="badge badge-primary"><i class="fa fa-gear"></i> ${searchResult.TransmissionTypeName}</span>
+				<div class="badge-container">
+					<span class="badge badge-primary"><i class="fa fa-child"></i> ${searchResult.NumOfSeat} passengers</span>
+					<span class="badge badge-info"><i class="fa fa-gear"></i> ${searchResult.TransmissionTypeName}</span>
 					<span class="badge badge-warning"><i class="fa fa-bolt"></i> ${searchResult.FuelTypeName}</span>
 					${searchResult.CategoryList.reduce((html, cat) => {
 						return html + `<span class="badge badge-success">${cat}</span> `
@@ -65,32 +68,40 @@ function renderSearchResultItem(searchResult){
 	</div>`;
 }
 
-function renderSearchResultImageCarousel(searchResult){
-	return `<div id="vehicleCarousel${searchResult.ID}" class="carousel slide" data-ride="carousel">
-		<div class="carousel-inner" role="listbox">
-			${searchResult.ImageList.reduce((html, image, index) => {
-				return html
-					+ `<div class="item vehicle-img ${index === 0 && 'active'}"
-							style="background-image: url('${image}');" >
-					</div>`
-			}, '')}
-		</div>
-		<!-- Controls -->
-		<a class="left carousel-control" href="#vehicleCarousel${searchResult.ID}" role="button" data-slide="prev">
-			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-			<span class="sr-only">Previous</span>
-		</a>
-		<a class="right carousel-control" href="#vehicleCarousel${searchResult.ID}" role="button" data-slide="next">
-			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
-	</div>`;
+function bindImageCarouselControls(searchResult){
+	let index = 0,
+		last = searchResult.ImageList.length - 1,
+		resultNode = $(`#vehicle${searchResult.ID}`),
+		imageNode = resultNode.find('.vehicle-img');
+
+	function changeImg(){
+		imageNode.addClass('animated fadeOut')
+		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
+			imageNode.removeClass('animated fadeOut')
+			.css('background-image', `url('${searchResult.ImageList[index]}')`)
+			.addClass('animated fadeIn')
+			.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
+				imageNode.removeClass('animated fadeIn')
+			});
+		});
+	}
+
+	resultNode.find('.left.carousel-control').click(() => {
+		index = (index === 0) ? last : index - 1;
+		changeImg();
+	});
+
+	resultNode.find('.right.carousel-control').click(() => {
+		index = (index === last) ? 0 : index + 1;
+		changeImg();
+	});
 }
 
 function renderPaginator(domNode, data){
-	// Render search result grid's paginator
+	domNode.data("twbs-pagination") && domNode.twbsPagination('destroy');
+	domNode.removeClass('hidden');
 	domNode.twbsPagination({
-		startPage: searchConditions.Page || 1,
+		startPage: data.CurrentPage,
 		totalPages: data.TotalPage,
 		visiblePages: 5,
 		first: '<i class="fa fa-angle-double-left"></i>',
@@ -98,7 +109,10 @@ function renderPaginator(domNode, data){
 		next: '<i class="fa fa-angle-right"></i>',
 		last: '<i class="fa fa-angle-double-right"></i>',
 		onPageClick: function (event, page) {
-			// Ajax here to load the next page's content
+			if(page != searchConditions.Page){
+				searchConditions.Page = page;
+				renderSearcher();
+			}
 		}
 	});
 
@@ -110,9 +124,9 @@ function renderPaginator(domNode, data){
 }
 
 function renderRecordInfo(domNode, data){
-	let firstResultPosition = ((searchConditions.Page || 1) - 1) * NumRecordPerPage + 1
-		, lastResultPosition = ((searchConditions.Page || 1) * NumRecordPerPage) < data.TotalResult
-			? ((searchConditions.Page || 1) * NumRecordPerPage)
+	let firstResultPosition = (searchConditions.Page - 1) * NumRecordPerPage + 1
+		, lastResultPosition = (searchConditions.Page * NumRecordPerPage) < data.TotalResult
+			? (searchConditions.Page * NumRecordPerPage)
 			: data.TotalResult
 		, newHtml = `${firstResultPosition} - ${lastResultPosition} of ${data.TotalResult} vehicle(s)`;
 
@@ -125,49 +139,83 @@ function renderRecordInfo(domNode, data){
 	});
 }
 
-function renderPriceSlider(lowestPriceDisplay, averagePriceDisplay, highestPriceDisplay, data){
-	lowestPriceDisplay.html(`₫&nbsp;${Number.parseInt(data.LowestPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
-	averagePriceDisplay.html(`₫&nbsp;${Number.parseInt(data.AveragePrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
-	highestPriceDisplay.html(`₫&nbsp;${Number.parseInt(data.HighestPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
+function renderPriceSlider(data){
+	priceFilter.noUiSlider.destroy();
+	let priceSlider = noUiSlider.create(priceFilter, {
+		behaviour: 'drag-tap',
+		connect: true,
+		format: {
+			to: value => `₫${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+			from: value => Number.parseInt(value.replace('₫', '').replace(',', ''))
+		},
+		margin: 100000,
+		pips: {
+			mode: 'values',
+			values: [ Number.parseInt(data.AveragePrice) ],
+			density: Infinity,
+			format: {
+				to: value => `₫${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}&nbsp;Average`,
+				from: value => Number.parseInt(value.replace('₫', '').replace('&nbsp;Average', '').replace(',', ''))
+			}
+		},
+		start: [searchConditions.MinPrice || 0, searchConditions.MaxPrice || priceSliderMax || 100000],
+		range: {
+			'min': [0],
+			'max': [priceSliderMax || 100000]
+		}
+	});
+	priceSlider.on('update', (values, handle, unencoded) => {
+		$('#minPriceDisplay').html(values[0]);
+		$('#maxPriceDisplay').html(values[1]);
+	});
+	priceSlider.on('set', (values, handle, unencoded) => {
+		searchConditions.MinPrice = unencoded[0];
+		searchConditions.MaxPrice = unencoded[1];
+
+		delete searchConditions.Page;
+		renderSearcher();
+	});
 }
 
 function renderSearcher(){
-	console.log(searchConditions);
+	jQueryNodes.searchResultGrid.addClass('hidden');
+	jQueryNodes.paginator.addClass('hidden');
+	jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
+		<div class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+	</div>`);
 
-	jQueryNodes.resultContainer.scrollTop(0);
 	$.ajax({
-		url: $('#searchResultGrid').data('source'),
+		url: queryApiUrl,
 		type: 'GET',
 		dataType: 'json',
 		data: searchConditions
 	})
 	.done(function(data) {
-		if(data.SearchResultList.length){
-			jQueryNodes.searchResultGrid.removeClass('hidden');
+		if(data.SearchResultList && data.SearchResultList.length > 0){
+			searchConditions.Page = data.CurrentPage;
+
 			renderSearchResultGrid(jQueryNodes.searchResultGrid, data.SearchResultList);
-
-			jQueryNodes.paginator.removeClass('hidden');
 			renderPaginator(jQueryNodes.paginator, data);
-
 			renderRecordInfo(jQueryNodes.recordInfo, data);
-
-			renderPriceSlider(jQueryNodes.lowestPriceDisplay, jQueryNodes.averagePriceDisplay, jQueryNodes.highestPriceDisplay, data);
+			renderPriceSlider(data);
 		} else {
 			jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
-					No vehicle fits your parameters. Please try again.
-				</div>`);
-			jQueryNodes.searchResultGrid.addClass('hidden');
-			jQueryNodes.paginator.addClass('hidden');
+				No vehicle fits your parameters. Please try again.
+			</div>`);
 		}
+
 		console.log(data);
 	})
-	.fail(function(err) {
-		console.log(err);
-	});
-}
-
-function changePage(){
-
+	.fail(function(err, textStatus, errorThrown) {
+		console.log(err, textStatus, errorThrown);
+		jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
+			Unexpected error happenned. Please reload the web page.
+		</div>`);
+	})
 }
 //==================================
 
@@ -176,20 +224,31 @@ $(document).ready(() => {
 	// http://api.jquery.com/jquery.ajax/
 	jQuery.ajaxSettings.traditional = true;
 
+	now = moment();
+
 	jQueryNodes = {
 		resultContainer: $('#resultContainer')
 		, filters: $('#filters')
 		, startTimeFilter: $('#startTimeFilter')
 		, endTimeFilter: $('#endTimeFilter')
+		, sorter: $('#sorter')
+		, sortDirector: $('#sortDirector')
 		, brandFilter: $('#brandFilter')
 		, modelFilter: $('#modelFilter')
 		, searchResultGrid: $('#searchResultGrid')
 		, paginator: $('#paginatior')
 		, recordInfo: $('#recordInfo')
-		, lowestPriceDisplay: $('#lowestPriceDisplay')
-		, averagePriceDisplay: $('#averagePriceDisplay')
-		, highestPriceDisplay: $('#highestPriceDisplay')
 	}
+
+	searchConditions = {
+		StartTime: now.clone().add(1, 'days').toJSON()
+		, EndTime: now.clone().add(2, 'days').toJSON()
+		, BrandIDList: []
+		, ModelIDList: []
+		, TransmissionTypeIDList: []
+		, OrderBy: jQueryNodes.sorter.val()
+		, IsDescendingOrder: jQueryNodes.sortDirector.val()
+	};
 
 	// Time range filter
 	// Start time
@@ -276,7 +335,7 @@ $(document).ready(() => {
 		});
 	});
 
-	// Chosen selectors
+	// Select2 selectors
 	// Location
 	$('#locationFilter')
 	.select2()
@@ -287,7 +346,29 @@ $(document).ready(() => {
 		renderSearcher();
 	});
 
-	// Brand filter
+	// Sort
+	jQueryNodes.sorter
+	.select2()
+	.on('change', function() {
+		searchConditions.OrderBy = $(this).val();
+		delete searchConditions.Page;
+
+		renderSearcher();
+	});
+
+	// Sort direction
+	jQueryNodes.sortDirector
+	.select2({
+		minimumResultsForSearch: Infinity
+	})
+	.on('change', function() {
+		searchConditions.IsDescendingOrder = $(this).val() === 'true';
+		delete searchConditions.Page;
+
+		renderSearcher();
+	});
+
+	// Brand
 	jQueryNodes.brandFilter
 	.select2()
 	.on('change', function() {
@@ -325,7 +406,7 @@ $(document).ready(() => {
 		renderSearcher();
 	});
 
-	// Model filter
+	// Model
 	jQueryNodes.modelFilter
 	.select2()
 	.on('change', function() {
@@ -383,19 +464,20 @@ $(document).ready(() => {
 	});
 
 	//=================================================
+	// Sliders
 	// Price filter slider
-	let priceSlider = noUiSlider.create(document.getElementById('priceFilter'), {
+	let priceSlider = noUiSlider.create(priceFilter, {
+		behaviour: 'drag-tap',
 		connect: true,
 		format: {
-			to: value => `₫&nbsp;${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
-			from: value => Number.parseInt(value.replace('₫&nbsp;', '').replace(',', ''))
+			to: value => `₫${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+			from: value => Number.parseInt(value.replace('₫', '').replace(',', ''))
 		},
 		margin: 100000,
-		start: [100000, 10000000],
-		step: 100000,
+		start: [0, priceSliderMax || 100000],
 		range: {
-			'min': [100000],
-			'max': [10000000]
+			'min': [0],
+			'max': [priceSliderMax || 100000]
 		}
 	});
 	priceSlider.on('update', (values, handle, unencoded) => {
@@ -403,35 +485,34 @@ $(document).ready(() => {
 		$('#maxPriceDisplay').html(values[1]);
 	});
 	priceSlider.on('set', (values, handle, unencoded) => {
-		searchConditions.MinPrice = Number.parseInt(unencoded[0]);
-		searchConditions.MaxPrice = Number.parseInt(unencoded[1]);
-		delete searchConditions.Page;
+		searchConditions.MinPrice = unencoded[0];
+		searchConditions.MaxPrice = unencoded[1];
 
+		delete searchConditions.Page;
 		renderSearcher();
 	});
 
 	// Year filter slider
-	// let yearSlider = noUiSlider.create(document.getElementById('yearFilter'), {
-	// 	connect: true,
-	// 	margin: 1,
-	// 	start: [MinProductionYear, now.year()],
-	// 	step: 1,
-	// 	range: {
-	// 		'min': [MinProductionYear],
-	// 		'max': [now.year()]
-	// 	}
-	// });
-	// yearSlider.on('update', (values, handle, unencoded) => {
-	// 	$('#minYearDisplay').html(values[0]);
-	// 	$('#maxYearDisplay').html(values[1]);
-	// });
-	// yearSlider.on('set', (values, handle, unencoded) => {
-	// 	searchConditions.MinPrice = Number.parseInt(unencoded[0]);
-	// 	searchConditions.MaxPrice = Number.parseInt(unencoded[1]);
-	// 	delete searchConditions.Page;
+	let yearSlider = noUiSlider.create(document.getElementById('yearFilter'), {
+		connect: true,
+		start: [yearSliderMin || 1888, yearSliderMax || now.year()],
+		step: 1,
+		range: {
+			'min': [yearSliderMin || 1888],
+			'max': [yearSliderMax || now.year()]
+		}
+	});
+	yearSlider.on('update', (values, handle, unencoded) => {
+		$('#minYearDisplay').html(unencoded[0]);
+		$('#maxYearDisplay').html(unencoded[1]);
+	});
+	yearSlider.on('set', (values, handle, unencoded) => {
+		searchConditions.MinProductionYear = unencoded[0];
+		searchConditions.MaxProductionYear = unencoded[1];
 
-	// 	renderSearcher();
-	// });
+		delete searchConditions.Page;
+		renderSearcher();
+	});
 
 	// Transmission's checkbox
 	$('#transmissionFilter input[type=checkbox]').change(function(evt) {
