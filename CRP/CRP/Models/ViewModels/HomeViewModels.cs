@@ -69,10 +69,6 @@ namespace CRP.Models.ViewModels
 
 		public SearchResultItemJsonModel(Entities.Vehicle vehicle, int rentalTime) : base(vehicle)
 		{
-			ID = vehicle.ID;
-			Name = vehicle.Name;
-			LicenseNumber = vehicle.LicenseNumber;
-
 			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
 
 			// Find the best PriceGroupItem that match the search

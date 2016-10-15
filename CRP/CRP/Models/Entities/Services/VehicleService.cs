@@ -55,19 +55,21 @@ namespace CRP.Models.Entities.Services
 			// Max margin of error: 60 secs vs CloseTime (Because we do not validate to second)
 
 			// Booking StartTime
-			var startDayInDoW = (int) filterConditions.StartTime.Value.DayOfWeek;
+			var startDayInDoW = (int)filterConditions.StartTime.Value.DayOfWeek;
+			var startTimeInMunute = filterConditions.StartTime.Value.Minute + filterConditions.StartTime.Value.Hour * 60;
 			vehicles = vehicles.Where(v =>
 				v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == startDayInDoW
-							  && (filterConditions.StartTime.Value.Minute + filterConditions.StartTime.Value.Hour * 60) >= gwt.OpenTimeInMinute
-							  && (filterConditions.StartTime.Value.Minute + filterConditions.StartTime.Value.Hour * 60) <= gwt.CloseTimeInMinute)
+							  && startTimeInMunute >= gwt.OpenTimeInMinute
+							  && startTimeInMunute <= gwt.CloseTimeInMinute)
 			);
 
 			// Booking EndTime
 			var endDayInDoW = (int) filterConditions.EndTime.Value.DayOfWeek;
+			var endTimeInMunute = filterConditions.EndTime.Value.Minute + filterConditions.EndTime.Value.Hour * 60;
 			vehicles = vehicles.Where(v =>
 				v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == endDayInDoW
-							  && (filterConditions.EndTime.Value.Minute + filterConditions.EndTime.Value.Hour * 60) >= gwt.OpenTimeInMinute
-							  && (filterConditions.EndTime.Value.Minute + filterConditions.EndTime.Value.Hour * 60) <= gwt.CloseTimeInMinute)
+							  && endTimeInMunute >= gwt.OpenTimeInMinute
+							  && endTimeInMunute <= gwt.CloseTimeInMinute)
 			);
 
 			// Parse into model suitable to send back to browser
@@ -222,17 +224,19 @@ namespace CRP.Models.Entities.Services
 
 				// Booking StartTime
 				var startTimeDoW = (int) startTime.DayOfWeek;
+				var startTimeInMinute = startTime.Minute + startTime.Hour*60;
 				vehicle = vehicle.Where(v =>
 					v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == startTimeDoW
-								  && (startTime.Minute + startTime.Hour * 60) >= gwt.OpenTimeInMinute
-								  && (startTime.Minute + startTime.Hour * 60) <= gwt.CloseTimeInMinute));
+								  && startTimeInMinute >= gwt.OpenTimeInMinute
+								  && startTimeInMinute <= gwt.CloseTimeInMinute));
 
 				// Booking EndTime
 				var endTimeDoW = (int) endTime.DayOfWeek;
+				var endTimeInMunute = endTime.Minute + endTime.Hour * 60;
 				vehicle = vehicle.Where(v =>
 					v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == endTimeDoW
-								  && (endTime.Minute + endTime.Hour * 60) >= gwt.OpenTimeInMinute
-								  && (endTime.Minute + endTime.Hour * 60) <= gwt.CloseTimeInMinute));
+								  && endTimeInMunute >= gwt.OpenTimeInMinute
+								  && endTimeInMunute <= gwt.CloseTimeInMinute));
 
 				if (vehicle.Any())
 				{

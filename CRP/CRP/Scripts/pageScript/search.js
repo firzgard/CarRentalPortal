@@ -35,27 +35,29 @@ function renderSearchResultGrid(domNode, searchResultList){
 
 function renderSearchResultItem(searchResult){
 	return `<div class="col-xs-6" >
-		<div data-vehicle-id="${searchResult.ID}" class="ibox ibox-content product-box search-result" >
+		<div class="ibox ibox-content product-box search-result" >
 			<div class="vehicle-img-container">
 				${renderSearchResultImageCarousel(searchResult)}
-				<div class="vehicle-price-tag" ><span class="vehicle-price" >
-					<sup>&#8363;</sup>
-					${searchResult.BestPossibleRentalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/
-					<sub>${searchResult.BestPossibleRentalPeriod}</sub></span>
+				<div class="vehicle-price-tag" >
+					<up>&#8363;&nbsp;</up>${Math.ceil(Number.parseInt(searchResult.BestPossibleRentalPrice)/1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}<down>,000</down>/<per>${searchResult.BestPossibleRentalPeriod}</per>
 				</div>
 			</div>
 			<div class="vehicle-info">
-				<a href="/vehicleInfo/${searchResult.ID}">
-					<div class="vehicle-name">${searchResult.Name}</div>
-					<div>${renderStarRating(searchResult.Star)}</div>
-				</a>
+				<a href="/vehicleInfo/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
+					<div><b>${searchResult.NumOfSeat}</b><i class="fa fa-child"></i> · ${renderStarRating(searchResult.Star)} · ${searchResult.NumOfReview} reviews</div>
+				
 				<hr>
-				<div class="row">
-					<div class="col-xs-6"><i class="fa fa-map-marker"></i>&nbsp;${searchResult.Location}</div>
-					<div class="col-xs-6"><i class="fa fa-building"></i>&nbsp;${searchResult.GarageName}</div>
+				<div>
+					<i class="fa fa-building"></i>&nbsp;${searchResult.GarageName}&nbsp;·&nbsp;<i class="fa fa-map-marker"></i>&nbsp;${searchResult.Location}
 				</div>
 				<hr>
-				<div><i class="fa fa-gear"></i> ${searchResult.TransmissionTypeName}</div>
+				<div>
+					<span class="badge badge-primary"><i class="fa fa-gear"></i> ${searchResult.TransmissionTypeName}</span>
+					<span class="badge badge-warning"><i class="fa fa-bolt"></i> ${searchResult.FuelTypeName}</span>
+					${searchResult.CategoryList.reduce((html, cat) => {
+						return html + `<span class="badge badge-success">${cat}</span> `
+					}, '')}
+				</div>
 				<hr>
 				<div class="license-number">${searchResult.LicenseNumber}</div>
 			</div>
