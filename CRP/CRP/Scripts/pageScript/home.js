@@ -12,8 +12,8 @@ $(document).ready(function(){
 	$(startTimeFilter).datetimepicker({
 		useCurrent: false,
 		defaultDate: now.clone().add(1, 'days'),
-		minDate: now.clone().add(SoonestPossibleBookingStartTimeFromNowInHour, 'hours').subtract(1, 'minutes'),
-		maxDate: now.clone().add(LatestPossibleBookingStartTimeFromNowInDay, 'days').add(1, 'minutes'),
+		minDate: now.clone().add(SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes'),
+		maxDate: now.clone().add(LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY, 'days').add(1, 'minutes'),
 		format: 'YYYY/MM/DD HH:mm',
 		ignoreReadonly: true,
 		showClose: true,
@@ -28,7 +28,7 @@ $(document).ready(function(){
 	$(endTimeFilter).datetimepicker({
 		useCurrent: false,
 		defaultDate: now.clone().add(2, 'days'),
-		minDate: now.clone().add(SoonestPossibleBookingEndTimeFromNowInHour, 'hours').subtract(1, 'minutes'),
+		minDate: now.clone().add(SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes'),
 		format: 'YYYY/MM/DD HH:mm',
 		ignoreReadonly: true,
 	})
