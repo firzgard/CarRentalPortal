@@ -17,12 +17,13 @@ namespace CRP.Areas.Provider.Controllers
 {
 	public class GarageController : BaseController
 	{
-        // Route to garageManagement page
-        [Route("management/garageManagement")]
+		// Route to garageManagement page
+		[Authorize(Roles = "Provider")]
+		[Route("management/garageManagement")]
 		public ViewResult GarageManagement()
 		{
-            var service = this.Service<IGarageService>();
-            var locationService = this.Service<ILocationService>();
+			var service = this.Service<IGarageService>();
+			var locationService = this.Service<ILocationService>();
 
 			List<Garage> lstGarage = new List<Garage>();
 			List<Location> lstLocation = new List<Location>();
@@ -30,14 +31,14 @@ namespace CRP.Areas.Provider.Controllers
 			lstGarage = service.Get().ToList();
 			ViewBag.locationList = lstLocation;
 			ViewBag.garaList = lstGarage;
-            return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
+			return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
 		}
 
 		// Route to garage's detailed info page
 		[Route("management/garageManagement/{id:int}")]
 		public ViewResult GarageManagement(int id)
 		{
-            var service = this.Service<IGarageService>();
+			var service = this.Service<IGarageService>();
 			Garage garage = service.Get(id);
 			if (garage != null)
 			{
@@ -55,7 +56,7 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetGarageListAPI()
 		{
-            var service = this.Service<IGarageService>();
+			var service = this.Service<IGarageService>();
 			//List<Garage> lstGarage = new List<Garage>();
 			List<GarageModel> jsonGarages = new List<GarageModel>();
 			//cho nay se get theo user
@@ -76,24 +77,21 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API Route to create single new garage
-        // garageViewModel
+		// garageViewModel
 		[Route("api/garages")]
 		[HttpPost]
-		public async Task<JsonResult> CreateGarageAPI(Garage model)
+		public async Task<ActionResult> CreateGarageAPI(Garage model)
 		{
-            MessageJsonModel jsonResult = new MessageJsonModel();
-            if (!this.ModelState.IsValid)
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Creare failed!";
-                return Json(jsonResult, JsonRequestBehavior.AllowGet);
-            }
+			if (!this.ModelState.IsValid)
+			{
+				return new HttpStatusCodeResult(403, "Created unsuccessfully.");
+			}
 
-            var service = this.Service<IGarageService>();
+			var service = this.Service<IGarageService>();
 
-            Garage newGarage = this.Mapper.Map<Garage>(model);
+			Garage newGarage = this.Mapper.Map<Garage>(model);
 
-            /*string OwnerID = Request.Params["UserID"];
+			/*string OwnerID = Request.Params["UserID"];
 			string Name = Request.Params["garageName"];
 			int LocationID = int.Parse(Request.Params["locationID"]);
 			string Address = Request.Params["address"];
@@ -140,37 +138,26 @@ namespace CRP.Areas.Provider.Controllers
 			newGarage.CloseTimeSat = closeTimeSat;
 			newGarage.CloseTimeSun = closeTimeSun;*/
 
-            await service.CreateAsync(newGarage);
+			await service.CreateAsync(newGarage);
 
-            jsonResult.Status = 1;
-            jsonResult.Message = "Create successfully!";
-			return Json(jsonResult, JsonRequestBehavior.AllowGet);
+			return new HttpStatusCodeResult(200, "Created successfully.");
 		}
 
 		// API Route to edit single garage
-        // GarageViewModel
+		// GarageViewModel
 		[Route("api/garages")]
 		[HttpPatch]
-		public async Task<JsonResult> EditGarageAPI(Garage model)
+		public async Task<ActionResult> EditGarageAPI(Garage model)
 		{
-            MessageJsonModel jsonResult = new MessageJsonModel();
-            if (!this.ModelState.IsValid)
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Update failed!";
-                return Json(jsonResult, JsonRequestBehavior.AllowGet);
-            }
+			if (!this.ModelState.IsValid)
+				return new HttpStatusCodeResult(403, "Updated unsuccessfully.");
 
-            var service = this.Service<IGarageService>();
-            var entity = await service.GetAsync(model?.ID);
-            if(entity == null)
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Update failed!";
-                return Json(jsonResult, JsonRequestBehavior.AllowGet);
-            }
+			var service = this.Service<IGarageService>();
+			var entity = await service.GetAsync(model?.ID);
+			if(entity == null)
+				return new HttpStatusCodeResult(403, "Updated unsuccessfully.");
 
-            this.Mapper.Map(model, entity);
+			this.Mapper.Map(model, entity);
 
 			/*int ID = int.Parse(Request.Params["garageID"]);
 			string Name = Request.Params["garageName"];
@@ -216,39 +203,30 @@ namespace CRP.Areas.Provider.Controllers
 			editGarage.CloseTimeSat = closeTimeSat;
 			editGarage.CloseTimeSun = closeTimeSun;*/
 
-            await service.UpdateAsync(entity);
+			await service.UpdateAsync(entity);
 
-			jsonResult.Status = 0;
-			jsonResult.Message = "Update failed!";
-			return Json(jsonResult, JsonRequestBehavior.AllowGet);
+			return new HttpStatusCodeResult(200, "Updated successfully.");
 		}
 
 		// API Route to delete single garage
 		[Route("api/garages/{id:int}")]
 		[HttpDelete]
-		public async Task<JsonResult> DeleteGarageAPI(int id)
+		public async Task<ActionResult> DeleteGarageAPI(int id)
 		{
-            var service = this.Service<IGarageService>();
-			MessageJsonModel jsonResult = new MessageJsonModel();
-            var entity = await service.GetAsync(id);
-            if(entity != null)
-			{
-                await service.DeleteAsync(entity);
-				jsonResult.Status = 1;
-				jsonResult.Message = "Deleted successfully!";
-			}
-			else
-			{
-				jsonResult.Status = 0;
-				jsonResult.Message = "Error!";
-			}
-			return Json(jsonResult, JsonRequestBehavior.AllowGet);
+			var service = this.Service<IGarageService>();
+			var entity = await service.GetAsync(id);
+			if (entity == null)
+				return HttpNotFound();
+
+			await service.DeleteAsync(entity);
+			
+			return new HttpStatusCodeResult(200, "Deleted successfully.");
 		}
 
 		//// GET: Brand
 		public ActionResult Index()
 		{
-            var service = this.Service<IGarageService>();
+			var service = this.Service<IGarageService>();
 			List<Garage> lstGara = new List<Garage>();
 			lstGara = service.Get().ToList();
 			ViewBag.garaList = lstGara;

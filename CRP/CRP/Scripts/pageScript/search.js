@@ -1,39 +1,14 @@
 // Renderers
 //==================================
-const NumRecordPerPage = 10;
-let now = moment();
-let searchConditions = {
-	StartTime: now.clone().add(1, 'days').toJSON()
-	, EndTime: now.clone().add(2, 'days').toJSON()
-	, BrandIDList: []
-	, ModelIDList: []
-	, TransmissionTypeIDList: []
-	, OrderBy: "BestPossibleRentalPrice"
-};
-
-// TransmissionTypeIDList:
-// ColorIDList:
-// FuelTypeIDList:
-// LocationIDList:
-// CategoryIDList:
-// MaxProductionYear
-// MinProductionYear
-// BrandIDList:
-// ModelIDList:
-// OrderBy:
-// IsDescendingOrder:
-// Page:
-
-// NumberOfSeatList:
-// StartTime: 
-// EndTime:
-// MaxPrice:
-// MinPrice:
+let now, jQueryNodes, searchConditions;
 
 function renderSearchResultGrid(domNode, searchResultList){
+	domNode.removeClass('hidden');
 	domNode.html(searchResultList.reduce((html, searchResult) => html + renderSearchResultItem(searchResult), ''))
 
-	$('.carousel').carousel()
+	for(let searchResult of searchResultList){
+		bindImageCarouselControls(searchResult)
+	}
 
 	domNode
 	.addClass('animated fadeIn')
@@ -44,27 +19,44 @@ function renderSearchResultGrid(domNode, searchResultList){
 
 function renderSearchResultItem(searchResult){
 	return `<div class="col-xs-6" >
-		<div data-vehicle-id="${searchResult.ID}" class="ibox ibox-content product-box search-result" >
+		<div class="ibox ibox-content product-box search-result" id="vehicle${searchResult.ID}">
 			<div class="vehicle-img-container">
-				${renderSearchResultImageCarousel(searchResult)}
-				<div class="vehicle-price-tag" ><span class="vehicle-price" >
-					<sup>&#8363;</sup>
-					${searchResult.BestPossibleRentalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}/
-					<sub>${searchResult.BestPossibleRentalPeriod}</sub></span>
+				<div>
+					<div class="vehicle-img"
+							${searchResult.ImageList
+								&& searchResult.ImageList.length != 0
+								&& `style="background-image:url('${searchResult.ImageList[0]}');"`} >
+					</div>
+					<!-- Controls -->
+					<a class="left carousel-control">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+				<div class="vehicle-price-tag" >
+					<up>&#8363;</up>${Math.ceil(Number.parseInt(searchResult.BestPossibleRentalPrice)/1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}<down>,000</down>/<per>${searchResult.BestPossibleRentalPeriod}</per>
 				</div>
 			</div>
 			<div class="vehicle-info">
-				<a href="/vehicleInfo/${searchResult.ID}">
-					<div class="vehicle-name">${searchResult.Name}</div>
-					<div>${renderStarRating(searchResult.Star)}</div>
-				</a>
+				<a href="${vehicleInfoUrl}/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
+				<div class="center-flex">${renderStarRating(searchResult.Star)} · ${searchResult.NumOfComment} ${searchResult.NumOfComment > 1 ? 'reviews' : 'review' }</div>
 				<hr>
-				<div class="row">
-					<div class="col-xs-6"><i class="fa fa-map-marker"></i>&nbsp;${searchResult.Location}</div>
-					<div class="col-xs-6"><i class="fa fa-building"></i>&nbsp;${searchResult.GarageName}</div>
+				<div>
+					<i class="fa fa-building"></i>&nbsp;${searchResult.GarageName}&nbsp;·&nbsp;<i class="fa fa-map-marker"></i>&nbsp;${searchResult.Location}
 				</div>
 				<hr>
-				<div><i class="fa fa-gear"></i> ${searchResult.TransmissionTypeName}</div>
+				<div class="badge-container">
+					<span class="badge badge-primary"><i class="fa fa-child"></i> ${searchResult.NumOfSeat} passengers</span>
+					<span class="badge badge-info"><i class="fa fa-gear"></i> ${searchResult.TransmissionTypeName}</span>
+					<span class="badge badge-warning"><i class="fa fa-bolt"></i> ${searchResult.FuelTypeName}</span>
+					${searchResult.CategoryList.reduce((html, cat) => {
+						return html + `<span class="badge badge-success">${cat}</span> `
+					}, '')}
+				</div>
 				<hr>
 				<div class="license-number">${searchResult.LicenseNumber}</div>
 			</div>
@@ -72,32 +64,40 @@ function renderSearchResultItem(searchResult){
 	</div>`;
 }
 
-function renderSearchResultImageCarousel(searchResult){
-	return `<div id="vehicleCarousel${searchResult.ID}" class="carousel slide" data-ride="carousel">
-		<div class="carousel-inner" role="listbox">
-			${searchResult.ImageList.reduce((html, image, index) => {
-				return html
-					+ `<div class="item vehicle-img ${index === 0 && 'active'}"
-							style="background-image: url('${image}');" >
-					</div>`
-			}, '')}
-		</div>
-		<!-- Controls -->
-		<a class="left carousel-control" href="#vehicleCarousel${searchResult.ID}" role="button" data-slide="prev">
-			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-			<span class="sr-only">Previous</span>
-		</a>
-		<a class="right carousel-control" href="#vehicleCarousel${searchResult.ID}" role="button" data-slide="next">
-			<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-			<span class="sr-only">Next</span>
-		</a>
-	</div>`;
+function bindImageCarouselControls(searchResult){
+	let index = 0,
+		last = searchResult.ImageList.length - 1,
+		resultNode = $(`#vehicle${searchResult.ID}`),
+		imageNode = resultNode.find('.vehicle-img');
+
+	function changeImg(){
+		imageNode.addClass('animated fadeOut')
+		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
+			imageNode.removeClass('animated fadeOut')
+			.css('background-image', `url('${searchResult.ImageList[index]}')`)
+			.addClass('animated fadeIn')
+			.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
+				imageNode.removeClass('animated fadeIn')
+			});
+		});
+	}
+
+	resultNode.find('.left.carousel-control').click(() => {
+		index = (index === 0) ? last : index - 1;
+		changeImg();
+	});
+
+	resultNode.find('.right.carousel-control').click(() => {
+		index = (index === last) ? 0 : index + 1;
+		changeImg();
+	});
 }
 
 function renderPaginator(domNode, data){
-	// Render search result grid's paginator
+	domNode.data("twbs-pagination") && domNode.twbsPagination('destroy');
+	domNode.removeClass('hidden');
 	domNode.twbsPagination({
-		startPage: searchConditions.Page || 1,
+		startPage: data.CurrentPage,
 		totalPages: data.TotalPage,
 		visiblePages: 5,
 		first: '<i class="fa fa-angle-double-left"></i>',
@@ -105,7 +105,10 @@ function renderPaginator(domNode, data){
 		next: '<i class="fa fa-angle-right"></i>',
 		last: '<i class="fa fa-angle-double-right"></i>',
 		onPageClick: function (event, page) {
-			// Ajax here to load the next page's content
+			if(page != searchConditions.Page){
+				searchConditions.Page = page;
+				renderSearcher();
+			}
 		}
 	});
 
@@ -117,9 +120,9 @@ function renderPaginator(domNode, data){
 }
 
 function renderRecordInfo(domNode, data){
-	let firstResultPosition = ((searchConditions.Page || 1) - 1) * NumRecordPerPage + 1
-		, lastResultPosition = ((searchConditions.Page || 1) * NumRecordPerPage) < data.TotalResult
-			? ((searchConditions.Page || 1) * NumRecordPerPage)
+	let firstResultPosition = (searchConditions.Page - 1) * NUM_RECORD_PER_PAGE + 1
+		, lastResultPosition = (searchConditions.Page * NUM_RECORD_PER_PAGE) < data.TotalResult
+			? (searchConditions.Page * NUM_RECORD_PER_PAGE)
 			: data.TotalResult
 		, newHtml = `${firstResultPosition} - ${lastResultPosition} of ${data.TotalResult} vehicle(s)`;
 
@@ -132,58 +135,82 @@ function renderRecordInfo(domNode, data){
 	});
 }
 
-function renderPriceSlider(lowestPriceDisplay, averagePriceDisplay, highestPriceDisplay, data){
-	lowestPriceDisplay.html(`₫&nbsp;${Number.parseInt(data.LowestPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
-	averagePriceDisplay.html(`₫&nbsp;${Number.parseInt(data.AveragePrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
-	highestPriceDisplay.html(`₫&nbsp;${Number.parseInt(data.HighestPrice).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`);
+function renderPriceSlider(data){
+	priceFilter.noUiSlider.destroy();
+	let priceSlider = noUiSlider.create(priceFilter, {
+		behaviour: 'drag-tap',
+		connect: true,
+		format: {
+			to: value => `₫${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+			from: value => Number.parseInt(value.replace('₫', '').replace(',', ''))
+		},
+		margin: 100000,
+		pips: {
+			mode: 'values',
+			values: [ Number.parseInt(data.AveragePrice) ],
+			density: Infinity,
+			format: {
+				to: value => `₫${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}&nbsp;Average`,
+				from: value => Number.parseInt(value.replace('₫', '').replace('&nbsp;Average', '').replace(',', ''))
+			}
+		},
+		start: [searchConditions.MinPrice || 0, searchConditions.MaxPrice || priceSliderMax || 100000],
+		range: {
+			'min': [0],
+			'max': [priceSliderMax || 100000]
+		}
+	});
+	priceSlider.on('update', (values, handle, unencoded) => {
+		$('#minPriceDisplay').html(values[0]);
+		$('#maxPriceDisplay').html(values[1]);
+	});
+	priceSlider.on('set', (values, handle, unencoded) => {
+		searchConditions.MinPrice = unencoded[0];
+		searchConditions.MaxPrice = unencoded[1];
+
+		delete searchConditions.Page;
+		renderSearcher();
+	});
 }
 
-function renderSearcher({
-		resultContainer
-		,searchResultGrid
-		, paginator
-		, recordInfo
-		, lowestPriceDisplay
-		, averagePriceDisplay
-		, highestPriceDisplay
-	} = jqueryNodes)
-{
-	console.log(searchConditions);
+function renderSearcher(){
+	//console.log(searchConditions);
+	jQueryNodes.searchResultGrid.addClass('hidden');
+	jQueryNodes.paginator.addClass('hidden');
+	jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
+		<div class="sk-spinner sk-spinner-three-bounce">
+			<div class="sk-bounce1"></div>
+			<div class="sk-bounce2"></div>
+			<div class="sk-bounce3"></div>
+		</div>
+	</div>`);
 
-	resultContainer.scrollTop(0);
 	$.ajax({
-		url: $('#searchResultGrid').data('source'),
+		url: queryApiUrl,
 		type: 'GET',
 		dataType: 'json',
 		data: searchConditions
 	})
 	.done(function(data) {
-		if(data.SearchResultList.length){
-			searchResultGrid.removeClass('hidden');
-			renderSearchResultGrid(searchResultGrid, data.SearchResultList);
+		if(data.SearchResultList && data.SearchResultList.length > 0){
+			searchConditions.Page = data.CurrentPage;
 
-			paginator.removeClass('hidden');
-			renderPaginator(paginator, data);
-
-			renderRecordInfo(recordInfo, data);
-
-			renderPriceSlider(lowestPriceDisplay, averagePriceDisplay, highestPriceDisplay, data);
+			renderSearchResultGrid(jQueryNodes.searchResultGrid, data.SearchResultList);
+			renderPaginator(jQueryNodes.paginator, data);
+			renderRecordInfo(jQueryNodes.recordInfo, data);
+			renderPriceSlider(data);
 		} else {
-			recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
-					No vehicle fits your parameters. Please try again.
-				</div>`);
-			searchResultGrid.addClass('hidden');
-			paginator.addClass('hidden');
+			jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
+				No vehicle fits your parameters. Please try again.
+			</div>`);
 		}
-		console.log(data);
 	})
-	.fail(function(err) {
-		console.log(err);
-	});
-}
-
-function changePage(){
-
+	.fail(function(err, textStatus, errorThrown) {
+		console.log(err, textStatus, errorThrown);
+		jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
+			No vehicle fits your parameters. Please try again.
+		</div>`);
+	})
 }
 //==================================
 
@@ -192,59 +219,107 @@ $(document).ready(() => {
 	// http://api.jquery.com/jquery.ajax/
 	jQuery.ajaxSettings.traditional = true;
 
-	let jQueryNodes = {
+	now = moment();
+
+	jQueryNodes = {
 		resultContainer: $('#resultContainer')
 		, filters: $('#filters')
+		, startTimeFilter: $('#startTimeFilter')
+		, endTimeFilter: $('#endTimeFilter')
+		, sorter: $('#sorter')
+		, sortDirector: $('#sortDirector')
+		, locationFilter : $('#locationFilter')
 		, brandFilter: $('#brandFilter')
 		, modelFilter: $('#modelFilter')
 		, searchResultGrid: $('#searchResultGrid')
 		, paginator: $('#paginatior')
 		, recordInfo: $('#recordInfo')
-		, lowestPriceDisplay: $('#lowestPriceDisplay')
-		, averagePriceDisplay: $('#averagePriceDisplay')
-		, highestPriceDisplay: $('#highestPriceDisplay')
 	}
 
+	searchConditions = {
+		BrandIDList: []
+		, ModelIDList: []
+		, TransmissionTypeIDList: []
+		, OrderBy: jQueryNodes.sorter.val()
+		, IsDescendingOrder: jQueryNodes.sortDirector.val()
+	};
+
+	let soonestPossibleBookingStartTimeFromNow = now.clone().add(SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes'),
+		latestPossibleBookingStartTimeFromNow = now.clone().add(LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY, 'days').add(1, 'minutes'),
+		soonestPossibleBookingEndTimeFromNow = now.clone().add(SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes');
+
+	let sessionStartTime = sessionStorage.getItem('startTime');
+	sessionStartTime = sessionStartTime && moment(sessionStartTime);
+
+	if(!sessionStartTime || (sessionStartTime.isBefore(soonestPossibleBookingStartTimeFromNow) && sessionStartTime.isAfter(latestPossibleBookingStartTimeFromNow)))
+		sessionStartTime = now.clone().add(1, 'days');
+
+	let sessionEndTime = sessionStorage.getItem('endTime');
+	sessionEndTime = sessionEndTime && moment(sessionEndTime);
+
+	if(!sessionEndTime || sessionEndTime.isBefore(soonestPossibleBookingEndTimeFromNow))
+		sessionEndTime = now.clone().add(2, 'days');
+
+	searchConditions.StartTime = sessionStartTime.toJSON()
+	searchConditions.EndTime = sessionEndTime.toJSON()
+
+	sessionStorage.setItem('startTime', sessionEndTime.toJSON());
+	sessionStorage.setItem('endTime', sessionEndTime.toJSON());
+
+	let sessionLocationID = sessionStorage.getItem('locationID');
+	if(sessionLocationID){
+		jQueryNodes.locationFilter.val(sessionLocationID);
+		searchConditions.LocationIDList = jQueryNodes.locationFilter.val();
+	}
+
+	// ============================================================
 	// Time range filter
 	// Start time
-	let startTimeFilter = $('#startTimeFilter').datetimepicker({
+	jQueryNodes.startTimeFilter.datetimepicker({
 		useCurrent: false,
-		defaultDate: now.clone().add(1, 'days'),
-		minDate: now.clone().add(6, 'hours'),
-		maxDate: now.clone().add(30, 'days'),
+		defaultDate: sessionStartTime,
+		minDate: soonestPossibleBookingStartTimeFromNow,
+		maxDate: latestPossibleBookingStartTimeFromNow,
 		format: 'YYYY/MM/DD HH:mm',
+		ignoreReadonly: true,
 		showClose: true,
 		widgetParent: 'body',
 	})
+	// This on is for rendering the popup at the correct position
 	.on('dp.show', function() {
-		var datepicker = $('.bootstrap-datetimepicker-widget:last');
+		let datepicker = $('.bootstrap-datetimepicker-widget:last');
 		datepicker.css({
 			'top': `${$(this).offset().top + $(this).outerHeight()}px`,
 			'bottom': 'auto',
 			'left': `${$(this).offset().left}px`
 		});
 	})
-	.on('dp.change', function(data){
-	})
 	.on('dp.hide', (data)=>{
-		console.log(data);
 		searchConditions.StartTime = data.date.toJSON();
-		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		if(data.date.isAfter(jQueryNodes.endTimeFilter.data('DateTimePicker').date())){
+			let newEndTime = data.date.clone().add(1, 'hours')
+			jQueryNodes.endTimeFilter.data('DateTimePicker').date(newEndTime);
+			searchConditions.EndTime = newEndTime.toJSON();
+		}
+
+		delete searchConditions.Page;
+		renderSearcher();
 	})
 	.on('dp.error', (data)=>{
 		console.log(data);
 	});
 
 	// End time
-	let endTimeFilter = $('#endTimeFilter').datetimepicker({
+	jQueryNodes.endTimeFilter.datetimepicker({
 		useCurrent: false,
-		defaultDate: now.clone().add(2, 'days'),
-		minDate: now.clone().add(6, 'hours'),
+		defaultDate: sessionEndTime,
+		minDate: soonestPossibleBookingEndTimeFromNow,
 		format: 'YYYY/MM/DD HH:mm',
+		ignoreReadonly: true,
 		widgetParent: 'body',
 	})
+	// This on is for rendering the popup at the correct position
 	.on('dp.show', function() {
 		var datepicker = $('.bootstrap-datetimepicker-widget:last');
 		datepicker.css({
@@ -253,14 +328,17 @@ $(document).ready(() => {
 			'left': `${$(this).offset().left}px`
 		});
 	})
-	.on('dp.change', (data)=>{
-		console.log(data);
-	})
 	.on('dp.hide', (data)=>{
 		searchConditions.EndTime = data.date.toJSON();
-		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		if(data.date.isBefore(jQueryNodes.startTimeFilter.data('DateTimePicker').date())){
+			let newStartTime = data.date.clone().subtract(1, 'hours')
+			jQueryNodes.startTimeFilter.data('DateTimePicker').date(newStartTime);
+			searchConditions.StartTime = newStartTime.toJSON();
+		}
+
+		delete searchConditions.Page;
+		renderSearcher();
 	})
 	.on('dp.error', (data)=>{
 		console.log(data);
@@ -276,20 +354,47 @@ $(document).ready(() => {
 		});
 	});
 
-	// Chosen selectors
+	// ============================================================
+	// Select2 selectors
 	// Location
-	$('#locationFilter')
-	.select2()
+	
+	jQueryNodes.locationFilter.select2({
+		placeholder: 'Please select a location...'
+	})
 	.on('change', function() {
 		searchConditions.LocationIDList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
-	// Brand filter
-	jQueryNodes.brandFilter
+	// Sort
+	jQueryNodes.sorter
 	.select2()
+	.on('change', function() {
+		searchConditions.OrderBy = $(this).val();
+		delete searchConditions.Page;
+
+		renderSearcher();
+	});
+
+	// Sort direction
+	jQueryNodes.sortDirector
+	.select2({
+		minimumResultsForSearch: Infinity
+	})
+	.on('change', function() {
+		searchConditions.IsDescendingOrder = $(this).val() === 'true';
+		delete searchConditions.Page;
+
+		renderSearcher();
+	});
+
+	// Brand
+	jQueryNodes.brandFilter
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		// Remove modelFilter before regenerate it
 		jQueryNodes.modelFilter.select2("destroy");
@@ -312,47 +417,53 @@ $(document).ready(() => {
 				el.selected = false;
 				el.disabled = true;
 
-				disabledModelIDList.push(Number.parseInt(el.value));
+				disabledModelIDList.push(el.value.toString());
 			});
 		}
 		// Filter out models belonged to selected brands in searchConditions
-		searchConditions.ModelIDList = searchConditions.ModelIDList.filter((el) => disabledModelIDList.includes(el));
+		searchConditions.ModelIDList = searchConditions.ModelIDList.filter((el) => !disabledModelIDList.includes(el.toString()));
 
 		// Regenerate modelFilter
 		jQueryNodes.modelFilter.select2();
 
 		delete searchConditions.Page;
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
-	// Model filter
+	// Model
 	jQueryNodes.modelFilter
-	.select2()
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		searchConditions.ModelIDList = $(this).val();
 
 		delete searchConditions.Page;
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Category
 	$('#categoryFilter')
-	.select2()
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		searchConditions.CategoryIDList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Seat
 	$('#seatFilter')
-	.select2()
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		searchConditions.NumberOfSeatList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Color
@@ -362,6 +473,7 @@ $(document).ready(() => {
 
 	$('#colorFilter')
 	.select2({
+		placeholder: 'Please select...',
 		templateSelection: colorOptionFormat,
 		templateResult: colorOptionFormat
 	})
@@ -369,33 +481,36 @@ $(document).ready(() => {
 		searchConditions.ColorIDList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// Fuel
 	$('#fuelFilter')
-	.select2()
+	.select2({
+		placeholder: 'Please select...'
+	})
 	.on('change', function() {
 		searchConditions.FuelTypeIDList = $(this).val();
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	//=================================================
+	// Sliders
 	// Price filter slider
-	let priceSlider = noUiSlider.create(document.getElementById('priceFilter'), {
+	let priceSlider = noUiSlider.create(priceFilter, {
+		behaviour: 'drag-tap',
 		connect: true,
 		format: {
-			to: value => `₫&nbsp;${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
-			from: value => Number.parseInt(value.replace('₫&nbsp;', '').replace(',', ''))
+			to: value => `₫${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+			from: value => Number.parseInt(value.replace('₫', '').replace(',', ''))
 		},
 		margin: 100000,
-		start: [100000, 10000000],
-		step: 100000,
+		start: [0, priceSliderMax || 100000],
 		range: {
-			'min': [100000],
-			'max': [10000000]
+			'min': [0],
+			'max': [priceSliderMax || 100000]
 		}
 	});
 	priceSlider.on('update', (values, handle, unencoded) => {
@@ -403,11 +518,33 @@ $(document).ready(() => {
 		$('#maxPriceDisplay').html(values[1]);
 	});
 	priceSlider.on('set', (values, handle, unencoded) => {
-		searchConditions.MinPrice = Number.parseInt(unencoded[0]);
-		searchConditions.MaxPrice = Number.parseInt(unencoded[1]);
-		delete searchConditions.Page;
+		searchConditions.MinPrice = unencoded[0];
+		searchConditions.MaxPrice = unencoded[1];
 
-		renderSearcher(jQueryNodes);
+		delete searchConditions.Page;
+		renderSearcher();
+	});
+
+	// Year filter slider
+	let yearSlider = noUiSlider.create(document.getElementById('yearFilter'), {
+		connect: true,
+		start: [yearSliderMin || 1888, yearSliderMax || now.year()],
+		step: 1,
+		range: {
+			'min': [yearSliderMin || 1888],
+			'max': [yearSliderMax || now.year()]
+		}
+	});
+	yearSlider.on('update', (values, handle, unencoded) => {
+		$('#minYearDisplay').html(unencoded[0]);
+		$('#maxYearDisplay').html(unencoded[1]);
+	});
+	yearSlider.on('set', (values, handle, unencoded) => {
+		searchConditions.MinProductionYear = unencoded[0];
+		searchConditions.MaxProductionYear = unencoded[1];
+
+		delete searchConditions.Page;
+		renderSearcher();
 	});
 
 	// Transmission's checkbox
@@ -419,10 +556,10 @@ $(document).ready(() => {
 		}
 		delete searchConditions.Page;
 
-		renderSearcher(jQueryNodes);
+		renderSearcher();
 	});
 
 	// ========================================================
 	// Render search result grid
-	renderSearcher(jQueryNodes);
+	renderSearcher();
 });
