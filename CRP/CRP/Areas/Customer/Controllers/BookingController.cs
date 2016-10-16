@@ -8,9 +8,13 @@ using System.Web;
 using System.Web.Mvc;
 using System.Timers;
 using System.Threading;
+using System.Threading.Tasks;
 using CRP.Controllers;
 using CRP.Models;
 using CRP.Models.ViewModels;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Mvc;
+using ActionResult = System.Web.Mvc.ActionResult;
 
 namespace CRP.Areas.Customer.Controllers
 {
@@ -21,7 +25,7 @@ namespace CRP.Areas.Customer.Controllers
         //trong thoi gian 5 phut nen booking da duoc xoa thi ko chay luong
         private Boolean DeleteBookingThread = false;
         // Route to bookingConfirm page (Page for confirming booking details before paying)
-        [Route("bookingConfirm")]
+        [System.Web.Mvc.Route("bookingConfirm")]
         public async System.Threading.Tasks.Task<ViewResult> BookingConfirm(BookingReceiptViewModel model)
         {
             if (!this.ModelState.IsValid)
@@ -73,7 +77,7 @@ namespace CRP.Areas.Customer.Controllers
             } 
         }
         // Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
-        [Route("bookingReceipt")]
+        [System.Web.Mvc.Route("bookingReceipt")]
 		public ViewResult BookingReceipt()
 		{
 
@@ -100,7 +104,7 @@ namespace CRP.Areas.Customer.Controllers
 		}
 
 		// Route to bookingHistory page
-		[Route("management/bookingHistory")]
+		[System.Web.Mvc.Route("management/bookingHistory")]
 		public ViewResult BookingHistory()
 		{
             /*
@@ -170,56 +174,51 @@ namespace CRP.Areas.Customer.Controllers
             return Json(jsonBookings, JsonRequestBehavior.AllowGet);
 		}
         */
+
 		// API route for canceling a booking
-		[Route("api/bookings/{id:int}")]
-		[HttpDelete]
-		public JsonResult CancelBookingAPI(int id)
+		[System.Web.Mvc.Route("api/bookings/{id:int}")]
+		[System.Web.Mvc.HttpDelete]
+		public ActionResult CancelBookingAPI(int id)
 		{
-            MessageJsonModel jsonResult = new MessageJsonModel();
-            var service = this.Service<IBookingReceiptService>();
-            var entity = service.Get(id);
-            if (entity != null)
+			var customerID = User.Identity.GetUserId();
+
+			var service = this.Service<IBookingReceiptService>();
+			var status = service.CancelBooking(customerID, id);
+            
+            switch (status)
             {
-                entity.IsCanceled = true;
-                service.Update(entity);
-                jsonResult.Status = 1;
-                jsonResult.Message = "Cancle successfully!";
+				case 0:
+					return new HttpStatusCodeResult(200, "Booking canceled successfully.");
+				case 1:
+		            return new HttpNotFoundResult();
+	            case 2:
+		            return new HttpStatusCodeResult(403, "This booking has already been completed.");
             }
-            else
-            {
-                jsonResult.Status = 0;
-                jsonResult.Message = "Error!";
-            }
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
+			return new HttpStatusCodeResult(500, "Internal server error.");
 		}
 
 		// API route for sending comment/rating for a booking
-		[Route("api/bookings/{id:int}")]
-		[HttpPut]
-		public JsonResult RateBookingAPI(int id)
+		[System.Web.Mvc.Route("api/bookings/{id:int}")]
+		[System.Web.Mvc.HttpPatch]
+		public ActionResult RateBookingAPI([FromBody] BookingCommentModel commentModel)
 		{
-			//comment xong co can cancle va set dateend lun ko?
-			MessageJsonModel jsonResult = new MessageJsonModel();
-            string comment = Request.Params["comment"];
-            //cach tinh star cho vehicle hay cho Provider?
-            decimal Star = decimal.Parse(Request.Params["star"]);
-            var service = this.Service<IBookingReceiptService>();
-            var entity = service.Get(id);
-            if (entity != null)
-            {
-                entity.Comment = comment;
-                entity.Star = Star;
-                service.Update(entity);
-                jsonResult.Status = 1;
-                jsonResult.Message = "Rate successfully!";
-            }
-            else
-            {
+			var customerID = User.Identity.GetUserId();
 
-                jsonResult.Status = 0;
-                jsonResult.Message = "Error!";
-            }
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }
+			var service = this.Service<IBookingReceiptService>();
+			var status = service.RateBooking(customerID, commentModel);
+
+			switch (status)
+			{
+				case 0:
+					return new HttpStatusCodeResult(200, "Booking rated successfully.");
+				case 1:
+					return new HttpNotFoundResult();
+				case 2:
+					return new HttpStatusCodeResult(403, "This booking has not been completed.");
+				case 3:
+					return new HttpStatusCodeResult(403, "This booking has already been commented.");
+			}
+			return new HttpStatusCodeResult(500, "Internal server error.");
+		}
 	}
 }
