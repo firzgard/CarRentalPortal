@@ -13,12 +13,18 @@ namespace CRP.Models.ViewModels
 		public List<Brand> BrandList { get; set; }
 		public List<Category> CategoryList { get; set; }
 		public List<Location> LocationList { get; set; }
+		public double MaxPrice { get; set; }
+		public int MaxYear { get; set; }
+		public int MinYear { get; set; }
 
-		public SearchPageViewModel(List<Brand> brandList, List<Category> categoryList, List<Location> locationList)
+		public SearchPageViewModel(List<Brand> brandList, List<Category> categoryList, List<Location> locationList, double maxPrice, int maxYear, int minYear)
 		{
 			BrandList = brandList;
 			CategoryList = categoryList;
 			LocationList = locationList;
+			MaxPrice = maxPrice;
+			MaxYear = maxYear;
+			MinYear = minYear;
 		}
 	}
 
@@ -37,24 +43,20 @@ namespace CRP.Models.ViewModels
 	public class SearchResultJsonModel : IVehicleFilterJsonModel
 	{
 		public List<SearchResultItemJsonModel> SearchResultList { get; set; }
+		public int CurrentPage { get; set; }
 		public int TotalResult { get; set; }
 		public int TotalPage { get; set; }
-		public double? LowestPrice { get; set; }
-		public double? HighestPrice { get; set; }
 		public double? AveragePrice { get; set; }
-		public int? SoonestProductionYear { get; set; }
-		public int? LatestProductionYear { get; set; }
 
-		public SearchResultJsonModel(List<SearchResultItemJsonModel> searchResultList, int totalResult)
+		public SearchResultJsonModel(List<SearchResultItemJsonModel> searchResultList, double? averagePrice, int totalResult, int currentPage)
 		{
+			if (!searchResultList.Any()) return;
+
 			SearchResultList = searchResultList;
+			CurrentPage = currentPage;
 			TotalResult = totalResult;
 			TotalPage = (int)Math.Ceiling((float)totalResult / Constants.NumberOfSearchResultPerPage);
-			LowestPrice = searchResultList.Min(r => r.BestPossibleRentalPrice);
-			HighestPrice = searchResultList.Max(r => r.BestPossibleRentalPrice);
-			AveragePrice = searchResultList.Average(r => r.BestPossibleRentalPrice);
-			SoonestProductionYear = searchResultList.Min(v => v.Year);
-			LatestProductionYear = searchResultList.Max(v => v.Year);
+			AveragePrice = averagePrice;
 		}
 	}
 
@@ -62,14 +64,16 @@ namespace CRP.Models.ViewModels
 	public class SearchResultItemJsonModel : VehicleRecordJsonModel
 	{
 		public List<string> ImageList { get; set; }
+		public int NumOfComment { get; set; }
 		// Shortest rental period of this vehicle that fit the filter
 		public string BestPossibleRentalPeriod { get; set; }
 		// Lowest price range of this vehicle that fit the filter
-		public double? BestPossibleRentalPrice { get; set; }
+		public double BestPossibleRentalPrice { get; set; }
 
 		public SearchResultItemJsonModel(Entities.Vehicle vehicle, int rentalTime) : base(vehicle)
 		{
 			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
+			NumOfComment = vehicle.BookingReceipts.Count(br => br.Comment != null);
 
 			// Find the best PriceGroupItem that match the search
 			var items = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.OrderBy(x => x.MaxTime);
@@ -83,7 +87,7 @@ namespace CRP.Models.ViewModels
 				}
 			}
 			// If not found, use the PerDayPrice
-			if (BestPossibleRentalPrice == null)
+			if (BestPossibleRentalPrice == 0.0d)
 			{
 				BestPossibleRentalPeriod = "day";
 				BestPossibleRentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice;

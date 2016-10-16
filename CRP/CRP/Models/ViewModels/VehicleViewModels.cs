@@ -17,7 +17,7 @@ namespace CRP.Models.ViewModels
 		public int? MinProductionYear { get; set; }
 		public int[] BrandIDList { get; set; } = new int[0];
 		public int[] ModelIDList { get; set; } = new int[0];
-		public string OrderBy { get; set; }
+		public int OrderBy { get; set; }
 		public bool IsDescendingOrder { get; set; }
 		public int Page { get; set; } = 1;
 	}

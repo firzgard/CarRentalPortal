@@ -630,6 +630,7 @@
     <Content Include="Content\img\a7.jpg" />
     <Content Include="Content\img\a8.jpg" />
     <Content Include="Content\img\angular_logo.png" />
+    <Content Include="Content\img\backgrounds\1.jpg" />
     <Content Include="Content\img\dashbard4_1.jpg" />
     <Content Include="Content\img\dashbard4_2.jpg" />
     <Content Include="Content\img\email_1.jpg" />
@@ -1506,6 +1507,7 @@
     <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
+    <Content Include="Content\pageStyle\home.css" />
     <Content Include="Content\pageStyle\login.css" />
     <Content Include="Content\pageStyle\search.css" />
     <Content Include="Content\pageStyle\signUp.css" />
@@ -1713,6 +1715,7 @@
     <Content Include="Scripts\pageScript\garage.js" />
     <Content Include="Scripts\pageScript\garageList.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
+    <Content Include="Scripts\pageScript\home.js" />
     <Content Include="Scripts\pageScript\search.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
