@@ -67,7 +67,6 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to create single new group
 		[Route("api/vehicleGroups")]
 		[HttpPost]
-        [ValidateAntiForgeryToken]
 		public async Task<JsonResult> CreateVehicleGroupAPI(VehicleGroupViewModel model)
 		{
             if (!this.ModelState.IsValid)
