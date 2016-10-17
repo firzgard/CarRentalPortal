@@ -12,25 +12,20 @@ using CRP.Controllers;
 using AutoMapper.QueryableExtensions;
 using System.Threading.Tasks;
 using System.Web.Security;
+using Microsoft.AspNet.Identity;
 
 namespace CRP.Areas.Provider.Controllers
 {
 	public class GarageController : BaseController
 	{
 		// Route to garageManagement page
-		[Authorize(Roles = "Provider")]
 		[Route("management/garageManagement")]
 		public ViewResult GarageManagement()
 		{
-			var service = this.Service<IGarageService>();
 			var locationService = this.Service<ILocationService>();
-
-			List<Garage> lstGarage = new List<Garage>();
 			List<Location> lstLocation = new List<Location>();
 			lstLocation = locationService.Get().ToList();
-			lstGarage = service.Get().ToList();
 			ViewBag.locationList = lstLocation;
-			ViewBag.garaList = lstGarage;
 			return View("~/Areas/Provider/Views/Garage/GarageManagement.cshtml");
 		}
 
@@ -56,25 +51,19 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetGarageListAPI()
 		{
-			var service = this.Service<IGarageService>();
-			//List<Garage> lstGarage = new List<Garage>();
-			List<GarageModel> jsonGarages = new List<GarageModel>();
-			//cho nay se get theo user
-			jsonGarages = service.Get().ProjectTo<GarageModel>(this.MapperConfig).ToList();
-			//foreach (Garage p in lstGarage)
-			//{
-			//	GarageModel jsonGarage = new GarageModel();
-			//	jsonGarage.ID = p.ID;
-			//	jsonGarage.Name = p.Name;
-			//	jsonGarage.LocationID = p.LocationID;
-			//	jsonGarage.LocationName = p.Location.Name;
-			//	jsonGarage.Address = p.Address;
-			//	jsonGarage.Star = p.Star.GetValueOrDefault();
-			//	jsonGarage.IsActive = p.IsActive;
-			//	jsonGarages.Add(jsonGarage);
-			//}
-			return Json(jsonGarages, JsonRequestBehavior.AllowGet);
-		}
+            String customerID = User.Identity.GetUserId();
+            var service = this.Service<IGarageService>();
+            var list = service.GetGarageList(customerID);
+            var result = list.Select(q => new IConvertible[] {
+                q.ID,
+                q.Name,
+                q.Address,
+                q.Location.Name,
+                q.Star,
+                q.IsActive,
+            });
+            return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
+        }
 
 		// API Route to create single new garage
 		// garageViewModel
@@ -86,58 +75,9 @@ namespace CRP.Areas.Provider.Controllers
 			{
 				return new HttpStatusCodeResult(403, "Created unsuccessfully.");
 			}
-
 			var service = this.Service<IGarageService>();
 
 			Garage newGarage = this.Mapper.Map<Garage>(model);
-
-			/*string OwnerID = Request.Params["UserID"];
-			string Name = Request.Params["garageName"];
-			int LocationID = int.Parse(Request.Params["locationID"]);
-			string Address = Request.Params["address"];
-			string Email = Request.Params["email"];
-			String Phone1 = Request.Params["phone1"];
-			String Phone2 = Request.Params["phone2"];
-			DateTime openTimeMon = setDayFromParam(Request.Params["openTimeMon"]);
-			DateTime closeTimeMon = setDayFromParam(Request.Params["closeTimeMon"]);
-			DateTime openTimeTue = setDayFromParam(Request.Params["openTimeTue"]);
-			DateTime closeTimeTue = setDayFromParam(Request.Params["closeTimeTue"]);
-			DateTime openTimeWed = setDayFromParam(Request.Params["openTimeWed"]);
-			DateTime closeTimeWed = setDayFromParam(Request.Params["closeTimeWed"]);
-			DateTime openTimeThur = setDayFromParam(Request.Params["openTimeThur"]);
-			DateTime closeTimeThur = setDayFromParam(Request.Params["closeTimeThur"]);
-			DateTime openTimeFri = setDayFromParam(Request.Params["openTimeFri"]);
-			DateTime closeTimeFri = setDayFromParam(Request.Params["closeTimeFri"]);
-			DateTime openTimeSat = setDayFromParam(Request.Params["openTimeSat"]);
-			DateTime closeTimeSat = setDayFromParam(Request.Params["closeTimeSat"]);
-			DateTime openTimeSun = setDayFromParam(Request.Params["openTimeSun"]);
-			DateTime closeTimeSun = setDayFromParam(Request.Params["closeTimeSun"]);
-
-			Garage newGarage = new Garage();
-			newGarage.OwnerID = OwnerID;
-			newGarage.Name = Name;
-			newGarage.LocationID = LocationID;
-			newGarage.Address = Address;
-			newGarage.Email = Email;
-			newGarage.Phone1 = Phone1;
-			newGarage.Phone2 = Phone2;
-			newGarage.Star = 0;
-			newGarage.IsActive = true;
-			newGarage.OpenTimeMon = openTimeMon;
-			newGarage.OpenTimeTue = openTimeTue;
-			newGarage.OpenTImeWed = openTimeWed;
-			newGarage.OpenTimeThur = openTimeThur;
-			newGarage.OpenTimeFri = openTimeFri;
-			newGarage.OpenTimeSat = openTimeFri;
-			newGarage.OpenTimeSun = openTimeSun;
-			newGarage.CloseTimeMon = closeTimeMon;
-			newGarage.CloseTimeTue = closeTimeTue;
-			newGarage.CloseTImeWed = closeTimeWed;
-			newGarage.CloseTimeThur = closeTimeThur;
-			newGarage.CloseTimeFri = closeTimeFri;
-			newGarage.CloseTimeSat = closeTimeSat;
-			newGarage.CloseTimeSun = closeTimeSun;*/
-
 			await service.CreateAsync(newGarage);
 
 			return new HttpStatusCodeResult(200, "Created successfully.");

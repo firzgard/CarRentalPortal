@@ -75,7 +75,7 @@ namespace CRP.Controllers
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
-                Name = user.FullName,
+                Name = user.UserName,
                 Email = await UserManager.GetEmailAsync(userId),
             };
             ViewBag.Error = Error;
@@ -91,9 +91,8 @@ namespace CRP.Controllers
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await UserManager.FindByIdAsync(userId);
-                user.FullName = model.Name;
+                user.UserName = model.Name;
                 user.Email = model.Email;
-                user.UserName = model.Email;
                 user.PhoneNumber = model.PhoneNumber;
                 var result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
