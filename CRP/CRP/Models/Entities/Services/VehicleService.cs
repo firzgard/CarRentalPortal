@@ -92,15 +92,15 @@ namespace CRP.Models.Entities.Services
 
 			// Sort
 			// Validate OrderBy in the controller
-			var sortingProp = typeof(SearchResultItemJsonModel).GetProperty(Constants.AllowedSortingPropsInSearchPage[filterConditions.OrderBy].Value);
+			var sortingProp = typeof(SearchResultItemJsonModel).GetProperty(Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE[filterConditions.OrderBy].Value);
 
 			// Keep the order descending for star and comment if those are not the main sorting prop
 			if (filterConditions.IsDescendingOrder)
 			{
-				if (Constants.AllowedSortingPropsInSearchPage.FindIndex(p => p.Name == "Star") == filterConditions.OrderBy)
+				if (Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.FindIndex(p => p.Name == "Star") == filterConditions.OrderBy)
 					results = results.OrderByDescending(r => r.Star)
 									.ThenByDescending(r => r.NumOfComment);
-				else if (Constants.AllowedSortingPropsInSearchPage.FindIndex(p => p.Name == "NumOfComment") == filterConditions.OrderBy)
+				else if (Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.FindIndex(p => p.Name == "NumOfComment") == filterConditions.OrderBy)
 					results = results.OrderByDescending(r => r.NumOfComment)
 									.ThenByDescending(r => r.Star);
 				else
@@ -110,10 +110,10 @@ namespace CRP.Models.Entities.Services
 			}
 			else
 			{
-				if (Constants.AllowedSortingPropsInSearchPage.FindIndex(p => p.Name == "Star") == filterConditions.OrderBy)
+				if (Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.FindIndex(p => p.Name == "Star") == filterConditions.OrderBy)
 					results = results.OrderBy(r => r.Star)
 									.ThenBy(r => r.NumOfComment);
-				else if (Constants.AllowedSortingPropsInSearchPage.FindIndex(p => p.Name == "NumOfComment") == filterConditions.OrderBy)
+				else if (Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.FindIndex(p => p.Name == "NumOfComment") == filterConditions.OrderBy)
 					results = results.OrderBy(r => r.NumOfComment)
 									.ThenBy(r => r.Star);
 				else
@@ -124,11 +124,11 @@ namespace CRP.Models.Entities.Services
 
 			// Paginate
 			var filteredRecords = results.Count();
-			if (filterConditions.Page < 1 || (filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage > filteredRecords)
+			if (filterConditions.Page < 1 || (filterConditions.Page - 1) * Constants.NUM_OF_SEARCH_RESULT_PER_PAGE > filteredRecords)
 				filterConditions.Page = 1;
 
-			results = results.Skip((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
-					.Take(Constants.NumberOfSearchResultPerPage);
+			results = results.Skip((filterConditions.Page - 1) * Constants.NUM_OF_SEARCH_RESULT_PER_PAGE)
+					.Take(Constants.NUM_OF_SEARCH_RESULT_PER_PAGE);
 
 			// Nest into result object
 			return new SearchResultJsonModel(results.ToList(), averagePrice, filteredRecords, filterConditions.Page);
@@ -184,18 +184,18 @@ namespace CRP.Models.Entities.Services
 
 			// Sort
 			var sortingProp = typeof(VehicleManagementItemJsonModel)
-				.GetProperty(Constants.AllowedSortingPropsInVehicleManagement[filterConditions.OrderBy]);
+				.GetProperty(Constants.ALLOWED_SORTING_PROPS_IN_VEHICLE_MANAGEMENT[filterConditions.OrderBy]);
 			vehicles = filterConditions.IsDescendingOrder
 				? vehicles.OrderByDescending(r => sortingProp.GetValue(r))
 				: vehicles.OrderBy(r => sortingProp.GetValue(r));
 
 			// Paginate
 			var filteredRecords = vehicles.Count();
-			if ((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage > filteredRecords)
+			if ((filterConditions.Page - 1) * Constants.NUM_OF_SEARCH_RESULT_PER_PAGE > filteredRecords)
 				filterConditions.Page = 1;
 
-			vehicles = vehicles.Skip((filterConditions.Page - 1) * Constants.NumberOfSearchResultPerPage)
-					.Take(Constants.NumberOfSearchResultPerPage);
+			vehicles = vehicles.Skip((filterConditions.Page - 1) * Constants.NUM_OF_SEARCH_RESULT_PER_PAGE)
+					.Take(Constants.NUM_OF_SEARCH_RESULT_PER_PAGE);
 
 			return new VehicleDataTablesJsonModel(vehicles.ToList(), recordsTotal, filteredRecords);
 		}
@@ -244,9 +244,9 @@ namespace CRP.Models.Entities.Services
 			// Check if startTime is after SoonestPossibleBookingStartTimeFromNow
 			// Check if startTime is before LatestPossibleBookingStartTimeFromNow
 			// Check if endTime is after SoonestPossibleBookingEndTimeFromNow
-			if (startTime < DateTime.Now.AddHours(Constants.SoonestPossibleBookingStartTimeFromNowInHour)
-					|| startTime > DateTime.Now.AddDays(Constants.LatestPossibleBookingStartTimeFromNowInDay)
-					|| endTime < DateTime.Now.AddHours(Constants.SoonestPossibleBookingEndTimeFromNowInHour))
+			if (startTime < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR)
+					|| startTime > DateTime.Now.AddDays(Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY)
+					|| endTime < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR))
 				return false;
 
 			var vehicle = this.repository.Get(v => v.ID == vehicleId);

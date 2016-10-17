@@ -1,58 +1,61 @@
 ﻿@model CRP.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+	ViewBag.Title = "Register";
 }
 <div class="middle-box text-center loginscreen animated fadeInDown">
-    <div class="margin-signup padding-signup backgroundStyle">
-        <div>
+	<div class="margin-signup padding-signup backgroundStyle">
+		<div>
 
-            <h1 class="logo-name">CRP</h1>
+			<h1 class="logo-name">CRP</h1>
 
-        </div>
-        <h3 style="color:white">Register to Car Rental Portal</h3>
-        <p style="color:white">Create account to see it in action.</p>
+		</div>
+		<h3 style="color:white">Register to Car Rental Portal</h3>
+		<p style="color:white">Create account to see it in action.</p>
 
-       @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-       {
-        @Html.AntiForgeryToken()
-          @Html.ValidationSummary("", new { @class = "text-danger" })
-            <div>
-                <div class="form-group ">
-                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
-                </div>
-                <div class="form-group ">
-                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
-                </div>
-                <div class="form-group ">
-       
-                    @Html.TextBoxFor(m => m.ConfirmEmail, new { @class = "form-control", placeholder = "Confirm Email" })
-                </div>
-                <div class="form-group ">
+	   @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+	   {
+		@Html.AntiForgeryToken()
+		  @Html.ValidationSummary("", new { @class = "text-danger" })
+		   <div>
+				<div class="form-group ">
+					@Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Username" })
+				</div>
+				<div class="form-group ">
+					@Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
+				</div>
+				<div class="form-group ">
+					@Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
+				</div>
+				<div class="form-group ">
+	   
+					@Html.TextBoxFor(m => m.ConfirmEmail, new { @class = "form-control", placeholder = "Confirm Email" })
+				</div>
+				<div class="form-group ">
 
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
-                </div>
-                <div class="form-group ">
-    
-                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
-                </div>
-                <div class="form-group ">
-          
-                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "PhoneNumber" })
-                </div>
-                <button type="submit" class="btn btn-primary block full-width m-b" style="color:white">Register</button>
+					@Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+				</div>
+				<div class="form-group ">
+	
+					@Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+				</div>
+				<div class="form-group ">
+		  
+					@Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "PhoneNumber" })
+				</div>
+				<button type="submit" class="btn btn-primary block full-width m-b" style="color:white">Register</button>
 
-                <p class="text-muted text-center" style="color:white"><small>Already have an account?</small></p>
-                <a class="btn btn-sm btn-white btn-block" href="./../login/login.html">Login</a>
-            </div>
-       }
-        <p class="m-t" style="color:white"> <small>Contact us at carrentalportal@gmail.com</small> </p>
+				<p class="text-muted text-center" style="color:white"><small>Already have an account?</small></p>
+				<a class="btn btn-sm btn-white btn-block" href="./../login/login.html">Login</a>
+			</div>
+	   }
+		<p class="m-t" style="color:white"> <small>Contact us at carrentalportal@gmail.com</small> </p>
 
-    </div>
+	</div>
 </div>
 @section PageStyle {
-    @Styles.Render("~/Content/pageStyle/signUp.css")
+	@Styles.Render("~/Content/pageStyle/signUp.css")
 }
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/bundles/jqueryval")
 }

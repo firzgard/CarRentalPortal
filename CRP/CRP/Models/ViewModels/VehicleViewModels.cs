@@ -81,13 +81,13 @@ namespace CRP.Models.ViewModels
 			CategoryList = vehicle.Model.Categories.Select(c => c.Name).ToList();
 
 			string tmpString = null;
-			Constants.TransmissionType.TryGetValue(vehicle.TransmissionType, out tmpString);
+			Constants.TRANSMISSION_TYPE.TryGetValue(vehicle.TransmissionType, out tmpString);
 			TransmissionTypeName = tmpString;
 
 			if (vehicle.FuelType != null)
 			{
 				tmpString = null;
-				Constants.FuelType.TryGetValue((int)vehicle.FuelType, out tmpString);
+				Constants.FUEL_TYPE.TryGetValue((int)vehicle.FuelType, out tmpString);
 				FuelTypeName = tmpString;
 			}
 
@@ -153,20 +153,20 @@ namespace CRP.Models.ViewModels
 
 			this.TransmissionTypeID = vehicle.TransmissionType;
 			string tmpString = null;
-			Constants.TransmissionType.TryGetValue(vehicle.TransmissionType, out tmpString);
+			Constants.TRANSMISSION_TYPE.TryGetValue(vehicle.TransmissionType, out tmpString);
 			this.TransmissionTypeName = tmpString;
 
 			this.FuelTypeID = vehicle.FuelType;
 			if (vehicle.FuelType != null)
 			{
 				tmpString = null;
-				Constants.FuelType.TryGetValue((int)(vehicle.FuelType), out tmpString);
+				Constants.FUEL_TYPE.TryGetValue((int)(vehicle.FuelType), out tmpString);
 				this.FuelTypeName = tmpString;
 			}
 
 			this.ColorID = vehicle.Color;
 			tmpString = null;
-			Constants.Color.TryGetValue(vehicle.Color, out tmpString);
+			Constants.COLOR.TryGetValue(vehicle.Color, out tmpString);
 			this.ColorName = tmpString;
 
 			this.Star = vehicle.Star;

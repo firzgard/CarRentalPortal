@@ -55,7 +55,7 @@ namespace CRP.Models.ViewModels
 			SearchResultList = searchResultList;
 			CurrentPage = currentPage;
 			TotalResult = totalResult;
-			TotalPage = (int)Math.Ceiling((float)totalResult / Constants.NumberOfSearchResultPerPage);
+			TotalPage = (int)Math.Ceiling((float)totalResult / Constants.NUM_OF_SEARCH_RESULT_PER_PAGE);
 			AveragePrice = averagePrice;
 		}
 	}
