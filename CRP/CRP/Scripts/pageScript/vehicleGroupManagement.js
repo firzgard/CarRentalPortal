@@ -224,7 +224,6 @@ $(document).ready(()=>{
                 $('#myModal').modal('show');
             },
             eror: function (e) {
-
             }
         });
     });

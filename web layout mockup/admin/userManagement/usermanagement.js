@@ -88,7 +88,7 @@ $(document).ready(() => {
         let button = $(event.relatedTarget),
 			action = button.data('action')
         id = button.data('id'),
-        name = button.data('name');
+        name = "sssss";
 
         $(this).find('.modal-content').html(`<div class="modal-header">
 			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
