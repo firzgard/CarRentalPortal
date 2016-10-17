@@ -1,4 +1,5 @@
-﻿<nav class="navbar-default navbar-static-side" role="navigation">
+﻿@using Microsoft.AspNet.Identity
+<nav class="navbar-default navbar-static-side" role="navigation">
 	<div class="sidebar-collapse">
 		<ul class="nav metismenu" id="side-menu">
 			<li class="nav-header">
@@ -9,40 +10,61 @@
 					<a href="@this.Url.Action("Index", "Home")"><i class="fa fa-car"></i></a>
 				</div>
 			</li>
-			<li>
-				<a href="#">
-					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Administration</span>
-					<span class="fa arrow"></span>
-				</a>
-				<ul class="nav nav-second-level collapse">
-					<li><a href="@this.Url.Action("Index", "UserManagement")">User managerment</a></li>
-				</ul>
-			</li>
-			<li>
-				<a href="#">
-					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Rental Management</span>
-					<span class="fa arrow"></span>
-				</a>
-				<ul class="nav nav-second-level collapse">
-					<li><a href="@this.Url.Action("Index", "VehicleManagement")">Vehicle</a></li>
-					<li><a href="@this.Url.Action("Index", "GarageManagement")">Garage</a></li>
-					<li><a href="@this.Url.Action("Index", "VehicleGroupManagement")">Vehicle Group</a></li>
-				</ul>
-			</li>
-			<li>
-				<a href="@this.Url.Action("Index", "PersonalInfo")">
-					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Personal Information</span>
-				</a>
-			</li>
-			<li>
-				<a href="@this.Url.Action("Index", "BookingHistory")">
-					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Booking history</span>
-				</a>
-			</li>
+@if (Request.IsAuthenticated)
+{
+    if (User.IsInRole("Admin"))
+    {
+        <li>
+            <a href="#">
+                <i class="fa fa-th-large"></i>
+                <span class="nav-label">Administration</span>
+                <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="@this.Url.Action("Index", "UserManagement")">User managerment</a></li>
+            </ul>
+        </li>
+    }
+    if (User.IsInRole("Provider"))
+    {
+        <li>
+            <a href="#">
+                <i class="fa fa-th-large"></i>
+                <span class="nav-label">Rental Management</span>
+                <span class="fa arrow"></span>
+            </a>
+            <ul class="nav nav-second-level collapse">
+                <li><a href="@this.Url.Action("Index", "VehicleManagement")">Vehicle</a></li>
+                <li><a href="@this.Url.Action("Index", "GarageManagement")">Garage</a></li>
+                <li><a href="@this.Url.Action("Index", "VehicleGroupManagement")">Vehicle Group</a></li>
+            </ul>
+        </li>
+    }
+    if (User.IsInRole("Customer"))
+    {
+        <li>
+            <a href="@this.Url.Action("BookingHistory", "Booking")">
+                <i class="fa fa-th-large"></i>
+                <span class="nav-label">Booking history</span>
+            </a>
+        </li>
+    }
+
+             <li>
+                <a href="@this.Url.Action("Index", "Manage")">
+                    <i class="fa fa-th-large"></i>
+                    <span class="nav-label">Personal Information</span>
+                </a>
+            </li>
+          
+}
+else
+{
+    <li>
+
+    </li>
+}
+			
 		</ul>
 	</div>
 </nav>

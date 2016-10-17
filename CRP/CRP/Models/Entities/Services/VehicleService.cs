@@ -23,7 +23,7 @@ namespace CRP.Models.Entities.Services
 
 		public SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions)
 		{
-			var vehicles = repository.Get();
+			var vehicles = repository.Get(v => v.VehicleGroupID != null && v.VehicleGroup.IsActive && v.Garage.IsActive);
 
 			// Run basic common filters
 			vehicles = BasicFilter(vehicles, filterConditions);
