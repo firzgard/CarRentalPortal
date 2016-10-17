@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRP.Models.Entities.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -13,7 +14,7 @@ namespace CRP.Models.Entities.Services
     }
     public class UserService : BaseService<AspNetUser>, IUserReceiptService
 	{
-        public UserService(IUnitOfWork unitOfWork, IUserReceiptService repository) : base(unitOfWork, repository)
+        public UserService(IUnitOfWork unitOfWork, IUserRepository repository) : base(unitOfWork, repository)
         {
 
         }

@@ -246,6 +246,7 @@
     <Compile Include="Models\Entities\GarageWorkingTime.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Repositories\UserRepository.cs" />
     <Compile Include="Models\Entities\Services\CategoryService.cs" />
     <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupItemRepository.cs" />
@@ -1395,9 +1396,11 @@
     <Content Include="Content\NoUiSlider\nouislider.min.css" />
     <Content Include="Content\NoUiSlider\nouislider.pips.css" />
     <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
+    <Content Include="Content\pageStyle\forgetPassword.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
     <Content Include="Content\pageStyle\login.css" />
+    <Content Include="Content\pageStyle\personalInfo.css" />
     <Content Include="Content\pageStyle\search.css" />
     <Content Include="Content\pageStyle\signUp.css" />
     <Content Include="Content\pageStyle\vehicleGroup.css" />
