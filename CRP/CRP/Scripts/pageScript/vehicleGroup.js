@@ -1,36 +1,10 @@
-const mockupData = [
-	{ "id": 1, "name": "BMW X5a", "brandID": 2, "modelID": 14, "modelName": "BMW X5", "groupID": 1, "garage": "HCM garage", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 2, "name": "BMW X6b", "brandID": 2, "modelID": 15, "modelName": "BMW X6", "groupID": 1, "garage": "HCM garage", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 3, "name": "BMW X3c", "brandID": 2, "modelID": 13, "modelName": "BMW X3", "groupID": 1, "garage": "HCM garage", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 4, "name": "Audi A7d", "brandID": 1, "modelID": 3, "modelName": "Audi A7", "groupID": 2, "garage": "Hanoi garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 5, "name": "Audi A8e", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "garage": "Hanoi garage", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 6, "name": "Audi A8f", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "garage": "Hanoi garage", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" },
-	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 18, "modelName": "Ford Fiesta Mk6", "groupID": 3, "garage": "Hanoi garage", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel" }
-];
-
-const mockupData3 = [
-        {
-            "class": 1
-            , "time": "1"
-            , "price": "100000"
-        }
-        , {
-            "class": 2
-            , "time": "2"
-            , "price": "100000"
-        }
-        , {
-            "class": 4
-            , "time": "4"
-            , "price": "100000"
-        }
-
-];
-
+let table1 = null;
 $(document).ready(function () {
     const groupID = $('#groupID').val();
-    let table1 = $('#priceGroupItem').DataTable({
-        dom: "ltipr",
+    table1 = $('#priceGroupItem').DataTable({
+        dom: "ti",
+        displayLength: 23,
+        ordering: false,
         ajax: {
             url: `/api/priceGroup/${groupID}`,
             type: "GET",
@@ -38,23 +12,27 @@ $(document).ready(function () {
         columnDefs: [
             {
                 // Render action button
-                targets: 1
-                , render: (data, type, row) => {
-                    return `
-        <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus" data-field="quant[2]">
-        <i class="fa fa-minus"></i>
-        </button>
-        <button type="button" class ="btn btn-primary btn-circle btn-number plus-btn" data-type="plus" data-field="quant[2]">
-            <i class="fa fa-plus"></i>
-        </button>`;
+                targets: 0,
+                render: (data, type, row) => {
+                    return `<button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus">
+                                <i class="fa fa-minus"></i>
+                            </button>`;
+                }
+            },
+            {
+                targets: 1,
+                render: (data, type, row) => {
+                    return `<input type="number" min="1" max="23" class="max-time form-control" value="${row[0]}" />`;
+                }
+            },
+            {
+                targets: 2,
+                render: (data, type, row) => {
+                    return `<input type="number" class="price form-control" value="${row[1]}" />`;
                 }
             }
         ],
         columns: [
-            {
-                visible: false,
-                data: "0"
-            },
             {
                 searchable: false,
                 sortable: false,
@@ -63,46 +41,28 @@ $(document).ready(function () {
             {
                 title: 'Max time',
                 width: '38%',
-                data: "1"
+                data: "0"
             },
             {
                 title: 'Price',
                 width: '38%',
-                data: "2"
+                data: "1"
             }
 
         ]
     });
 
-    function bindMinusBtn() {
-        $('.minus-btn').unbind('click').click(function () {
-            table1.row($(this).parents('tr')).remove().draw();
-        });
-    }
-    bindMinusBtn();
-    (function bindPlusBtn() {
-        $('.plus-btn').unbind('click').click(function () {
-            table1.row.add({
-                "class": 0
-                , "time": 0
-                , "price": 0
-            }).draw();
-            bindPlusBtn();
-            bindMinusBtn();
-        });
-    })();
-
 	// Render re/deactivate button
-	let isActivateInput = Boolean($('#isActive').val());
-	function renderActivationBtn(){
+    function renderActivationBtn() {
+        let isActivateInput = ($('#isActive').val() === 'true');
 		let btn = $('#activationBtn')
 		if(isActivateInput == true){
-			btn.attr('data-action', 'deactivateCarGroup');
+		    btn.attr('data-action', 'deactivateCarGroup');
 			btn.html('Deactivate Car Group');
 			btn.removeClass('btn-success');
 			btn.addClass('btn-warning');
 		} else {
-			btn.attr('data-action', 'reactivateCarGroup');
+		    btn.attr('data-action', 'reactivateCarGroup');
 			btn.html('Reactivate Car Group');
 			btn.removeClass('btn-warning');
 			btn.addClass('btn-success');
@@ -110,7 +70,7 @@ $(document).ready(function () {
 	}
 	renderActivationBtn();
 	// Bind the change event of isActive input with rerendering the btn
-	isActivateInput.on('change', renderActivationBtn);
+	$('#isActive').on('change', renderActivationBtn);
 
 	// Intialize location selector
 	$('#locationID').chosen({
@@ -150,13 +110,17 @@ $(document).ready(function () {
 		}
 	});
 
+	let filterConditions = {
+	    VehicleGroupIDList: [groupID]
+	}
 	// Load vehicles belonging to this garage
 	let table = $('#vehicles').DataTable({
 		//data: mockupData,
 	    dom: 'ltipr',
 	    ajax: {
-	        url: `api/vehicleGroups/vehicles/${groupID}`,
-            type: "GET"
+	        type: "GET",
+	        url: `api/vehicles`,
+	        data: filterConditions,
 	    },
 		lengthMenu: [ 10, 25, 50 ],
 		processing: true,
@@ -227,9 +191,11 @@ $(document).ready(function () {
 	createCheckboxFilter(table, $('#garageFilter'), 3);
 
 	// Custom modal's content renders dynamically
-	$('#customModal').on('show.bs.modal', function(event) {
+	$('#customModal').on('show.bs.modal', function (event) {
 		let button = $(event.relatedTarget),
-			action = button.data('action');
+			action = button.data('action'),
+	        id = button.data('id'),
+            name = button.data('name');
 
 		switch(action){
 			case 'changeGarage':{
@@ -292,11 +258,13 @@ $(document).ready(function () {
 
 				renderConfirmModal('vehicle', 'delete', this, vehicles);
 			}
-			break;case 'deactivateCarGroup':{
-			    renderConfirmModal('carGroup', 'deactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			    break;
+			case 'deactivateCarGroup': {
+			    renderConfirmModal('vehicle group', 'deactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
 			}
-			break;case 'reactivateCarGroup':{
-			    renderConfirmModal('carGroup', 'reactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			    break;
+			case 'reactivateCarGroup': {
+			    renderConfirmModal('vehicle group', 'reactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
 			}
 			break;
 		}
@@ -309,4 +277,60 @@ $('#depositDisplay').val($('#deposit').val() * 100);
 
 $('#depositDisplay').on('focusout', function () {
     $('#deposit').val(parseFloat($('#depositDisplay').val() / 100));
+});
+
+$(document).on('click','.plus-btn', function () {
+    if (table1 == null) {
+        table1 = $('#priceGroupItem').DataTable({
+            dom: "ti",
+            displayLength: 23,
+            ordering: false,
+            columnDefs: [
+                {
+                    // Render action button
+                    targets: 0
+                    , render: (data, type, row) => {
+                        return `
+    <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus">
+    <i class="fa fa-minus"></i>
+    </button>`;
+                    }
+                }
+            ],
+            columns: [
+                {
+                    searchable: false,
+                    sortable: false,
+                    width: '24%'
+                },
+                {
+                    title: 'Max time',
+                    width: '38%',
+                    data: "MaxTime"
+                },
+                {
+                    title: 'Price',
+                    width: '38%',
+                    data: "Price"
+                }
+
+            ]
+        });
+    }
+    // limit 23 row
+    if ($('.max-time').length < 23) {
+        table1.row.add({
+            "MaxTime": `<input type="number" min="1" max="23" class="max-time form-control" value="" />`,
+            "Price": `<input type="number" class="price form-control" value="" />`,
+        }).draw();
+    }
+});
+
+$(document).on('click', '.minus-btn', function () {
+    table1.row($(this).parents('tr')).remove().draw();
+    if ($('.max-time').length == 0) {
+        table1.destroy();
+        table1 = null;
+        $('#priceGroupItem').empty();
+    }
 });

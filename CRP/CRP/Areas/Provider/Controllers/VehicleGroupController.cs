@@ -67,7 +67,7 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to create single new group
 		[Route("api/vehicleGroups")]
 		[HttpPost]
-		public async Task<JsonResult> CreateVehicleGroupAPI(VehicleGroupViewModel model)
+		public async Task<JsonResult> CreateVehicleGroupAPI(VehicleGroup model)
 		{
             if (!this.ModelState.IsValid)
             {
@@ -80,19 +80,18 @@ namespace CRP.Areas.Provider.Controllers
             
             var entity = this.Mapper.Map<VehicleGroup>(model);
             var priceGroupEntity = this.Mapper.Map<PriceGroup>(model.PriceGroup);
-            var priceGroupItemEntity = this.Mapper.Map<PriceGroupItem>(model.PriceGroup.PriceGroupItems);
+            var priceGroupItemsEntity = model.PriceGroup.PriceGroupItems;
 
-            if(entity == null || priceGroupEntity == null || priceGroupItemEntity == null)
+            if(entity == null || priceGroupEntity == null || priceGroupItemsEntity == null || priceGroupItemsEntity.Count == 0)
             {
                 return Json(new { result = false, message = "Create failed!" });
             }
 
             // create follow this step
             // 1
-            await priceGroupItemService.CreateAsync(priceGroupItemEntity);
-            //2
             await priceGroupService.CreateAsync(priceGroupEntity);
-            //3
+            //2
+            entity.DefaultPriceGroupID = priceGroupEntity.ID;
             await service.CreateAsync(entity);
 
             return Json(new { result = true, message = "Create successful!" });
@@ -144,15 +143,16 @@ namespace CRP.Areas.Provider.Controllers
             if(entity != null)
             {
                 var priceGroupEntity = await priceGroupService.GetAsync(entity.PriceGroup.ID);
-                await service.DeleteAsync(entity);
-                if(priceGroupEntity != null)
+                var priceGroupItemsEntity = priceGroupItemService.Get(q => q.PriceGroupID == priceGroupEntity.ID);
+                if (priceGroupEntity != null)
                 {
-                    var listPriceGroupItemEntity = priceGroupItemService.Get(q => q.PriceGroupID == priceGroupEntity.ID);
-                    await priceGroupService.DeleteAsync(priceGroupEntity);
-                    foreach(var item in listPriceGroupItemEntity)
+                    await service.DeleteAsync(entity);
+                    foreach(var item in priceGroupItemsEntity)
                     {
-                        await priceGroupItemService.DeleteAsync(item);
+                        priceGroupItemService.DeleteAsync(item);
                     }
+                    await priceGroupService.DeleteAsync(priceGroupEntity);
+                    
 
                     return Json(new { result = true, message = "Delete success!" });
                 }
