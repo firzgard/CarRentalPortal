@@ -23,7 +23,7 @@
                     @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b" style="color:white">Login</button>
-                <a href="./../forgetPassword/forgetPassword.html"><small>Forgot password?</small></a>
+                @Html.ActionLink("Forgot Password", "ForgotPassword")
                 <p class="text-muted text-center" style="color:white"><small>Do not have an account?</small></p>
                 @Html.ActionLink("Register as a new user", "Register")
             </div>

@@ -360,6 +360,7 @@
     <Compile Include="Models\Entities\GarageWorkingTime.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Repositories\UserRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleImageRepository.cs" />
     <Compile Include="Models\Entities\Services\CategoryService.cs" />
     <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />
@@ -1686,6 +1687,7 @@
     <Content Include="Areas\Provider\Views\VehicleGroup\CreatePopup.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupManagement.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupDetail.cshtml" />
+    <Content Include="Areas\Customer\Views\Booking\BookingHistory.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1712,8 +1714,8 @@
     <Content Include="Scripts\NoUISlider\nouislider.js" />
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
+    <Content Include="Scripts\pageScript\BookingHistory.js" />
     <Content Include="Scripts\pageScript\garage.js" />
-    <Content Include="Scripts\pageScript\garageList.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
     <Content Include="Scripts\pageScript\home.js" />
     <Content Include="Scripts\pageScript\search.js" />

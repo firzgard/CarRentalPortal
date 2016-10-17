@@ -27,36 +27,41 @@ $(document).ready(() => {
     
 	// Render table
 	let table = $('#garages').DataTable({
-        dom: "ltipr",
-		data: mockupData,
-		columnDefs: [
+	    dom: "ltipr",
+	    //data: mockupData,
+	    ajax: {
+	        url: "/api/garages",
+	        type: "GET",
+	        //data: searchCondition
+	    },
+	    columnDefs: [
 			{
-				// Render stars
-				targets: 4,
-				render: (data, type) => {
-					if(type === 'display'){
-						return renderStarRating(data);
-					}
-					return data;
-				}
+			    // Render stars
+			    targets: 4,
+			    render: (data, type) => {
+			        if (type === 'display') {
+			            return renderStarRating(data);
+			        }
+			        return data;
+			    }
 			},
 			{
-				// Render status label
-				targets: 5,
-				render: (data, type) => {
-					if(type === 'display'){
-						return `<div class="status-label" >
-							<p class="label label-${data ? 'primary': 'danger'}">${data ? 'Active': 'Inactive'}</p>
+			    // Render status label
+			    targets: 5,
+			    render: (data, type) => {
+			        if (type === 'display') {
+			            return `<div class="status-label" >
+							<p class="label label-${data ? 'primary' : 'danger'}">${data ? 'Active' : 'Inactive'}</p>
 						</div>`;
-					}
-					return data;
-				}
+			        }
+			        return data;
+			    }
 			},
 			{
-				// Render action button
-				targets: 6,
-				render: (data, type, row) => {
-					return `<div class="btn-group" >
+			    // Render action button
+			    targets: 6,
+			    render: (data, type, row) => {
+			        return `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
@@ -65,28 +70,27 @@ $(document).ready(() => {
 							${row.isActive ?
 								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row.id}" data-name="${row.name}" >Deactivate</a></li>`
 							:
-								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row.id}" data-name="${row.name}" >Activate</a></li>`
-							}
+								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row.id}" data-name="${row.name}" >Activate</a></li>`}
 							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row.id}" data-name="${row.name}" >Delete</a></li>
 						</ul>
 					</div>`;
-				}
+			    }
 			}
-		],
-		columns: [
-			{ name: 'ID', data: 'id', visible: false },
-			{ name: 'Name', title: 'Name', data: 'name', width: '25%' },
-			{ name: 'Address', title: 'Address', data: 'address', width: '30%' },
-			{ name: 'Location', title: 'Location', data: 'location', width: '15%' },
-			{ name: 'Stars', title: 'Stars', data: 'star', width: '10%' },
-			{ name: 'Status', title: 'Status', data: 'isActive', width: '10%' },
+	    ],
+	    columns: [
+			{ name: 'ID', data: '0', visible: false },
+			{ name: 'Name', title: 'Name', data: '1', width: '25%' },
+			{ name: 'Address', title: 'Address', data: '2', width: '30%' },
+			{ name: 'Location', title: 'Location', data: '3', width: '15%' },
+			{ name: 'Stars', title: 'Stars', data: '4', width: '10%' },
+			{ name: 'Status', title: 'Status', data: '5', width: '10%' },
 			{
-				title: 'Action',
-				width: '10%',
-				orderable: false,
-				searchable: false
+			    title: 'Action',
+			    width: '10%',
+			    orderable: false,
+			    searchable: false
 			}
-		]
+	    ]
 	});
 
     // garage's name text filter
@@ -124,110 +128,4 @@ $(document).ready(() => {
 			<button type="button" class="btn btn-danger">Yes</button>
 		</div>`);
 	});
-    
-    $('#addGarage').on('show.bs.modal', function(event) {
-        $(this).find('.modal-content').html(`
-            <div class="modal-header modal-header-popup">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Add garage</h4> </div>
-                <div class="modal-body">
-                    <div class="input-group"> <span class="input-group-addon"><i class="fa fa-building-o"></i></span>
-                        <input type="text" placeholder="Garage Name" value="Garage 3k" id="name" class="form-control input-lg" required> </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label for="locationID">Location*</label>
-                            <div class="form-group">
-                                <select data-placeholder="Choose a model..." id="modalItemSelector" class="form-control" style="width:350px;">
-                                    <option value></option>
-                                    <option value="1" selected>Hồ Chí Minh</option>
-                                    <option value="2">Hà Nội</option>
-                                    <option value="3">Cà Mau</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="address">Address*</label>
-                                <input type="text" placeholder="Address" value="666 Nguyen Hue" class="form-control" id="address" required> </div>
-                            <div class="form-group">
-                                <label for="email">Email*</label>
-                                <input type="email" placeholder="Email Address" value="asdqlwkjd@3krental.com" class="form-control" id="email" required> </div>
-                            <div class="form-group">
-                                <label for="phone1">Phone 1*</label>
-                                <input type="text" placeholder="Primary Phone Number" value="0912312032031" class="form-control" id="phone1" required> </div>
-                            <div class="form-group">
-                                <label for="phone2">Phone 2</label>
-                                <input type="text" placeholder="Alternative Phone Number" value="" class="form-control" id="phone2"> </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Open Time</label>
-                                <div class="input-group row">
-                                    <label class="col-xs-2 control-label">Mon</label>
-                                    <div class="input-group col-xs-10">
-                                        <div class="input-group-addon">From</div>
-                                        <input type="text" value="6:00" class="form-control" id="openTimeMon">
-                                        <div class="input-group-addon">To</div>
-                                        <input type="text" value="20:00" class="form-control" id="closeTimeMon"> </div>
-                                </div>
-                                <div class="input-group row">
-                                    <label class="col-xs-2 control-label">Tue</label>
-                                    <div class="input-group col-xs-10">
-                                        <div class="input-group-addon">From</div>
-                                        <input type="text" value="6:00" class="form-control" id="openTimeTue">
-                                        <div class="input-group-addon">To</div>
-                                        <input type="text" value="20:00" class="form-control" id="closeTimeTue"> </div>
-                                </div>
-                                <div class="input-group row">
-                                    <label class="col-xs-2 control-label">Wed</label>
-                                    <div class="input-group col-xs-10">
-                                        <div class="input-group-addon">From</div>
-                                        <input type="text" value="6:00" class="form-control" id="openTimeWed">
-                                        <div class="input-group-addon">To</div>
-                                        <input type="text" value="20:00" class="form-control" id="closeTimeWed"> </div>
-                                </div>
-                                <div class="input-group row">
-                                    <label class="col-xs-2 control-label">Thu</label>
-                                    <div class="input-group col-xs-10">
-                                        <div class="input-group-addon">From</div>
-                                        <input type="text" value="6:00" class="form-control" id="openTimeThur">
-                                        <div class="input-group-addon">To</div>
-                                        <input type="text" value="20:00" class="form-control" id="closeTimeThur"> </div>
-                                </div>
-                                <div class="input-group row">
-                                    <label class="col-xs-2 control-label">Fri</label>
-                                    <div class="input-group col-xs-10">
-                                        <div class="input-group-addon">From</div>
-                                        <input type="text" value="6:00" class="form-control" id="openTimeFri">
-                                        <div class="input-group-addon">To</div>
-                                        <input type="text" value="20:00" class="form-control" id="closeTimeFri"> </div>
-                                </div>
-                                <div class="input-group row">
-                                    <label class="col-xs-2 control-label">Sat</label>
-                                    <div class="input-group col-xs-10">
-                                        <div class="input-group-addon">From</div>
-                                        <input type="text" class="form-control" id="openTimeSat">
-                                        <div class="input-group-addon">To</div>
-                                        <input type="text" class="form-control" id="closeTimeSat"> </div>
-                                </div>
-                                <div class="input-group row">
-                                    <label class="col-xs-2 control-label">Sun</label>
-                                    <div class="input-group col-xs-10">
-                                        <div class="input-group-addon">From</div>
-                                        <input type="text" class="form-control" id="openTimeSun">
-                                        <div class="input-group-addon">To</div>
-                                        <input type="text" class="form-control" id="closeTimeSun"> </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button class="btn btn-primary" type="submit">Save changes</button>
-                </div>
-        `);
-        $('#modalItemSelector').chosen({
-            width: "100%",
-            no_results_text: "No result!"
-        });
-    });
 });
