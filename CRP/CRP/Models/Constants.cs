@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using CRP.Models.ViewModels;
 
 namespace CRP.Models
 {
@@ -14,27 +15,14 @@ namespace CRP.Models
 		public const int LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = 30;
 		public static readonly int[] COMMON_NUM_OF_SEAT = new int[] { 2, 4, 7, 16, 29, 45 };
 
-		public class SortingProp
+		public static readonly Dictionary<string, string> ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE = new Dictionary<string, string>
 		{
-			public string Value { get; set; }
-			public string Name { get; set; }
-
-			public SortingProp(string value, string name) { Value = value; Name = name; }
-		}
-
-		public static readonly List<SortingProp> ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE = new List<SortingProp>
-		{
-			new SortingProp("BestPossibleRentalPeriod", "Best Possible Rental Period"),
-			new SortingProp("BestPossibleRentalPrice", "Best Possible Rental Price"),
-			new SortingProp("Year", "Production Year"),
-			new SortingProp("NumOfComment", "Number of Review"),
-			new SortingProp("NumOfSeat", "Number of Seat"),
-			new SortingProp("Star", "Rating")
-		};
-		
-		public static readonly string[] ALLOWED_SORTING_PROPS_IN_VEHICLE_MANAGEMENT = new string[]
-		{
-			"BrandName", "GarageName", "LicenseNumber", "Location", "ModelName", "Name", "NumOfSeat", "Star", "TransmissionTypeName", "VehicleGroupName", "Year"
+			{ nameof(SearchResultItemJsonModel.BestPossibleRentalPeriod), "Best Possible Rental Period" },
+			{ nameof(SearchResultItemJsonModel.BestPossibleRentalPrice), "Best Possible Rental Price" },
+			{ nameof(SearchResultItemJsonModel.Year), "Production Year" },
+			{ nameof(SearchResultItemJsonModel.NumOfComment), "Number of Review" },
+			{ nameof(SearchResultItemJsonModel.NumOfSeat), "Number of Seat" },
+			{ nameof(SearchResultItemJsonModel.Star), "Rating" }
 		};
 
 		public static readonly Dictionary<int, string> COLOR = new Dictionary<int, string>

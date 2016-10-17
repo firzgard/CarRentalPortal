@@ -1513,6 +1513,7 @@
     <Content Include="Content\pageStyle\signUp.css" />
     <Content Include="Content\pageStyle\vehicleGroup.css" />
     <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
+    <Content Include="Content\pageStyle\vehicleManagement.css" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
     <Content Include="Content\patterns\3.png" />
@@ -1671,7 +1672,7 @@
     <Content Include="Areas\Customer\Views\web.config" />
     <Content Include="Areas\Provider\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Provider\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Provider\Views\Vehicle\Index.cshtml" />
+    <Content Include="Areas\Provider\Views\Vehicle\VehicleManagement.cshtml" />
     <Content Include="Areas\Provider\Views\Garage\GarageDetail.cshtml" />
     <Content Include="Areas\Provider\Views\Brand\Index.cshtml" />
     <Content Include="Areas\Provider\Views\Garage\GarageList.cshtml" />
@@ -1702,6 +1703,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\jsTree3\jstree.js" />
     <Content Include="Scripts\jsTree3\jstree.min.js" />
+    <Content Include="Scripts\main.js" />
     <Content Include="Scripts\metisMenu.js" />
     <Content Include="Scripts\metisMenu.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
@@ -1719,6 +1721,7 @@
     <Content Include="Scripts\pageScript\search.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
+    <Content Include="Scripts\pageScript\vehicleManagement.js" />
     <Content Include="Scripts\prototype.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
