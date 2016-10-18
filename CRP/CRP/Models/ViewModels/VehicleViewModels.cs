@@ -7,36 +7,17 @@ using CRP.Models.Entities;
 
 namespace CRP.Models.ViewModels
 {
-	// Prototype for SearchConditionModel and VehicleManagementFilterCondition
-	public abstract class VehicelFilterConditionModel
+	// Model for containing vehicle datatables filtering conditions
+	public class VehicleManagementFilterConditionModel
 	{
-		public int[] TransmissionTypeIDList { get; set; }
-		public int[] ColorIDList { get; set; }
-		public int?[] FuelTypeIDList { get; set; }
-		public int[] LocationIDList { get; set; }
-		public int[] CategoryIDList { get; set; }
-		public int? MaxProductionYear { get; set; }
-		public int? MinProductionYear { get; set; }
-		public int[] BrandIDList { get; set; } = new int[0];
-		public int[] ModelIDList { get; set; } = new int[0];
+		public string ProviderID { get; set; }
+		public int[] GarageID { get; set; }
+		public int?[] VehicleGroupID { get; set; }
 
 		public string OrderBy { get; set; }
 		public bool IsDescendingOrder { get; set; }
 		public int Page { get; set; } = 1;
 		public int RecordPerPage { get; set; } = Constants.NUM_OF_SEARCH_RESULT_PER_PAGE;
-	}
-
-	// Model for containing vehicle datatables filtering conditions
-	public class VehicleManagementFilterConditionModel : VehicelFilterConditionModel
-	{
-		public string ProviderID { get; set; }
-		public string LicenseNumber { get; set; }
-		public string Name { get; set; }
-		public int[] GarageIDList { get; set; }
-		public int?[] VehicleGroupIDList { get; set; }
-		public decimal? MaxRating { get; set; }
-		public decimal? MinRating { get; set; }
-
 		public int Draw { get; set; }
 	}
 

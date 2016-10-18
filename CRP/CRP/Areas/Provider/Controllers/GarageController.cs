@@ -51,19 +51,19 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpGet]
 		public JsonResult GetGarageListAPI()
 		{
-            String customerID = User.Identity.GetUserId();
-            var service = this.Service<IGarageService>();
-            var list = service.GetGarageList(customerID);
-            var result = list.Select(q => new IConvertible[] {
-                q.ID,
-                q.Name,
-                q.Address,
-                q.Location.Name,
-                q.Star,
-                q.IsActive,
-            });
-            return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
-        }
+			String customerID = User.Identity.GetUserId();
+			var service = this.Service<IGarageService>();
+			var list = service.GetGarageList(customerID);
+			var result = list.Select(q => new IConvertible[] {
+				q.ID,
+				q.Name,
+				q.Address,
+				q.Location.Name,
+				q.Star,
+				q.IsActive,
+			});
+			return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
+		}
 
 		// API Route to create single new garage
 		// garageViewModel

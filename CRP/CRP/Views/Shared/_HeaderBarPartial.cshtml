@@ -1,73 +1,33 @@
-﻿@using Microsoft.AspNet.Identity
-<div class="row border-bottom">
-	<nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0;z-index: 10000;">
-		<div class="navbar-header">
-			<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+﻿@using CRP.Models.Entities
+@using Microsoft.AspNet.Identity
+<div class="border-bottom">
+	<nav class="navbar white-bg" role="navigation" style="margin-bottom: 0; border-radius: 0;">
+		<div class="navbar-header" style="margin: 0 1em;">
+			<a class="" href="#"><h2><b>CRP</b></h2></a>
 		</div>
+		
 		<ul class="nav navbar-top-links navbar-right">
-			<li class="dropdown">
-				<a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-					<i class="fa fa-bell"></i>  <span class="label label-primary">8</span>
-				</a>
-				<ul class="dropdown-menu dropdown-alerts">
-					<li>
-						<a href="mailbox.html">
-							<div>
-								<i class="fa fa-envelope fa-fw"></i> You have 16 messages
-								<span class="pull-right text-muted small">4 minutes ago</span>
-							</div>
-						</a>
-					</li>
-					<li class="divider"></li>
-					<li>
-						<a href="profile.html">
-							<div>
-								<i class="fa fa-twitter fa-fw"></i> 3 New Followers
-								<span class="pull-right text-muted small">12 minutes ago</span>
-							</div>
-						</a>
-					</li>
-					<li class="divider"></li>
-					<li>
-						<a href="grid_options.html">
-							<div>
-								<i class="fa fa-upload fa-fw"></i> Server Rebooted
-								<span class="pull-right text-muted small">4 minutes ago</span>
-							</div>
-						</a>
-					</li>
-					<li class="divider"></li>
-					<li>
-						<div class="text-center link-block">
-							<a href="notifications.html">
-								<strong>See All Alerts</strong>
-								<i class="fa fa-angle-right"></i>
-							</a>
-						</div>
-					</li>
-				</ul>
-			</li>
-@if (Request.IsAuthenticated)
-{
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-        @Html.AntiForgeryToken()
+			@if (Request.IsAuthenticated)
+			{
+				using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+				{
+					@Html.AntiForgeryToken()
 
-        <ul class="nav navbar-nav navbar-right">
-            <li>
-                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage Infomation" })
-            </li>
-            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-        </ul>
-    }
-}
-else
-{
-    <ul class="nav navbar-nav navbar-right">
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-    </ul>
-}
+					<ul class="nav navbar-nav navbar-right">
+						<li>
+							@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage Infomation" })
+						</li>
+						<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+					</ul>
+				}
+			}
+			else
+			{
+				<ul class="nav navbar-nav navbar-right">
+					<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+					<li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+				</ul>
+			}
 		</ul>
 	</nav>
 </div>

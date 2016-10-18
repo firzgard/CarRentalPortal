@@ -414,9 +414,6 @@
     <Compile Include="Models\Entities\Nation.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\Notification.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\PriceGroup.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
