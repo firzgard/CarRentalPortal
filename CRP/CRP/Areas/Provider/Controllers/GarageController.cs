@@ -35,15 +35,7 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			var service = this.Service<IGarageService>();
 			Garage garage = service.Get(id);
-			if (garage != null)
-			{
-				ViewBag.garaDetail = garage;
-			}
-			else
-			{
-				return View("errorNull");
-			}
-			return View("~/Areas/Provider/Views/Garage/GarageDetail.cshtml");
+			return View("~/Areas/Provider/Views/Garage/GarageDetail.cshtml", garage);
 		}
 
 		// API Route to get list of garage
