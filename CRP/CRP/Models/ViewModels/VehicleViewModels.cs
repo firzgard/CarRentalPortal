@@ -32,7 +32,7 @@ namespace CRP.Models.ViewModels
 		public string ProviderID { get; set; }
 		public string LicenseNumber { get; set; }
 		public string Name { get; set; }
-		public int[] GarageIDList { get; set; }
+		public int GarageID { get; set; }
 		public int?[] VehicleGroupIDList { get; set; }
 		public decimal? MaxRating { get; set; }
 		public decimal? MinRating { get; set; }
