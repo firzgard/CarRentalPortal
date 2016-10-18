@@ -1,4 +1,4 @@
-﻿
+﻿@model CRP.Models.ViewModels.BookingCommentModel
 @{
     ViewBag.Title = "Booking History";
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
@@ -72,7 +72,7 @@
                 </div>
             </th>
             <!-- per day price filter --
-        <!-- price filter -->
+            <!-- price filter -->
             <!-- Status -->
             <th>
                 <div id="Status" class="btn-group">
@@ -121,10 +121,51 @@
                     </div>
                 </div>
             </th>
-            </div>
-            <th></th>
-            </tfoot>
         </table>
+    </div>
+    <th></th>
+    </tfoot>
+    </table>
+</div>
+</div>
+<div id="modal-form" class="modal fade" aria-hidden="true" style="margin-top:10px">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                @using (Html.BeginForm("Create", "Garage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="modal-header modal-header-popup">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add New Garage</h4>
+                    </div>
+                    <input type="text" name="comment" value=""
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="address">Address</label>
+                                    @Html.TextBoxFor(m => m.Comment, new { @class = "form-control", placeholder = "Adress" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    @Html.TextBoxFor(m => m.Star, new { @class = "form-control", placeholder = "Email" })
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone1">Phone 1</label>
+                                    @Html.TextBoxFor(m => m.ID, new { @class = "form-control", placeholder = "Phone" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </div>
 <div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
@@ -134,24 +175,23 @@
     </div>
 </div>
 
-
-    @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingHistory")
-                            .Include("~/Content/awesome-bootstrap-checkbox.css",
-                                "~/Content/chosen.css",
-                                "~/Content/DataTables/css/dataTables.bootstrap.css",
-                                "~/Content/pageStyle/vehicleGroupManagement.css"));
-    }
-    @section Styles {
-        @Styles.Render("~/Styles/BookingHistory")
-    }
-    @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingHistory")
-                             .Include("~/Scripts/chosen.jquery.js",
-                                "~/Scripts/DataTables/jquery.dataTables.js",
-                                "~/Scripts/DataTables/dataTables.bootstrap.js",
-                                "~/Scripts/utils/generateUIElements.js",
-                                "~/Scripts/utils/generateCustomDataTablesFilters.js",
-                                "~/Scripts/pageScript/BookingHistory.js"));
-    }
-    @section Scripts {
-        @Scripts.Render("~/Scripts/BookingHistory")
-    }
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingHistory")
+                                          .Include("~/Content/awesome-bootstrap-checkbox.css",
+                                              "~/Content/chosen.css",
+                                              "~/Content/DataTables/css/dataTables.bootstrap.css",
+                                              "~/Content/pageStyle/vehicleGroupManagement.css"));
+}
+@section Styles {
+    @Styles.Render("~/Styles/BookingHistory")
+}
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingHistory")
+                                           .Include("~/Scripts/chosen.jquery.js",
+                                              "~/Scripts/DataTables/jquery.dataTables.js",
+                                              "~/Scripts/DataTables/dataTables.bootstrap.js",
+                                              "~/Scripts/utils/generateUIElements.js",
+                                              "~/Scripts/utils/generateCustomDataTablesFilters.js",
+                                              "~/Scripts/pageScript/BookingHistory.js"));
+}
+@section Scripts {
+    @Scripts.Render("~/Scripts/BookingHistory")
+}
