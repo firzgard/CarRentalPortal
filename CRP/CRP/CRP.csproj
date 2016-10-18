@@ -327,6 +327,7 @@
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
+    <Compile Include="Areas\Provider\Controllers\BookingsController.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
     <Compile Include="Areas\Provider\Controllers\ModelController.cs" />
@@ -1689,6 +1690,7 @@
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupManagement.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupDetail.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingHistory.cshtml" />
+    <Content Include="Areas\Provider\Views\Bookings\BookingsManagement.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1717,6 +1719,7 @@
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
     <Content Include="Scripts\pageScript\BookingHistory.js" />
+    <Content Include="Scripts\pageScript\bookingsManagement.js" />
     <Content Include="Scripts\pageScript\garage.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
     <Content Include="Scripts\pageScript\home.js" />
@@ -1850,7 +1853,6 @@
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
-    <Folder Include="Areas\Provider\Views\Booking\" />
     <Folder Include="Areas\Provider\Views\PriceGroup\" />
     <Folder Include="Models\JsonModels\" />
     <Folder Include="Views\Base\" />

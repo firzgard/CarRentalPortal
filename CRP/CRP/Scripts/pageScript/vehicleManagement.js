@@ -1,15 +1,32 @@
 const vehicleTableColumns = [
 	{ name: 'ID', data: 'ID', visible: false, orderable: false, searchable: false }
-	, { name: 'Name', title: 'Name', data: 'Name' }
-	, { name: 'LicenseNumber', title: 'License', data: 'LicenseNumber' }
-	, { name: 'VehicleGroupName', title: 'Group', data: 'VehicleGroupName' }
-	, { name: 'Year', title: 'Year', data: 'Year' }
-	, { name: 'NumOfSeat', title: 'Seat', data: 'NumOfSeat' }
-	, { name: 'Star', title: "Rating", data: 'Star', width: '6.5em' }
+	, { name: 'Name', title: 'Tên', data: 'Name' }
+	, { name: 'LicenseNumber', title: 'Biển số', data: 'LicenseNumber' }
+	, { name: 'VehicleGroupName', title: 'Nhóm', data: 'VehicleGroupName' }
+	, { name: 'Year', title: 'Năm', data: 'Year' }
+	, { name: 'NumOfSeat', title: 'Số chỗ', data: 'NumOfSeat' }
+	, { name: 'Star', title: "Đánh giá", data: 'Star', width: '6.5em' }
 	, { name: 'Action', title: "Action", orderable: false, searchable: false }
 ]
 
+const viDatatables = {
+    lengthMenu: "Hiển thị _MENU_ dòng",
+    search: "Tìm kiếm",
+    paginate: {
+        first: "Trang đầu",
+        previous: "Trang trước",
+        next: "Trang sau",
+        last: "Trang cuối",
+    },
+    zeroRecords: "Không tìm thấy dữ liệu",
+    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    infoEmpty: "không có dữ liệu",
+    infoFiltered: "(được lọc ra từ _MAX_ dòng)"
+}
+
 $(document).ready(function () {
+    let garageID = parseInt($('#garageID').val());
+    
 	// set toogling dropdown event for filter dropdown buttons
 	$('#multiFilter .filter-toggle').on('click', function (event) {
 		let dropdownContainer = $(this).parent();
@@ -31,7 +48,7 @@ $(document).ready(function () {
 				console.log(rawData);
 				return {
 				    Draw: rawData.draw,
-                    GarageID: 1
+                    GarageID: garageID
 					, RecordPerPage: rawData.length
 					, Page: rawData.start / rawData.length + 1
 					, OrderBy: vehicleTableColumns[rawData.order[0].column].data
@@ -39,6 +56,7 @@ $(document).ready(function () {
 				};
 			}
 		},
+		language: viDatatables,
 		retrieve: true,
 		scrollCollapse: true,
 		processing: true,
@@ -76,6 +94,11 @@ $(document).ready(function () {
 				}
 			}
 		]
+	});
+
+	$('#garageID').change(function () {
+	    garageID = parseInt($('#garageID').val());
+	    table.ajax.reload();
 	});
 
 	// Dropzone.options.myAwesomeDropzone = {

@@ -2,7 +2,7 @@
 @using CRP.Models.Entities
 @using CRP.Models.ViewModels
 
-@* @model CRP.Models.ViewModels.SearchPageViewModel *@
+@model CRP.Models.ViewModels.GarageView
 
 @{
 	ViewBag.Title = "Vehicle Management";
@@ -10,20 +10,19 @@
 }
 
 <div class="row wrapper border-bottom white-bg page-heading">
-	<div class="col-md-10"><h2>Vehicle Management</h2></div>
+	<div class="col-md-10"><h2>Quản lý xe</h2></div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="ibox ibox-content float-e-margins">
         <div class="row">
-            <div class="pull-left m-l m-b">
-                <select>
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                </select>
+            <div class="col-md-2 pull-left m-l m-b">
+                <label class="form-control-static">Thuộc về garage</label>
+            </div>
+            <div class="col-md-3 pull-left m-l m-b">
+                @Html.DropDownListFor(q => q.garageID, this.Model.listGarage, new { @class = "form-control", @id = "garageID" })
             </div>
             <div class="pull-right m-r m-b">
-                <a id="add-car" class="btn btn-success" data-toggle="modal" data-target="#customModal" data-action="createVehicle"><i class="fa fa-plus"></i> New vehicle</a>
+                <a id="add-car" class="btn btn-success" data-toggle="modal" data-target="#customModal" data-action="createVehicle"><i class="fa fa-plus"></i> Thêm xe mới</a>
             </div>
         </div>
 		<table id="vehicleTable" class="table table-stripped table-bordered table-hover" width="100%">
@@ -49,7 +48,6 @@
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleManagement")
 	.Include("~/Scripts/DataTables/jquery.dataTables.js",
 		"~/Scripts/DataTables/dataTables.bootstrap.js",
-		"~/Scripts/DataTables/jquery.dataTales.js",
 		"~/Scripts/moment.js",
 		"~/Scripts/NoUISlider/nouislider.js",
 		"~/Scripts/select2/select2.full.js",
