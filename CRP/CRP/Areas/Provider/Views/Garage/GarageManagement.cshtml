@@ -2,11 +2,14 @@
 @{
 	ViewBag.Title = "Garage Management";
 	List<CRP.Models.Entities.Location> lstLocation = ViewBag.locationList;
+    String error = "";
 	Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
 <div class="row wrapper border-bottom white-bg page-heading">
 	<h2>Garage Management</h2>
 </div>
+@error
+
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="ibox ibox-content float-e-margins">
         <div class="pull-right m-r m-b">
@@ -142,8 +145,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-{
+    @using (Html.BeginForm("Create", "Garage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary("", new { @class = "text-danger" })
                 <div class="modal-header modal-header-popup">
@@ -258,8 +261,6 @@
                             </div>
                         </div>
                     </div>
-                  
-                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

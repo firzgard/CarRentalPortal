@@ -163,8 +163,32 @@ namespace CRP.Areas.Provider.Controllers
 			return new HttpStatusCodeResult(200, "Deleted successfully.");
 		}
 
-		//// GET: Brand
-		public ActionResult Index()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(createNewGarageViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var service = this.Service<IGarageService>();
+                var garage = new Garage
+                {
+                    Name = model.GarageName,
+                    Address = model.Address,
+                    Email = model.Email,
+                    Phone1 = model.PhoneNumber,
+                    LocationID = int.Parse(model.LocationID),
+                    OwnerID = User.Identity.GetUserId(),
+                    IsActive = true
+                };
+                service.Create(garage);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("GarageManagement", "Garage");
+        }
+
+        //// GET: Brand
+        public ActionResult Index()
 		{
 			var service = this.Service<IGarageService>();
 			List<Garage> lstGara = new List<Garage>();
