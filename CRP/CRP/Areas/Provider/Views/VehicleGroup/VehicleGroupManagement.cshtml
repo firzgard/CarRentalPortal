@@ -144,6 +144,13 @@
 </div>
 <div id="myModal" class="modal fade" role="dialog"></div>
 
+<div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
     @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleGroupManagement")
                             .Include("~/Content/awesome-bootstrap-checkbox.css",
                                 "~/Content/chosen.css",
@@ -158,6 +165,7 @@
                                 "~/Scripts/DataTables/jquery.dataTables.js",
                                 "~/Scripts/DataTables/dataTables.bootstrap.js",
                                 "~/Scripts/utils/generateUIElements.js",
+                                "~/Scripts/utils/customModals.js",
                                 "~/Scripts/utils/generateCustomDataTablesFilters.js",
                                 "~/Scripts/pageScript/vehicleGroupManagement.js"));
     }

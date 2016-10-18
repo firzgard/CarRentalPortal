@@ -1,48 +1,3 @@
-const mockupData = [
-	{ "id": 1, "name": "Garage1", "Max rental period": 4, "deposit": "500k", "per day price": "5000", "price": "5000", "isActive": true },
-	{ "id": 2, "name": "Garage2", "Max rental period": 4.7, "deposit": "500k", "per day price": "5000", "price": "5000", "isActive": false },
-	{ "id": 3, "name": "Garage3", "Max rental period": 4.7, "deposit": "500k", "per day price": "5000", "price": "5000", "isActive": false },
-	{ "id": 4, "name": "Garage4", "Max rental period": 4.7, "deposit": "500k", "per day price": "5000", "price": "5000", "isActive": false },
-	{ "id": 5, "name": "Garage5", "Max rental period": 4.7, "deposit": "500k", "per day price": "5000", "price": "5000", "isActive": false },
-	{ "id": 6, "name": "Garage6", "Max rental period": 4.7, "deposit": "500k", "per day price": "5000", "price": "5000", "isActive": false },
-];
-const mockupData2 = [
-            {
-                "class": 1
-                , "time": "1"
-                , "price": "100000"
-            }
-            , {
-                "class": 2
-                , "time": "2"
-                , "price": "100000"
-            }
-            , {
-                "class": 4
-                , "time": "4"
-                , "price": "100000"
-            }
-];
-
-const mockupData3 = [
-        {
-            "class": 1
-            , "MaxTime": "1"
-            , "Price": "100000"
-        }
-        , {
-            "class": 2
-            , "MaxTime": "2"
-            , "Price": "100000"
-        }
-        , {
-            "class": 4
-            , "MaxTime": "4"
-            , "Price": "100000"
-        }
-
-];
-
 $(document).ready(()=>{
     // set toogling dropdown event for filter dropdown buttons
 	$('#multiFilter .filter-toggle').on('click', function (event) {
@@ -91,8 +46,11 @@ $(document).ready(()=>{
 						</button>
 						<ul class="dropdown-menu">
 							<li><a href="/management/vehicleGroupManagement/${row[0]}">Edit</a></li>
-                            <li><a class="changeStatus" data-vehicle-id="${row[0]}" href="#">${row[6] === true ? "Deactivate": "Reactivate"}</a></li>
-                            <li><a class="deleteVehicle" data-vehicle-id="${row[0]}" href="#">Delete</a></li>
+                        ${row[6] === true?
+                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row[0]}" data-name="${row[1]}" >Deactivate</a></li>`:
+                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row[0]}" data-name="${row[1]}" >Reactivate</a></li>`
+							}
+                        <li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Delete</a></li>
 						</ul>
 					</div>`;
 				}
@@ -134,22 +92,17 @@ $(document).ready(()=>{
 			action = button.data('action')
 			id = button.data('id'),
 			name = button.data('name');
-
-		$(this).find('.modal-content').html(`<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-			<h2 class="modal-title">
-				${action === 'delete' ? 'Deletion' : (action === 'deactivate' ? 'Deactivation': 'Activation')} Confirmation
-			</h2>
-		</div>
-		<div class="modal-body">
-			You are about to <b>${action}</b> car group <b>${name}</b>. Are you sure?
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-			<button type="button" class="btn btn-danger">Yes</button>
-		</div>`);
+			switch (action) {
+			    case "activate": {
+			        renderConfirmModal('vehicle group', 'reactivate', this, [{ id: button.data('id'), name: button.data('name') }]);
+			    } break;
+			    case "deactivate": {
+			        renderConfirmModal('vehicle group', 'deactivate', this, [{ id: button.data('id'), name: button.data('name') }]);
+			    } break;
+			    case "delete": {
+			        renderConfirmModal('vehicle group', 'delete', this, [{ id: button.data('id'), name: button.data('name') }]);
+			    } break;
+			}
 	});
     
     $('#addGarage').on('show.bs.modal', function(event) {
@@ -232,7 +185,7 @@ $(document).ready(()=>{
                                         targets: 0
                                         , render: (data, type, row) => {
                                             return `
-        <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus" data-field="quant[2]">
+        <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus">
         <i class="fa fa-minus"></i>
         </button>`;
                                         }
@@ -258,7 +211,6 @@ $(document).ready(()=>{
                                 ]
                             });
                         }
-                        $('.minus-btn').css("display", "inline-block");
                         // limit 23 row
                         if($('.max-time').length < 23) {
                             table1.row.add({
@@ -279,36 +231,6 @@ $(document).ready(()=>{
 
 $(document).on('focusout', '#depositDisplay', function () {
     $('#deposit').val(parseFloat($('#depositDisplay').val() / 100));
-});
-
-// change status
-$(document).on('click', "a.changeStatus", function () {
-    let id = $(this).data("vehicle-id");
-    $.ajax({
-        url: `/api/vehicleGroups/status/${id}`,
-        type: "PATCH",
-        success: function (data) {
-            alert("ok");
-        },
-        eror: function (data) {
-            alert("fail");
-        }
-    });
-});
-
-// delete vehicle
-$(document).on('click', "a.deleteVehicle", function () {
-    let id = $(this).data("vehicle-id");
-    $.ajax({
-        url: `/api/vehicleGroups/${id}`,
-        type: "DELETE",
-        success: function (data) {
-            alert("ok");
-        },
-        eror: function (data) {
-            alert("fail");
-        }
-    });
 });
 
 // add to object priceGroupItem
@@ -349,7 +271,8 @@ $(document).on('click', "#btnCreate", function () {
     model.PriceGroup = {};
     model.PriceGroup.DepositPercentage = null;
     model.PriceGroup.PerDayPrice = null;
-    model.PriceGroup.PriceGroupItems = null;
+    model.PriceGroup.PriceGroupItems = {};
+    model.PriceGroup.PriceGroupItems = priceGroupItemList;
 
     if (!$('#group-name').val()) {
         alert("Name is required!");
@@ -394,9 +317,11 @@ $(document).on('click', "#btnCreate", function () {
 
 
     $.ajax({
-        url: "/api/vehicleGroups",
         type: "POST",
-        //data: model,
+        url: "/api/vehicleGroups",
+        data: JSON.stringify(model),
+        contentType: "application/json",
+        dataType: "json",
         success: function (data) {
             alert("ok");
         },
