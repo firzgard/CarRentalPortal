@@ -172,9 +172,9 @@ namespace CRP.Models.Entities.Services
 
 		public VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions)
 		{
-			// Get only vehicles belonged to this user
+			// Get only vehicles belonged to this user and in garage
 			var vehicles = repository.Get(
-				v => v.Garage.OwnerID == filterConditions.ProviderID
+				v => v.Garage.OwnerID == filterConditions.ProviderID && v.GarageID == filterConditions.GarageID
 			);
 
 			var recordsTotal = vehicles.Count();

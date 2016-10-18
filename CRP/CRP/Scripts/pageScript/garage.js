@@ -1,3 +1,29 @@
+const vehicleTableColumns = [
+	{ name: 'ID', data: 'ID', visible: false, orderable: false, searchable: false }
+	, { name: 'Name', title: 'Tên', data: 'Name' }
+	, { name: 'LicenseNumber', title: 'Biển số', data: 'LicenseNumber' }
+	, { name: 'VehicleGroupName', title: 'Nhóm', data: 'VehicleGroupName' }
+	, { name: 'Year', title: 'Năm', data: 'Year' }
+	, { name: 'NumOfSeat', title: 'Số chỗ', data: 'NumOfSeat' }
+	, { name: 'Star', title: "Đánh giá", data: 'Star', width: '6.5em' }
+	, { name: 'Action', title: "Action", orderable: false, searchable: false }
+]
+
+const viDatatables = {
+    lengthMenu: "Hiển thị _MENU_ dòng",
+    search: "Tìm kiếm",
+    paginate: {
+        first: "Trang đầu",
+        previous: "Trang trước",
+        next: "Trang sau",
+        last: "Trang cuối",
+    },
+    zeroRecords: "Không tìm thấy dữ liệu",
+    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    infoEmpty: "không có dữ liệu",
+    infoFiltered: "(được lọc ra từ _MAX_ dòng)"
+}
+
 $(document).ready(function () {
     $('.edit-control').css('display', 'none');
     $('#edit-btn').on('click', function () {
@@ -38,18 +64,6 @@ $(document).ready(function () {
 	// ============================================
 	// Vehicle table
 
-	// render model-tree selector
-	let modelTree = $.jstree.create('#modelTree', {
-		core: {
-			dblclick_toggle: false,
-			themes: {
-				icons: false,
-				variant: "small"
-			}
-		},
-		plugins: ["checkbox", "wholerow"]
-	});
-
 	// set toogling dropdown event for filter dropdown buttons
 	$('#multiFilter .filter-toggle').click(function(event){
 		let dropdownContainer = $(this).parent();
@@ -62,25 +76,46 @@ $(document).ready(function () {
 		}
 	});
 
+	let garageID = parseInt($('#garageID').val());
 	// Load vehicles belonging to this garage
-	let table = $('#vehicles').DataTable({
-	    ajax: {
-	        url: "",
-            type: "GET"
-	    },
-		dom: 'lftipr',
-		lengthMenu: [ 10, 25, 50 ],
-		processing: true,
-		select: {
-			selector: 'td:not(:last-child)',
-			style: 'multi+shift'
+	let table = $(vehicles).DataTable({
+	    dom: 'lfrtip'
+		, serverSide: true
+		, ajax: {
+		    url: queryApiUrl
+			, data: (rawData) => {
+			    console.log(rawData);
+			    return {
+			        Draw: rawData.draw,
+			        GarageID: garageID
+					, RecordPerPage: rawData.length
+					, Page: rawData.start / rawData.length + 1
+					, OrderBy: vehicleTableColumns[rawData.order[0].column].data
+					, IsDescendingOrder: rawData.order[0].dir == 'desc'
+			    };
+			}
 		},
-		columnDefs: [
+        language: viDatatables,
+	    retrieve: true,
+	    scrollCollapse: true,
+	    processing: true,
+	    select: {
+	        selector: 'td:not(:last-child)',
+	        style: 'multi+shift'
+	    },
+	    //"iDisplayLength": 10,
+	    columns: vehicleTableColumns,
+	    columnDefs: [
 			{
-				// Render action button
-				targets: 12,
-				render: (data, type, row) => {
-					return `<div class="btn-group" >
+			    targets: -2
+				, render: function (data, type, row) {
+				    return renderStarRating(data);
+				}
+			},
+			{
+			    targets: -1
+				, render: function (data, type, row) {
+				    var action = `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-info btn-block dropdown-toggle" aria-expanded="false">
 							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
 						</button>
@@ -92,50 +127,13 @@ $(document).ready(function () {
 							<li><a href="./../car/car.html" target="_blank">Edit Vehicle</a></li>
 						</ul>
 					</div>`;
+				    var edit = '<a class="btn btn-edit btn-primary btn-sm">Edit</a>'
+				    var del = '<a class="btn btn-edit btn-danger btn-sm">Delete</a>'
+				    return action;
 				}
 			}
-		],
-		columns: [
-			{ name: 'ID', data: 'id', type: 'num', visible: false },
-			{ name: 'BrandID', data: 'brandID', type: 'num', visible: false },
-			{ name: 'ModelID', data: 'modelID', type: 'num', visible: false },
-			{ name: 'GroupID', data: 'groupID', type: 'num', visible: false },
-			{ name: 'Name', title: 'Name', data: 'name', width: '20%' },
-			{ name: 'Model', title: 'Model', data: 'modelName', width: '15%' },
-			{ name: 'Category', title: 'Category', data: 'category', width: '10%' },
-			{ name: 'Year', title: 'Year', data: 'year', width: '5%' },
-			{ name: 'Seat', title: 'Seat', data: 'numOfSeat', width: '5%' },
-			{ name: 'Transmission', title: 'Transmission', data: 'transmission', width: '10%' },
-			{ name: 'Fuel', title: 'Fuel', data: 'fuel', width: '10%' },
-			{ name: 'Group', title: 'Group', data: 'groupName', width: '15%' },
-			{
-				name: 'Action', 
-				title: 'Action',
-				width: '10%',
-				orderable: false,
-				searchable: false
-			}
-		]
+	    ]
 	});
-
-	// Bind the filters with table
-
-	// Vehicle's name filter
-	createTextFilter(table, $('#vehicleNameFilter'), 'Name');
-	// Model filter
-	createTreeFilter(table, $('#modelFilter'), [1, 2], modelTree);
-	// Category filter
-	createCheckboxFilter(table, $('#categoryFilter'), 6);
-	// Year filter
-	createIntRangeFilter(table, $('#yearFilter'), 7);
-	// Seat filter
-	createIntRangeFilter(table, $('#seatFilter'), 8);
-	// Transmission filter
-	createCheckboxFilter(table, $('#transmissionFilter'), 9);
-	// Fuel filter
-	createCheckboxFilter(table, $('#fuelFilter'), 10);
-	// Vehicle Group filter
-	createCheckboxFilter(table, $('#groupFilter'), 3);
 
 	// Custom modal's content renders dynamically
 	$('#customModal').on('show.bs.modal', function(event) {
