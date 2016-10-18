@@ -54,6 +54,16 @@ namespace CRP.Areas.Provider.Controllers
 			return Json(vehicles, JsonRequestBehavior.AllowGet);
 		}
 
+        // Get list vehicle in garage
+        [Route("api/listVehicles/{id:int}")]
+        [HttpGet]
+        public JsonResult GetVehiclesAPI(int id)
+        {
+            var service = this.Service<IVehicleService>();
+            var vehicles = service.Get().Where(q => q.GarageID == id).ToList();
+            return Json("");
+        }
+
 		// API Route for getting vehicle's detailed infomations (for example, to duplicate vehicle)
 		[Route("api/vehicles/{id}")]
 		[HttpGet]
