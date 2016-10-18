@@ -24,6 +24,7 @@ namespace CRP.Models.Entities
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
         public Nullable<int> VehicleID { get; set; }
+        public string LicenseNumber { get; set; }
         public string VehicleName { get; set; }
         public string GarageName { get; set; }
         public string GarageAddress { get; set; }
