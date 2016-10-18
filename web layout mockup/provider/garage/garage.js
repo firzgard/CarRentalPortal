@@ -71,7 +71,6 @@ $(document).ready(function(){
 	let table = $('#vehicles').DataTable({
 		data: mockupData,
 		dom: 'ltipr',
-		lengthMenu: [ 10, 25, 50 ],
 		processing: true,
 		select: {
 			selector: 'td:not(:last-child)',

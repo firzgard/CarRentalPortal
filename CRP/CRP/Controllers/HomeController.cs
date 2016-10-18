@@ -80,7 +80,6 @@ namespace CRP.Controllers
 		[Route("api/search", Name = "SearchVehiclesAPI")]
 		public ActionResult SearchVehiclesAPI(SearchConditionModel searchConditions)
 		{
-			var service = this.Service<IVehicleService>();
 			if (searchConditions?.StartTime == null
 					|| searchConditions.EndTime == null
 					|| searchConditions.StartTime.Value < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR)
@@ -93,12 +92,14 @@ namespace CRP.Controllers
 					&& searchConditions.MaxPrice < searchConditions.MinPrice)
 				return new HttpStatusCodeResult(400, "Invalid price span");
 
-			if (!(searchConditions.OrderBy < Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.Count)
-					|| searchConditions.OrderBy < 0)
+			if (!(searchConditions.OrderBy == null
+				|| Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.ContainsKey(searchConditions.OrderBy)))
 				return new HttpStatusCodeResult(400, "Invalid sorting property");
 
 			Response.StatusCode = 200;
 			Response.StatusDescription = "Queried successfully";
+
+			var service = this.Service<IVehicleService>();
 			var searchResult = service.SearchVehicle(searchConditions);
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}

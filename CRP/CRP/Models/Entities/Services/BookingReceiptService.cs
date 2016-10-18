@@ -12,7 +12,9 @@ namespace CRP.Models.Entities.Services
 	public interface IBookingReceiptService : IService<BookingReceipt>
 	{
 		BookingReceiptModel GetBookingHistory(string customerID, int page, int recordPerPage);
-		int CancelBooking(string customerID, int bookingID);
+        List<BookingReceipt> GetBookingReceipt(string customerID);
+
+        int CancelBooking(string customerID, int bookingID);
 		int RateBooking(string customerID, BookingCommentModel commentModel);
 	}
 	public class BookingReceiptService : BaseService<BookingReceipt>, IBookingReceiptService
@@ -38,6 +40,16 @@ namespace CRP.Models.Entities.Services
 
 			return bookingModel;
 		}
+
+        public List<BookingReceipt> GetBookingReceipt(string customerID)
+        {
+            var bookingReceiptList = this.repository.Get();
+            List<BookingReceipt> lstBooking = bookingReceiptList
+                 .Where(q => q.CustomerID == customerID)
+                 .OrderByDescending(q => q.ID)
+                 .ToList();
+            return lstBooking;
+        }
 
 		public int CancelBooking(string customerID, int bookingID)
 		{

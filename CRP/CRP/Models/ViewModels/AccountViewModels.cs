@@ -68,7 +68,6 @@ namespace CRP.Models
 		[Display(Name = "Username")]
 		public string Username { get; set; }
 
-		[Required]
 		[Display(Name = "Full Name")]
 		public string Name { get; set; }
 
@@ -101,7 +100,34 @@ namespace CRP.Models
 		public string PhoneNumber { get; set; }
 	}
 
-	public class ResetPasswordViewModel
+    public class createNewGarageViewModel
+    {
+        [Required]
+        [Display(Name = "Garage Name")]
+        public string GarageName { get; set; }
+
+        [Required]
+        [Display(Name = "Location")]
+        public string LocationID { get; set; }
+
+        [Required]
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters.", MinimumLength = 2)]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "PhoneNumber")] 
+        public string PhoneNumber { get; set; }
+}
+
+
+    public class ResetPasswordViewModel
 	{
 		[Required]
 		[EmailAddress]

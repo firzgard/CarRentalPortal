@@ -53,11 +53,8 @@
 			<label class="col-xs-2">Sort by</label>
 			<div class="col-xs-6">
 				<select id="sorter" class="form-control" style="width: 100%;">
-					@for (int i=0, l = Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.Count(); i < l; i++)
-					{
-						<option value="@i" @(Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE[i].Value == "BestPossibleRentalPeriod" ? "selected" : "") >
-							@Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE[i].Name
-						</option>
+					@foreach(KeyValuePair<string, string> entry in Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE){
+						<option value="@entry.Key">@entry.Value</option>
 					}
 				</select>
 			</div>
