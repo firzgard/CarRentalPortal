@@ -1,0 +1,269 @@
+﻿@model CRP.Models.ViewModels.VehicleDetailInfoModel
+@{
+    ViewBag.Title = "VehihicleDetail";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-md-10"><h2>Vehicle Detail</h2></div>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-12">
+                    @Html.HiddenFor(q => q.ID, new { @id = "vehicleID" })
+                    <div class="ibox product-detail">
+                        <div class="ibox-content">
+                            <div class="row">
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Garage</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select class="form-control m-b">
+                                                <option selected>@Html.DisplayFor(q => q.GarageName)</option>
+                                                <option>Garage Y</option>
+                                                <option>Garage Z</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Group</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select class="form-control m-b">
+                                                <option selected>@Html.DisplayFor(q => q.VehicleGroupName)</option>
+                                                <option>Group B</option>
+                                                <option>Group C</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Brand</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select class="form-control m-b">
+                                                <option>Audi</option>
+                                                <option>BMW</option>
+                                                <option selected>@Html.DisplayFor(q=> q.BrandName)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Model</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <select class="form-control m-b">
+                                                <option>CRV-2015</option>
+                                                <option selected>@Html.DisplayFor(q => q.ModelName)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>License</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="m-b">
+                                                @Html.TextBoxFor(q => q.LicenseNumber, new { @type = "text", @class = "form-control"}) 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Engine</label>
+                                        </div>
+                                        <div class="col-md-8 m-b">
+                                            
+                                            @Html.TextBoxFor(q => q.Engine, new { @type = "text", @class = "form-control"})
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Fuel type</label>
+                                        </div>
+                                        <div class="col-md-8 m-b">
+                                            <select class="form-control">
+                                                <option selected>Petrol</option>
+                                                <option>Gas</option>
+                                                <option>Electric</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Transmission</label>
+                                        </div>
+                                        <div class="col-md-8 m-b">
+                                            <div class="form-control">
+                                                <div class="col-md-6"><input type="radio" checked value="Automatic" name="trans"> Automatic</div>
+                                                <div class="col-md-6"><input type="radio" value="Manual" name="trans"> Manual</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Color</label>
+                                        </div>
+                                        <div class="col-md-8 m-b" style="height: 200px;">
+                                            <div class="row m-l">
+                                                <span id="car-color"><i class="fa fa-lg fa-car"></i></span> <span id="color-name">@Html.DisplayFor(q=>q.ColorName)</span>
+                                                <a class="btn btn-sm btn-default m-l-xs" id="change-color">Change</a>
+
+                                                <div id="panel-color" class="panel panel-primary m-r m-t">
+                                                    <div class="panel-heading">
+                                                        Choose a color
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <a title="Beige" class="btn btn-lg btn-color" style="background-color: beige"></a>
+                                                        <a title="Black" class="btn btn-lg btn-color" style="background-color: black"></a>
+                                                        <a title="Blue" class="btn btn-lg btn-color" style="background-color: blue"></a>
+                                                        <a title="Brown" class="btn btn-lg btn-color" style="background-color: brown"></a>
+                                                        <a title="Gold" class="btn btn-lg btn-color" style="background-color: Gold"></a>
+                                                        <a title="Green" class="btn btn-lg btn-color" style="background-color: Green"></a>
+                                                        <a title="Orange" class="btn btn-lg btn-color" style="background-color: Orange"></a>
+                                                        <a title="Purple" class="btn btn-lg btn-color" style="background-color: Purple"></a>
+                                                        <a title="Red" class="btn btn-lg btn-color" style="background-color: Red"></a>
+                                                        <a title="Silver" class="btn btn-lg btn-color" style="background-color: Silver"></a>
+                                                        <a title="White" class="btn btn-lg btn-color" style="background-color: White"></a>
+                                                        <a title="Yellow" class="btn btn-lg btn-color" style="background-color: Yellow"></a>
+                                                        <br />
+                                                        <a id="close-color-panel" class="btn btn-sm btn-primary">close</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div id="img-div" class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Image</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="carousel slide m-b" id="carousel1">
+                                                <div class="carousel-inner">
+                                                    <div class="item active">
+                                                       
+                                                        <img alt="image" class="img-responsive" src="@Html.DisplayFor(q=>q.ImageUrls[0])">
+                                                    </div>
+                                                    <div class="item">
+                                                        <img alt="image" class="img-responsive" src="@Html.DisplayFor(q=>q.ImageUrls[1])">
+                                                    </div>
+                                                    <div class="item ">
+                                                        <img alt="image" class="img-responsive" src="@Html.DisplayFor(q=>q.ImageUrls[2])">
+                                                    </div>
+                                                    <div class="item ">
+                                                        <img alt="image" class="img-responsive" src="@Html.DisplayFor(q=>q.ImageUrls[3])">
+                                                    </div>
+                                                </div>
+                                                <a data-slide="prev" href="#carousel1" class="left carousel-control">
+                                                    <span class="icon-prev"></span>
+                                                </a>
+                                                <a data-slide="next" href="#carousel1" class="right carousel-control">
+                                                    <span class="icon-next"></span>
+                                                </a>
+                                            </div>
+                                            <a id="edit-img" class="btn btn-warning">Edit image</a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                        <div id="preview-template">
+                                        </div>
+                                        <div class="row">
+                                            <input type="button" name="submit-img" class="btn btn-success pull-right m-l-xs" value="Save" />
+                                            <a id="cancel-img" class="btn btn-default pull-right">Cancel</a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <hr>
+                            <div class="row">
+                                <div class="text-center">
+                                    <a class="btn btn-primary btn-lg">Save change</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="footer text-center" style="position: initial;">
+            <div>
+                <strong>Copyright</strong> Example Company &copy; 2014-2015
+            </div>
+        </div>
+
+<div id="edit-car" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg" style="width: 80%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Vehicle details</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+    @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleDetail")
+                                                          .Include("~/Content/awesome-bootstrap-checkbox.css",
+                                                              "~/Content/chosen.css",
+                                                              "~/Scripts/dropzone/dropzone.css",
+                                                              "~/Scripts/dropzone/basic.css",
+                                                              "~/Content/pageStyle/VehicleDetail.css"));
+    }
+    @section Styles {
+        @Styles.Render("~/Styles/VehicleDetail")
+    }
+    @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleDetail")
+                                        .Include("~/Scripts/chosen.jquery.js",
+                                           "~/Scripts/bootstrap.min.js",
+                                           "~/Scripts/dropzone/dropzone.js",
+                                           "~/Scripts/pageScript/VehicleDetail.js"));
+    }
+    @section Scripts {
+        @Scripts.Render("~/Scripts/VehicleDetail")
+    }

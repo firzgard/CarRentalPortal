@@ -38,7 +38,8 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			var service = this.Service<IVehicleService>();
 			Vehicle vehicle = service.Get(id);
-			return View("~/Areas/Provider/Views/Vehicle/VehicleDetail.cshtml", vehicle);
+            VehicleDetailInfoModel viewModel = new VehicleDetailInfoModel(vehicle);
+            return View("~/Areas/Provider/Views/Vehicle/VehicleDetail.cshtml", viewModel);
 		}
 
 		// API Route to get a list of vehicle to populate vehicleTable

@@ -1511,6 +1511,7 @@
     <Content Include="Content\pageStyle\login.css" />
     <Content Include="Content\pageStyle\search.css" />
     <Content Include="Content\pageStyle\signUp.css" />
+    <Content Include="Content\pageStyle\VehicleDetail.css" />
     <Content Include="Content\pageStyle\vehicleGroup.css" />
     <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
     <Content Include="Content\patterns\1.png" />
@@ -1686,6 +1687,7 @@
     <Content Include="Areas\Provider\Views\VehicleGroup\CreatePopup.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupManagement.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupDetail.cshtml" />
+    <Content Include="Areas\Provider\Views\Vehicle\VehicleDetail.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1717,6 +1719,7 @@
     <Content Include="Scripts\pageScript\garageManagement.js" />
     <Content Include="Scripts\pageScript\home.js" />
     <Content Include="Scripts\pageScript\search.js" />
+    <Content Include="Scripts\pageScript\VehicleDetail.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
     <Content Include="Scripts\prototype.js" />

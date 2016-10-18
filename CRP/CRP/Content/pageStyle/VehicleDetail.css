@@ -1,0 +1,11 @@
+﻿.btn-color {
+    border-radius: 0 !important;
+    border: #000 solid 1px;
+    margin: 2px 0px;
+}
+#panel-color {
+    display: none;
+}
+#my-awesome-dropzone {
+    display: none;
+}
