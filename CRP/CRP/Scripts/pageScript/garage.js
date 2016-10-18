@@ -1,26 +1,21 @@
-const mockupData = [
-	{ "id": 1, "name": "BMW X5a", "brandID": 2, "modelID": 14, "modelName": "BMW X5", "groupID": 1, "groupName": "BMW Group 1", "year": "2014", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 2, "name": "BMW X6b", "brandID": 2, "modelID": 15, "modelName": "BMW X6", "groupID": 1, "groupName": "BMW Group 1", "year": "2015", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 3, "name": "BMW X3c", "brandID": 2, "modelID": 13, "modelName": "BMW X3", "groupID": 1, "groupName": "BMW Group 1", "year": "2016", "category": "SUV", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 4, "name": "Audi A7d", "brandID": 1, "modelID": 3, "modelName": "Audi A7", "groupID": 2, "groupName": "Audi Group 2", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 5, "name": "Audi A8e", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2015", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 6, "name": "Audi A8f", "brandID": 1, "modelID": 4, "modelName": "Audi A8", "groupID": 2, "groupName": "Audi Group 2", "year": "2016", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"},
-	{ "id": 7, "name": "Ford Fiesta STg", "brandID": 3, "modelID": 18, "modelName": "Ford Fiesta Mk6", "groupID": 3, "groupName": "Ford Group 3", "year": "2014", "category": "Station Wagon", "numOfSeat": 8, "transmission": "Automatic", "fuel": "Diesel"}
-];
-
-$(document).ready(function(){
+$(document).ready(function () {
+    $('.edit-control').css('display', 'none');
+    $('#edit-btn').on('click', function () {
+        $('.edit-control').css('display', 'inherit');
+        $('.display-control').css('display', 'none');
+    });
 	// Render re/deactivate button
 	let isActivateInput = $('#isActive');
 	function renderActivationBtn(){
 		let btn = $('#activationBtn')
 		if(isActivateInput.val() == 'true'){
 			btn.attr('data-action', 'deactivateGarage');
-			btn.html('Deactivate Garage');
+			btn.html('Đóng cửa Garage');
 			btn.removeClass('btn-success');
 			btn.addClass('btn-warning');
 		} else {
 			btn.attr('data-action', 'reactivateGarage');
-			btn.html('Reactivate Garage');
+			btn.html('Mở cửa Garage');
 			btn.removeClass('btn-warning');
 			btn.addClass('btn-success');
 		}
@@ -69,8 +64,11 @@ $(document).ready(function(){
 
 	// Load vehicles belonging to this garage
 	let table = $('#vehicles').DataTable({
-		data: mockupData,
-		dom: 'ltipr',
+	    ajax: {
+	        url: "",
+            type: "GET"
+	    },
+		dom: 'lftipr',
 		lengthMenu: [ 10, 25, 50 ],
 		processing: true,
 		select: {
