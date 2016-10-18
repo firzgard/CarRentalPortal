@@ -15,7 +15,8 @@ namespace CRP
 					"~/Scripts/jquery.slimscroll.js",
 					"~/Scripts/metisMenu.js",
 					"~/Scripts/inspinia.js",
-					"~/Scripts/page.min.js"));
+					"~/Scripts/page.min.js",
+					"~/Scripts/main.js"));
 
 			bundles.Add(new StyleBundle("~/bundles/css").Include(
 					"~/Content/bootstrap.css",

@@ -21,11 +21,13 @@ namespace CRP.Models.Entities
         }
     
         public int ID { get; set; }
+        public string OwnerID { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> MaxRentalPeriod { get; set; }
         public int DefaultPriceGroupID { get; set; }
     
+        public virtual AspNetUser AspNetUser { get; set; }
         public virtual PriceGroup PriceGroup { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehicle> Vehicles { get; set; }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.AccessControl;
+using System.Security.Cryptography.Xml;
 using CRP.Models.Entities;
 
 namespace CRP.Models.ViewModels
@@ -17,9 +19,11 @@ namespace CRP.Models.ViewModels
 		public int? MinProductionYear { get; set; }
 		public int[] BrandIDList { get; set; } = new int[0];
 		public int[] ModelIDList { get; set; } = new int[0];
-		public int OrderBy { get; set; }
+
+		public string OrderBy { get; set; }
 		public bool IsDescendingOrder { get; set; }
 		public int Page { get; set; } = 1;
+		public int RecordPerPage { get; set; } = Constants.NUM_OF_SEARCH_RESULT_PER_PAGE;
 	}
 
 	// Model for containing vehicle datatables filtering conditions
@@ -32,6 +36,8 @@ namespace CRP.Models.ViewModels
 		public int?[] VehicleGroupIDList { get; set; }
 		public decimal? MaxRating { get; set; }
 		public decimal? MinRating { get; set; }
+
+		public int Draw { get; set; }
 	}
 
 	public interface IVehicleFilterJsonModel { }
@@ -39,15 +45,14 @@ namespace CRP.Models.ViewModels
 	public class VehicleDataTablesJsonModel : IVehicleFilterJsonModel
 	{
 		public List<VehicleManagementItemJsonModel> data { get; set; }
+		public int draw { get; set; }
 		public int recordsTotal { get; set; }
 		public int recordsFiltered { get; set; }
 
-		public VehicleDataTablesJsonModel(List<Vehicle> vehicleList, int totalRecords, int filteredRecords)
+		public VehicleDataTablesJsonModel(List<VehicleManagementItemJsonModel> vehicleList, int rDraw, int totalRecords, int filteredRecords)
 		{
-			data = new List<VehicleManagementItemJsonModel>();
-			foreach (Vehicle vehicle in vehicleList)
-				data.Add(new VehicleManagementItemJsonModel(vehicle));
-
+			data = vehicleList;
+			draw = rDraw;
 			recordsTotal = totalRecords;
 			recordsFiltered = filteredRecords;
 		}
@@ -59,11 +64,6 @@ namespace CRP.Models.ViewModels
 		public string LicenseNumber { get; set; }
 		public string Name { get; set; }
 		public int? Year { get; set; }
-		public List<string> CategoryList { get; set; }
-		public string GarageName { get; set; }
-		public string Location { get; set; }
-		public string TransmissionTypeName { get; set; }
-		public string FuelTypeName { get; set; }
 		public int NumOfSeat { get; set; }
 		public decimal? Star { get; set; }
 
@@ -73,41 +73,17 @@ namespace CRP.Models.ViewModels
 			LicenseNumber = vehicle.LicenseNumber;
 			Name = vehicle.Name;
 			Year = vehicle.Year;
-			GarageName = vehicle.Garage.Name;
-			Location = vehicle.Garage.Location.Name;
 			NumOfSeat = vehicle.Model.NumOfSeat;
 			Star = vehicle.Star;
-
-			CategoryList = vehicle.Model.Categories.Select(c => c.Name).ToList();
-
-			string tmpString = null;
-			Constants.TRANSMISSION_TYPE.TryGetValue(vehicle.TransmissionType, out tmpString);
-			TransmissionTypeName = tmpString;
-
-			if (vehicle.FuelType != null)
-			{
-				tmpString = null;
-				Constants.FUEL_TYPE.TryGetValue((int)vehicle.FuelType, out tmpString);
-				FuelTypeName = tmpString;
-			}
-
 		}
 	}
 
 	public class VehicleManagementItemJsonModel : VehicleRecordJsonModel
 	{
-		public string ModelName { get; set; }
-		public string BrandName { get; set; }
-		public int GarageID { get; set; }
-		public int? VehicleGroupID { get; set; }
 		public string VehicleGroupName { get; set; }
 
 		public VehicleManagementItemJsonModel(Vehicle vehicle) : base(vehicle)
 		{
-			ModelName = vehicle.Model.Name;
-			BrandName = vehicle.Model.Brand.Name;
-			GarageID = vehicle.GarageID;
-			VehicleGroupID = vehicle.VehicleGroupID;
 			VehicleGroupName = vehicle.VehicleGroup.Name;
 		}
 	}

@@ -10,6 +10,7 @@ using CRP.Models.JsonModels;
 using CRP.Controllers;
 using CRP.Models;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
 
 namespace CRP.Areas.Provider.Controllers
 {
@@ -22,17 +23,16 @@ namespace CRP.Areas.Provider.Controllers
 		//BookingReceiptService serviceBook = new BookingReceiptService();
 
 		// Route to vehicleManagement page
+		[Authorize(Roles = "Provider")]
 		[Route("management/vehicleManagement")]
 		public ViewResult VehicleManagement()
 		{
-			var service = this.Service<IVehicleService>();
-			List<Vehicle> lstVehicle = new List<Vehicle>();
-			lstVehicle = service.Get().ToList();
-			//ViewBag.vehiList = lstVehicle;
-			return View("~/Areas/Provider/Views/Vehicle/VehicleManagement.cshtml", lstVehicle);
+
+			return View("~/Areas/Provider/Views/Vehicle/VehicleManagement.cshtml");
 		}
 
 		// Route to vehicle's detailed info page
+		[Authorize(Roles = "Provider")]
 		[Route("management/vehicleManagement/{id:int}")]
 		public ViewResult VehihicleDetail(int id)
 		{
@@ -46,10 +46,18 @@ namespace CRP.Areas.Provider.Controllers
 		// So we need this API for server-side pagination
 		[Route("api/vehicles", Name = "GetVehicleListAPI")]
 		[HttpGet]
-		public JsonResult GetVehicleListAPI(VehicleManagementFilterConditionModel filterConditions)
+		public ActionResult GetVehicleListAPI(VehicleManagementFilterConditionModel filterConditions)
 		{
+			if (filterConditions.Draw == 0)
+				return new HttpStatusCodeResult(400, "Unqualified request");
+			if (filterConditions.OrderBy != null
+				&& typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy) == null)
+				return new HttpStatusCodeResult(400, "Invalid sorting property");
+
+			filterConditions.ProviderID = User.Identity.GetUserId();
+
 			var service = this.Service<IVehicleService>();
-			VehicleDataTablesJsonModel vehicles = service.FilterVehicle(filterConditions);
+			var vehicles = service.FilterVehicle(filterConditions);
 
 			return Json(vehicles, JsonRequestBehavior.AllowGet);
 		}
@@ -76,7 +84,6 @@ namespace CRP.Areas.Provider.Controllers
 			VehicleDetailInfoModel vehiclemodel = new VehicleDetailInfoModel(vehicle);
 
 			return Json(vehiclemodel, JsonRequestBehavior.AllowGet);
-
 		}
 
 		// API Route to create single new vehicles

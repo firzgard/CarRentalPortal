@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using CRP.Models.Entities.Repositories;
-using CRP.Models.JsonModels;
 using CRP.Models.ViewModels;
 
 namespace CRP.Models.Entities.Services
@@ -23,10 +20,39 @@ namespace CRP.Models.Entities.Services
 
 		public SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions)
 		{
-			var vehicles = repository.Get();
+			var vehicles = repository.Get(v => v.VehicleGroupID != null && v.VehicleGroup.IsActive && v.Garage.IsActive);
+			
+			// Transmission condition
+			if (filterConditions.TransmissionTypeIDList != null)
+				vehicles = vehicles.Where(v => filterConditions.TransmissionTypeIDList.Contains(v.TransmissionType));
 
-			// Run basic common filters
-			vehicles = BasicFilter(vehicles, filterConditions);
+			// Color condition
+			if (filterConditions.ColorIDList != null)
+				vehicles = vehicles.Where(v => filterConditions.ColorIDList.Contains(v.Color));
+
+			// FuelType condition
+			if (filterConditions.FuelTypeIDList != null)
+				vehicles = vehicles.Where(v => filterConditions.FuelTypeIDList.Contains(v.FuelType));
+
+			// Location condition
+			if (filterConditions.LocationIDList != null)
+				vehicles = vehicles.Where(v => filterConditions.LocationIDList.Contains(v.Garage.LocationID));
+
+			// Category condition
+			if (filterConditions.CategoryIDList != null)
+				vehicles = vehicles.Where(v => v.Model.Categories.Any(r => filterConditions.CategoryIDList.Contains(r.ID)));
+
+
+			// Max/Min ProductionYear condition
+			// Do not validate Max > Min here. Do it before this in the controller
+			if (filterConditions.MaxProductionYear != null && filterConditions.MinProductionYear != null)
+				vehicles = vehicles.Where(v => v.Year <= filterConditions.MaxProductionYear
+											&& v.Year >= filterConditions.MinProductionYear);
+
+			// Brand and Model condition
+			if (filterConditions.BrandIDList.Any() || filterConditions.ModelIDList.Any())
+				vehicles = vehicles.Where(v => filterConditions.BrandIDList.Contains(v.Model.BrandID)
+											|| filterConditions.ModelIDList.Contains(v.ModelID));
 
 			// NumOfSeatList condition
 			if (filterConditions.NumberOfSeatList != null)
@@ -92,43 +118,53 @@ namespace CRP.Models.Entities.Services
 
 			// Sort
 			// Validate OrderBy in the controller
-			var sortingProp = typeof(SearchResultItemJsonModel).GetProperty(Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE[filterConditions.OrderBy].Value);
-
-			// Keep the order descending for star and comment if those are not the main sorting prop
-			if (filterConditions.IsDescendingOrder)
+			if (filterConditions.OrderBy == null)
 			{
-				if (Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.FindIndex(p => p.Name == "Star") == filterConditions.OrderBy)
-					results = results.OrderByDescending(r => r.Star)
-									.ThenByDescending(r => r.NumOfComment);
-				else if (Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.FindIndex(p => p.Name == "NumOfComment") == filterConditions.OrderBy)
-					results = results.OrderByDescending(r => r.NumOfComment)
-									.ThenByDescending(r => r.Star);
-				else
-					results = results.OrderByDescending(r => sortingProp.GetValue(r))
-									.ThenByDescending(r => r.Star)
-									.ThenByDescending(r => r.NumOfComment);
+				results = results.OrderBy(r => r.BestPossibleRentalPeriod)
+								.ThenByDescending(r => r.Star)
+								.ThenByDescending(r => r.NumOfComment);
 			}
 			else
 			{
-				if (Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.FindIndex(p => p.Name == "Star") == filterConditions.OrderBy)
-					results = results.OrderBy(r => r.Star)
-									.ThenBy(r => r.NumOfComment);
-				else if (Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.FindIndex(p => p.Name == "NumOfComment") == filterConditions.OrderBy)
-					results = results.OrderBy(r => r.NumOfComment)
-									.ThenBy(r => r.Star);
-				else
-					results = results.OrderBy(r => sortingProp.GetValue(r))
-									.ThenByDescending(r => r.Star)
-									.ThenByDescending(r => r.NumOfComment);
-			}
+				var sortingProp = typeof(SearchResultItemJsonModel).GetProperty(filterConditions.OrderBy);
 
+				// Keep the order descending for star and comment if those are not the main sorting prop
+				// Ensure that the magical string represent attribute name exist
+				if (filterConditions.IsDescendingOrder)
+				{
+					if (nameof(SearchResultItemJsonModel.Star) == filterConditions.OrderBy)
+						results = results.OrderByDescending(r => r.Star)
+										.ThenByDescending(r => r.NumOfComment);
+					else if (nameof(SearchResultItemJsonModel.NumOfComment) == filterConditions.OrderBy)
+						results = results.OrderByDescending(r => r.NumOfComment)
+										.ThenByDescending(r => r.Star);
+					else
+						results = results.OrderByDescending(r => sortingProp.GetValue(r))
+										.ThenByDescending(r => r.Star)
+										.ThenByDescending(r => r.NumOfComment);
+				}
+				else
+				{
+					if (nameof(SearchResultItemJsonModel.Star) == filterConditions.OrderBy)
+						results = results.OrderBy(r => r.Star)
+										.ThenBy(r => r.NumOfComment);
+					else if (nameof(SearchResultItemJsonModel.NumOfComment) == filterConditions.OrderBy)
+						results = results.OrderBy(r => r.NumOfComment)
+										.ThenBy(r => r.Star);
+					else
+						results = results.OrderBy(r => sortingProp.GetValue(r))
+										.ThenByDescending(r => r.Star)
+										.ThenByDescending(r => r.NumOfComment);
+				}
+			}
+			
 			// Paginate
 			var filteredRecords = results.Count();
-			if (filterConditions.Page < 1 || (filterConditions.Page - 1) * Constants.NUM_OF_SEARCH_RESULT_PER_PAGE > filteredRecords)
+			if (filterConditions.Page < 1 || (filterConditions.Page - 1) * filterConditions.RecordPerPage > filteredRecords)
 				filterConditions.Page = 1;
 
-			results = results.Skip((filterConditions.Page - 1) * Constants.NUM_OF_SEARCH_RESULT_PER_PAGE)
-					.Take(Constants.NUM_OF_SEARCH_RESULT_PER_PAGE);
+			results = results.Skip((filterConditions.Page - 1) * filterConditions.RecordPerPage)
+							 .Take(filterConditions.RecordPerPage);
 
 			// Nest into result object
 			return new SearchResultJsonModel(results.ToList(), averagePrice, filteredRecords, filterConditions.Page);
@@ -143,99 +179,42 @@ namespace CRP.Models.Entities.Services
 
 			var recordsTotal = vehicles.Count();
 
-			// Filters, GO!!
-			// Filters that can take out the most records with the least work go first
-
-			// LicenseNumber condition
-			if (filterConditions.LicenseNumber != null)
-			{
-				vehicles = vehicles.Where(v => v.LicenseNumber.Contains(filterConditions.LicenseNumber));
-			}
-
-			// Name condtion
-			if (filterConditions.Name != null)
-			{
-				vehicles = vehicles.Where(v => v.Name.Contains(filterConditions.Name));
-			}
-
-			// GarageIDList condition
-			if (filterConditions.GarageIDList != null)
-			{
-				vehicles = vehicles.Where(v => filterConditions.VehicleGroupIDList.Contains(v.GarageID));
-			}
-
-			// VehicleGroupIDList condtion
-			if (filterConditions.VehicleGroupIDList != null)
-			{
-				vehicles = vehicles.Where(v => filterConditions.VehicleGroupIDList.Contains(v.VehicleGroupID));
-			}
-
-			// Max/Min Rating condition
-			// Do not validate Max > Min here. Do it before this in the controller
-			if (filterConditions.MaxRating != null &&
-				filterConditions.MinRating != null)
-			{
-				vehicles = vehicles.Where(v => v.Star <= filterConditions.MaxRating
-											&& v.Star >= filterConditions.MinRating);
-			}
-
-			// Run basic common filters
-			vehicles = BasicFilter(vehicles, filterConditions);
+			// Parse into returnable model
+			var results = vehicles.ToList().Select(v => new VehicleManagementItemJsonModel(v));
 
 			// Sort
-			var sortingProp = typeof(VehicleManagementItemJsonModel)
-				.GetProperty(Constants.ALLOWED_SORTING_PROPS_IN_VEHICLE_MANAGEMENT[filterConditions.OrderBy]);
-			vehicles = filterConditions.IsDescendingOrder
-				? vehicles.OrderByDescending(r => sortingProp.GetValue(r))
-				: vehicles.OrderBy(r => sortingProp.GetValue(r));
+			// Validate OrderBy in controller
+			if (filterConditions.OrderBy == null || nameof(VehicleManagementItemJsonModel.ID ) == filterConditions.OrderBy)
+			{
+				results = results.OrderBy(r => r.Name);
+			}
+			else
+			{
+				// Always sort by name after selected sorting prop
+				if (nameof(VehicleManagementItemJsonModel.Name) == filterConditions.OrderBy)
+				{
+					results = filterConditions.IsDescendingOrder
+						? results.OrderByDescending(r => r.Name)
+						: results.OrderBy(r => r.Name);
+				}
+				else
+				{
+					var sortingProp = typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy);
+					results = filterConditions.IsDescendingOrder
+						? results.OrderByDescending(r => sortingProp.GetValue(r))
+						: results.OrderBy(r => sortingProp.GetValue(r));
+				}
+			}
 
 			// Paginate
-			var filteredRecords = vehicles.Count();
-			if ((filterConditions.Page - 1) * Constants.NUM_OF_SEARCH_RESULT_PER_PAGE > filteredRecords)
+			var filteredRecords = results.Count();
+			if ((filterConditions.Page - 1) * filterConditions.RecordPerPage > filteredRecords)
 				filterConditions.Page = 1;
 
-			vehicles = vehicles.Skip((filterConditions.Page - 1) * Constants.NUM_OF_SEARCH_RESULT_PER_PAGE)
-					.Take(Constants.NUM_OF_SEARCH_RESULT_PER_PAGE);
+			results = results.Skip((filterConditions.Page - 1) * filterConditions.RecordPerPage)
+					.Take(filterConditions.RecordPerPage);
 
-			return new VehicleDataTablesJsonModel(vehicles.ToList(), recordsTotal, filteredRecords);
-		}
-
-		// Run common filters on a vehicle list
-		protected IQueryable<Vehicle> BasicFilter(IQueryable<Vehicle> vehicles , VehicelFilterConditionModel filterConditions)
-		{
-			// Transmission condition
-			if (filterConditions.TransmissionTypeIDList != null)
-				vehicles = vehicles.Where(v => filterConditions.TransmissionTypeIDList.Contains(v.TransmissionType));
-
-			// Color condition
-			if (filterConditions.ColorIDList != null)
-				vehicles = vehicles.Where(v => filterConditions.ColorIDList.Contains(v.Color));
-
-			// FuelType condition
-			if (filterConditions.FuelTypeIDList != null)
-				vehicles = vehicles.Where(v => filterConditions.FuelTypeIDList.Contains(v.FuelType));
-
-			// Location condition
-			if (filterConditions.LocationIDList != null)
-				vehicles = vehicles.Where(v => filterConditions.LocationIDList.Contains(v.Garage.LocationID));
-
-			// Category condition
-			if (filterConditions.CategoryIDList != null)
-				vehicles = vehicles.Where(v => v.Model.Categories.Any(r => filterConditions.CategoryIDList.Contains(r.ID)));
-
-
-			// Max/Min ProductionYear condition
-			// Do not validate Max > Min here. Do it before this in the controller
-			if (filterConditions.MaxProductionYear != null && filterConditions.MinProductionYear != null)
-				vehicles = vehicles.Where(v => v.Year <= filterConditions.MaxProductionYear
-											&& v.Year >= filterConditions.MinProductionYear);
-
-			// Brand and Model condition
-			if (filterConditions.BrandIDList.Any() || filterConditions.ModelIDList.Any())
-				vehicles = vehicles.Where(v => filterConditions.BrandIDList.Contains(v.Model.BrandID)
-											|| filterConditions.ModelIDList.Contains(v.ModelID));
-
-			return vehicles;
+			return new VehicleDataTablesJsonModel(results.ToList(), filterConditions.Draw, recordsTotal, filteredRecords);
 		}
 
 		// Check to see if the vehicle is available

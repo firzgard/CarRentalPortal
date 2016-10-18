@@ -25,47 +25,6 @@ function createTextFilter(table, filterNode, colName){
 	});
 }
 
-// For tree checkbox-like
-function createTreeFilter(table, filterNode, filterCol, tree){
-	let selectedItem = [];
-
-	$.fn.dataTable.ext.search.push((settings, data) => {
-		if(!(selectedItem.length === 0)){
-			return selectedItem.find((item) => {
-				if(item.nodeLvl == 1){
-					console.log(data[filterCol[0]], item.nodeI);
-					return data[filterCol[0]] == item.nodeId;
-				} else if(item.nodeLvl == 2){
-					console.log(data[filterCol[1]], item.nodeI);
-					return data[filterCol[1]] == item.nodeId;
-				}
-				return false;
-			});
-		}
-		return true;
-	});
-
-	// filter button clicked
-	filterNode.find('.dropdown-menu button').click((event) => {
-		selectedItem = tree.get_top_selected(true).map((item) => {
-			console.log(item.data);
-			return item.data;
-		});
-		if(selectedItem.length !== 0){
-			table.draw();
-			filterNode.find('.filter-toggle').addClass('btn-success');
-		}
-	});
-
-	// clear filter event
-	filterNode.find('.filter-remove').click((event) => {
-		selectedItem = [];
-		table.draw();
-		filterNode.find('.filter-toggle').removeClass('btn-success');
-		filterNode.removeClass('open');
-	});
-}
-
 // For checkbox-like
 function createCheckboxFilter(table, filterNode, filterCol){
 	let selectedItem = [];
