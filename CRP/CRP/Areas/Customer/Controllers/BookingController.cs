@@ -1,20 +1,19 @@
-﻿using CRP.Models.Entities;
+﻿using CRP.Controllers;
+using CRP.Models;
+using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
 using CRP.Models.JsonModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Timers;
-using System.Threading;
-using System.Threading.Tasks;
-using CRP.Controllers;
-using CRP.Models;
 using CRP.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
-using ActionResult = System.Web.Mvc.ActionResult;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
 
 namespace CRP.Areas.Customer.Controllers
 {
@@ -116,6 +115,42 @@ namespace CRP.Areas.Customer.Controllers
             ViewBag.BookingList = lstBooking;*/
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
+
+        [System.Web.Mvc.Route("api/BookingHistorys")]
+        [System.Web.Mvc.HttpGet]
+        public JsonResult GetBookingHistorypListAPI()
+        {
+            String customerID = User.Identity.GetUserId();
+            var service = this.Service<IBookingReceiptService>();
+            var list = service.GetBookingReceipt(customerID);
+            DateTime now = System.DateTime.Now;
+            foreach(BookingReceipt item in list)
+            {
+                if (item.EndTime < now)
+                {
+                    item.IsCanceled = true;
+                }
+            }
+            var result = list.Select(q => new IConvertible[] {
+                q.ID,
+                q.VehicleName,
+                q.StartTime,
+                q.EndTime,
+                q.IsCanceled,
+                q.Star
+            });
+            return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        [System.Web.Mvc.Route("api/BookingHistorys/{id:int}")]
+        [System.Web.Mvc.HttpGet]
+        public JsonResult getBookingReceiptAPI(int id)
+        {
+            String customerID = User.Identity.GetUserId();
+            var service = this.Service<IBookingReceiptService>();
+            var list = service.Get(id);
+            return Json(new { aaData = list }, JsonRequestBehavior.AllowGet);
+        }
         /*
         // API route for getting this user's booking receipts
         // Pagination needed
@@ -175,10 +210,10 @@ namespace CRP.Areas.Customer.Controllers
 		}
         */
 
-		// API route for canceling a booking
-		[System.Web.Mvc.Route("api/bookings/{id:int}")]
+        // API route for canceling a booking
+        [System.Web.Mvc.Route("api/bookings/{id:int}")]
 		[System.Web.Mvc.HttpDelete]
-		public ActionResult CancelBookingAPI(int id)
+		public System.Web.Mvc.ActionResult CancelBookingAPI(int id)
 		{
 			var customerID = User.Identity.GetUserId();
 
@@ -200,7 +235,7 @@ namespace CRP.Areas.Customer.Controllers
 		// API route for sending comment/rating for a booking
 		[System.Web.Mvc.Route("api/bookings/{id:int}")]
 		[System.Web.Mvc.HttpPatch]
-		public ActionResult RateBookingAPI([FromBody] BookingCommentModel commentModel)
+		public System.Web.Mvc.ActionResult RateBookingAPI([FromBody] BookingCommentModel commentModel)
 		{
 			var customerID = User.Identity.GetUserId();
 

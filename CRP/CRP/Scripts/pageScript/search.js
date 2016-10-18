@@ -120,9 +120,9 @@ function renderPaginator(domNode, data){
 }
 
 function renderRecordInfo(domNode, data){
-	let firstResultPosition = (searchConditions.Page - 1) * NumRecordPerPage + 1
-		, lastResultPosition = (searchConditions.Page * NumRecordPerPage) < data.TotalResult
-			? (searchConditions.Page * NumRecordPerPage)
+	let firstResultPosition = (searchConditions.Page - 1) * NUM_RECORD_PER_PAGE + 1
+		, lastResultPosition = (searchConditions.Page * NUM_RECORD_PER_PAGE) < data.TotalResult
+			? (searchConditions.Page * NUM_RECORD_PER_PAGE)
 			: data.TotalResult
 		, newHtml = `${firstResultPosition} - ${lastResultPosition} of ${data.TotalResult} vehicle(s)`;
 
@@ -174,7 +174,7 @@ function renderPriceSlider(data){
 }
 
 function renderSearcher(){
-	console.log(searchConditions);
+	//console.log(searchConditions);
 	jQueryNodes.searchResultGrid.addClass('hidden');
 	jQueryNodes.paginator.addClass('hidden');
 	jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
@@ -244,22 +244,20 @@ $(document).ready(() => {
 		, IsDescendingOrder: jQueryNodes.sortDirector.val()
 	};
 
-	let soonestPossibleBookingStartTimeFromNow = now.clone().add(SoonestPossibleBookingStartTimeFromNowInHour, 'hours').subtract(1, 'minutes'),
-		latestPossibleBookingStartTimeFromNow = now.clone().add(LatestPossibleBookingStartTimeFromNowInDay, 'days').add(1, 'minutes'),
-		soonestPossibleBookingEndTimeFromNow = now.clone().add(SoonestPossibleBookingEndTimeFromNowInHour, 'hours').subtract(1, 'minutes');
+	let soonestPossibleBookingStartTimeFromNow = now.clone().add(SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes'),
+		latestPossibleBookingStartTimeFromNow = now.clone().add(LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY, 'days').add(1, 'minutes'),
+		soonestPossibleBookingEndTimeFromNow = now.clone().add(SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes');
 
 	let sessionStartTime = sessionStorage.getItem('startTime');
 	sessionStartTime = sessionStartTime && moment(sessionStartTime);
 
-	if(sessionStartTime
-			&& sessionStartTime.isBefore(soonestPossibleBookingStartTimeFromNow)
-			&& sessionStartTime.isAfter(latestPossibleBookingStartTimeFromNow))
+	if(!sessionStartTime || (sessionStartTime.isBefore(soonestPossibleBookingStartTimeFromNow) && sessionStartTime.isAfter(latestPossibleBookingStartTimeFromNow)))
 		sessionStartTime = now.clone().add(1, 'days');
 
 	let sessionEndTime = sessionStorage.getItem('endTime');
 	sessionEndTime = sessionEndTime && moment(sessionEndTime);
 
-	if(sessionEndTime && sessionEndTime.isBefore(soonestPossibleBookingEndTimeFromNow))
+	if(!sessionEndTime || sessionEndTime.isBefore(soonestPossibleBookingEndTimeFromNow))
 		sessionEndTime = now.clone().add(2, 'days');
 
 	searchConditions.StartTime = sessionStartTime.toJSON()

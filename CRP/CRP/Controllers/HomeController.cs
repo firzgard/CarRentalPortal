@@ -22,17 +22,8 @@ namespace CRP.Controllers
 
 		// Route to vehicle search results
 		[Route("search", Name = "SearchPage")]
-		public ActionResult Search(DateTime? startTime, DateTime? endTime, int? locationID)
+		public ActionResult Search()
 		{
-			if(startTime != null)
-				Response.Cookies["searchConditions"]["startTime"] = startTime.ToString();
-			if (endTime != null)
-				Response.Cookies["searchConditions"]["endTime"] = endTime.ToString();
-			if (locationID != null)
-				Response.Cookies["searchConditions"]["locationID"] = locationID.ToString();
-			if(startTime != null || endTime != null || locationID != null)
-				Response.Cookies["searchConditions"].Expires = DateTime.Now.AddHours(1);
-
 			var brandService = this.Service<IBrandService>();
 			var brandList = brandService.Get(
 				b => b.ID != 1 // Exclude unlisted brand
@@ -92,9 +83,9 @@ namespace CRP.Controllers
 			var service = this.Service<IVehicleService>();
 			if (searchConditions?.StartTime == null
 					|| searchConditions.EndTime == null
-					|| searchConditions.StartTime.Value < DateTime.Now.AddHours(Constants.SoonestPossibleBookingStartTimeFromNowInHour)
-					|| searchConditions.StartTime.Value > DateTime.Now.AddDays(Constants.LatestPossibleBookingStartTimeFromNowInDay)
-					|| searchConditions.EndTime.Value < DateTime.Now.AddHours(Constants.SoonestPossibleBookingEndTimeFromNowInHour))
+					|| searchConditions.StartTime.Value < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR)
+					|| searchConditions.StartTime.Value > DateTime.Now.AddDays(Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY)
+					|| searchConditions.EndTime.Value < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR))
 				return new HttpStatusCodeResult(400, "Invalid booking time");
 
 			if (searchConditions.MaxPrice != null
@@ -102,7 +93,7 @@ namespace CRP.Controllers
 					&& searchConditions.MaxPrice < searchConditions.MinPrice)
 				return new HttpStatusCodeResult(400, "Invalid price span");
 
-			if (!(searchConditions.OrderBy < Constants.AllowedSortingPropsInSearchPage.Count)
+			if (!(searchConditions.OrderBy < Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.Count)
 					|| searchConditions.OrderBy < 0)
 				return new HttpStatusCodeResult(400, "Invalid sorting property");
 

@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CRP.Models;
+using CRP.Models.Entities.Services;
+using CRP.Models.Entities;
 
 namespace CRP.Controllers
 {
@@ -15,7 +17,8 @@ namespace CRP.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-
+        private UserService _userService = new UserService();
+        private String Error = "";
         public ManageController()
         {
         }
@@ -64,16 +67,49 @@ namespace CRP.Controllers
                 : "";
 
             var userId = User.Identity.GetUserId();
+            ApplicationUser user = await UserManager.FindByIdAsync(userId);
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
+                Name = user.UserName,
+                Email = await UserManager.GetEmailAsync(userId),
             };
+            ViewBag.Error = Error;
             return View(model);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Update(IndexViewModel model)
+        {
+            var userId = User.Identity.GetUserId();
+            if (ModelState.IsValid)
+            {
+                ApplicationUser user = await UserManager.FindByIdAsync(userId);
+                user.UserName = model.Name;
+                user.Email = model.Email;
+                user.PhoneNumber = model.PhoneNumber;
+                var result = await UserManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    return RedirectToAction("Index", "Manage");
+                }
+                else
+                {
+                    Error = "This Email has already!";
+                } 
+            }
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("Index", "Manage");
+        }
+
+
 
         //
         // POST: /Manage/RemoveLogin
