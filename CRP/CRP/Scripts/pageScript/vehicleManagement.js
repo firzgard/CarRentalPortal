@@ -2,16 +2,14 @@ const vehicleTableColumns = [
 	{ name: 'ID', data: 'ID', visible: false, orderable: false, searchable: false }
 	, { name: 'Name', title: 'Name', data: 'Name' }
 	, { name: 'LicenseNumber', title: 'License', data: 'LicenseNumber' }
-	, { name: 'GarageName', title: 'Garage', data: 'GarageName' }
 	, { name: 'VehicleGroupName', title: 'Group', data: 'VehicleGroupName' }
-	, { name: 'Location', title: 'Location', data: 'Location' }
 	, { name: 'Year', title: 'Year', data: 'Year' }
 	, { name: 'NumOfSeat', title: 'Seat', data: 'NumOfSeat' }
 	, { name: 'Star', title: "Rating", data: 'Star', width: '6.5em' }
 	, { name: 'Action', title: "Action", orderable: false, searchable: false }
 ]
 
-$(document).ready(function() {
+$(document).ready(function () {
 	// set toogling dropdown event for filter dropdown buttons
 	$('#multiFilter .filter-toggle').on('click', function (event) {
 		let dropdownContainer = $(this).parent();
@@ -25,31 +23,32 @@ $(document).ready(function() {
 	});
 
 	let table = $(vehicleTable).DataTable({
-		dom: "ltipr"
+		dom: "lftipr"
 		, serverSide: true
 		, ajax: {
 			url: queryApiUrl
 			, data: (rawData) => {
 				console.log(rawData);
 				return {
-					Draw: rawData.draw
+				    Draw: rawData.draw,
+                    GarageID: 1
 					, RecordPerPage: rawData.length
 					, Page: rawData.start / rawData.length + 1
 					, OrderBy: vehicleTableColumns[rawData.order[0].column].data
 					, IsDescendingOrder: rawData.order[0].dir == 'desc'
 				};
 			}
-		}
-		, retrieve: true
-		, scrollCollapse: true
-		, processing: true
-		, select: {
+		},
+		retrieve: true,
+		scrollCollapse: true,
+		processing: true,
+		select: {
 			selector: 'td:not(:last-child)',
 			style: 'multi+shift'
-		}
+		},
 		//"iDisplayLength": 10,
-		, columns : vehicleTableColumns
-		, columnDefs: [
+		columns: vehicleTableColumns,
+		columnDefs: [
 			{
 				targets: -2
 				, render: function(data, type, row) {

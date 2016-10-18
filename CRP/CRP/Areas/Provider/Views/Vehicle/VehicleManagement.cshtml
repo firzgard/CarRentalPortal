@@ -14,83 +14,19 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="ibox ibox-content float-e-margins">
-		<div class="pull-right m-r m-b">
-			<a id="add-car" class="btn btn-success" data-toggle="modal" data-target="#customModal" data-action="createVehicle"><i class="fa fa-plus"></i> New vehicle</a>
-		</div>
+        <div class="row">
+            <div class="pull-left m-l m-b">
+                <select>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                </select>
+            </div>
+            <div class="pull-right m-r m-b">
+                <a id="add-car" class="btn btn-success" data-toggle="modal" data-target="#customModal" data-action="createVehicle"><i class="fa fa-plus"></i> New vehicle</a>
+            </div>
+        </div>
 		<table id="vehicleTable" class="table table-stripped table-bordered table-hover" width="100%">
-			<thead></thead>
-			<tfoot id="multiFilter" ><tr>
-				<th></th>
-				<th></th>
-				<!-- vehicle license -->
-				<th>
-				</th>
-				<!-- garage name -->
-				<th>
-				</th>
-				<!-- group name -->
-				<th>
-				</th>
-				<!-- Location -->
-				<th><div id="locationFilter" class="btn-group" >
-					<button class="btn btn-sm btn-primary filter-toggle" aria-expanded="false">
-						<i class="fa fa-search"></i>
-					</button>
-					<button class="btn btn-sm btn-warning filter-remove">
-						<i class="fa fa-times"></i>
-					</button>
-					<div class="dropdown-menu filter-dropdown">
-						@* <select id="locationFilter" class="form-control" style="width: 100%;"  multiple>
-							@foreach (Location entry in Model.LocationList)
-							{
-								<option value="@entry.ID">@entry.Name</option>
-							}
-						</select> *@
-					</div>
-				</div></th>
-				<!-- Year -->
-				<th><div id="yearFilter" class="btn-group" >
-					<button class="btn btn-sm btn-primary filter-toggle" aria-expanded="false">
-						<i class="fa fa-search"></i>
-					</button>
-					<button class="btn btn-sm btn-warning filter-remove">
-						<i class="fa fa-times"></i>
-					</button>
-					<div class="dropdown-menu filter-dropdown"></div>
-				</div></th>
-				<!-- Seat -->
-				<th><div id="seatFilter" class="btn-group" >
-					<button class="btn btn-sm btn-primary filter-toggle" aria-expanded="false">
-						<i class="fa fa-search"></i>
-					</button>
-					<button class="btn btn-sm btn-warning filter-remove">
-						<i class="fa fa-times"></i>
-					</button>
-					<div class="dropdown-menu filter-dropdown"></div>
-				</div></th>
-				<!-- Rating -->
-				<th><div id="ratingFilter" class="btn-group" >
-					<button class="btn btn-sm btn-primary filter-toggle" aria-expanded="false">
-						<i class="fa fa-search"></i>
-					</button>
-					<button class="btn btn-sm btn-warning filter-remove">
-						<i class="fa fa-times"></i>
-					</button>
-					<div class="dropdown-menu filter-dropdown last-col-filter"></div>
-				</div></th>
-				<!-- Action buttons for multi-select -->
-				<th><div class="btn-group" >
-					<button data-toggle="dropdown" class="btn btn-primary btn-block dropdown-toggle" aria-expanded="false" >
-						<i class="fa fa-gear"></i> Actions <i class="caret"></i>
-					</button>
-					<ul class="dropdown-menu">
-						<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroupMulti">Change Group</a></li>
-						<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarageMulti">Change Garage</a></li>
-						<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicleMulti">Delete Vehicle</a></li>
-					</ul>
-				</div></th>
-				
-			</tr></tfoot>
 		</table>
 	</div>
 </div>
