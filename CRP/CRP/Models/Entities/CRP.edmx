@@ -113,7 +113,7 @@
           <Property Name="Email" Type="varchar" MaxLength="256" Nullable="false" />
           <Property Name="Phone1" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Phone2" Type="varchar" MaxLength="50" />
-          <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
+          <Property Name="Star" Type="decimal" Precision="2" Scale="1" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="SelfDescription" Type="nvarchar" MaxLength="1000" />
         </EntityType>
@@ -160,17 +160,6 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
-        <EntityType Name="Notification">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="SenderID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ReceiverID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="NotificationContent" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="SentTime" Type="datetime" Nullable="false" />
-          <Property Name="IsRead" Type="bit" Nullable="false" />
-        </EntityType>
         <EntityType Name="PriceGroup">
           <Key>
             <PropertyRef Name="ID" />
@@ -212,7 +201,7 @@
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="OwnerID" Type="nvarchar" MaxLength="128" />
+          <Property Name="OwnerID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="MaxRentalPeriod" Type="int" />
@@ -283,18 +272,6 @@
             </Principal>
             <Dependent Role="Vehicle">
               <PropertyRef Name="GarageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CarImage_Car">
-          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
-          <End Role="VehicleImage" Type="Self.VehicleImage" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Vehicle">
-              <PropertyRef Name="ID" />
-            </Principal>
-            <Dependent Role="VehicleImage">
-              <PropertyRef Name="CarID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -438,30 +415,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Notification_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Notification">
-              <PropertyRef Name="SenderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Notification_AspNetUsers1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Notification">
-              <PropertyRef Name="ReceiverID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_PriceGroupItem_PriceGroup1">
           <End Role="PriceGroup" Type="Self.PriceGroup" Multiplicity="1" />
           <End Role="PriceGroupItem" Type="Self.PriceGroupItem" Multiplicity="*" />
@@ -487,7 +440,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_VehicleGroup_AspNetUsers">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="0..1" />
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
           <End Role="VehicleGroup" Type="Self.VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
@@ -510,6 +463,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_VehicleImage_Vehicle">
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
+          <End Role="VehicleImage" Type="Self.VehicleImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vehicle">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VehicleImage">
+              <PropertyRef Name="CarID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="CRPDBModelStoreContainer">
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
@@ -525,7 +490,6 @@
           <EntitySet Name="Model" EntityType="Self.Model" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ModelCategoryMapping" EntityType="Self.ModelCategoryMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Nation" EntityType="Self.Nation" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceGroup" EntityType="Self.PriceGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceGroupItem" EntityType="Self.PriceGroupItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
@@ -550,10 +514,6 @@
           <AssociationSet Name="FK_Car_Store" Association="Self.FK_Car_Store">
             <End Role="Garage" EntitySet="Garage" />
             <End Role="Vehicle" EntitySet="Vehicle" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CarImage_Car" Association="Self.FK_CarImage_Car">
-            <End Role="Vehicle" EntitySet="Vehicle" />
-            <End Role="VehicleImage" EntitySet="VehicleImage" />
           </AssociationSet>
           <AssociationSet Name="FK_CarModel_CarBrand" Association="Self.FK_CarModel_CarBrand">
             <End Role="Brand" EntitySet="Brand" />
@@ -599,14 +559,6 @@
             <End Role="Model" EntitySet="Model" />
             <End Role="ModelCategoryMapping" EntitySet="ModelCategoryMapping" />
           </AssociationSet>
-          <AssociationSet Name="FK_Notification_AspNetUsers" Association="Self.FK_Notification_AspNetUsers">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Notification" EntitySet="Notification" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notification_AspNetUsers1" Association="Self.FK_Notification_AspNetUsers1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Notification" EntitySet="Notification" />
-          </AssociationSet>
           <AssociationSet Name="FK_PriceGroupItem_PriceGroup1" Association="Self.FK_PriceGroupItem_PriceGroup1">
             <End Role="PriceGroup" EntitySet="PriceGroup" />
             <End Role="PriceGroupItem" EntitySet="PriceGroupItem" />
@@ -622,6 +574,10 @@
           <AssociationSet Name="FK_VehicleGroup_PriceGroup1" Association="Self.FK_VehicleGroup_PriceGroup1">
             <End Role="PriceGroup" EntitySet="PriceGroup" />
             <End Role="VehicleGroup" EntitySet="VehicleGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehicleImage_Vehicle" Association="Self.FK_VehicleImage_Vehicle">
+            <End Role="Vehicle" EntitySet="Vehicle" />
+            <End Role="VehicleImage" EntitySet="VehicleImage" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -641,7 +597,6 @@
           <EntitySet Name="Locations" EntityType="CRPDBModel.Location" />
           <EntitySet Name="Models" EntityType="CRPDBModel.Model" />
           <EntitySet Name="Nations" EntityType="CRPDBModel.Nation" />
-          <EntitySet Name="Notifications" EntityType="CRPDBModel.Notification" />
           <EntitySet Name="PriceGroups" EntityType="CRPDBModel.PriceGroup" />
           <EntitySet Name="PriceGroupItems" EntityType="CRPDBModel.PriceGroupItem" />
           <EntitySet Name="Vehicles" EntityType="CRPDBModel.Vehicle" />
@@ -662,14 +617,6 @@
           <AssociationSet Name="FK_Garage_AspNetUsers" Association="CRPDBModel.FK_Garage_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="Garage" EntitySet="Garages" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notification_AspNetUsers" Association="CRPDBModel.FK_Notification_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Notification" EntitySet="Notifications" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Notification_AspNetUsers1" Association="CRPDBModel.FK_Notification_AspNetUsers1">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
           <AssociationSet Name="FK_VehicleGroup_AspNetUsers" Association="CRPDBModel.FK_VehicleGroup_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
@@ -719,7 +666,7 @@
             <End Role="VehicleGroup" EntitySet="VehicleGroups" />
             <End Role="Vehicle" EntitySet="Vehicles" />
           </AssociationSet>
-          <AssociationSet Name="FK_CarImage_Car" Association="CRPDBModel.FK_CarImage_Car">
+          <AssociationSet Name="FK_VehicleImage_Vehicle" Association="CRPDBModel.FK_VehicleImage_Vehicle">
             <End Role="Vehicle" EntitySet="Vehicles" />
             <End Role="VehicleImage" EntitySet="VehicleImages" />
           </AssociationSet>
@@ -784,8 +731,6 @@
           <NavigationProperty Name="AspNetUserLogins" Relationship="CRPDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="AspNetUser" ToRole="BookingReceipt" />
           <NavigationProperty Name="Garages" Relationship="CRPDBModel.FK_Garage_AspNetUsers" FromRole="AspNetUser" ToRole="Garage" />
-          <NavigationProperty Name="Notifications" Relationship="CRPDBModel.FK_Notification_AspNetUsers" FromRole="AspNetUser" ToRole="Notification" />
-          <NavigationProperty Name="Notifications1" Relationship="CRPDBModel.FK_Notification_AspNetUsers1" FromRole="AspNetUser" ToRole="Notification" />
           <NavigationProperty Name="VehicleGroups" Relationship="CRPDBModel.FK_VehicleGroup_AspNetUsers" FromRole="AspNetUser" ToRole="VehicleGroup" />
           <NavigationProperty Name="AspNetRoles" Relationship="CRPDBModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
         </EntityType>
@@ -848,7 +793,7 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="Phone1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Phone2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="Star" Type="Decimal" Precision="2" Scale="1" />
+          <Property Name="Star" Type="Decimal" Nullable="false" Precision="2" Scale="1" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="SelfDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_Garage_AspNetUsers" FromRole="Garage" ToRole="AspNetUser" />
@@ -899,19 +844,6 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Locations" Relationship="CRPDBModel.FK_Location_Nation" FromRole="Nation" ToRole="Location" />
         </EntityType>
-        <EntityType Name="Notification">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="SenderID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ReceiverID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="NotificationContent" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="SentTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="IsRead" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_Notification_AspNetUsers" FromRole="Notification" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="CRPDBModel.FK_Notification_AspNetUsers1" FromRole="Notification" ToRole="AspNetUser" />
-        </EntityType>
         <EntityType Name="PriceGroup">
           <Key>
             <PropertyRef Name="ID" />
@@ -954,14 +886,14 @@
           <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_Car_Store" FromRole="Vehicle" ToRole="Garage" />
           <NavigationProperty Name="Model" Relationship="CRPDBModel.FK_Vehicle_Model" FromRole="Vehicle" ToRole="Model" />
           <NavigationProperty Name="VehicleGroup" Relationship="CRPDBModel.FK_Car_CarGroup" FromRole="Vehicle" ToRole="VehicleGroup" />
-          <NavigationProperty Name="VehicleImages" Relationship="CRPDBModel.FK_CarImage_Car" FromRole="Vehicle" ToRole="VehicleImage" />
+          <NavigationProperty Name="VehicleImages" Relationship="CRPDBModel.FK_VehicleImage_Vehicle" FromRole="Vehicle" ToRole="VehicleImage" />
         </EntityType>
         <EntityType Name="VehicleGroup">
           <Key>
             <PropertyRef Name="ID" />
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="OwnerID" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="OwnerID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="MaxRentalPeriod" Type="Int32" />
@@ -977,7 +909,7 @@
           </Key>
           <Property Name="URL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="CarID" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_CarImage_Car" FromRole="VehicleImage" ToRole="Vehicle" />
+          <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_VehicleImage_Vehicle" FromRole="VehicleImage" ToRole="Vehicle" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -1031,32 +963,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Notification_AspNetUsers">
-          <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="CRPDBModel.Notification" Role="Notification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Notification">
-              <PropertyRef Name="SenderID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Notification_AspNetUsers1">
-          <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="CRPDBModel.Notification" Role="Notification" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Notification">
-              <PropertyRef Name="ReceiverID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_VehicleGroup_AspNetUsers">
-          <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="0..1" />
+          <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
           <End Type="CRPDBModel.VehicleGroup" Role="VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUser">
@@ -1199,7 +1107,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_CarImage_Car">
+        <Association Name="FK_VehicleImage_Vehicle">
           <End Type="CRPDBModel.Vehicle" Role="Vehicle" Multiplicity="1" />
           <End Type="CRPDBModel.VehicleImage" Role="VehicleImage" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1369,18 +1277,6 @@
             <EntityTypeMapping TypeName="CRPDBModel.Nation">
               <MappingFragment StoreEntitySet="Nation">
                 <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Notifications">
-            <EntityTypeMapping TypeName="CRPDBModel.Notification">
-              <MappingFragment StoreEntitySet="Notification">
-                <ScalarProperty Name="IsRead" ColumnName="IsRead" />
-                <ScalarProperty Name="SentTime" ColumnName="SentTime" />
-                <ScalarProperty Name="NotificationContent" ColumnName="NotificationContent" />
-                <ScalarProperty Name="ReceiverID" ColumnName="ReceiverID" />
-                <ScalarProperty Name="SenderID" ColumnName="SenderID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

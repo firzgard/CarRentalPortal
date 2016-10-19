@@ -255,5 +255,23 @@ namespace CRP.Areas.Customer.Controllers
 			}
 			return new HttpStatusCodeResult(500, "Internal server error.");
 		}
-	}
+        [System.Web.Mvc.Route("api/CommentBooking")]
+        [System.Web.Mvc.HttpPost]
+        public async Task<JsonResult> EditPC()
+        {
+            int id = int.Parse(Request.Params["id"]);
+            String comment = Request.Params["comment"];
+            decimal star = decimal.Parse(Request.Params["star"]);
+            var service = this.Service<IBookingReceiptService>();
+            var entity = await service.GetAsync(id);
+            if (entity != null)
+            {
+                entity.Comment = comment;
+                entity.Star = star;
+                await service.UpdateAsync(entity);
+                return Json(new { result = true, message = "Change status success!" });
+            }
+            return Json(new { result = false, message = "Change status failed!" });
+        }
+    }
 }

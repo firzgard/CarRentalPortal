@@ -1,0 +1,47 @@
+﻿@model CRP.Models.ViewModels.FilterByGarageView
+
+@{
+    ViewBag.Title = "Bookings Management - CRP";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-md-10"><h2>Quản lý đặt xe</h2></div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="ibox ibox-content float-e-margins">
+        <div class="row">
+            <div class="col-md-2 pull-left m-l m-b">
+                <label class="form-control-static">Thuộc về garage</label>
+            </div>
+            <div class="col-md-3 pull-left m-l m-b">
+                @Html.DropDownListFor(q => q.garageID, this.Model.listGarage, new { @class = "form-control", @id = "garageID" })
+            </div>
+            <div class="pull-right m-r m-b">
+                
+            </div>
+        </div>
+        <table id="bookings" class="table table-stripped table-bordered table-hover" width="100%"></table>
+    </div>
+</div>
+
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingsManagement")
+                  .Include("~/Content/awesome-bootstrap-checkbox.css",
+                      "~/Content/DataTables/css/dataTables.bootstrap.css"));
+}
+@section Styles {
+    @Styles.Render("~/Styles/BookingsManagement")
+}
+
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingsManagement")
+                  .Include("~/Scripts/DataTables/jquery.dataTables.js",
+                      "~/Scripts/DataTables/dataTables.bootstrap.js",
+                      "~/Scripts/moment.js",
+                      "~/Scripts/utils/generateUIElements.js",
+                      "~/Scripts/pageScript/bookingsManagement.js"));
+}
+@section Scripts {
+    <script type="text/javascript">
+    </script>
+    @Scripts.Render("~/Scripts/BookingsManagement")
+}

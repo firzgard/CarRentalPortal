@@ -38,27 +38,21 @@ function renderSearchResultItem(searchResult){
 					</a>
 				</div>
 				<div class="vehicle-price-tag" >
-					<up>&#8363;</up>${Math.ceil(Number.parseInt(searchResult.BestPossibleRentalPrice)/1000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}<down>,000</down>/<per>${searchResult.BestPossibleRentalPeriod}</per>
+					${Math.ceil(Number.parseInt(searchResult.BestPossibleRentalPrice)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}<up>&#8363;</up>/<per>${searchResult.BestPossibleRentalPeriod}</per>
 				</div>
 			</div>
-			<div class="vehicle-info">
-				<a href="${vehicleInfoUrl}/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
-				<div class="center-flex">${renderStarRating(searchResult.Star)} · ${searchResult.NumOfComment} ${searchResult.NumOfComment > 1 ? 'reviews' : 'review' }</div>
-				<hr>
-				<div>
-					<i class="fa fa-building"></i>&nbsp;${searchResult.GarageName}&nbsp;·&nbsp;<i class="fa fa-map-marker"></i>&nbsp;${searchResult.Location}
+			<div class="vehicle-info row">
+				<div class="col-xs-9">
+				<div style="font-size:0.88em;">&nbsp;${searchResult.GarageName} · ${renderStarRating(searchResult.GarageRating, '#1ab394', false)}</div>
+					<a href="${vehicleInfoUrl}/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
+					<div class="center-flex">${renderStarRating(searchResult.Star, '#1ab394')} · ${searchResult.NumOfComment} ${searchResult.NumOfComment > 1 ? 'reviews' : 'review' }</div>
 				</div>
+				<div class="col-xs-3 text-right vehicle-seat center-flex">${searchResult.NumOfSeat}<img src="/Content/img/icons/person.png"/></div>	
+				<div class="col-xs-12">
 				<hr>
-				<div class="badge-container">
-					<span class="badge badge-primary"><i class="fa fa-child"></i> ${searchResult.NumOfSeat} passengers</span>
-					<span class="badge badge-info"><i class="fa fa-gear"></i> ${searchResult.TransmissionTypeName}</span>
-					<span class="badge badge-warning"><i class="fa fa-bolt"></i> ${searchResult.FuelTypeName}</span>
-					${searchResult.CategoryList.reduce((html, cat) => {
-						return html + `<span class="badge badge-success">${cat}</span> `
-					}, '')}
 				</div>
-				<hr>
-				<div class="license-number">${searchResult.LicenseNumber}</div>
+				<div class="col-xs-offset-1 col-xs-6"><i class="fa fa-gears"></i> ${searchResult.TransmissionTypeName}</div>
+				<div class="col-xs-5"><i class="fa fa-tint"></i> ${searchResult.FuelTypeName}</div>
 			</div>
 		</div>
 	</div>`;
@@ -141,7 +135,7 @@ function renderPriceSlider(data){
 		behaviour: 'drag-tap',
 		connect: true,
 		format: {
-			to: value => `₫${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
+			to: value => `${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`,
 			from: value => Number.parseInt(value.replace('₫', '').replace(',', ''))
 		},
 		margin: 100000,
@@ -150,8 +144,8 @@ function renderPriceSlider(data){
 			values: [ Number.parseInt(data.AveragePrice) ],
 			density: Infinity,
 			format: {
-				to: value => `₫${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}&nbsp;Average`,
-				from: value => Number.parseInt(value.replace('₫', '').replace('&nbsp;Average', '').replace(',', ''))
+				to: value => `Trung&nbsp;bình:&nbsp;${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`,
+				from: value => Number.parseInt(value.replace('₫', '').replace('Trung bình ', '').replace(',', ''))
 			}
 		},
 		start: [searchConditions.MinPrice || 0, searchConditions.MaxPrice || priceSliderMax || 100000],
@@ -184,7 +178,7 @@ function renderSearcher(){
 			<div class="sk-bounce3"></div>
 		</div>
 	</div>`);
-
+console.log(searchConditions);
 	$.ajax({
 		url: queryApiUrl,
 		type: 'GET',
@@ -223,7 +217,6 @@ $(document).ready(() => {
 		, startTimeFilter: $('#startTimeFilter')
 		, endTimeFilter: $('#endTimeFilter')
 		, sorter: $('#sorter')
-		, sortDirector: $('#sortDirector')
 		, locationFilter : $('#locationFilter')
 		, brandFilter: $('#brandFilter')
 		, modelFilter: $('#modelFilter')
@@ -237,7 +230,7 @@ $(document).ready(() => {
 		, ModelIDList: []
 		, TransmissionTypeIDList: []
 		, OrderBy: jQueryNodes.sorter.val()
-		, IsDescendingOrder: jQueryNodes.sortDirector.val()
+		, IsDescendingOrder: jQueryNodes.sorter.find(":selected").data('is-descending')
 	};
 
 	let soonestPossibleBookingStartTimeFromNow = now.clone().add(SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes'),
@@ -264,9 +257,18 @@ $(document).ready(() => {
 
 	let sessionLocationID = sessionStorage.getItem('locationID');
 	if(sessionLocationID){
-		jQueryNodes.locationFilter.val(sessionLocationID);
-		searchConditions.LocationIDList = jQueryNodes.locationFilter.val();
+		jQueryNodes.locationFilter.val(JSON.parse(sessionLocationID));
+		searchConditions.LocationID = jQueryNodes.locationFilter.val();
 	}
+
+	// Sort
+	jQueryNodes.sorter.on('change', function() {
+		searchConditions.OrderBy = $(this).val();
+		searchConditions.IsDescendingOrder = $(this).find(":selected").data('is-descending');
+
+		delete searchConditions.Page;
+		renderSearcher();
+	});
 
 	// ============================================================
 	// Time range filter
@@ -292,11 +294,13 @@ $(document).ready(() => {
 	})
 	.on('dp.hide', (data)=>{
 		searchConditions.StartTime = data.date.toJSON();
+		sessionStorage.setItem('startTime', searchConditions.StartTime);
 
-		if(data.date.isAfter(jQueryNodes.endTimeFilter.data('DateTimePicker').date())){
+		if(data.date.isAfter(jQueryNodes.endTimeFilter.data('DateTimePicker').date().clone().subtract(1, 'hours'))){
 			let newEndTime = data.date.clone().add(1, 'hours')
 			jQueryNodes.endTimeFilter.data('DateTimePicker').date(newEndTime);
 			searchConditions.EndTime = newEndTime.toJSON();
+			sessionStorage.setItem('endTime', searchConditions.EndTime);
 		}
 
 		delete searchConditions.Page;
@@ -326,11 +330,13 @@ $(document).ready(() => {
 	})
 	.on('dp.hide', (data)=>{
 		searchConditions.EndTime = data.date.toJSON();
+		sessionStorage.setItem('endTime', searchConditions.EndTime);
 
-		if(data.date.isBefore(jQueryNodes.startTimeFilter.data('DateTimePicker').date())){
+		if(data.date.isBefore(jQueryNodes.startTimeFilter.data('DateTimePicker').date().clone().add(1, 'hours'))){
 			let newStartTime = data.date.clone().subtract(1, 'hours')
 			jQueryNodes.startTimeFilter.data('DateTimePicker').date(newStartTime);
 			searchConditions.StartTime = newStartTime.toJSON();
+			sessionStorage.setItem('startTime', searchConditions.StartTime);
 		}
 
 		delete searchConditions.Page;
@@ -355,81 +361,61 @@ $(document).ready(() => {
 	// Location
 	
 	jQueryNodes.locationFilter.select2({
-		placeholder: 'Please select a location...'
+		placeholder: 'Bạn muốn thuê xe ở đâu?',
+		minimumInputLength: 3
 	})
 	.on('change', function() {
-		searchConditions.LocationIDList = $(this).val();
-		delete searchConditions.Page;
+		searchConditions.LocationID = $(this).val();
+		sessionStorage.setItem('locationID', searchConditions.LocationID);
 
+		delete searchConditions.Page;
 		renderSearcher();
 	});
 
-	// Sort
-	jQueryNodes.sorter
-	.select2()
-	.on('change', function() {
-		searchConditions.OrderBy = $(this).val();
-		delete searchConditions.Page;
+	// // Brand
+	// jQueryNodes.brandFilter
+	// .select2({
+	// 	placeholder: 'Vui lòng chọn hiệu xe...'
+	// })
+	// .on('change', function() {
+	// 	// Remove modelFilter before regenerate it
+	// 	jQueryNodes.modelFilter.select2("destroy");
 
-		renderSearcher();
-	});
+	// 	// Enable all model options before
+	// 	// disabling only model options belonged to selected brands
+	// 	jQueryNodes.modelFilter.find('option').each((i, el) => {
+	// 		el.disabled = false
+	// 	});
 
-	// Sort direction
-	jQueryNodes.sortDirector
-	.select2({
-		minimumResultsForSearch: Infinity
-	})
-	.on('change', function() {
-		searchConditions.IsDescendingOrder = $(this).val() === 'true';
-		delete searchConditions.Page;
+	// 	// Get the brandIdList
+	// 	searchConditions.BrandIDList = $(this).val();
 
-		renderSearcher();
-	});
-
-	// Brand
-	jQueryNodes.brandFilter
-	.select2({
-		placeholder: 'Please select...'
-	})
-	.on('change', function() {
-		// Remove modelFilter before regenerate it
-		jQueryNodes.modelFilter.select2("destroy");
-
-		// Enable all model options before
-		// disabling only model options belonged to selected brands
-		jQueryNodes.modelFilter.find('option').each((i, el) => {
-			el.disabled = false
-		});
-
-		// Get the brandIdList
-		searchConditions.BrandIDList = $(this).val();
-
-		let disabledModelIDList = [];
-		for(let brandID of searchConditions.BrandIDList){
-			let optgroup = jQueryNodes.modelFilter.find(`optgroup[data-brand="${brandID}"]`)
+	// 	let disabledModelIDList = [];
+	// 	for(let brandID of searchConditions.BrandIDList){
+	// 		let optgroup = jQueryNodes.modelFilter.find(`optgroup[data-brand="${brandID}"]`)
 			
-			optgroup.find('option').each((i, el) => {
-				// Disable only model options belonged to selected brands
-				el.selected = false;
-				el.disabled = true;
+	// 		optgroup.find('option').each((i, el) => {
+	// 			// Disable only model options belonged to selected brands
+	// 			el.selected = false;
+	// 			el.disabled = true;
 
-				disabledModelIDList.push(el.value.toString());
-			});
-		}
-		// Filter out models belonged to selected brands in searchConditions
-		searchConditions.ModelIDList = searchConditions.ModelIDList.filter((el) => !disabledModelIDList.includes(el.toString()));
+	// 			disabledModelIDList.push(el.value.toString());
+	// 		});
+	// 	}
+	// 	// Filter out models belonged to selected brands in searchConditions
+	// 	searchConditions.ModelIDList = searchConditions.ModelIDList.filter((el) => !disabledModelIDList.includes(el.toString()));
 
-		// Regenerate modelFilter
-		jQueryNodes.modelFilter.select2();
+	// 	// Regenerate modelFilter
+	// 	jQueryNodes.modelFilter.select2();
 
-		delete searchConditions.Page;
-		renderSearcher();
-	});
+	// 	delete searchConditions.Page;
+	// 	renderSearcher();
+	// });
 
 	// Model
 	jQueryNodes.modelFilter
 	.select2({
-		placeholder: 'Please select...'
+		placeholder: 'Vui lòng chọn dòng xe...'
 	})
 	.on('change', function() {
 		searchConditions.ModelIDList = $(this).val();
@@ -441,7 +427,7 @@ $(document).ready(() => {
 	// Category
 	$('#categoryFilter')
 	.select2({
-		placeholder: 'Please select...'
+		placeholder: 'Vui lòng chọn loại xe...'
 	})
 	.on('change', function() {
 		searchConditions.CategoryIDList = $(this).val();
@@ -450,40 +436,35 @@ $(document).ready(() => {
 		renderSearcher();
 	});
 
-	// Seat
-	$('#seatFilter')
-	.select2({
-		placeholder: 'Please select...'
-	})
-	.on('change', function() {
-		searchConditions.NumberOfSeatList = $(this).val();
-		delete searchConditions.Page;
+	// // Seat
+	// $('#seatFilter')
+	// .select2({
+	// 	placeholder: 'Please select...'
+	// })
+	// .on('change', function() {
+	// 	searchConditions.NumberOfSeatList = $(this).val();
+	// 	delete searchConditions.Page;
 
-		renderSearcher();
-	});
-
-	// Color
-	const colorOptionFormat = (state) => {
-		return $(`<span><i class="fa fa-car fa-${state.text.toLowerCase()}"></i>&nbsp;&nbsp;${state.text}</span>`);
-	};
+	// 	renderSearcher();
+	// });
 
 	$('#colorFilter')
-	.select2({
-		placeholder: 'Please select...',
-		templateSelection: colorOptionFormat,
-		templateResult: colorOptionFormat
-	})
-	.on('change', function(){
-		searchConditions.ColorIDList = $(this).val();
-		delete searchConditions.Page;
+	// .select2({
+	// 	placeholder: 'Please select...',
+	// 	templateSelection: colorOptionFormat,
+	// 	templateResult: colorOptionFormat
+	// })
+	// .on('change', function(){
+	// 	searchConditions.ColorIDList = $(this).val();
+	// 	delete searchConditions.Page;
 
-		renderSearcher();
-	});
+	// 	renderSearcher();
+	// });
 
 	// Fuel
 	$('#fuelFilter')
 	.select2({
-		placeholder: 'Please select...'
+		placeholder: 'Vui lòng chọn loại nhiên liệu...'
 	})
 	.on('change', function() {
 		searchConditions.FuelTypeIDList = $(this).val();

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
@@ -327,7 +327,7 @@
     <Compile Include="Areas\Admin\Controllers\UserController.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
-    <Compile Include="Areas\Provider\Controllers\BookingsController.cs" />
+    <Compile Include="Areas\Provider\Controllers\BookingController.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
     <Compile Include="Areas\Provider\Controllers\ModelController.cs" />
@@ -1690,8 +1690,7 @@
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupManagement.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupDetail.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingHistory.cshtml" />
-    <Content Include="Areas\Provider\Views\Garage\CreatePopup.cshtml" />
-    <Content Include="Areas\Provider\Views\Bookings\BookingsManagement.cshtml" />
+    <Content Include="Areas\Provider\Views\Booking\BookingManagement.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1720,7 +1719,7 @@
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
     <Content Include="Scripts\pageScript\BookingHistory.js" />
-    <Content Include="Scripts\pageScript\bookingsManagement.js" />
+    <Content Include="Scripts\pageScript\bookingManagement.js" />
     <Content Include="Scripts\pageScript\garage.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
     <Content Include="Scripts\pageScript\home.js" />
@@ -1854,6 +1853,7 @@
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
+    <Folder Include="Areas\Provider\Views\Bookings\" />
     <Folder Include="Areas\Provider\Views\PriceGroup\" />
     <Folder Include="Models\JsonModels\" />
     <Folder Include="Views\Base\" />
