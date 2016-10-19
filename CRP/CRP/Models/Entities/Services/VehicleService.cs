@@ -189,11 +189,11 @@ namespace CRP.Models.Entities.Services
 
 			// Get vehicles belonged to this garage
 			if(filterConditions.GarageID != null)
-				vehicles = repository.Get(v => v.GarageID == filterConditions.GarageID);
+				vehicles = vehicles.Where(v => v.GarageID == filterConditions.GarageID);
 
 			// Get vehicles belonged to this vehicle group
 			if (filterConditions.VehicleGroupID != null)
-				vehicles = repository.Get(v => v.VehicleGroupID == filterConditions.VehicleGroupID);
+				vehicles = vehicles.Where(v => v.VehicleGroupID == filterConditions.VehicleGroupID);
 
 			var recordsTotal = vehicles.Count();
 

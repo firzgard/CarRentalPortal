@@ -110,13 +110,13 @@ namespace CRP.Models.ViewModels
         public string providerID { get; set; }
         public int garageID { get; set; }
         public bool IsCanceled { get; set; }
-        public bool IsInFuture { get; set; }
-        public bool IsInThePast { get; set; }
+        public bool? IsInThePast { get; set; }
         public bool IsSelfBooking { get; set; }
 
         public string OrderBy { get; set; }
         public bool IsDescendingOrder { get; set; }
         public int Page { get; set; } = 1;
         public int RecordPerPage { get; set; } = Constants.NUM_OF_SEARCH_RESULT_PER_PAGE;
+        public int Draw { get; set; }
     }
 }

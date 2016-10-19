@@ -17,31 +17,51 @@
             <div class="col-md-3 pull-left m-l m-b">
                 @Html.DropDownListFor(q => q.garageID, this.Model.listGarage, new { @class = "form-control", @id = "garageID" })
             </div>
-            <div class="pull-right m-r m-b">
-                
+            <div class="pull-right m-r m-b table-bordered">
+                <h3>Trạng thái hóa đơn</h3>
+                <div class="checkbox checkbox-success">
+                    <input type="checkbox" id="isCanceled"> 
+                    <label for="isCanceled"> Đã hủy</label>
+                </div>
+                <div class="checkbox checkbox-success">
+                    <input type="checkbox" id="isSelfBooking">
+                    <label for="isSelfBooking"> Tự đặt</label>
+                </div>
+            </div>
+            <div class="pull-right m-r m-b table-bordered">
+                <h3>Thời gian thanh toán</h3>
+                <div class="checkbox checkbox-success">
+                    <input type="checkbox" id="isInThePast">
+                    <label for="isInThePast"> Trong quá khứ</label>
+                </div>
+                <div class="checkbox checkbox-success">
+                    <input type="checkbox" id="isInFuture">
+                    <label for="isInFuture"> Trong tương lai</label>
+                </div>
             </div>
         </div>
         <table id="bookings" class="table table-stripped table-bordered table-hover" width="100%"></table>
     </div>
 </div>
 
-@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingsManagement")
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingManagement")
                   .Include("~/Content/awesome-bootstrap-checkbox.css",
                       "~/Content/DataTables/css/dataTables.bootstrap.css"));
 }
 @section Styles {
-    @Styles.Render("~/Styles/BookingsManagement")
+    @Styles.Render("~/Styles/BookingManagement")
 }
 
-@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingsManagement")
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingManagement")
                   .Include("~/Scripts/DataTables/jquery.dataTables.js",
                       "~/Scripts/DataTables/dataTables.bootstrap.js",
                       "~/Scripts/moment.js",
                       "~/Scripts/utils/generateUIElements.js",
-                      "~/Scripts/pageScript/bookingsManagement.js"));
+                      "~/Scripts/pageScript/bookingManagement.js"));
 }
 @section Scripts {
     <script type="text/javascript">
+        const queryApiUrl = '@Url.RouteUrl("GetBookingListAPI", new { controller = "BookingManagement" })'
     </script>
-    @Scripts.Render("~/Scripts/BookingsManagement")
+    @Scripts.Render("~/Scripts/BookingManagement")
 }

@@ -324,15 +324,16 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\UserController.cs" />
+    <Compile Include="Areas\Admin\Controllers\UserManagementController.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
-    <Compile Include="Areas\Provider\Controllers\BookingController.cs" />
+    <Compile Include="Areas\Provider\Controllers\BookingManagementController.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
-    <Compile Include="Areas\Provider\Controllers\GarageController.cs" />
+    <Compile Include="Areas\Provider\Controllers\GarageManagementController.cs" />
     <Compile Include="Areas\Provider\Controllers\ModelController.cs" />
     <Compile Include="Areas\Provider\Controllers\PriceGroupItemController.cs" />
-    <Compile Include="Areas\Provider\Controllers\VehicleGroupController.cs" />
+    <Compile Include="Areas\Provider\Controllers\VehicleGroupManagementController.cs" />
+    <Compile Include="Areas\Provider\Controllers\VehicleManagementController.cs" />
     <Compile Include="Areas\Provider\ProviderAreaRegistration.cs" />
     <Compile Include="AutoMapperConfiguration.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -340,7 +341,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\jsTree3Controller.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Areas\Provider\Controllers\VehicleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -413,9 +413,6 @@
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Nation.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\Notification.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\PriceGroup.cs">
@@ -1674,11 +1671,7 @@
     <Content Include="Areas\Customer\Views\web.config" />
     <Content Include="Areas\Provider\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Provider\Views\Shared\_Layout.cshtml" />
-    <Content Include="Areas\Provider\Views\Vehicle\VehicleManagement.cshtml" />
-    <Content Include="Areas\Provider\Views\Garage\GarageDetail.cshtml" />
     <Content Include="Areas\Provider\Views\Brand\Index.cshtml" />
-    <Content Include="Areas\Provider\Views\Garage\GarageList.cshtml" />
-    <Content Include="Areas\Provider\Views\Garage\GarageManagement.cshtml" />
     <EntityDeploy Include="Models\Entities\CRP.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>CRP.Designer.cs</LastGenOutput>
@@ -1686,11 +1679,15 @@
     <Content Include="Models\Entities\CRP.edmx.diagram">
       <DependentUpon>CRP.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Provider\Views\VehicleGroup\CreatePopup.cshtml" />
-    <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupManagement.cshtml" />
-    <Content Include="Areas\Provider\Views\VehicleGroup\VehicleGroupDetail.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingHistory.cshtml" />
-    <Content Include="Areas\Provider\Views\Booking\BookingManagement.cshtml" />
+    <Content Include="Areas\Provider\Views\GarageManagement\CreatePopup.cshtml" />
+    <Content Include="Areas\Provider\Views\GarageManagement\GarageDetail.cshtml" />
+    <Content Include="Areas\Provider\Views\GarageManagement\GarageManagement.cshtml" />
+    <Content Include="Areas\Provider\Views\BookingManagement\BookingManagement.cshtml" />
+    <Content Include="Areas\Provider\Views\VehicleGroupManagement\CreatePopup.cshtml" />
+    <Content Include="Areas\Provider\Views\VehicleGroupManagement\VehicleGroupDetail.cshtml" />
+    <Content Include="Areas\Provider\Views\VehicleGroupManagement\VehicleGroupManagement.cshtml" />
+    <Content Include="Areas\Provider\Views\VehicleManagement\VehicleManagement.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1850,6 +1847,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Areas\Admin\Views\User\" />
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
