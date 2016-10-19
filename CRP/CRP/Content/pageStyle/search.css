@@ -92,10 +92,6 @@ body {
 	background-color: white;
 }
 
-.noUi-marker {
-	display: none;
-}
-
 #priceFilter .noUi-value{
 	background: #E5E5E5;
 	border: 1px solid #A8B5BC;

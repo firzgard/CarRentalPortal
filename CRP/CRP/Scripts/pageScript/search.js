@@ -539,13 +539,15 @@ $(document).ready(() => {
 	// Vehicle rating filter slider
 	let vehicleRatingSlider = noUiSlider.create(document.getElementById('vehicleRatingFilter'), {
 		connect: true,
+		direction: 'rtl',
 		orientation: 'vertical',
 		pips: {
-			density: 5,
-			// format: {
-			// 	to: value => renderStarRating(Number.parseInt(value), '#1ab394', false, false)
-			// },
-			mode: 'steps'
+			density: Infinity,
+			format: {
+				to: value => renderStarRating(Number.parseInt(value), '#1ab394', false, false)
+			},
+			mode: 'count',
+			values: 6
 		},
 		start: [0, 5],
 		step: 1,
