@@ -13,7 +13,7 @@
 			<li>
 				<a href="@Url.Action("Index", "Manage")">
 					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Personal Information</span>
+					<span class="nav-label">Thông tin cá nhân</span>
 				</a>
 			</li>
 			@if (User.IsInRole("Admin"))
@@ -21,34 +21,34 @@
 			<li>
 				<a href="@Url.Action("Index", "UserManagement")">
 					<i class="fa fa-th-large"></i>
-					<span class="nav-label">User managerment</span>
+					<span class="nav-label">Quản lý người dùng</span>
 				</a>
 			</li>
 			}
 			@if (User.IsInRole("Provider"))
 			{
 			<li>
-				<a href="@Url.Action("GarageManagement", "Garage")">
+				<a href="@Url.Action("GarageManagement", "GarageManagement")">
 					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Garage</span>
+					<span class="nav-label">Quản lý garage</span>
 				</a>
 			</li>
 			<li>
-				<a href="@Url.Action("VehicleManagement", "Vehicle")" style="margin-left: 20px;">
+				<a href="@Url.Action("VehicleManagement", "VehicleManagement")" style="margin-left: 20px;">
 					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Vehicle</span>
+					<span class="nav-label">Quản lý xe</span>
 				</a>
 			</li>
 			<li>
-				<a href="@Url.Action("BookingManagement", "Booking")" style="margin-left: 20px;">
+				<a href="@Url.Action("BookingManagement", "BookingManagement")" style="margin-left: 20px;">
 					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Booking</span>
+					<span class="nav-label">Quản lý đặt xe</span>
 				</a>
 			</li>
 			<li>
-				<a href="@Url.Action("VehicleGroupManagement", "VehicleGroup")">
+				<a href="@Url.Action("VehicleGroupManagement", "VehicleGroupManagement")">
 					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Vehicle Group</span>
+					<span class="nav-label">Quản lý nhóm giá</span>
 				</a>
 			</li>
 			}
@@ -57,7 +57,7 @@
 			<li>
 				<a href="@Url.Action("BookingHistory", "Booking")">
 					<i class="fa fa-th-large"></i>
-					<span class="nav-label">Booking history</span>
+					<span class="nav-label">Lịch sử đặt xe</span>
 				</a>
 			</li>
 			}

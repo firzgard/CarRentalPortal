@@ -185,9 +185,15 @@ namespace CRP.Models.Entities.Services
 		public VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions)
 		{
 			// Get only vehicles belonged to this user
-			var vehicles = repository.Get(
-				v => v.Garage.OwnerID == filterConditions.ProviderID
-			);
+			var vehicles = repository.Get(v => v.Garage.OwnerID == filterConditions.ProviderID);
+
+			// Get vehicles belonged to this garage
+			if(filterConditions.GarageID != null)
+				vehicles = repository.Get(v => v.GarageID == filterConditions.GarageID);
+
+			// Get vehicles belonged to this vehicle group
+			if (filterConditions.VehicleGroupID != null)
+				vehicles = repository.Get(v => v.VehicleGroupID == filterConditions.VehicleGroupID);
 
 			var recordsTotal = vehicles.Count();
 

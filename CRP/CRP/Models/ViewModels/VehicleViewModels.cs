@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.AccessControl;
 using System.Security.Cryptography.Xml;
+using System.Web.Mvc;
 using CRP.Models.Entities;
 
 namespace CRP.Models.ViewModels
@@ -11,8 +12,8 @@ namespace CRP.Models.ViewModels
 	public class VehicleManagementFilterConditionModel
 	{
 		public string ProviderID { get; set; }
-		public int[] GarageID { get; set; }
-		public int?[] VehicleGroupID { get; set; }
+		public int? GarageID { get; set; }
+		public int? VehicleGroupID { get; set; }
 
 		public string OrderBy { get; set; }
 		public bool IsDescendingOrder { get; set; }
@@ -140,5 +141,11 @@ namespace CRP.Models.ViewModels
 		public int ID { get; set; }
 		public DateTime StartTime { get; set; }
 		public DateTime EndTime { get; set; }
+	}
+
+	public class FilterByGarageView
+	{
+		public int garageID { get; set; }
+		public IEnumerable<SelectListItem> listGarage { get; set; }
 	}
 }

@@ -137,7 +137,13 @@ namespace CRP.Areas.Customer.Controllers
                 q.StartTime,
                 q.EndTime,
                 q.IsCanceled,
-                q.Star
+                q.Star,
+                q.RentalPrice,
+                q.BookingFee,
+                q.GarageName,
+                q.GarageAddress,
+                q.Color,
+                q.Model.Name,
             });
             return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
         }
@@ -210,30 +216,24 @@ namespace CRP.Areas.Customer.Controllers
 		}
         */
 
-        // API route for canceling a booking
-        [System.Web.Mvc.Route("api/bookings/{id:int}")]
-		[System.Web.Mvc.HttpDelete]
-		public System.Web.Mvc.ActionResult CancelBookingAPI(int id)
-		{
-			var customerID = User.Identity.GetUserId();
-
-			var service = this.Service<IBookingReceiptService>();
-			var status = service.CancelBooking(customerID, id);
-            
-            switch (status)
+        [System.Web.Mvc.Route("api/booking/status/{id:int}")]
+        [System.Web.Mvc.HttpDelete]
+        public async Task<JsonResult> ChangeStatus(int id)
+        {
+            var service = this.Service<IBookingReceiptService>();
+            var entity = await service.GetAsync(id);
+            if (entity != null)
             {
-				case 0:
-					return new HttpStatusCodeResult(200, "Booking canceled successfully.");
-				case 1:
-		            return new HttpNotFoundResult();
-	            case 2:
-		            return new HttpStatusCodeResult(403, "This booking has already been completed.");
+                entity.IsCanceled = !entity.IsCanceled;
+                await service.UpdateAsync(entity);
+                return Json(new { result = true, message = "Change status success!" });
             }
-			return new HttpStatusCodeResult(500, "Internal server error.");
-		}
 
-		// API route for sending comment/rating for a booking
-		[System.Web.Mvc.Route("api/bookings/{id:int}")]
+            return Json(new { result = false, message = "Change status failed!" });
+        }
+
+        // API route for sending comment/rating for a booking
+        [System.Web.Mvc.Route("api/bookings/{id:int}")]
 		[System.Web.Mvc.HttpPatch]
 		public System.Web.Mvc.ActionResult RateBookingAPI([FromBody] BookingCommentModel commentModel)
 		{
