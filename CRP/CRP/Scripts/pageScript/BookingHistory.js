@@ -1,4 +1,17 @@
-﻿
+﻿const viDatatables = {
+    lengthMenu: "Hiển thị _MENU_ dòng",
+    search: "Tìm kiếm",
+    paginate: {
+        first: "Trang đầu",
+        previous: "Trang trước",
+        next: "Trang sau",
+        last: "Trang cuối",
+    },
+    zeroRecords: "Không tìm thấy dữ liệu",
+    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    infoEmpty: "không có dữ liệu",
+    infoFiltered: "(được lọc ra từ _MAX_ dòng)"
+}
 $(document).ready(() => {
     // set toogling dropdown event for filter dropdown buttons
     $('#multiFilter .filter-toggle').on('click', function (event) {
@@ -19,6 +32,7 @@ $(document).ready(() => {
     let table = $('#garages').DataTable({
         dom: "ltipr",
         //data: mockupData,
+        language: viDatatables,
         ajax: {
             url: "/api/BookingHistorys",
             type: "GET",
@@ -49,7 +63,7 @@ $(document).ready(() => {
 			    render: (data, type) => {
 			        if (type === 'display') {
 			            return `<div class="status-label" >
-							<p class ="label label-${data ? 'danger' : 'primary'}">${data ? 'Cancle or Done': 'During'}</p>
+							<p class ="label label-${data ? 'danger' : 'primary'}">${data ? 'Đã hủy hoặc hoàn thành': 'During'}</p>
 						</div>`;
 			        }
 			        return data;
@@ -78,11 +92,11 @@ $(document).ready(() => {
                             data-name="${row[1]}" data-starttime="${row[2]}" data-endtime="${row[3]}" data-rentalprice="${row[6]}"
                             data-bookingfee="${row[7]}" data-garage="${row[8]}" data-garageadd="${row[9]}" data-color="${row[10]}"
                             data-model="${row[11]}" data-star="${row[5]}"
-                            >Detail</a></li>
+                            >Chi tiết</a></li>
 							${row[4] === true ?
-								`<li><a href="#" data-toggle="modal" data-target="#modal-form" data-action="comment" data-id="${row[0]}">Comment</a></li>`
+								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="comment" data-id="${row[0]}">Nhận Xét</a></li>`
                                 :
-								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="cancle" data-id="${row[0]}">Cancle</a></li>`}
+								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="cancle" data-id="${row[0]}">Hủy</a></li>`}
 						</ul>
 					</div>`;
 			    }
@@ -90,10 +104,10 @@ $(document).ready(() => {
         ],
         columns: [
 			{ name: 'ID', visible: false },
-			{ name: 'VehicleName', title: 'VehicleName', width: '30%' },
+			{ name: 'VehicleName', title: 'VehicleName', width: '15%' },
 			{ name: 'Start Time', title: 'Start Time', width: '15%' },
 			{ name: 'End Time', title: 'End Time', width: '15%' },
-            { name: 'Status', title: 'Status',  width: '15%' },
+            { name: 'Status', title: 'Status',  width: '30%' },
 			{ name: 'Star', title: 'Star', width: '10%' },
             { name: 'RentalPrice', visible: false },
             { name: 'BookingFee', visible: false },
@@ -139,7 +153,7 @@ $(document).ready(() => {
         switch (action) {
             case 'detail': {
                 $(this).find('.modal-content').html(`<div class="row" style="text-align:center; margin-top:10px">
-											<h3 style="font-size:200%;">Booking of ${VehicleName}</h3>
+											<h3 style="font-size:200%;">Booking of</h3>
 											  <div class="col-sm-6 b-r" style="float: left">
 												<div class ="form-group"><label>Rental Price</label><p>${RentalPrice}</p></div>
                                                 <div class ="form-group"><label>Booking Fee</label><p>${BookingFee}</p></div>
@@ -159,6 +173,20 @@ $(document).ready(() => {
             }
             break;
             case 'comment': {
+                $(this).find('.modal-content').html(`<div class="row" style="text-align:center; margin-top:30px">
+											<h3 style="font-size:200%;">Comment And Rate ${VehicleName}</h3>
+                                  
+											  <div class="col-sm-12" style="text-align: center">
+												<label>Comment</label>
+                                                <input type="text" class="form-control" id="comment">
+                                                <input type="hidden" class ="form-control" value="${id}" id="id" />
+                                                <label>Rate</label>
+                                                 <input type="text" class ="form-control" id="star">
+                                              </div>
+                                               <label></label>	<br/>
+                                              <button type="button" class ="btn btn-default" data-dismiss="modal">Close</button>
+                                              <button type="button" class ="btn btn-success btn-yeah">Submit</button>
+									            <label></label>	<br/>`);
                
                 }
             break;
@@ -187,11 +215,38 @@ $(document).ready(() => {
                 type: "DELETE",
                 success: function (data) {
                     alert("ok");
+                    location.href = "/management/bookingHistory";
                 },
                 eror: function (data) {
                     alert("fail");
+                    location.href = "/management/bookingHistory";
                 }
+                });
             });
-        });
+            
+            $(document).on('click', '.btn-yeah', function (event) {
+                $("#error").html("");
+                var id = $('#id').val();
+                var comment = $('#comment').val();
+                var star = $('#star').val();
+                $.ajax({
+                    url: '/api/CommentBooking',
+                    data: {
+                        id: id,
+                        comment: comment,
+                        star: star,
+                    },
+                    error: function () {
+                        alert("Problem")
+                        location.href = "/management/bookingHistory";
+                    },
+                    success: function (data) {
+                        alert("Comment successfully");
+                        location.href = "/management/bookingHistory";
+                    },
+                    type: 'POST'
+                });
+            });
+            
     });
 });
