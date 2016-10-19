@@ -29,7 +29,7 @@ namespace CRP.Models.Entities
         public string Email { get; set; }
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
-        public Nullable<decimal> Star { get; set; }
+        public decimal Star { get; set; }
         public bool IsActive { get; set; }
         public string SelfDescription { get; set; }
     

@@ -56,14 +56,22 @@ namespace CRP.Controllers
 			var locationList = locationService.Get().OrderBy(l => l.Name).ToList();
 
 			var priceGroupService = this.Service<IPriceGroupService>();
-			var maxPrice = priceGroupService.Get().Max(pg => pg.PerDayPrice);
+			var maxPerDayPrice = priceGroupService.Get().Max(pg => pg.PerDayPrice);
+			var minPerDayPrice = priceGroupService.Get().Min(pg => pg.PerDayPrice);
+
+			var priceGroupItemService = this.Service<IPriceGroupItemService>();
+			var maxPriceGroupItemPrice = priceGroupItemService.Get().Max(pgi => pgi.Price);
+			var minPriceGroupItemPrice = priceGroupItemService.Get().Min(pgi => pgi.Price);
+
+			var maxPrice = maxPerDayPrice > maxPriceGroupItemPrice ? maxPerDayPrice : maxPriceGroupItemPrice;
+			var minPrice = minPerDayPrice < minPriceGroupItemPrice ? minPerDayPrice : minPriceGroupItemPrice;
 
 			var vehicleService = this.Service<IVehicleService>();
 			var vehicles = vehicleService.Get();
 			var maxYear = vehicles.Max(v => v.Year);
 			var minYear = vehicles.Min(v => v.Year);
 
-			return View(new SearchPageViewModel(brandList, categoryList, locationList, maxPrice, maxYear, minYear));
+			return View(new SearchPageViewModel(brandList, categoryList, locationList, maxPrice, minPrice, maxYear, minYear));
 		}
 
 		// Route to vehicle's info
@@ -87,13 +95,24 @@ namespace CRP.Controllers
 					|| searchConditions.EndTime.Value < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR))
 				return new HttpStatusCodeResult(400, "Invalid booking time");
 
-			if (searchConditions.MaxPrice != null
-					&& searchConditions.MinPrice != null
+			if (searchConditions.MaxPrice != null && searchConditions.MinPrice != null
 					&& searchConditions.MaxPrice < searchConditions.MinPrice)
 				return new HttpStatusCodeResult(400, "Invalid price span");
 
+			if (searchConditions.MaxProductionYear != null && searchConditions.MinProductionYear != null
+					&& searchConditions.MaxProductionYear < searchConditions.MinProductionYear)
+				return new HttpStatusCodeResult(400, "Invalid production year range");
+
+			if (searchConditions.MaxGarageRating != null && searchConditions.MinGarageRating != null
+					&& searchConditions.MaxGarageRating < searchConditions.MinGarageRating)
+				return new HttpStatusCodeResult(400, "Invalid garage rating range");
+
+			if (searchConditions.MaxVehicleRating != null && searchConditions.MinVehicleRating != null
+					&& searchConditions.MaxVehicleRating < searchConditions.MinVehicleRating)
+				return new HttpStatusCodeResult(400, "Invalid vehicle rating range");
+
 			if (!(searchConditions.OrderBy == null
-				|| Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.ContainsKey(searchConditions.OrderBy)))
+					|| Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.Any(r => r.Name == searchConditions.OrderBy)))
 				return new HttpStatusCodeResult(400, "Invalid sorting property");
 
 			Response.StatusCode = 200;

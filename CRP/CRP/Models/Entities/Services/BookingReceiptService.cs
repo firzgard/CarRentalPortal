@@ -51,24 +51,26 @@ namespace CRP.Models.Entities.Services
             return lstBooking;
         }
 
-		public int CancelBooking(string customerID, int bookingID)
-		{
-			var receipt = repository.Get(br => br.CustomerID == customerID && br.ID == bookingID).FirstOrDefault();
+        public int CancelBooking(string customerID, int bookingID)
+        {
+            BookingReceipt receipt = this.repository.Get(br => br.CustomerID == customerID && br.ID == bookingID).FirstOrDefault();
+            if (receipt == null)
+            {
+                return 1;
+            }
+            // Do not allow canceling a booking that has already ended
+            if (receipt.EndTime < DateTime.Now)
+            {
+                return 2;
+            }
+            Boolean cc = receipt.IsCanceled;
+            receipt.IsCanceled = true;
+            receipt.IsCanceled = true;
+            repository.Update(receipt);
+            return 0;
+        }
 
-			if (receipt == null)
-				return 1;
-
-			// Do not allow canceling a booking that has already ended
-			if (receipt.EndTime < DateTime.Now)
-				return 2;
-
-			receipt.IsCanceled = true;
-			repository.Update(receipt);
-
-			return 0;
-		}
-
-		public int RateBooking(string customerID, BookingCommentModel commentModel)
+        public int RateBooking(string customerID, BookingCommentModel commentModel)
 		{
 			var receipt = repository.Get(v => v.CustomerID == customerID && v.ID == commentModel.ID).FirstOrDefault();
 

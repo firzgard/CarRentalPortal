@@ -49,6 +49,18 @@ namespace CRP.Models.Entities.Services
 				vehicles = vehicles.Where(v => v.Year <= filterConditions.MaxProductionYear
 											&& v.Year >= filterConditions.MinProductionYear);
 
+			// Max/Min GarageRating condition
+			// Do not validate Max > Min here. Do it before this in the controller
+			if (filterConditions.MaxGarageRating != null && filterConditions.MinGarageRating != null)
+				vehicles = vehicles.Where(v => v.Garage.Star <= filterConditions.MaxGarageRating
+											&& v.Garage.Star >= filterConditions.MinGarageRating);
+
+			// Max/Min VehicleRating condition
+			// Do not validate Max > Min here. Do it before this in the controller
+			if (filterConditions.MaxVehicleRating != null && filterConditions.MinVehicleRating != null)
+				vehicles = vehicles.Where(v => v.Star <= filterConditions.MaxVehicleRating
+											&& v.Star >= filterConditions.MinVehicleRating);
+
 			// Brand and Model condition
 			if (filterConditions.BrandIDList.Any() || filterConditions.ModelIDList.Any())
 				vehicles = vehicles.Where(v => filterConditions.BrandIDList.Contains(v.Model.BrandID)
@@ -173,9 +185,15 @@ namespace CRP.Models.Entities.Services
 		public VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions)
 		{
 			// Get only vehicles belonged to this user
-			var vehicles = repository.Get(
-				v => v.Garage.OwnerID == filterConditions.ProviderID
-			);
+			var vehicles = repository.Get(v => v.Garage.OwnerID == filterConditions.ProviderID);
+
+			// Get vehicles belonged to this garage
+			if(filterConditions.GarageID != null)
+				vehicles = repository.Get(v => v.GarageID == filterConditions.GarageID);
+
+			// Get vehicles belonged to this vehicle group
+			if (filterConditions.VehicleGroupID != null)
+				vehicles = repository.Get(v => v.VehicleGroupID == filterConditions.VehicleGroupID);
 
 			var recordsTotal = vehicles.Count();
 

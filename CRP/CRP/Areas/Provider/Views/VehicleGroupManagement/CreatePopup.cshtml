@@ -1,0 +1,60 @@
+﻿@model CRP.Models.ViewModels.VehicleGroupViewModel
+
+@{
+    ViewBag.Title = "CreatePopup";
+    Layout = "";
+}
+
+<div class="modal-dialog modal-lg">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header modal-header-popup">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Add vehicle group</h4>
+        </div>
+        <form action="/api/vehicleGroups" method="post">
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Name</label>
+                        @Html.TextBoxFor(q => q.Name, new { @id="group-name", @class = "form-control required input-lg", required = "true" })
+                        <label>Deposit</label>
+                        <div class="input-group m-b boxForm text-center">
+                            @Html.HiddenFor(q => q.PriceGroup.DepositPercentage, new { @id = "deposit" })
+                            <input type="number" id="depositDisplay" class="form-control" /> <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label>Max rental period</label>
+                        <div class="input-group m-b boxForm text-center">
+                            @Html.TextBoxFor(q => q.MaxRentalPeriod, new { @id="max-rent", @type = "number", @class = "form-control" }) <span class="input-group-addon">day</span>
+                        </div>
+                        <label>Per day price</label>
+                        <div class="input-group m-b boxForm text-center">
+                            @Html.TextBoxFor(q => q.PriceGroup.PerDayPrice, new { @id="per-day-price", @type = "number", @class = "form-control" }) <span class="input-group-addon">&#8363;</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-7 ibox-content">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-primary btn-number plus-btn" data-type="plus">
+                                <i class="fa fa-plus"></i> Add Item
+                            </button>
+                        </div>
+                        <label>Price rental</label>
+                        <!--                        <div class="ibox ibox-content float-e-margins">-->
+                        <table class="table table-striped table-bordered table-hover " id="groupPop"></table>
+                        <!--                        </div>-->
+                    </div>
+                    <div class="col-md-5"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="btnCreate" class="btn btn-primary" type="button">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
