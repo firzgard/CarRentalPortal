@@ -45,7 +45,7 @@
         uploadMultiple: true,
         acceptedFiles: "image/jpeg,image/png,image/gif",
         parallelUploads: 20,
-        maxFiles: 20,
+        maxFiles: 10,
         maxFilesize: 1,
         dictDefaultMessage: "Drop files here to upload (or click)",
         dictInvalidFileType: "Accept image only",
@@ -73,4 +73,25 @@
         }
 
     }
+});
+$(document).on('click', "#save-btn", function () {
+    let model = {};
+    //model.Garage.Name = GarageName;
+    //model.Brand.Name = BrandName;
+    model.LicenseNumber = LicenseNumber;
+    model.FuelType = FuelTypeName;
+    model.VehicleGroup.Name = VehicleGroupName;
+    model.Model.Name = ModelName;
+    model.Engine = Engine;
+
+    $.ajax({
+        type: "PATCH",
+        url: "api/vehicles",
+        success: function (data) {
+            alert("ok");
+        },
+        eror: function (data) {
+            alert("fail");
+        }
+    });
 });

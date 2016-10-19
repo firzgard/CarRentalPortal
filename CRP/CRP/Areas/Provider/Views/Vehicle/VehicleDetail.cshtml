@@ -22,11 +22,11 @@
                                             <label>Garage</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@Html.DisplayFor(q => q.GarageName)</p>
+                                            <p>@this.Model.GarageName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select class="form-control m-b">
-                                                <option selected>@Html.DisplayFor(q => q.GarageName)</option>
+                                            <select id="GarageName" class="form-control m-b">
+                                                <option selected>@this.Model.GarageName</option>
                                                 <option>Garage Y</option>
                                                 <option>Garage Z</option>
                                             </select>
@@ -40,11 +40,11 @@
                                             <label>Nhóm</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@Html.DisplayFor(q => q.VehicleGroupName)</p>
+                                            <p>@this.Model.VehicleGroupName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select class="form-control m-b">
-                                                <option selected>@Html.DisplayFor(q => q.VehicleGroupName)</option>
+                                            <select id="VehicleGroupName" class="form-control m-b">
+                                                <option selected>@this.Model.VehicleGroupName</option>
                                                 <option>Group B</option>
                                                 <option>Group C</option>
                                             </select>
@@ -59,13 +59,13 @@
                                             <label>Hãng xe</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@Html.DisplayFor(q => q.BrandName)</p>
+                                            <p>@this.Model.BrandName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select class="form-control m-b">
+                                            <select id="BrandName" class="form-control m-b">
                                                 <option>Audi</option>
                                                 <option>BMW</option>
-                                                <option selected>@Html.DisplayFor(q=> q.BrandName)</option>
+                                                <option selected>@this.Model.BrandName</option>
                                             </select>
                                         </div>
                                     </div>
@@ -77,12 +77,12 @@
                                             <label>Model</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@Html.DisplayFor(q => q.ModelName)</p>
+                                            <p>@this.Model.ModelName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select class="form-control m-b">
+                                            <select id="ModelName" class="form-control m-b">
                                                 <option>CRV-2015</option>
-                                                <option selected>@Html.DisplayFor(q => q.ModelName)</option>
+                                                <option selected>@this.Model.ModelName</option>
                                             </select>
                                         </div>
                                     </div>
@@ -95,10 +95,10 @@
                                             <label>Biển số xe</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@Html.DisplayFor(q => q.LicenseNumber)</p>
+                                            <p>@this.Model.LicenseNumber</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <div class="m-b">
+                                            <div id="LicenseNumber" class="m-b">
                                                 @Html.TextBoxFor(q => q.LicenseNumber, new { @type = "text", @class = "form-control"}) 
                                             </div>
                                         </div>
@@ -111,11 +111,12 @@
                                             <label>Động cơ</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@Html.DisplayFor(q => q.Engine)</p>
+                                            <p>@this.Model.Engine</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            
-                                            @Html.TextBoxFor(q => q.Engine, new { @type = "text", @class = "form-control"})
+                                            <div id="Engine">
+                                                @Html.TextBoxFor(q => q.Engine, new { @type = "text", @class = "form-control" })
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -127,11 +128,11 @@
                                             <label>Nhiên liệu</label>
                                         </div>
                                         <div class="justRead col-md-8 m-b">
-                                            <p>@Html.DisplayFor(q => q.FuelTypeName)</p>
+                                            <p>@this.Model.FuelTypeName</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            <select class="form-control">
-                                                <option selected>@Html.DisplayFor(q=>q.FuelTypeName)</option>
+                                            <select id="FuelTypeName" class="form-control">
+                                                <option selected>@this.Model.FuelTypeName</option>
                                                 <option>Gas</option>
                                                 <option>Electric</option>
                                             </select>
@@ -145,12 +146,12 @@
                                             <label>Hộp số</label>
                                         </div>
                                         <div class="justRead col-md-8 m-b">
-                                            <p>@Html.DisplayFor(q => q.TransmissionTypeName)</p>
+                                            <p>@this.Model.TransmissionTypeName</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            <div class="form-control">
-                                                <div class="col-md-6"><input type="radio" checked value="Automatic" name="trans"> Automatic</div>
-                                                <div class="col-md-6"><input type="radio" value="Manual" name="trans"> Manual</div>
+                                            <div id="TranmissionTypeName" class="form-control">
+                                                <div class="col-md-6"><input type="radio" checked value="Automatic" name="trans"> Số tự động</div>
+                                                <div class="col-md-6"><input type="radio" value="Manual" name="trans"> Số sàn</div>
                                             </div>
                                         </div>
                                     </div>
@@ -164,7 +165,7 @@
                                         </div>
                                         <div class="col-md-8 m-b" style="height: 200px;">
                                             <div class="row m-l">
-                                                <span id="car-color"><i class="fa fa-lg fa-car"></i></span> <span id="color-name">@Html.DisplayFor(q=>q.ColorName)</span>
+                                                <span id="car-color"><i class="fa fa-lg fa-car"></i></span> <span id="color-name">Black</span>
                                                 <a class="editFiel btn btn-sm btn-default m-l-xs" id="change-color" style="display:none">Change</a>
 
                                                 <div id="panel-color" class="panel panel-primary m-r m-t">
@@ -202,18 +203,18 @@
                                             <div class="carousel slide m-b" id="carousel1">
                                                 <div class="carousel-inner">
                                                     <div class="item active">
-                                                       
-                                                        <img alt="image" class="img-responsive" src="@Html.DisplayFor(q=>q.ImageUrls[0])">
+                                                        <img alt="image" class="img-responsive" src="@this.Model.ImageUrls[0]">
                                                     </div>
-                                                    <div class="item">
-                                                        <img alt="image" class="img-responsive" src="@Html.DisplayFor(q=>q.ImageUrls[1])">
-                                                    </div>
-                                                    <div class="item ">
-                                                        <img alt="image" class="img-responsive" src="@Html.DisplayFor(q=>q.ImageUrls[2])">
-                                                    </div>
-                                                    <div class="item ">
-                                                        <img alt="image" class="img-responsive" src="@Html.DisplayFor(q=>q.ImageUrls[3])">
-                                                    </div>
+                                                    @foreach (string entry in Model.ImageUrls)
+                                                    {
+                                                        if (Model.ImageUrls.IndexOf(entry) != 0)
+                                                        {
+                                                            <div class="item">
+                                                                <img alt="image" class="img-responsive" src="@entry">
+                                                            </div>
+                                                        }
+                                                    }
+                                                    
                                                 </div>
                                                 <a data-slide="prev" href="#carousel1" class="left carousel-control">
                                                     <span class="icon-prev"></span>
@@ -242,8 +243,8 @@
                             <hr>
                             <div class="row">
                                 <div class="text-center">
-                                    <a id="edit-btn" class="btn btn-danger btn-lg" style="margin:20px">Edit</a>
-                                    <a id="save-btn" class="btn btn-primary btn-lg">Save change</a>
+                                    <a id="edit-btn" class="btn btn-danger btn-lg" style="margin:20px">Chỉnh sửa</a>
+                                    <a id="save-btn" class="btn btn-primary btn-lg">Lưu</a>
                                 </div>
                             </div>
 
