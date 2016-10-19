@@ -86,6 +86,7 @@
           <Property Name="Color" Type="int" Nullable="false" />
           <Property Name="IsCanceled" Type="bit" Nullable="false" />
           <Property Name="IsPending" Type="bit" Nullable="false" />
+          <Property Name="IsSelfBooking" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -761,6 +762,7 @@
           <Property Name="Color" Type="Int32" Nullable="false" />
           <Property Name="IsCanceled" Type="Boolean" Nullable="false" />
           <Property Name="IsPending" Type="Boolean" Nullable="false" />
+          <Property Name="IsSelfBooking" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="BookingReceipt" ToRole="AspNetUser" />
           <NavigationProperty Name="Model" Relationship="CRPDBModel.FK_BookingReceipt_Model" FromRole="BookingReceipt" ToRole="Model" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="BookingReceipt" ToRole="Vehicle" />
@@ -1184,6 +1186,7 @@
           <EntitySetMapping Name="BookingReceipts">
             <EntityTypeMapping TypeName="CRPDBModel.BookingReceipt">
               <MappingFragment StoreEntitySet="BookingReceipt">
+                <ScalarProperty Name="IsSelfBooking" ColumnName="IsSelfBooking" />
                 <ScalarProperty Name="IsPending" ColumnName="IsPending" />
                 <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
                 <ScalarProperty Name="Color" ColumnName="Color" />
