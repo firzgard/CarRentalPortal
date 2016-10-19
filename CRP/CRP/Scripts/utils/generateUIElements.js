@@ -22,7 +22,7 @@ function renderStarRating(starRating, color, hasBadge = true, renderEmptyStar = 
 			html += fullStar;
 		}
 	}
-	if (color) html = `<span style="color:${color};">${html}</span>`
+	if (color) html = `<span style="color:${color};white-space: nowrap;">${html}</span>`
 	if (hasBadge) html += `&nbsp;<span class="badge">${starRating}</span>`;
 	return html
 }

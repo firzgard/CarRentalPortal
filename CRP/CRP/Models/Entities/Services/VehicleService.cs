@@ -49,16 +49,12 @@ namespace CRP.Models.Entities.Services
 											&& v.Year >= filterConditions.MinProductionYear);
 
 			// Max/Min GarageRating condition
-			// Do not validate Max > Min here. Do it before this in the controller
-			if (filterConditions.MaxGarageRating != null && filterConditions.MinGarageRating != null)
-				vehicles = vehicles.Where(v => v.Garage.Star <= filterConditions.MaxGarageRating
-											&& v.Garage.Star >= filterConditions.MinGarageRating);
+			if (filterConditions.MinGarageRating != null)
+				vehicles = vehicles.Where(v => v.Garage.Star >= filterConditions.MinGarageRating);
 
 			// Max/Min VehicleRating condition
-			// Do not validate Max > Min here. Do it before this in the controller
-			if (filterConditions.MaxVehicleRating != null && filterConditions.MinVehicleRating != null)
-				vehicles = vehicles.Where(v => v.Star <= filterConditions.MaxVehicleRating
-											&& v.Star >= filterConditions.MinVehicleRating);
+			if (filterConditions.MinVehicleRating != null)
+				vehicles = vehicles.Where(v => v.Star >= filterConditions.MinVehicleRating);
 
 			// Brand and Model condition
 			if (filterConditions.BrandIDList.Any() || filterConditions.ModelIDList.Any())
