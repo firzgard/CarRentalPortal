@@ -57,4 +57,45 @@ namespace CRP.Models.ViewModels
 		public decimal Star { get; set; }
 		public string Comment { get; set; }
 	}
+
+    public class BookingsRecordJsonModel
+    {
+        public int ID { get; set; }
+        public int? VehicleID { get; set; }
+        public string VehicleName { get; set; }
+        public string LicenseNumber { get; set; }
+        public double RentalPrice { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public decimal? Star { get; set; }
+        public string Comment { get; set; }
+        public BookingsRecordJsonModel(BookingReceipt receipt)
+        {
+            ID = receipt.ID;
+            VehicleID = receipt.VehicleID;
+            VehicleName = receipt.VehicleName;
+            LicenseNumber = receipt.LicenseNumber;
+            RentalPrice = receipt.RentalPrice;
+            StartTime = receipt.StartTime;
+            EndTime = receipt.EndTime;
+            Star = receipt.Star;
+            Comment = receipt.Comment;
+        }
+    }
+
+    public class BookingsDataTablesJsonModel
+    {
+        public List<BookingsRecordJsonModel> data { get; set; }
+        public int draw { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
+
+        public BookingsDataTablesJsonModel(List<BookingsRecordJsonModel> bookingList, int rDraw, int totalRecords, int FilteredRecords)
+        {
+            data = bookingList;
+            draw = rDraw;
+            recordsTotal = totalRecords;
+            recordsFiltered = FilteredRecords;
+        }
+    }
 }
