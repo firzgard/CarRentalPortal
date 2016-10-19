@@ -8,6 +8,11 @@
         $('#panel-color').show();
     });
 
+    $('#edit-btn').on('click', function () {
+        $('.justRead').hide();
+        $('.editFiel').css('display', 'inline-block');
+    });
+
     $('.btn-color').on('click', function() {
         $('#car-color').html('<i class="fa fa-lg fa-car"></i>');
         $('#car-color').css('color', this.title);

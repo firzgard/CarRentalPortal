@@ -3,6 +3,9 @@
     border: #000 solid 1px;
     margin: 2px 0px;
 }
+#editFiel{
+    display:none;
+}
 #panel-color {
     display: none;
 }

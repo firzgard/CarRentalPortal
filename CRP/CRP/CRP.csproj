@@ -360,6 +360,7 @@
     <Compile Include="Models\Entities\GarageWorkingTime.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Repositories\UserRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleImageRepository.cs" />
     <Compile Include="Models\Entities\Services\CategoryService.cs" />
     <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />

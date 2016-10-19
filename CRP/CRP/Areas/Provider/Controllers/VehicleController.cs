@@ -23,7 +23,7 @@ namespace CRP.Areas.Provider.Controllers
 		//BookingReceiptService serviceBook = new BookingReceiptService();
 
 		// Route to vehicleManagement page
-		[Authorize(Roles = "Provider")]
+		//[Authorize(Roles = "Provider")]
 		[Route("management/vehicleManagement")]
 		public ViewResult VehicleManagement()
 		{
@@ -32,7 +32,7 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// Route to vehicle's detailed info page
-		[Authorize(Roles = "Provider")]
+		//[Authorize(Roles = "Provider")]
 		[Route("management/vehicleManagement/{id:int}")]
 		public ViewResult VehihicleDetail(int id)
 		{
