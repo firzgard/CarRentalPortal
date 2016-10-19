@@ -20,6 +20,8 @@ body {
 /* headerFilter */
 #headerFilters {
 	font-size: 1.2em;
+	margin-top: 1em;
+	margin-bottom: 2em;
 }
 
 #headerFilters .select2-selection {
@@ -90,11 +92,7 @@ body {
 	background-color: white;
 }
 
-.noUi-marker {
-	display: none;
-}
-
-.noUi-value{
+#priceFilter .noUi-value{
 	background: #E5E5E5;
 	border: 1px solid #A8B5BC;
 	border-radius: 6px;
@@ -102,7 +100,7 @@ body {
 	padding: 3px 5px; 
 	top: 0;
 }
-.noUi-value:before {
+#priceFilter .noUi-value:before {
 	content: '';
 	position: absolute;
 	bottom: 100%;
@@ -113,7 +111,7 @@ body {
 	border-right: 8px solid transparent;
 	border-left: 8px solid transparent;
 }
-.noUi-value:after {
+#priceFilter .noUi-value:after {
 	content: '';
 	position: absolute;
 	bottom: 100%;
@@ -135,7 +133,7 @@ body {
 
 .color-selector {
 	display: inline-block;
-	margin: 5px;
+	margin: 2px;
 	position: relative;
 	width: 50px;
 }

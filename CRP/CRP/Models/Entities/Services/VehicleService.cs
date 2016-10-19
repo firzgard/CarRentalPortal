@@ -35,13 +35,12 @@ namespace CRP.Models.Entities.Services
 				vehicles = vehicles.Where(v => filterConditions.FuelTypeIDList.Contains(v.FuelType));
 
 			// Location condition
-			if (filterConditions.LocationIDList != null)
-				vehicles = vehicles.Where(v => filterConditions.LocationIDList.Contains(v.Garage.LocationID));
+			if (filterConditions.LocationID != null)
+				vehicles = vehicles.Where(v => filterConditions.LocationID == v.Garage.LocationID);
 
 			// Category condition
 			if (filterConditions.CategoryIDList != null)
 				vehicles = vehicles.Where(v => v.Model.Categories.Any(r => filterConditions.CategoryIDList.Contains(r.ID)));
-
 
 			// Max/Min ProductionYear condition
 			// Do not validate Max > Min here. Do it before this in the controller

@@ -361,8 +361,8 @@ $(document).ready(() => {
 	// Location
 	
 	jQueryNodes.locationFilter.select2({
-		placeholder: 'Bạn muốn thuê xe ở đâu?',
-		minimumInputLength: 3
+		allowClear: true,
+		placeholder: 'Bạn muốn thuê xe ở đâu?'
 	})
 	.on('change', function() {
 		searchConditions.LocationID = $(this).val();
@@ -519,6 +519,46 @@ $(document).ready(() => {
 	yearSlider.on('set', (values, handle, unencoded) => {
 		searchConditions.MinProductionYear = unencoded[0];
 		searchConditions.MaxProductionYear = unencoded[1];
+
+		delete searchConditions.Page;
+		renderSearcher();
+	});
+
+	// Transmission's checkbox
+	$('#transmissionFilter input[type=checkbox]').change(function(evt) {
+		if(this.checked){
+			searchConditions.TransmissionTypeIDList.push(this.value)
+		} else {
+			searchConditions.TransmissionTypeIDList = searchConditions.TransmissionTypeIDList.filter((el) => el != this.value)
+		}
+		delete searchConditions.Page;
+
+		renderSearcher();
+	});
+
+	// Vehicle rating filter slider
+	let vehicleRatingSlider = noUiSlider.create(document.getElementById('vehicleRatingFilter'), {
+		connect: true,
+		direction: 'rtl',
+		orientation: 'vertical',
+		pips: {
+			density: Infinity,
+			format: {
+				to: value => renderStarRating(Number.parseInt(value), '#1ab394', false, false)
+			},
+			mode: 'count',
+			values: 6
+		},
+		start: [0, 5],
+		step: 1,
+		range: {
+			'min': [0],
+			'max': [5]
+		}
+	});
+	vehicleRatingSlider.on('set', (values, handle, unencoded) => {
+		searchConditions.MinVehicleRating = unencoded[0];
+		searchConditions.MaxVehicleRating = unencoded[1];
 
 		delete searchConditions.Page;
 		renderSearcher();
