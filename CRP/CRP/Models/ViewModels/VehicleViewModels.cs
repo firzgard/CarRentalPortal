@@ -64,8 +64,6 @@ namespace CRP.Models.ViewModels
 		public string LicenseNumber { get; set; }
 		public string Name { get; set; }
 		public int? Year { get; set; }
-		public string GarageName { get; set; }
-		public string Location { get; set; }
 		public int NumOfSeat { get; set; }
 		public decimal? Star { get; set; }
 
@@ -75,8 +73,6 @@ namespace CRP.Models.ViewModels
 			LicenseNumber = vehicle.LicenseNumber;
 			Name = vehicle.Name;
 			Year = vehicle.Year;
-			GarageName = vehicle.Garage.Name;
-			Location = vehicle.Garage.Location.Name;
 			NumOfSeat = vehicle.Model.NumOfSeat;
 			Star = vehicle.Star;
 		}

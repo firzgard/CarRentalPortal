@@ -63,6 +63,8 @@ namespace CRP.Models.ViewModels
 	// Model of JSON object of search result for searching vehicle to book
 	public class SearchResultItemJsonModel : VehicleRecordJsonModel
 	{
+		public string Location { get; set; }
+		public string GarageName { get; set; }
 		public string TransmissionTypeName { get; set; }
 		public string FuelTypeName { get; set; }
 		public List<string> CategoryList { get; set; }
@@ -75,7 +77,8 @@ namespace CRP.Models.ViewModels
 
 		public SearchResultItemJsonModel(Entities.Vehicle vehicle, int rentalTime) : base(vehicle)
 		{
-			CategoryList = vehicle.Model.Categories.Select(c => c.Name).ToList();
+			Location = vehicle.Garage.Location.Name;
+			GarageName = vehicle.Garage.Name;CategoryList = vehicle.Model.Categories.Select(c => c.Name).ToList();
 			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
 			NumOfComment = vehicle.BookingReceipts.Count(br => br.Comment != null);
 
