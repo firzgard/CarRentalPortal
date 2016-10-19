@@ -11,12 +11,12 @@ using System.Web.Mvc;
 
 namespace CRP.Areas.Provider.Controllers
 {
-    public class BookingsController : BaseController
+    public class BookingController : BaseController
     {
         // Route to vehicleManagement page
         [Authorize(Roles = "Provider")]
-        [Route("management/BookingsManagement")]
-        public ViewResult BookingsManagement()
+        [Route("management/BookingManagement")]
+        public ViewResult BookingManagement()
         {
             var service = this.Service<IGarageService>();
             GarageView garageView = new GarageView();
@@ -29,7 +29,7 @@ namespace CRP.Areas.Provider.Controllers
                     Value = q.ID.ToString(),
                     Selected = true,
                 });
-            return View("~/Areas/Provider/Views/Bookings/BookingsManagement.cshtml", garageView);
+            return View("~/Areas/Provider/Views/Booking/BookingManagement.cshtml", garageView);
         }
 
         public JsonResult GetListBooking()

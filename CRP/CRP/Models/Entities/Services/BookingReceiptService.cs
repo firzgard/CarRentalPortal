@@ -16,7 +16,8 @@ namespace CRP.Models.Entities.Services
 
         int CancelBooking(string customerID, int bookingID);
 		int RateBooking(string customerID, BookingCommentModel commentModel);
-	}
+        BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions);
+    }
 	public class BookingReceiptService : BaseService<BookingReceipt>, IBookingReceiptService
 	{
 		public BookingReceiptService(IUnitOfWork unitOfWork, IBookingReceiptRepository repository) : base(unitOfWork, repository)
@@ -92,5 +93,14 @@ namespace CRP.Models.Entities.Services
 
 			return 0;
 		}
-	}
+
+        public BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions)
+        {
+            var bookings = repository.Get(b => b.Vehicle.GarageID == conditions.garageID
+                && b.AspNetUser.Id == conditions.providerID && b.CustomerID != conditions.providerID
+                && b.IsPending == false);
+            
+        }
+
+    }
 }

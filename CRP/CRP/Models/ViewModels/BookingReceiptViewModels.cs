@@ -61,6 +61,9 @@ namespace CRP.Models.ViewModels
     public class BookingsRecordJsonModel
     {
         public int ID { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomertEmail { get; set; }
+        public string CustomerPhone { get; set; }
         public int? VehicleID { get; set; }
         public string VehicleName { get; set; }
         public string LicenseNumber { get; set; }
@@ -72,6 +75,9 @@ namespace CRP.Models.ViewModels
         public BookingsRecordJsonModel(BookingReceipt receipt)
         {
             ID = receipt.ID;
+            CustomerName = receipt.AspNetUser.FullName;
+            CustomertEmail = receipt.AspNetUser.Email;
+            CustomerPhone = receipt.AspNetUser.PhoneNumber;
             VehicleID = receipt.VehicleID;
             VehicleName = receipt.VehicleName;
             LicenseNumber = receipt.LicenseNumber;
@@ -97,5 +103,20 @@ namespace CRP.Models.ViewModels
             recordsTotal = totalRecords;
             recordsFiltered = FilteredRecords;
         }
+    }
+
+    public class BookingsFilterConditions
+    {
+        public string providerID { get; set; }
+        public int garageID { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool IsInFuture { get; set; }
+        public bool IsInThePast { get; set; }
+        public bool IsSelfBooking { get; set; }
+
+        public string OrderBy { get; set; }
+        public bool IsDescendingOrder { get; set; }
+        public int Page { get; set; } = 1;
+        public int RecordPerPage { get; set; } = Constants.NUM_OF_SEARCH_RESULT_PER_PAGE;
     }
 }

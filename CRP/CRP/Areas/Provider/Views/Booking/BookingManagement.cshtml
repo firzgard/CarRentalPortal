@@ -25,23 +25,23 @@
     </div>
 </div>
 
-@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingsManagement")
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingManagement")
                   .Include("~/Content/awesome-bootstrap-checkbox.css",
                       "~/Content/DataTables/css/dataTables.bootstrap.css"));
 }
 @section Styles {
-    @Styles.Render("~/Styles/BookingsManagement")
+    @Styles.Render("~/Styles/BookingManagement")
 }
 
-@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingsManagement")
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingManagement")
                   .Include("~/Scripts/DataTables/jquery.dataTables.js",
                       "~/Scripts/DataTables/dataTables.bootstrap.js",
                       "~/Scripts/moment.js",
                       "~/Scripts/utils/generateUIElements.js",
-                      "~/Scripts/pageScript/bookingsManagement.js"));
+                      "~/Scripts/pageScript/bookingManagement.js"));
 }
 @section Scripts {
     <script type="text/javascript">
     </script>
-    @Scripts.Render("~/Scripts/BookingsManagement")
+    @Scripts.Render("~/Scripts/BookingManagement")
 }
