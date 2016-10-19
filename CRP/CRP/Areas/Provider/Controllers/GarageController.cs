@@ -90,51 +90,6 @@ namespace CRP.Areas.Provider.Controllers
 				return new HttpStatusCodeResult(403, "Updated unsuccessfully.");
 
 			this.Mapper.Map(model, entity);
-
-			/*int ID = int.Parse(Request.Params["garageID"]);
-			string Name = Request.Params["garageName"];
-			int LocationID = int.Parse(Request.Params["locationID"]);
-			string Address = Request.Params["address"];
-			string Email = Request.Params["email"];
-			String Phone1 = Request.Params["phone1"];
-			String Phone2 = Request.Params["phone2"];
-			DateTime openTimeMon = setDayFromParam(Request.Params["openTimeMon"]);
-			DateTime closeTimeMon = setDayFromParam(Request.Params["closeTimeMon"]);
-			DateTime openTimeTue = setDayFromParam(Request.Params["openTimeTue"]);
-			DateTime closeTimeTue = setDayFromParam(Request.Params["closeTimeTue"]);
-			DateTime openTimeWed = setDayFromParam(Request.Params["openTimeWed"]);
-			DateTime closeTimeWed = setDayFromParam(Request.Params["closeTimeWed"]);
-			DateTime openTimeThur = setDayFromParam(Request.Params["openTimeThur"]);
-			DateTime closeTimeThur = setDayFromParam(Request.Params["closeTimeThur"]);
-			DateTime openTimeFri = setDayFromParam(Request.Params["openTimeFri"]);
-			DateTime closeTimeFri = setDayFromParam(Request.Params["closeTimeFri"]);
-			DateTime openTimeSat = setDayFromParam(Request.Params["openTimeSat"]);
-			DateTime closeTimeSat = setDayFromParam(Request.Params["closeTimeSat"]);
-			DateTime openTimeSun = setDayFromParam(Request.Params["openTimeSun"]);
-			DateTime closeTimeSun = setDayFromParam(Request.Params["closeTimeSun"]);
-
-			Garage editGarage = service.findByID(ID);
-			editGarage.Name = Name;
-			editGarage.LocationID = LocationID;
-			editGarage.Address = Address;
-			editGarage.Email = Email;
-			editGarage.Phone1 = Phone1;
-			editGarage.Phone2 = Phone2;
-			editGarage.OpenTimeMon = openTimeMon;
-			editGarage.OpenTimeTue = openTimeTue;
-			editGarage.OpenTImeWed = openTimeWed;
-			editGarage.OpenTimeThur = openTimeThur;
-			editGarage.OpenTimeFri = openTimeFri;
-			editGarage.OpenTimeSat = openTimeFri;
-			editGarage.OpenTimeSun = openTimeSun;
-			editGarage.CloseTimeMon = closeTimeMon;
-			editGarage.CloseTimeTue = closeTimeTue;
-			editGarage.CloseTImeWed = closeTimeWed;
-			editGarage.CloseTimeThur = closeTimeThur;
-			editGarage.CloseTimeFri = closeTimeFri;
-			editGarage.CloseTimeSat = closeTimeSat;
-			editGarage.CloseTimeSun = closeTimeSun;*/
-
 			await service.UpdateAsync(entity);
 
 			return new HttpStatusCodeResult(200, "Updated successfully.");
@@ -155,8 +110,74 @@ namespace CRP.Areas.Provider.Controllers
 			return new HttpStatusCodeResult(200, "Deleted successfully.");
 		}
 
-		//// GET: Brand
-		public ActionResult Index()
+        [Route("management/GarageManagement/create")]
+        [HttpGet]
+        public ViewResult CreateGarage()
+        {
+            var locationService = this.Service<ILocationService>();
+            List<Location> lstLocation = new List<Location>();
+            lstLocation = locationService.Get().ToList();
+            ViewBag.locationList = lstLocation;
+            createNewGarageViewModel viewModel = new createNewGarageViewModel();
+            return View("~/Areas/Provider/Views/VehicleGroup/CreatePopup.cshtml", viewModel);
+        }
+
+        [Route("api/deleteGarage/{id:int}")]
+        [HttpDelete]
+        public async Task<JsonResult> DeleteVehicleGroupAPI(int id)
+        {
+            var service = this.Service<IGarageService>();
+            var entity = await service.GetAsync(id);
+            if (entity != null)
+                    {
+                    return Json(new { result = true, message = "Delete success!" });
+                }
+
+            return Json(new { result = false, message = "Delete failed!" });
+        }
+
+        [Route("api/garage/status/{id:int}")]
+        [HttpPatch]
+        public async Task<JsonResult> ChangeStatus(int id)
+        {
+            var service = this.Service<IGarageService>();
+            var entity = await service.GetAsync(id);
+            if (entity != null)
+            {
+                entity.IsActive = !entity.IsActive;
+                await service.UpdateAsync(entity);
+                return Json(new { result = true, message = "Change status success!" });
+            }
+
+            return Json(new { result = false, message = "Change status failed!" });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(createNewGarageViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var service = this.Service<IGarageService>();
+                var garage = new Garage
+                {
+                    Name = model.GarageName,
+                    Address = model.Address,
+                    Email = model.Email,
+                    Phone1 = model.PhoneNumber,
+                    LocationID = int.Parse(model.LocationID),
+                    OwnerID = User.Identity.GetUserId(),
+                    IsActive = true
+                };
+                service.Create(garage);
+            }
+
+            // If we got this far, something failed, redisplay form
+            return new HttpStatusCodeResult(403, "Created unsuccessfully.");
+        }
+
+        //// GET: Brand
+        public ActionResult Index()
 		{
 			var service = this.Service<IGarageService>();
 			List<Garage> lstGara = new List<Garage>();
