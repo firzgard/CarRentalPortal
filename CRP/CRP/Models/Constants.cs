@@ -13,44 +13,55 @@ namespace CRP.Models
 		public const int SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = 6;
 		public const int SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = 7;
 		public const int LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = 30;
-		public static readonly int[] COMMON_NUM_OF_SEAT = new int[] { 4, 5, 7, 8, 16, 29 };
+		public static readonly int[] COMMON_NUM_OF_SEAT = new int[] { 2, 4, 5, 7, 8, 16 };
 
-		public static readonly Dictionary<string, string> ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE = new Dictionary<string, string>
+		public class SortingOption
 		{
-			{ nameof(SearchResultItemJsonModel.BestPossibleRentalPeriod), "Best Possible Rental Period" },
-			{ nameof(SearchResultItemJsonModel.BestPossibleRentalPrice), "Best Possible Rental Price" },
-			{ nameof(SearchResultItemJsonModel.Year), "Production Year" },
-			{ nameof(SearchResultItemJsonModel.NumOfComment), "Number of Review" },
-			{ nameof(SearchResultItemJsonModel.NumOfSeat), "Number of Seat" },
-			{ nameof(SearchResultItemJsonModel.Star), "Rating" }
+			public string Name { get; set; }
+			public string Description { get; set; }
+			public bool IsDescending { get; set; }
+
+			public SortingOption(string name, string description, bool isDescending)
+			{
+				Name = name; Description = description; IsDescending = isDescending;
+			}
+		}
+		public static readonly List<SortingOption> ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE = new List<SortingOption>
+		{
+			new SortingOption(nameof(SearchResultItemJsonModel.BestPossibleRentalPeriod), "Gói thời gian thuê xe phù hợp nhất", false),
+			new SortingOption(nameof(SearchResultItemJsonModel.Star), "Xe có điểm đánh giá tốt nhất", true),
+			new SortingOption(nameof(SearchResultItemJsonModel.NumOfComment), "Garage có điểm đánh giá tốt nhất", true),
+			new SortingOption(nameof(SearchResultItemJsonModel.BestPossibleRentalPrice), "Giá từ thấp đến cao", false),
+			new SortingOption(nameof(SearchResultItemJsonModel.BestPossibleRentalPrice), "Giá từ cao đến thấp", true),
+			new SortingOption(nameof(SearchResultItemJsonModel.Year), "Xe từ mới đến cũ", true),
+			new SortingOption(nameof(SearchResultItemJsonModel.Year), "Xe từ cũ đến mới", false),
 		};
 
 		public static readonly Dictionary<int, string> COLOR = new Dictionary<int, string>
 		{
-			{ 0, "Another color" },
-			{ 1, "Black" },
-			{ 2, "Blue" },
-			{ 3, "Brown" },
-			{ 4, "Green" },
-			{ 5, "Orange" },
-			{ 6, "Purple" },
-			{ 7, "Red" },
-			{ 8, "Silver" },
-			{ 9, "White" },
-			{ 10, "Yellow" }
+			{ 0, "--" },
+			{ 1, "White" },
+			{ 2, "Black" },
+			{ 3, "Gray" },
+			{ 4, "Brown" },
+			{ 5, "Blue" },
+			{ 6, "Red" },
+			{ 7, "Green" },
+			{ 8, "Yellow" },
+			{ 9, "Orange" },
 		};
 
 		public static readonly Dictionary<int, string> FUEL_TYPE = new Dictionary<int, string>{
-			{ 1, "Diesel" },
-			{ 2, "Electric" },
-			{ 3, "Hybrid Electric" },
-			{ 4, "Petrol" },
-			{ 5, "Plug-in Hybrid Electric" },
+			{ 1, "Xăng" },
+			{ 2, "Dầu Diesel" },
+			{ 3, "Điện" },
+			{ 4, "Điện lai" },
+			{ 5, "Điện lai sạc điện" },
 		};
 
 		public static readonly Dictionary<int, string> TRANSMISSION_TYPE = new Dictionary<int, string> {
-			{ 1, "Automatic" },
-			{ 2, "Manual" }
+			{ 1, "Số tự động" },
+			{ 2, "Số sàn" }
 		};
 	}
 }

@@ -8282,9 +8282,13 @@ body{
   color: yellow;
 }
 
+.center-flex {
+  display: flex;
+  align-items: center;
+}
 /* ============================================================================== */
 /* datatables' filters */
-#multiFilter {
+/* #multiFilter {
   display: table-header-group;
 }
 #multiFilter .btn-group {
@@ -8326,11 +8330,9 @@ body{
 
 #modelTree {
   min-width: 20em;
-}
+} */
 
 /* ============================================================================== */
-
-.center-flex {
-  display: flex;
-  align-items: center;
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: transparent;
 }

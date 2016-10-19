@@ -46,7 +46,7 @@ $(document).ready(function(){
 
 		startTime && sessionStorage.setItem('startTime', startTime.toJSON());
 		endTime && sessionStorage.setItem('endTime', endTime.toJSON());
-		locationID && sessionStorage.setItem('locationID', locationID);
+		locationID && sessionStorage.setItem('locationID', JSON.stringify(locationID));
 
 		location = searchPageUrl;
 	})
