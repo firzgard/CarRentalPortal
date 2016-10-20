@@ -152,7 +152,7 @@ namespace CRP.Areas.Provider.Controllers
                     await service.DeleteAsync(entity);
                     foreach(var item in priceGroupItemsEntity)
                     {
-                        priceGroupItemService.DeleteAsync(item);
+                        await priceGroupItemService.DeleteAsync(item);
                     }
                     await priceGroupService.DeleteAsync(priceGroupEntity);
                     
