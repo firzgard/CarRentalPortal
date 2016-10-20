@@ -68,10 +68,13 @@ namespace CRP.Models.ViewModels
         public string VehicleName { get; set; }
         public string LicenseNumber { get; set; }
         public double RentalPrice { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
         public decimal? Star { get; set; }
         public string Comment { get; set; }
+        public bool IsInThePast { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool IsSelfBooking { get; set; }
         public BookingsRecordJsonModel(BookingReceipt receipt)
         {
             ID = receipt.ID;
@@ -82,10 +85,22 @@ namespace CRP.Models.ViewModels
             VehicleName = receipt.VehicleName;
             LicenseNumber = receipt.LicenseNumber;
             RentalPrice = receipt.RentalPrice;
-            StartTime = receipt.StartTime;
-            EndTime = receipt.EndTime;
+            StartTime = receipt.StartTime.ToShortTimeString() + " " + receipt.StartTime.ToShortDateString();
+            EndTime = receipt.EndTime.ToShortTimeString() + " " +receipt.EndTime.ToShortDateString();
             Star = receipt.Star;
             Comment = receipt.Comment;
+
+            DateTime now = DateTime.Now;
+            if(receipt.StartTime < now)
+            {
+                IsInThePast = true;
+            } else
+            {
+                IsInThePast = false;
+            }
+
+            IsCanceled = receipt.IsCanceled;
+            IsSelfBooking = receipt.IsSelfBooking;
         }
     }
 
@@ -108,7 +123,7 @@ namespace CRP.Models.ViewModels
     public class BookingsFilterConditions
     {
         public string providerID { get; set; }
-        public int garageID { get; set; }
+        public int? garageID { get; set; }
         public bool IsCanceled { get; set; }
         public bool? IsInThePast { get; set; }
         public bool IsSelfBooking { get; set; }

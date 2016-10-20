@@ -6,7 +6,7 @@ const vehicleTableColumns = [
 	, { name: 'Year', title: 'Năm', data: 'Year' }
 	, { name: 'NumOfSeat', title: 'Số chỗ', data: 'NumOfSeat' }
 	, { name: 'Star', title: "Đánh giá", data: 'Star', width: '6.5em' }
-	, { name: 'Action', title: "Action", orderable: false, searchable: false }
+	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false }
 ]
 
 const viDatatables = {
@@ -40,12 +40,11 @@ $(document).ready(function () {
 	});
 
 	let table = $(vehicleTable).DataTable({
-		dom: "lftipr"
+		dom: "ltipr"
 		, serverSide: true
 		, ajax: {
 			url: queryApiUrl
 			, data: (rawData) => {
-				console.log(rawData);
 				return {
 				    Draw: rawData.draw,
                     GarageID: garageID
@@ -70,26 +69,27 @@ $(document).ready(function () {
 			{
 				targets: -2
 				, render: function(data, type, row) {
-					return renderStarRating(data);
+				    if (data) {
+				        return renderStarRating(data);
+				    }
+				    return '-';
 				}
 			},
 			{
 				targets: -1
 				, render: function (data, type, row) {
-					var action = `<div class="btn-group" >
+				    var action = `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-info btn-block dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
+							<i class="fa fa-gear"></i> Thao tác <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarage" data-vehicle-id="${row.id}" >Change Garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroup" data-vehicle-id="${row.id}" >Change Group</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.id}" data-vehicle-name="${row.name}" >Delete Vehicle</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${row.id}" >Duplicate Vehicle</a></li>
-							<li><a href="./../car/car.html" target="_blank">Edit Vehicle</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarage" data-vehicle-id="${row.id}" >Chuyển garage</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroup" data-vehicle-id="${row.id}" >Đổi nhóm</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.id}" data-vehicle-name="${row.name}" >Xóa</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${row.id}" >Thêm xe tương tự</a></li>
+							<li><a href="/management/vehicleManagement/${row.ID}" target="_blank">Sửa thông tin</a></li>
 						</ul>
 					</div>`;
-					var edit='<a class="btn btn-edit btn-primary btn-sm">Edit</a>'
-					var del='<a class="btn btn-edit btn-danger btn-sm">Delete</a>'
 					return action;
 				}
 			}

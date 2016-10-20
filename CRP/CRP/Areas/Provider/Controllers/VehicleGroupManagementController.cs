@@ -5,6 +5,7 @@ using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
 using CRP.Models.JsonModels;
 using CRP.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -47,7 +48,7 @@ namespace CRP.Areas.Provider.Controllers
                 q.ID,
                 q.Name,
                 q.MaxRentalPeriod != null ? q.MaxRentalPeriod : null,
-                q.PriceGroup.DepositPercentage,
+                (q.PriceGroup.DepositPercentage * 100m).ToString("#") + "%",
                 q.PriceGroup.PerDayPrice,
                 q.Vehicles.Count,
                 q.IsActive
@@ -65,6 +66,7 @@ namespace CRP.Areas.Provider.Controllers
         }
 
 		// API Route to create single new group
+        [Authorize(Roles = "Provider")]
 		[Route("api/vehicleGroups")]
 		[HttpPost]
 		public async Task<JsonResult> CreateVehicleGroupAPI(VehicleGroup model)
@@ -76,6 +78,7 @@ namespace CRP.Areas.Provider.Controllers
             var service = this.Service<IVehicleGroupService>();
             var priceGroupService = this.Service<IPriceGroupService>();
             var priceGroupItemService = this.Service<IPriceGroupItemService>();
+            model.OwnerID = User.Identity.GetUserId();
             model.IsActive = true;
             
             var entity = this.Mapper.Map<VehicleGroup>(model);

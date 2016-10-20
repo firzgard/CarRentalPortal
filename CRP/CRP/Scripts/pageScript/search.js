@@ -50,7 +50,7 @@ function renderSearchResultItem(searchResult){
 			<div class="vehicle-info row">
 				<div class="col-xs-9">
 				<div style="font-size:0.88em;">&nbsp;${searchResult.GarageName} · ${renderStarRating(searchResult.GarageRating, '#1ab394', false)}</div>
-					<a href="${vehicleInfoUrl}/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
+					<a href="${VEHICLE_INFO_URL}/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
 					<div class="center-flex">${renderStarRating(searchResult.Star, '#1ab394')} · ${searchResult.NumOfComment} ${searchResult.NumOfComment > 1 ? 'reviews' : 'review' }</div>
 				</div>
 				<div class="col-xs-3 text-right vehicle-seat center-flex">${searchResult.NumOfSeat}<img src="/Content/img/icons/person.png"/></div>	
@@ -154,10 +154,10 @@ function renderPriceSlider(data){
 				from: value => Number.parseInt(value.replace('₫', '').replace('Trung bình ', '').replace(',', ''))
 			}
 		},
-		start: [searchConditions.MinPrice || 0, searchConditions.MaxPrice || priceSliderMax || 100000],
+		start: [searchConditions.MinPrice || PRICE_SLIDER_MIN || 0, searchConditions.MaxPrice || PRICE_SLIDER_MAX || 100000],
 		range: {
-			'min': [0],
-			'max': [priceSliderMax || 100000]
+			'min': [PRICE_SLIDER_MIN || 0],
+			'max': [PRICE_SLIDER_MAX || 100000]
 		}
 	});
 	priceSlider.on('update', (values, handle, unencoded) => {
@@ -175,6 +175,7 @@ function renderPriceSlider(data){
 
 function renderSearcher(){
 	//console.log(searchConditions);
+	window.scrollTo(0, null);
 	jQueryNodes.searchResultGrid.addClass('hidden');
 	jQueryNodes.paginator.addClass('hidden');
 	jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
@@ -184,9 +185,9 @@ function renderSearcher(){
 			<div class="sk-bounce3"></div>
 		</div>
 	</div>`);
-console.log(searchConditions);
+
 	$.ajax({
-		url: queryApiUrl,
+		url: QUERY_API_URL,
 		type: 'GET',
 		dataType: 'json',
 		data: searchConditions
@@ -218,22 +219,30 @@ $(document).ready(() => {
 	now = moment();
 
 	jQueryNodes = {
-		resultContainer: $('#resultContainer')
-		, filters: $('#filters')
+		filters: $('#filters')
+		, locationFilter : $('#locationFilter')
 		, startTimeFilter: $('#startTimeFilter')
 		, endTimeFilter: $('#endTimeFilter')
 		, sorter: $('#sorter')
-		, locationFilter : $('#locationFilter')
-		, brandFilter: $('#brandFilter')
+		, seatFilterCheckboxes: $('#seatFilter input[type=checkbox]')
 		, modelFilter: $('#modelFilter')
+		, fuelFilter: $('#fuelFilter')
+		, categoryFilter: $('#categoryFilter')
+		, colorFilterCheckboxes: $('#colorFilter input[type=checkbox]')
+		, transmissionFilterCheckboxes: $('#transmissionFilter input[type=checkbox]')
+		, vehicleRatingFilter: $('#vehicleRatingFilter')
+		, garageRatingFilter: $('#garageRatingFilter')
 		, searchResultGrid: $('#searchResultGrid')
+		, resultContainer: $('#resultContainer')
 		, paginator: $('#paginatior')
 		, recordInfo: $('#recordInfo')
 	}
 
 	searchConditions = {
 		BrandIDList: []
+		, ColorIDList: []
 		, ModelIDList: []
+		, NumberOfSeatList: []
 		, TransmissionTypeIDList: []
 		, OrderBy: jQueryNodes.sorter.val()
 		, IsDescendingOrder: jQueryNodes.sorter.find(":selected").data('is-descending')
@@ -267,6 +276,45 @@ $(document).ready(() => {
 		searchConditions.LocationID = jQueryNodes.locationFilter.val();
 	}
 
+	// ===========================================================
+	// Filters
+
+	// Transmission's checkboxes
+	jQueryNodes.transmissionFilterCheckboxes.change(function(evt) {
+		if(this.checked){
+			searchConditions.TransmissionTypeIDList.push(this.value)
+		} else {
+			searchConditions.TransmissionTypeIDList = searchConditions.TransmissionTypeIDList.filter((el) => el != this.value)
+		}
+
+		delete searchConditions.Page;
+		renderSearcher();
+	});
+
+	// Seat's checkboxes
+	jQueryNodes.seatFilterCheckboxes.change(function(evt) {
+		if(this.checked){
+			searchConditions.NumberOfSeatList.push(this.value)
+		} else {
+			searchConditions.NumberOfSeatList = searchConditions.NumberOfSeatList.filter((el) => el != this.value)
+		}
+		delete searchConditions.Page;
+
+		renderSearcher();
+	});
+
+	// Color's checkboxes
+	jQueryNodes.colorFilterCheckboxes.change(function(evt) {
+		if(this.checked){
+			searchConditions.ColorIDList.push(this.value)
+		} else {
+			searchConditions.ColorIDList = searchConditions.ColorIDList.filter((el) => el != this.value)
+		}
+		delete searchConditions.Page;
+
+		renderSearcher();
+	});
+
 	// Sort
 	jQueryNodes.sorter.on('change', function() {
 		searchConditions.OrderBy = $(this).val();
@@ -286,7 +334,6 @@ $(document).ready(() => {
 		maxDate: latestPossibleBookingStartTimeFromNow,
 		format: 'YYYY/MM/DD HH:mm',
 		ignoreReadonly: true,
-		showClose: true,
 		widgetParent: 'body',
 	})
 	// This on is for rendering the popup at the correct position
@@ -378,49 +425,9 @@ $(document).ready(() => {
 		renderSearcher();
 	});
 
-	// // Brand
-	// jQueryNodes.brandFilter
-	// .select2({
-	// 	placeholder: 'Vui lòng chọn hiệu xe...'
-	// })
-	// .on('change', function() {
-	// 	// Remove modelFilter before regenerate it
-	// 	jQueryNodes.modelFilter.select2("destroy");
-
-	// 	// Enable all model options before
-	// 	// disabling only model options belonged to selected brands
-	// 	jQueryNodes.modelFilter.find('option').each((i, el) => {
-	// 		el.disabled = false
-	// 	});
-
-	// 	// Get the brandIdList
-	// 	searchConditions.BrandIDList = $(this).val();
-
-	// 	let disabledModelIDList = [];
-	// 	for(let brandID of searchConditions.BrandIDList){
-	// 		let optgroup = jQueryNodes.modelFilter.find(`optgroup[data-brand="${brandID}"]`)
-			
-	// 		optgroup.find('option').each((i, el) => {
-	// 			// Disable only model options belonged to selected brands
-	// 			el.selected = false;
-	// 			el.disabled = true;
-
-	// 			disabledModelIDList.push(el.value.toString());
-	// 		});
-	// 	}
-	// 	// Filter out models belonged to selected brands in searchConditions
-	// 	searchConditions.ModelIDList = searchConditions.ModelIDList.filter((el) => !disabledModelIDList.includes(el.toString()));
-
-	// 	// Regenerate modelFilter
-	// 	jQueryNodes.modelFilter.select2();
-
-	// 	delete searchConditions.Page;
-	// 	renderSearcher();
-	// });
-
 	// Model
-	(function renderModelFilter(){
-		$('#modelFilter').first()
+	function renderModelFilter(){
+		jQueryNodes.modelFilter
 		.select2({
 			placeholder: 'Vui lòng chọn dòng xe...',
 			templateSelection: (data) => {
@@ -436,7 +443,7 @@ $(document).ready(() => {
 				return $(`<span class="model-option">${data.text.substring(1)}</span>`)
 			}
 		})
-		// Call once
+		// Only allow to call once
 		.one('change', function() {
 			// Need to remove all models belonged to selected brands to keep the search simple
 
@@ -468,31 +475,38 @@ $(document).ready(() => {
 			$(this).off();
 			renderModelFilter();
 		});
-	})();
+	}
+	renderModelFilter();
 
 	// Category
-	$('#categoryFilter')
-	.select2({
-		placeholder: 'Vui lòng chọn loại xe...'
-	})
-	.on('change', function() {
-		searchConditions.CategoryIDList = $(this).val();
-		delete searchConditions.Page;
+	function renderCategoryFilter(){
+		jQueryNodes.categoryFilter
+		.select2({
+			placeholder: 'Vui lòng chọn loại xe...'
+		})
+		.on('change', function() {
+			searchConditions.CategoryIDList = $(this).val();
+			delete searchConditions.Page;
 
-		renderSearcher();
-	});
+			renderSearcher();
+		});
+	}
+	renderCategoryFilter();
 
 	// Fuel
-	$('#fuelFilter')
-	.select2({
-		placeholder: 'Vui lòng chọn loại nhiên liệu...'
-	})
-	.on('change', function() {
-		searchConditions.FuelTypeIDList = $(this).val();
-		delete searchConditions.Page;
+	function renderFuelFilter(){
+		jQueryNodes.fuelFilter
+		.select2({
+			placeholder: 'Vui lòng chọn loại nhiên liệu...'
+		})
+		.on('change', function() {
+			searchConditions.FuelTypeIDList = $(this).val();
+			delete searchConditions.Page;
 
-		renderSearcher();
-	});
+			renderSearcher();
+		});
+	}
+	renderFuelFilter();
 
 	const starOptionFormat = (data) => {
 		if(!data.id) return data.text;
@@ -500,34 +514,41 @@ $(document).ready(() => {
 	}
 
 	// Vehicle rating filter slider
-	$('#vehicleRatingFilter').select2({
-		allowClear: true,
-		placeholder: '--------',
-		minimumResultsForSearch: Infinity,
-		templateSelection: starOptionFormat,
-		templateResult: starOptionFormat
-	})
-	.on('change', function() {
-		searchConditions.MinVehicleRating = $(this).val();
-		delete searchConditions.Page;
+	function renderVehicleRatingFilter(){
+		jQueryNodes.vehicleRatingFilter
+		.select2({
+			allowClear: true,
+			placeholder: '--------',
+			minimumResultsForSearch: Infinity,
+			templateSelection: starOptionFormat,
+			templateResult: starOptionFormat
+		})
+		.on('change', function() {
+			searchConditions.MinVehicleRating = $(this).val();
+			delete searchConditions.Page;
 
-		renderSearcher();
-	});
+			renderSearcher();
+		});
+	}
+	renderVehicleRatingFilter();
 
 	// Garage rating filter slider
-	$('#garageRatingFilter').select2({
-		allowClear: true,
-		placeholder: '--------',
-		minimumResultsForSearch: Infinity,
-		templateSelection: starOptionFormat,
-		templateResult: starOptionFormat
-	})
-	.on('change', function() {
-		searchConditions.MinGarageRating = $(this).val();
-		delete searchConditions.Page;
+	function renderGarageRatingFilter(){
+		jQueryNodes.garageRatingFilter.select2({
+			allowClear: true,
+			placeholder: '--------',
+			minimumResultsForSearch: Infinity,
+			templateSelection: starOptionFormat,
+			templateResult: starOptionFormat
+		})
+		.on('change', function() {
+			searchConditions.MinGarageRating = $(this).val();
+			delete searchConditions.Page;
 
-		renderSearcher();
-	});
+			renderSearcher();
+		});
+	}
+	renderGarageRatingFilter();
 
 	//=================================================
 	// Sliders
@@ -540,10 +561,10 @@ $(document).ready(() => {
 			from: value => Number.parseInt(value.replace('₫', '').replace(',', ''))
 		},
 		margin: 100000,
-		start: [0, priceSliderMax || 100000],
+		start: [PRICE_SLIDER_MIN || 0, PRICE_SLIDER_MAX || 100000],
 		range: {
 			'min': [0],
-			'max': [priceSliderMax || 100000]
+			'max': [PRICE_SLIDER_MAX || 100000]
 		}
 	});
 	priceSlider.on('update', (values, handle, unencoded) => {
@@ -559,38 +580,95 @@ $(document).ready(() => {
 	});
 
 	// Year filter slider
-	let yearSlider = noUiSlider.create(document.getElementById('yearFilter'), {
-		connect: true,
-		start: [yearSliderMin || 1888, yearSliderMax || now.year()],
-		step: 1,
-		range: {
-			'min': [yearSliderMin || 1888],
-			'max': [yearSliderMax || now.year()]
-		}
-	});
-	yearSlider.on('update', (values, handle, unencoded) => {
-		$('#minYearDisplay').html(unencoded[0]);
-		$('#maxYearDisplay').html(unencoded[1]);
-	});
-	yearSlider.on('set', (values, handle, unencoded) => {
-		searchConditions.MinProductionYear = unencoded[0];
-		searchConditions.MaxProductionYear = unencoded[1];
+	let yearSlider = document.getElementById('yearFilter')
+	function renderYearSlider(){
+		noUiSlider.create(yearSlider, {
+			connect: true,
+			start: [YEAR_SLIDER_MIN || 1888, YEAR_SLIDER_MAX || now.year()],
+			step: 1,
+			range: {
+				'min': [YEAR_SLIDER_MIN || 1888],
+				'max': [YEAR_SLIDER_MAX || now.year()]
+			}
+		});
+		yearSlider.noUiSlider.on('update', (values, handle, unencoded) => {
+			$('#minYearDisplay').html(unencoded[0]);
+			$('#maxYearDisplay').html(unencoded[1]);
+		})
+		yearSlider.noUiSlider.on('set', (values, handle, unencoded) => {
+			searchConditions.MinProductionYear = unencoded[0];
+			searchConditions.MaxProductionYear = unencoded[1];
+
+			delete searchConditions.Page;
+			renderSearcher();
+		});
+	}
+	renderYearSlider();
+
+	// Reset filter button
+	$('#filterResetter').click(() => {
+		// Reset seat
+		jQueryNodes.seatFilterCheckboxes.each(function(){ this.checked=false; });
+		searchConditions.NumberOfSeatList = [];
+
+		// Reset transmission
+		jQueryNodes.transmissionFilterCheckboxes.each(function(){ this.checked=false; });
+		searchConditions.TransmissionTypeIDList = [];
+
+		// Reset color
+		jQueryNodes.colorFilterCheckboxes.each(function(){ this.checked=false; });
+		searchConditions.ColorIDList = [];
+
+		// Reset price range
+		delete searchConditions.MaxPrice;
+		delete searchConditions.MinPrice;
+
+		// Reset year range
+		delete searchConditions.MinProductionYear;
+		delete searchConditions.MaxProductionYear;
+
+		yearSlider.noUiSlider.destroy();
+		renderYearSlider();
+
+		// Reset fuel
+		delete searchConditions.FuelTypeIDList;
+		jQueryNodes.fuelFilter.val('');
+		jQueryNodes.fuelFilter.select2("destroy");
+		jQueryNodes.fuelFilter.off();
+		renderFuelFilter();
+
+		// Reset category
+		delete searchConditions.CategoryIDList;
+		jQueryNodes.categoryFilter.val('');
+		jQueryNodes.categoryFilter.select2("destroy");
+		jQueryNodes.categoryFilter.off();
+		renderCategoryFilter();
+
+		// Reset vehicle rating
+		delete searchConditions.MinVehicleRating;
+		jQueryNodes.vehicleRatingFilter.val('');
+		jQueryNodes.vehicleRatingFilter.select2("destroy");
+		jQueryNodes.vehicleRatingFilter.off();
+		renderVehicleRatingFilter();
+
+		// Reset garage rating
+		delete searchConditions.MinGarageRating;
+		jQueryNodes.garageRatingFilter.val('');
+		jQueryNodes.garageRatingFilter.select2("destroy");
+		jQueryNodes.garageRatingFilter.off();
+		renderGarageRatingFilter();
+
+		// Reset model
+		searchConditions.ModelIDList = [];
+		searchConditions.BrandIDList = [];
+		jQueryNodes.modelFilter.find('option').each(function(){ this.disabled = false; this.selected=false; });
+		jQueryNodes.modelFilter.select2("destroy");
+		jQueryNodes.modelFilter.off();
+		renderModelFilter();
 
 		delete searchConditions.Page;
 		renderSearcher();
-	});
-
-	// Transmission's checkbox
-	$('#transmissionFilter input[type=checkbox]').change(function(evt) {
-		if(this.checked){
-			searchConditions.TransmissionTypeIDList.push(this.value)
-		} else {
-			searchConditions.TransmissionTypeIDList = searchConditions.TransmissionTypeIDList.filter((el) => el != this.value)
-		}
-		delete searchConditions.Page;
-
-		renderSearcher();
-	});
+	})
 
 	// ========================================================
 	// Render search result grid

@@ -6,12 +6,15 @@
 	, { name: 'VehicleName', title: 'Tên xe', data: 'VehicleName' }
 	, { name: 'LicenseNumber', title: 'Biển số', data: 'LicenseNumber' }
     , { name: 'RentalPrice', title: 'Giá thuê', data: 'RentalPrice' }
-    , { name: 'StartTime', title: 'Thuê từ ngày', data: 'StartTime' }
-    , { name: 'EndTime', title: 'Thuê đến ngày', data: 'EndTime' }
+    , { name: 'StartTime', title: 'Thuê từ', data: 'StartTime' }
+    , { name: 'EndTime', title: 'Thuê đến', data: 'EndTime' }
 	, { name: 'Star', title: "Đánh giá", data: 'Star', width: '6.5em' }
     , { name: 'Comment', data: 'Comment', visible: false, orderable: false, searchable: false }
-    , { name: 'Type', title: "Phân loại", orderable: false, searchable: false }
-	, { name: 'Action', title: "Thoa tác", orderable: false, searchable: false }
+    , { name: 'IsInThePast', data: 'IsInThePast', visible: false, orderable: false, searchable: false }
+    , { name: 'IsCanceled', data: 'IsCanceled', visible: false, orderable: false, searchable: false }
+    , { name: 'IsSelfBooking', data: 'IsSelfBooking', visible: false, orderable: false, searchable: false }
+    , { name: 'Type', title: "Tình trạng", orderable: false, searchable: false }
+	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false }
 ]
 
 const viDatatables = {
@@ -30,43 +33,23 @@ const viDatatables = {
 }
 
 $(document).ready( function () {
-    let garageID = parseInt($('#garageID').val());
+    let garageID = null;
     let isCanceled = false;
     let isSelfBooking = false;
     let isInThePast = null;
 
-    if ($('#isCanceled').is(':checked')) {
-        isCanceled = true;
+    if ($('#byGarage').is(':checked')) {
+        garageID = parseInt($('#garageID').val());
     } else {
-        isCanceled = false;
-    }
-    if ($('#isSelfBooking').is(':checked')) {
-        isSelfBooking = true;
-    } else {
-        isSelfBooking = false;
-    }
-
-    if ($('#isInThePast').is(':checked')) {
-        if ($('#isInFuture').is(':checked')) {
-            isInThePast = null;
-        } else {
-            isInThePast = true;
-        }
-    } else {
-        if ($('#isInFuture').is(':checked')) {
-            isInThePast = false;
-        } else {
-            isInThePast = null;
-        }
+        garageID = null;
     }
 
     let table = $(bookings).DataTable({
-        dom: "lftipr"
+        dom: "ltipr"
 		, serverSide: true
 		, ajax: {
 		    url: queryApiUrl
 			, data: (rawData) => {
-			    console.log(rawData);
 			    return {
 			        Draw: rawData.draw,
 			        GarageID: garageID,
@@ -92,32 +75,105 @@ $(document).ready( function () {
         columns: bookingTableColumns,
         columnDefs: [
 			{
-			    targets: -2
+			    targets: -7
 				, render: function (data, type, row) {
-				    return renderStarRating(data);
+				    if (data) {
+                        return renderStarRating(data);
+				    }
+				    return '-';
 				}
 			},
+            {
+                targets: -2
+				, render: function (data, type, row) {
+				    var timeReceipt = "";
+				    var status = "";
+				    if (row.IsInThePast) {
+				        timeReceipt = `<div class="status-label" >
+							<p class ="label label-lg label-success">Đã qua</p>
+						</div>`;
+				    } else {
+				        timeReceipt = `<div class="status-label" >
+							<p class ="label label-lg label-warning">Sắp đến</p>
+						</div>`;
+				    }
+				    if (row.IsCanceled) {
+				        status = `<div class="status-label" >
+							<p class ="label label-lg label-danger">Đã hủy</p>
+						</div>`;
+				    } else {
+				        if (row.IsSelfBooking) {
+				            status = `<div class="status-label" >
+							<p class ="label label-lg label-info">Tự đặt</p>
+						</div>`;
+				        } else {
+				            status = `<div class="status-label" >
+							<p class ="label label-lg label-primary">Thành công</p>
+						</div>`;
+				        }
+				    }
+				    return timeReceipt +" "+ status;
+				}
+            },
 			{
 			    targets: -1
 				, render: function (data, type, row) {
 				    var action = `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-info btn-block dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
+							<i class="fa fa-gear"></i> Thao tác <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarage" data-vehicle-id="${row.id}" >Change Garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroup" data-vehicle-id="${row.id}" >Change Group</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.id}" data-vehicle-name="${row.name}" >Delete Vehicle</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${row.id}" >Duplicate Vehicle</a></li>
-							<li><a href="./../car/car.html" target="_blank">Edit Vehicle</a></li>
+							<li><a href="#" data-toggle="modal" data-target="#customModal">Chi tiết</a></li>
+                            ${row.IsSelfBooking && !row.IsInThePast? `<li><a href="#" data-toggle="modal" data-target="#customModal">Hủy tự đặt</a></li>`: ''}
+							
 						</ul>
 					</div>`;
-				    var edit = '<a class="btn btn-edit btn-primary btn-sm">Edit</a>'
-				    var del = '<a class="btn btn-edit btn-danger btn-sm">Delete</a>'
-				    return action;
+				    var info = '<a class="btn btn-success btn-sm"><i class="fa fa-info-circle"></i><span> Chi tiết</span></a>';
+				    var del = '';
+				    if (row.IsSelfBooking && !row.IsInThePast) {
+				        del = '<a class="btn btn-danger btn-sm"><i class="fa fa-trash"></i><span> Hủy</span></a>';
+				    }
+				    return info +" "+ del;
 				}
 			}
         ]
     });
 
+    $('#byGarage').on('change', function () {
+        if ($('#byGarage').is(':checked')) {
+            $('#garageID').removeAttr("disabled");
+            garageID = parseInt($('#garageID').val());
+        } else {
+            $('#garageID').attr('disabled', 'disabled');
+            garageID = null;
+        }
+        table.ajax.reload();
+    });
+
+    $('#garageID').on('change', function () {
+        garageID = parseInt($('#garageID').val());
+        table.ajax.reload();
+    });
+
+    $('#isCanceled, #isSelfBooking, input[name="bookingTime"]').on('change', function () {
+        if ($('#isCanceled').is(':checked')) {
+            isCanceled = true;
+        } else {
+            isCanceled = false;
+        }
+        if ($('#isSelfBooking').is(':checked')) {
+            isSelfBooking = true;
+        } else {
+            isSelfBooking = false;
+        }
+
+        if ($('input[name="bookingTime"]:checked').val() === "past") {
+            isInThePast = true;
+        } else if ($('input[name="bookingTime"]:checked').val() === "future") {
+            isInThePast = false;
+        } else {
+            isInThePast = null;
+        }
+        table.ajax.reload();
+    });
 });

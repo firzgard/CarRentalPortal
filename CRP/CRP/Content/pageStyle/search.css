@@ -20,8 +20,14 @@ body {
 /* headerFilter */
 #headerFilters {
 	font-size: 1.2em;
+	padding: 1em 2em 2em;
 	margin-top: 1em;
 	margin-bottom: 2em;
+}
+#headerFilters .input-group-addon {
+	background-color: #1ab394;
+	border-color: #8FEFD8;
+	color: white;
 }
 
 #headerFilters .select2-selection {
