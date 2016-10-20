@@ -23,6 +23,7 @@
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
 					<select id="locationFilter" class="form-control" style="width: 100%;" >
+						<option></option>
 						@foreach (Location entry in Model.LocationList)
 						{
 							<option value="@entry.ID">@entry.Name</option>
