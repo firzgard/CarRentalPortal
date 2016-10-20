@@ -1,0 +1,98 @@
+﻿@model CRP.Models.Entities.BookingReceipt
+@{
+    ViewBag.Title = "Log in";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="margin-signup padding-signup animated fadeInDown">
+    <div class="backgroundStyle" style="margin-left:40px;
+                                        margin-right:40px;
+                                        padding-left:40px;
+                                       ">
+        <div>
+            <h1 class="logo-name text-center">CRP</h1>
+        </div>
+        <h2 class="text-center" style="color:white"><i>Cám ơn vì đã sử dụng dịch vụ của chúng tôi!</i></h2>
+        <div class="row textConfig" style="color:white">
+            <div class="col-xs-6">
+                <div class="row">
+                    <label class="col-xs-6">Tên xe:</label>
+                    <p class="col-xs-6">@Model.VehicleName @Model.Model.Name</p>
+                </div>
+                <div class="row">
+                    <label class="col-xs-6">Biển số xe:</label>
+                    <p class="col-xs-6">@Model.LicenseNumber</p>
+                </div>
+                <div class="row">
+                    <label class="col-xs-6">Màu sắc:</label>
+                    <p class="col-xs-6">@Model.Color</p>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="row">
+                    <label class="col-xs-6">Garage:</label>
+                    <p class="col-xs-6">@Model.Garage.Name</p>
+                </div>
+                <div class="row">
+                    <label class="col-xs-6">Số điện thoại:</label>
+                    <p class="col-xs-6">@Model.GaragePhone</p>
+                </div>
+                <div class="row">
+                    <label class="col-xs-6">Email:</label>
+                    <p class="col-xs-6">ahihi@gmail.com.vn</p>
+                </div>
+                <div class="row">
+                    <label class="col-xs-6">Địa chỉ:</label>
+                    <p class="col-xs-6">@Model.GarageAddress</p>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="row">
+                    <label class="col-xs-6">Thời gian bắt đầu:</label>
+                    <p class="col-xs-6">@Model.StartTime</p>
+                </div>
+                <div class="row">
+                    <label class="col-xs-6">Thời gian kết thúc:</label>
+                    <p class="col-xs-6">@Model.EndTime</p>
+                </div>
+                <div class="row">
+                    <label class="col-xs-6">Thời lượng thuê:</label>
+                    <p class="col-xs-6">8 days</p>
+                </div>
+                <div class="row">
+                    <h3 class="col-xs-6">Phí đặt xe:</h3>
+                    <h3 class="col-xs-6">@Model.BookingFee vnd</h3>
+                </div>
+                <div class="row">
+                    <h3 class="col-xs-6">Phí thuê xe:</h3>
+                    <h3 class="col-xs-6">@Model.RentalPrice vnd</h3>
+                </div>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <a href="" style="color:#00b300"><center><h3>&#8592; Trở lại home page</h3></center></a>
+        <p class="m-t text-center" style="color:white"> <small>Contact us at carrentalportal@gmail.com</small> </p>
+    </div>
+</div>
+
+
+
+<!--
+  <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+</script>  
+-->
+
+
+
+@section PageStyle {
+    @Styles.Render("~/Content/pageStyle/login.css")
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
