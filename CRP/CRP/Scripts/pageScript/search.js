@@ -482,31 +482,6 @@ $(document).ready(() => {
 		renderSearcher();
 	});
 
-	// // Seat
-	// $('#seatFilter')
-	// .select2({
-	// 	placeholder: 'Please select...'
-	// })
-	// .on('change', function() {
-	// 	searchConditions.NumberOfSeatList = $(this).val();
-	// 	delete searchConditions.Page;
-
-	// 	renderSearcher();
-	// });
-
-	$('#colorFilter')
-	// .select2({
-	// 	placeholder: 'Please select...',
-	// 	templateSelection: colorOptionFormat,
-	// 	templateResult: colorOptionFormat
-	// })
-	// .on('change', function(){
-	// 	searchConditions.ColorIDList = $(this).val();
-	// 	delete searchConditions.Page;
-
-	// 	renderSearcher();
-	// });
-
 	// Fuel
 	$('#fuelFilter')
 	.select2({

@@ -20,6 +20,7 @@ namespace CRP.Models.Entities
             this.AspNetUserClaims = new HashSet<AspNetUserClaim>();
             this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
             this.BookingReceipts = new HashSet<BookingReceipt>();
+            this.BookingReceipts1 = new HashSet<BookingReceipt>();
             this.Garages = new HashSet<Garage>();
             this.VehicleGroups = new HashSet<VehicleGroup>();
             this.AspNetRoles = new HashSet<AspNetRole>();
@@ -47,6 +48,8 @@ namespace CRP.Models.Entities
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BookingReceipt> BookingReceipts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingReceipt> BookingReceipts1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Garage> Garages { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
