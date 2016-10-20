@@ -35,13 +35,12 @@ namespace CRP.Models.Entities.Services
 				vehicles = vehicles.Where(v => filterConditions.FuelTypeIDList.Contains(v.FuelType));
 
 			// Location condition
-			if (filterConditions.LocationIDList != null)
-				vehicles = vehicles.Where(v => filterConditions.LocationIDList.Contains(v.Garage.LocationID));
+			if (filterConditions.LocationID != null)
+				vehicles = vehicles.Where(v => filterConditions.LocationID == v.Garage.LocationID);
 
 			// Category condition
 			if (filterConditions.CategoryIDList != null)
 				vehicles = vehicles.Where(v => v.Model.Categories.Any(r => filterConditions.CategoryIDList.Contains(r.ID)));
-
 
 			// Max/Min ProductionYear condition
 			// Do not validate Max > Min here. Do it before this in the controller
@@ -50,16 +49,12 @@ namespace CRP.Models.Entities.Services
 											&& v.Year >= filterConditions.MinProductionYear);
 
 			// Max/Min GarageRating condition
-			// Do not validate Max > Min here. Do it before this in the controller
-			if (filterConditions.MaxGarageRating != null && filterConditions.MinGarageRating != null)
-				vehicles = vehicles.Where(v => v.Garage.Star <= filterConditions.MaxGarageRating
-											&& v.Garage.Star >= filterConditions.MinGarageRating);
+			if (filterConditions.MinGarageRating != null)
+				vehicles = vehicles.Where(v => v.Garage.Star >= filterConditions.MinGarageRating);
 
 			// Max/Min VehicleRating condition
-			// Do not validate Max > Min here. Do it before this in the controller
-			if (filterConditions.MaxVehicleRating != null && filterConditions.MinVehicleRating != null)
-				vehicles = vehicles.Where(v => v.Star <= filterConditions.MaxVehicleRating
-											&& v.Star >= filterConditions.MinVehicleRating);
+			if (filterConditions.MinVehicleRating != null)
+				vehicles = vehicles.Where(v => v.Star >= filterConditions.MinVehicleRating);
 
 			// Brand and Model condition
 			if (filterConditions.BrandIDList.Any() || filterConditions.ModelIDList.Any())
@@ -189,11 +184,11 @@ namespace CRP.Models.Entities.Services
 
 			// Get vehicles belonged to this garage
 			if(filterConditions.GarageID != null)
-				vehicles = repository.Get(v => v.GarageID == filterConditions.GarageID);
+				vehicles = vehicles.Where(v => v.GarageID == filterConditions.GarageID);
 
 			// Get vehicles belonged to this vehicle group
 			if (filterConditions.VehicleGroupID != null)
-				vehicles = repository.Get(v => v.VehicleGroupID == filterConditions.VehicleGroupID);
+				vehicles = vehicles.Where(v => v.VehicleGroupID == filterConditions.VehicleGroupID);
 
 			var recordsTotal = vehicles.Count();
 

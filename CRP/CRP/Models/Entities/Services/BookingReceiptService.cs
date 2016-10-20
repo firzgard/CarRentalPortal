@@ -16,7 +16,8 @@ namespace CRP.Models.Entities.Services
 
         int CancelBooking(string customerID, int bookingID);
 		int RateBooking(string customerID, BookingCommentModel commentModel);
-	}
+        BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions);
+    }
 	public class BookingReceiptService : BaseService<BookingReceipt>, IBookingReceiptService
 	{
 		public BookingReceiptService(IUnitOfWork unitOfWork, IBookingReceiptRepository repository) : base(unitOfWork, repository)
@@ -92,5 +93,79 @@ namespace CRP.Models.Entities.Services
 
 			return 0;
 		}
-	}
+
+        public BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions)
+        {
+            // Get all available booking receipt
+            var bookings = repository.Get(b => b.Vehicle.GarageID == conditions.garageID
+                 && b.IsPending == false);
+
+            // Exclude canceled receipt while IsCanceled is not checked
+            if(!conditions.IsCanceled)
+            {
+                bookings = bookings.Where(b => b.IsCanceled == false);
+            }
+
+            // Exclude canceled receipt while IsSelfBooking is not checked
+            if (!conditions.IsSelfBooking)
+            {
+                bookings = bookings.Where(b => b.IsSelfBooking == false);
+            }
+
+            if(conditions.IsInThePast != null)
+            {
+                DateTime now = new DateTime();
+                // while only IsInThePast is checked
+                if(conditions.IsInThePast == true)
+                {
+                    bookings = bookings.Where(b => b.StartTime < now);
+                }
+                // while only IsInFuture is checked
+                else
+                {
+                    bookings = bookings.Where(b => b.StartTime >= now);
+                }
+            }
+
+            var recordsTotal = bookings.Count();
+
+            var result = bookings.ToList().Select(b => new BookingsRecordJsonModel(b));
+
+            // Sort
+            // Default sort
+            if(conditions.OrderBy == null || nameof(BookingsRecordJsonModel.ID) == conditions.OrderBy)
+            {
+                result = result.OrderByDescending(r => r.EndTime);
+            }
+            else
+            {
+                // End time: future ---> past (positive direction)
+                if(nameof(BookingsRecordJsonModel.EndTime) == conditions.OrderBy)
+                {
+                    result = conditions.IsDescendingOrder ? result.OrderBy(r => r.EndTime)
+                        : result.OrderByDescending(r => r.EndTime);
+                }
+                else
+                {
+                    var sortingProp = typeof(BookingsRecordJsonModel).GetProperty(conditions.OrderBy);
+                    result = conditions.IsDescendingOrder
+                        ? result.OrderByDescending(r => sortingProp.GetValue(r))
+                        : result.OrderBy(r => sortingProp.GetValue(r));
+                }
+            }
+
+            // Paginate
+            var filteredRecords = result.Count();
+            if ((conditions.Page - 1) * conditions.RecordPerPage > filteredRecords)
+            {
+                conditions.Page = 1;
+            }
+
+            result = result.Skip((conditions.Page - 1) * conditions.RecordPerPage)
+                    .Take(conditions.RecordPerPage);
+
+            return new BookingsDataTablesJsonModel(result.ToList(), conditions.Draw, recordsTotal, filteredRecords);
+        }
+
+    }
 }

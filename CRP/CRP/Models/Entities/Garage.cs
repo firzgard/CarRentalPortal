@@ -17,6 +17,7 @@ namespace CRP.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Garage()
         {
+            this.BookingReceipts = new HashSet<BookingReceipt>();
             this.Vehicles = new HashSet<Vehicle>();
             this.GarageWorkingTimes = new HashSet<GarageWorkingTime>();
         }
@@ -30,10 +31,14 @@ namespace CRP.Models.Entities
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
         public decimal Star { get; set; }
+        public string Description { get; set; }
+        public string Policy { get; set; }
         public bool IsActive { get; set; }
-        public string SelfDescription { get; set; }
+        public bool IsDisabled { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingReceipt> BookingReceipts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehicle> Vehicles { get; set; }
         public virtual Location Location { get; set; }

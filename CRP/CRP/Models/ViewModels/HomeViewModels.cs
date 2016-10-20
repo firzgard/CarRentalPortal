@@ -42,11 +42,9 @@ namespace CRP.Models.ViewModels
 		public int[] TransmissionTypeIDList { get; set; }
 		public int[] ColorIDList { get; set; }
 		public int?[] FuelTypeIDList { get; set; }
-		public int[] LocationIDList { get; set; }
+		public int? LocationID { get; set; }
 		public int[] CategoryIDList { get; set; }
-		public decimal? MaxVehicleRating { get; set; }
 		public decimal? MinVehicleRating { get; set; }
-		public decimal? MaxGarageRating { get; set; }
 		public decimal? MinGarageRating { get; set; }
 		public int? MaxProductionYear { get; set; }
 		public int? MinProductionYear { get; set; }
@@ -121,7 +119,7 @@ namespace CRP.Models.ViewModels
 			{
 				if (item.MaxTime >= rentalTime)
 				{
-					BestPossibleRentalPeriod = item.MaxTime + (item.MaxTime == 1 ? " hour" : " hours");
+					BestPossibleRentalPeriod = item.MaxTime + "&nbsp;giờ";
 					BestPossibleRentalPrice = item.Price;
 					break;
 				}
@@ -129,7 +127,7 @@ namespace CRP.Models.ViewModels
 			// If not found, use the PerDayPrice
 			if (BestPossibleRentalPrice == 0.0d)
 			{
-				BestPossibleRentalPeriod = "day";
+				BestPossibleRentalPeriod = "ngày";
 				BestPossibleRentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice;
 			}
 		}

@@ -4,7 +4,13 @@ let now, jQueryNodes, searchConditions;
 
 function renderSearchResultGrid(domNode, searchResultList){
 	domNode.removeClass('hidden');
-	domNode.html(searchResultList.reduce((html, searchResult) => html + renderSearchResultItem(searchResult), ''))
+
+	let html = '';
+	for(let i = 0, l = searchResultList.length; i < l; i++){
+		if(i % 2 === 0)
+			html += `<div class="row">${renderSearchResultItem(searchResultList[i])}${renderSearchResultItem(searchResultList[i + 1])}</div>`
+	}
+	domNode.html(html)
 
 	for(let searchResult of searchResultList){
 		bindImageCarouselControls(searchResult)
@@ -18,7 +24,7 @@ function renderSearchResultGrid(domNode, searchResultList){
 }
 
 function renderSearchResultItem(searchResult){
-	return `<div class="col-xs-6" >
+	return searchResult? `<div class="col-xs-6" >
 		<div class="ibox ibox-content product-box search-result" id="vehicle${searchResult.ID}">
 			<div class="vehicle-img-container">
 				<div>
@@ -55,7 +61,7 @@ function renderSearchResultItem(searchResult){
 				<div class="col-xs-5"><i class="fa fa-tint"></i> ${searchResult.FuelTypeName}</div>
 			</div>
 		</div>
-	</div>`;
+	</div>` : '';
 }
 
 function bindImageCarouselControls(searchResult){
@@ -361,8 +367,8 @@ $(document).ready(() => {
 	// Location
 	
 	jQueryNodes.locationFilter.select2({
-		placeholder: 'Bạn muốn thuê xe ở đâu?',
-		minimumInputLength: 3
+		allowClear: true,
+		placeholder: 'Bạn muốn thuê xe ở đâu?'
 	})
 	.on('change', function() {
 		searchConditions.LocationID = $(this).val();
@@ -413,16 +419,56 @@ $(document).ready(() => {
 	// });
 
 	// Model
-	jQueryNodes.modelFilter
-	.select2({
-		placeholder: 'Vui lòng chọn dòng xe...'
-	})
-	.on('change', function() {
-		searchConditions.ModelIDList = $(this).val();
+	(function renderModelFilter(){
+		$('#modelFilter').first()
+		.select2({
+			placeholder: 'Vui lòng chọn dòng xe...',
+			templateSelection: (data) => {
+				if(data.text.charAt(0) === 'b')
+					return $(`<span><b>${data.text.substring(1)}</b></span>`)
 
-		delete searchConditions.Page;
-		renderSearcher();
-	});
+				return $(`<span>${data.text.substring(1)}</span>`)
+			},
+			templateResult: (data) => {
+				if(data.text.charAt(0) === 'b')
+					return $(`<span class="brand-option">${data.text.substring(1)}</span>`)
+
+				return $(`<span class="model-option">${data.text.substring(1)}</span>`)
+			}
+		})
+		// Call once
+		.one('change', function() {
+			// Need to remove all models belonged to selected brands to keep the search simple
+
+			// First, enable all model options
+			$(this).find('option[data-lvl="1"]').each((i, el) => { el.disabled = false });
+
+			// Get all the brand options
+			searchConditions.BrandIDList = $(this).find('option:selected[data-lvl="0"]')
+					.toArray().map(el => el.value);
+
+			// Then disable all models belonged to the selected brands
+			for(let brandID of searchConditions.BrandIDList){
+				let opts = jQueryNodes.modelFilter.find(`option[data-brand="${brandID}"]`).each((i, el) => {
+					// Disable only model options belonged to selected brands
+					el.selected = false;
+					el.disabled = true;
+				});
+			}
+
+			// Then add the selected models into the searchConditions
+			searchConditions.ModelIDList = $(this).find('option:selected[data-lvl="1"]')
+					.toArray().map(el => el.value);
+
+			delete searchConditions.Page;
+			renderSearcher();
+
+			// Regenerate modelFilter
+			$(this).select2("destroy");
+			$(this).off();
+			renderModelFilter();
+		});
+	})();
 
 	// Category
 	$('#categoryFilter')
@@ -468,6 +514,41 @@ $(document).ready(() => {
 	})
 	.on('change', function() {
 		searchConditions.FuelTypeIDList = $(this).val();
+		delete searchConditions.Page;
+
+		renderSearcher();
+	});
+
+	const starOptionFormat = (data) => {
+		if(!data.id) return data.text;
+		return $(`<span>${data.id}.0 ${renderStarRating(data.id, '#1ab394', false)} trở lên</span>`);
+	}
+
+	// Vehicle rating filter slider
+	$('#vehicleRatingFilter').select2({
+		allowClear: true,
+		placeholder: '--------',
+		minimumResultsForSearch: Infinity,
+		templateSelection: starOptionFormat,
+		templateResult: starOptionFormat
+	})
+	.on('change', function() {
+		searchConditions.MinVehicleRating = $(this).val();
+		delete searchConditions.Page;
+
+		renderSearcher();
+	});
+
+	// Garage rating filter slider
+	$('#garageRatingFilter').select2({
+		allowClear: true,
+		placeholder: '--------',
+		minimumResultsForSearch: Infinity,
+		templateSelection: starOptionFormat,
+		templateResult: starOptionFormat
+	})
+	.on('change', function() {
+		searchConditions.MinGarageRating = $(this).val();
 		delete searchConditions.Page;
 
 		renderSearcher();
