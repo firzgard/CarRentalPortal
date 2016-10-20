@@ -25,11 +25,14 @@ namespace CRP.Areas.Customer.Controllers
         private Boolean DeleteBookingThread = false;
         // Route to bookingConfirm page (Page for confirming booking details before paying)
         [System.Web.Mvc.Route("bookingConfirm")]
-        public ViewResult BookingConfirm(BookingReceiptViewModel model)
+        public async Task<ViewResult> BookingConfirm(BookingReceiptViewModel model)
         {
-            model.IsPending = true;
+            lastBooking = 1;
             var service = this.Service<IBookingReceiptService>();
-            var entity = this.Mapper.Map<BookingReceipt>(model);
+            var entity = await service.GetAsync(lastBooking);
+            //model.IsPending = true;
+            //var service = this.Service<IBookingReceiptService>();
+            //var entity = this.Mapper.Map<BookingReceipt>(model);
             ////luu booking xuong database, nhung 
             //await service.CreateAsync(entity);
             //lastBooking = entity.ID;
@@ -72,11 +75,11 @@ namespace CRP.Areas.Customer.Controllers
         }
         // Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
         [System.Web.Mvc.Route("bookingReceipt")]
-		public ViewResult BookingReceipt()
+		public async Task<ViewResult> BookingReceipt()
 		{
-
-            //var service = this.Service<IBookingReceiptService>();
-            //var entity = service.Get(lastBooking);
+            lastBooking = 1;
+            var service = this.Service<IBookingReceiptService>();
+            var entity = await service.GetAsync(lastBooking);
             ////kiem tra xem da thanh toan thanh cong hay chua
             //Boolean paySuccess = true;
             ////xuong databse ispending = false neu thanh toan thanh cong, xoa booking neu no ko thanh cong
@@ -94,7 +97,7 @@ namespace CRP.Areas.Customer.Controllers
             //    DeleteBookingThread = true;
             //    ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
             //}
-            return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml");
+            return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", entity);
 		}
 
 

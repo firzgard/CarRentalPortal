@@ -28,23 +28,23 @@
                                             <dt>Thông tin xe</dt>
                                             <div class="ibox-content text-center">
                                                 <span class="small">
-                                                    <h6>Hãng và Model : @Model.VehicleName @Model.Model</h6>
+                                                    <h6>Hãng và Model : @Model.VehicleName @Model.Model.Name</h6>
                                                     <h7>Biển số xe: @Model.LicenseNumber</h7><br />
                                                     <h7>Màu sắc: @Model.Color</h7>
                                                 </span>
                                             </div>
                                         </dl>
                                         <dl class="small m-b-none" style="text-align: center;">
-                                            <dt>Nhà cung cấp: @Model.ProviderID</dt>
+                                            <dt>Nhà cung cấp: @Model.AspNetUser1.UserName</dt>
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                             <i class="fa fa-star"></i>
                                             <div class="ibox-content text-center">
-                                                @Model.Garage
-                                                <h6><i class="fa fa-phone"></i> @Model.</h6>
+                                                @Model.Garage.Name
+                                                <h6><i class="fa fa-phone"></i> @Model.GaragePhone</h6>
                                                 <span class="small">
-                                                    <h6><i class="fa fa-envelope-o"></i> ahihi@gmail.com</h6>
-                                                    <span class="small"><h6><i class="fa fa-location-arrow"></i> truong chinh-quan 12</h6></span>
+                                                    <h6><i class="fa fa-envelope-o"></i> provider@mgail.com</h6>
+                                                    <span class="small"><h6><i class="fa fa-location-arrow"></i> @Model.GarageAddress</h6></span>
                                                 </span>
                                             </div>
                                         </dl>
@@ -54,9 +54,9 @@
                                         <table class="table shoping-cart-table">
                                             <tr>
                                                 <td><h5>Bắt đầu:</h5></td>
-                                                <td>12:00 15/08/1994</td>
+                                                <td>@Model.StartTime</td>
                                                 <td><h5>Đến</h5></td>
-                                                <td>12:00 16/5/1998</td>
+                                                <td>@Model.EndTime</td>
                                             </tr>
                                             <tr>
                                                 <td> </td>
@@ -65,7 +65,8 @@
                                                 <td> <h5>Khoảng thời gian sẽ thuê:</h5></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td>5 ngày</td>
+                                                <td>
+</td>
                                             </tr>
                                             <tr>
                                                 <td> </td>
@@ -78,7 +79,7 @@
                                                 <td></td>
                                                 <td>
                                                     <h2 class="font-bold">
-                                                        1298100 vnd
+                                                        @Model.RentalPrice vnd
                                                     </h2>
                                                 </td>
                                             </tr>
@@ -110,7 +111,7 @@
                         Tổng cộng
                     </span>
                     <h2 class="font-bold">
-                        10.000 vnd
+                        @Model.BookingFee
                     </h2>
 
                     <hr />
