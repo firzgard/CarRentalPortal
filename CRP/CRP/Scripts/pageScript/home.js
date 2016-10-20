@@ -4,7 +4,7 @@ $(document).ready(function(){
 	// Location filter
 	$(locationFilter).select2({
 		allowClear: true,
-		placeholder: "Please select a location...",
+		placeholder: "Vui lòng chọn địa điểm thuê xe...",
 	})
 
 	// Time range filter
@@ -16,7 +16,6 @@ $(document).ready(function(){
 		maxDate: now.clone().add(LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY, 'days').add(1, 'minutes'),
 		format: 'YYYY/MM/DD HH:mm',
 		ignoreReadonly: true,
-		showClose: true,
 	})
 	.on('dp.hide', (data)=>{
 		if(data.date.isAfter($(endTimeFilter).data('DateTimePicker').date())){
