@@ -5,15 +5,24 @@
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
 
+<style>
+    #bookings .label {
+	    font-size: 13px;
+	    padding: 5px 10%;
+    }
+
+    .status-label {
+	    margin: 10px;
+	    text-align: center;
+    }
+</style>
+
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-md-10"><h2>Quản lý đặt xe</h2></div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox ibox-content float-e-margins">
         <div class="row">
-            <div class="col-md-2 pull-left m-l m-b">
-                <label class="form-control-static">Thuộc về garage</label>
-            </div>
             <div class="col-md-4 pull-left m-l m-b">
                 <div class="checkbox">
                     <input type="checkbox" id="byGarage" checked>

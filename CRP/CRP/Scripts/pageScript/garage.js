@@ -98,7 +98,7 @@ $(document).ready(function () {
 	let garageID = parseInt($('#garageID').val());
 	// Load vehicles belonging to this garage
 	let table = $(vehicles).DataTable({
-	    dom: 'lfrtip'
+	    dom: 'lrtip'
 		, serverSide: true
 		, ajax: {
 		    url: queryApiUrl
@@ -159,7 +159,7 @@ $(document).ready(function () {
 	let isInThePast = null;
 
 	let tableBooking = $(bookings).DataTable({
-	    dom: "lftipr"
+	    dom: "ltipr"
 		, serverSide: true
 		, ajax: {
 		    url: queryBookingApiUrl

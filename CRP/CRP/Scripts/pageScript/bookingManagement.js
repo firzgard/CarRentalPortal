@@ -38,14 +38,14 @@ $(document).ready( function () {
     let isSelfBooking = false;
     let isInThePast = null;
 
-    if ($('#byGarage').is('checked')) {
+    if ($('#byGarage').is(':checked')) {
         garageID = parseInt($('#garageID').val());
     } else {
-        $('#garageID').attr('disable', true);
+        garageID = null;
     }
 
     let table = $(bookings).DataTable({
-        dom: "lftipr"
+        dom: "ltipr"
 		, serverSide: true
 		, ajax: {
 		    url: queryApiUrl
@@ -77,7 +77,10 @@ $(document).ready( function () {
 			{
 			    targets: -7
 				, render: function (data, type, row) {
-				    return renderStarRating(data);
+				    if (data) {
+                        return renderStarRating(data);
+				    }
+				    return '-';
 				}
 			},
             {
@@ -137,9 +140,11 @@ $(document).ready( function () {
     });
 
     $('#byGarage').on('change', function () {
-        if ($('#byGarage').is('checked')) {
+        if ($('#byGarage').is(':checked')) {
+            $('#garageID').removeAttr("disabled");
             garageID = parseInt($('#garageID').val());
         } else {
+            $('#garageID').attr('disabled', 'disabled');
             garageID = null;
         }
         table.ajax.reload();

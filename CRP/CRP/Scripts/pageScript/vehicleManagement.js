@@ -40,7 +40,7 @@ $(document).ready(function () {
 	});
 
 	let table = $(vehicleTable).DataTable({
-		dom: "lftipr"
+		dom: "ltipr"
 		, serverSide: true
 		, ajax: {
 			url: queryApiUrl
@@ -69,7 +69,10 @@ $(document).ready(function () {
 			{
 				targets: -2
 				, render: function(data, type, row) {
-					return renderStarRating(data);
+				    if (data) {
+				        return renderStarRating(data);
+				    }
+				    return '-';
 				}
 			},
 			{
