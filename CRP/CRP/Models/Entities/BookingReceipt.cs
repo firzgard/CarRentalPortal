@@ -26,6 +26,7 @@ namespace CRP.Models.Entities
         public Nullable<int> VehicleID { get; set; }
         public string LicenseNumber { get; set; }
         public string VehicleName { get; set; }
+        public Nullable<int> GarageID { get; set; }
         public string GarageName { get; set; }
         public string GarageAddress { get; set; }
         public int ModelID { get; set; }
@@ -40,6 +41,7 @@ namespace CRP.Models.Entities
         public bool IsSelfBooking { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
+        public virtual Garage Garage { get; set; }
         public virtual Model Model { get; set; }
         public virtual Vehicle Vehicle { get; set; }
     }

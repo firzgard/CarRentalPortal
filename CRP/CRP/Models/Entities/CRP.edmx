@@ -75,6 +75,7 @@
           <Property Name="VehicleID" Type="int" />
           <Property Name="LicenseNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="VehicleName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="GarageID" Type="int" />
           <Property Name="GarageName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="GarageAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="ModelID" Type="int" Nullable="false" />
@@ -115,8 +116,10 @@
           <Property Name="Phone1" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Phone2" Type="varchar" MaxLength="50" />
           <Property Name="Star" Type="decimal" Precision="2" Scale="1" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Policy" Type="nvarchar" MaxLength="1000" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="SelfDescription" Type="nvarchar" MaxLength="1000" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="GarageWorkingTime">
           <Key>
@@ -225,6 +228,18 @@
             </Principal>
             <Dependent Role="BookingReceipt">
               <PropertyRef Name="CustomerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookingReceipt_Garage">
+          <End Role="Garage" Type="Self.Garage" Multiplicity="0..1" />
+          <End Role="BookingReceipt" Type="Self.BookingReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Garage">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BookingReceipt">
+              <PropertyRef Name="GarageID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -500,6 +515,10 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="BookingReceipt" EntitySet="BookingReceipt" />
           </AssociationSet>
+          <AssociationSet Name="FK_BookingReceipt_Garage" Association="Self.FK_BookingReceipt_Garage">
+            <End Role="Garage" EntitySet="Garage" />
+            <End Role="BookingReceipt" EntitySet="BookingReceipt" />
+          </AssociationSet>
           <AssociationSet Name="FK_BookingReceipt_Model" Association="Self.FK_BookingReceipt_Model">
             <End Role="Model" EntitySet="Model" />
             <End Role="BookingReceipt" EntitySet="BookingReceipt" />
@@ -622,6 +641,10 @@
           <AssociationSet Name="FK_VehicleGroup_AspNetUsers" Association="CRPDBModel.FK_VehicleGroup_AspNetUsers">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="VehicleGroup" EntitySet="VehicleGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_BookingReceipt_Garage" Association="CRPDBModel.FK_BookingReceipt_Garage">
+            <End Role="Garage" EntitySet="Garages" />
+            <End Role="BookingReceipt" EntitySet="BookingReceipts" />
           </AssociationSet>
           <AssociationSet Name="FK_BookingReceipt_Model" Association="CRPDBModel.FK_BookingReceipt_Model">
             <End Role="Model" EntitySet="Models" />
@@ -751,6 +774,7 @@
           <Property Name="VehicleID" Type="Int32" />
           <Property Name="LicenseNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="VehicleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="GarageID" Type="Int32" />
           <Property Name="GarageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="GarageAddress" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="ModelID" Type="Int32" Nullable="false" />
@@ -764,6 +788,7 @@
           <Property Name="IsPending" Type="Boolean" Nullable="false" />
           <Property Name="IsSelfBooking" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="BookingReceipt" ToRole="AspNetUser" />
+          <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_BookingReceipt_Garage" FromRole="BookingReceipt" ToRole="Garage" />
           <NavigationProperty Name="Model" Relationship="CRPDBModel.FK_BookingReceipt_Model" FromRole="BookingReceipt" ToRole="Model" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="BookingReceipt" ToRole="Vehicle" />
         </EntityType>
@@ -796,9 +821,12 @@
           <Property Name="Phone1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Phone2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Star" Type="Decimal" Nullable="false" Precision="2" Scale="1" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Policy" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="SelfDescription" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_Garage_AspNetUsers" FromRole="Garage" ToRole="AspNetUser" />
+          <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_Garage" FromRole="Garage" ToRole="BookingReceipt" />
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Car_Store" FromRole="Garage" ToRole="Vehicle" />
           <NavigationProperty Name="Location" Relationship="CRPDBModel.FK_Garage_Location" FromRole="Garage" ToRole="Location" />
           <NavigationProperty Name="GarageWorkingTimes" Relationship="CRPDBModel.FK_GarageWorkingTime_Garage" FromRole="Garage" ToRole="GarageWorkingTime" />
@@ -974,6 +1002,18 @@
             </Principal>
             <Dependent Role="VehicleGroup">
               <PropertyRef Name="OwnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_BookingReceipt_Garage">
+          <End Type="CRPDBModel.Garage" Role="Garage" Multiplicity="0..1" />
+          <End Type="CRPDBModel.BookingReceipt" Role="BookingReceipt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Garage">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="BookingReceipt">
+              <PropertyRef Name="GarageID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1198,6 +1238,7 @@
                 <ScalarProperty Name="ModelID" ColumnName="ModelID" />
                 <ScalarProperty Name="GarageAddress" ColumnName="GarageAddress" />
                 <ScalarProperty Name="GarageName" ColumnName="GarageName" />
+                <ScalarProperty Name="GarageID" ColumnName="GarageID" />
                 <ScalarProperty Name="VehicleName" ColumnName="VehicleName" />
                 <ScalarProperty Name="LicenseNumber" ColumnName="LicenseNumber" />
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
@@ -1232,8 +1273,10 @@
           <EntitySetMapping Name="Garages">
             <EntityTypeMapping TypeName="CRPDBModel.Garage">
               <MappingFragment StoreEntitySet="Garage">
-                <ScalarProperty Name="SelfDescription" ColumnName="SelfDescription" />
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Policy" ColumnName="Policy" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="Phone2" ColumnName="Phone2" />
                 <ScalarProperty Name="Phone1" ColumnName="Phone1" />
