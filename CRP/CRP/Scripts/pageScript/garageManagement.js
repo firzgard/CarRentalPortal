@@ -1,3 +1,17 @@
+﻿const viDatatables = {
+    lengthMenu: "Hiển thị _MENU_ dòng",
+    search: "Tìm kiếm",
+    paginate: {
+        first: "Trang đầu",
+        previous: "Trang trước",
+        next: "Trang sau",
+        last: "Trang cuối",
+    },
+    zeroRecords: "Không tìm thấy dữ liệu",
+    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    infoEmpty: "không có dữ liệu",
+    infoFiltered: "(được lọc ra từ _MAX_ dòng)"
+}
 $(document).ready(() => {
     // set toogling dropdown event for filter dropdown buttons
     $('#multiFilter .filter-toggle').on('click', function (event) {
@@ -18,6 +32,7 @@ $(document).ready(() => {
     let table = $('#garages').DataTable({
         dom: "ltipr",
         //data: mockupData,
+        language: viDatatables,
         ajax: {
             url: "/api/garages",
             type: "GET",
@@ -40,7 +55,7 @@ $(document).ready(() => {
 			    render: (data, type) => {
 			        if (type === 'display') {
 			            return `<div class="status-label" >
-							<p class="label label-${data ? 'primary' : 'danger'}">${data ? 'Active' : 'Inactive'}</p>
+							<p class="label label-${data ? 'primary' : 'danger'}">${data ? 'Đang mở cửa' : 'Đã đóng cửa'}</p>
 						</div>`;
 			        }
 			        return data;
@@ -52,15 +67,15 @@ $(document).ready(() => {
 			    render: (data, type, row) => {
 			        return `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
+							<i class="fa fa-gear"></i> Thao tác <i class="caret"></i>
 						</button>
 					    <ul class ="dropdown-menu">
-						<li><a href="/management/vehicleGroupManagement/${row[0]}">Edit</a></li>
-                        <li><a data-toggle="modal" data-target="#mdModal" data-action="test" >tesst</a></li>
+						<li><a href="/management/vehicleGroupManagement/${row[0]}">Chỉnh sửa</a></li>
+
                         ${row[5] === true ?
-                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row[0]}" data-name="${row[1]}" >Deactivate</a></li>` :
-                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row[0]}" data-name="${row[1]}" >Reactivate</a></li>`}
-                        <li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Delete</a></li>
+                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row[0]}" data-name="${row[1]}" >Đóng cửa</a></li>` :
+                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row[0]}" data-name="${row[1]}" >Mở cửa</a></li>`}
+                        <li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Xóa</a></li>
 						</ul>
 					</div>`;
 			    }
@@ -68,11 +83,11 @@ $(document).ready(() => {
         ],
         columns: [
 			{ name: 'ID', data: '0', visible: false },
-			{ name: 'Name', title: 'Name', data: '1', width: '25%' },
-			{ name: 'Address', title: 'Address', data: '2', width: '30%' },
-			{ name: 'Location', title: 'Location', data: '3', width: '15%' },
-			{ name: 'Stars', title: 'Stars', data: '4', width: '10%' },
-			{ name: 'Status', title: 'Status', data: '5', width: '10%' },
+			{ name: 'Name', title: 'Tên', data: '1', width: '25%' },
+			{ name: 'Address', title: 'Địa chỉ', data: '2', width: '30%' },
+			{ name: 'Location', title: 'Vị trí', data: '3', width: '15%' },
+			{ name: 'Stars', title: 'Xếp Hạng', data: '4', width: '10%' },
+			{ name: 'Status', title: 'Tình trạng', data: '5', width: '15%' },
 			{
 			    title: 'Action',
 			    width: '10%',
@@ -112,10 +127,14 @@ $(document).ready(() => {
             case "test": {
                 $(this).find('.modal-content').html(`<div class="row" style="text-align:center; margin-top:30px">
 											<h3 style="font-size:200%;">Comment And Rate</h3>
-                                              <p id="error" style="color:red"></p>
+                                            
 											  <div class="col-sm-12" style="text-align: center">
 												<label>Comment</label>
-                                                <input type="text" class="form-control" id="comment">
+                                                <input type="text" class ="form-control" id="comment">
+                                                <label>Location</label>
+                                                <select id="dropdowntipo">
+                             
+                                                </select>
                                               </div>
                                                <label></label>	<br/>
                                               <button type="button" class ="btn btn-default" data-dismiss="modal">Close</button>
