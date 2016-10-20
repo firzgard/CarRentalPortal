@@ -44,9 +44,7 @@ namespace CRP.Models.ViewModels
 		public int?[] FuelTypeIDList { get; set; }
 		public int? LocationID { get; set; }
 		public int[] CategoryIDList { get; set; }
-		public decimal? MaxVehicleRating { get; set; }
 		public decimal? MinVehicleRating { get; set; }
-		public decimal? MaxGarageRating { get; set; }
 		public decimal? MinGarageRating { get; set; }
 		public int? MaxProductionYear { get; set; }
 		public int? MinProductionYear { get; set; }

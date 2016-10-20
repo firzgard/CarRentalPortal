@@ -33,10 +33,16 @@ const viDatatables = {
 }
 
 $(document).ready( function () {
-    let garageID = parseInt($('#garageID').val());
+    let garageID = null;
     let isCanceled = false;
     let isSelfBooking = false;
     let isInThePast = null;
+
+    if ($('#byGarage').is('checked')) {
+        garageID = parseInt($('#garageID').val());
+    } else {
+        $('#garageID').attr('disable', true);
+    }
 
     let table = $(bookings).DataTable({
         dom: "lftipr"
@@ -128,6 +134,15 @@ $(document).ready( function () {
 				}
 			}
         ]
+    });
+
+    $('#byGarage').on('change', function () {
+        if ($('#byGarage').is('checked')) {
+            garageID = parseInt($('#garageID').val());
+        } else {
+            garageID = null;
+        }
+        table.ajax.reload();
     });
 
     $('#garageID').on('change', function () {

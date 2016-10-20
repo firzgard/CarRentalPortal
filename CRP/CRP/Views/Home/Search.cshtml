@@ -23,6 +23,7 @@
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
 					<select id="locationFilter" class="form-control" style="width: 100%;" >
+						<option></option>
 						@foreach (Location entry in Model.LocationList)
 						{
 							<option value="@entry.ID">@entry.Name</option>
@@ -113,14 +114,11 @@
 							<select id="modelFilter" class="form-control" style="width: 100%;" multiple>
 								@foreach (Brand brand in Model.BrandList)
 								{
-									<optgroup label="@brand.Name" data-brand="@brand.ID">
-										@foreach (Model entry in brand.Models)
-										{
-											<option value="@entry.ID">
-												@brand.Name&nbsp;@entry.Name
-											</option>
-										}
-									</optgroup>
+									<option data-lvl="0" value="@(brand.ID)">b@(brand.Name)</option>
+									foreach (Model entry in brand.Models)
+									{
+										<option data-lvl="1" data-brand="@brand.ID" value="@(entry.ID)">m@(brand.Name)&nbsp;@entry.Name</option>
+									}
 								}
 							</select>
 						</div>
@@ -199,14 +197,28 @@
 				<div class="panel-body">
 					<!-- VehicleRating -->
 					<div class="form-group row">
-						<label class="col-xs-12">Đánh giá xe</label>
-						<div class="col-xs-12"><div id="vehicleRatingFilter" style="height: 10em;"></div></div>
+						<label class="col-xs-12" for="vehicleRatingFilter">Đánh giá xe</label>
+						<div class="col-xs-12">
+							<select id="vehicleRatingFilter" style="width: 100%;" >
+								<option></option>
+								<option value="4"></option>
+								<option value="3"></option>
+								<option value="2"></option>
+							</select>
+						</div>
 					</div>
 					<hr>
 					<!-- GarageRating -->
 					<div class="form-group row">
 						<label class="col-xs-12">Đánh giá garage xe</label>
-						<div class="col-xs-12" style="position: relative; padding: 1em 3em"><div id="garageRatingFilter"></div></div>
+						<div class="col-xs-12">
+							<select id="garageRatingFilter" style="width: 100%;" >
+								<option></option>
+								<option value="4"></option>
+								<option value="3"></option>
+								<option value="2"></option>
+							</select>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -215,7 +227,7 @@
 	<!-- results -->
 	<div class="animated fadeInRight col-md-7" id="resultContainer">
 		<div class="ibox" style="padding-top: 1em;">
-			<div class="row" id="searchResultGrid"></div>
+			<div id="searchResultGrid"></div>
 			<div id="recordInfo" style="margin-bottom: 1em;"></div>
 			<div class="text-center">
 				<ul id="paginatior" class="pagination"></ul>

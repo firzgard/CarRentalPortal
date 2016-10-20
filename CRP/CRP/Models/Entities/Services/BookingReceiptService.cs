@@ -97,8 +97,13 @@ namespace CRP.Models.Entities.Services
         public BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions)
         {
             // Get all available booking receipt
-            var bookings = repository.Get(b => b.GarageID == conditions.garageID
+            var bookings = repository.Get(b => b.ProviderID == conditions.providerID
                 && b.IsPending == false);
+
+            if(conditions.garageID != null)
+            {
+                bookings = bookings.Where(b => b.GarageID == conditions.garageID);
+            }
 
             // Exclude canceled receipt while IsCanceled is not checked
             if(!conditions.IsCanceled)

@@ -103,14 +103,6 @@ namespace CRP.Controllers
 					&& searchConditions.MaxProductionYear < searchConditions.MinProductionYear)
 				return new HttpStatusCodeResult(400, "Invalid production year range");
 
-			if (searchConditions.MaxGarageRating != null && searchConditions.MinGarageRating != null
-					&& searchConditions.MaxGarageRating < searchConditions.MinGarageRating)
-				return new HttpStatusCodeResult(400, "Invalid garage rating range");
-
-			if (searchConditions.MaxVehicleRating != null && searchConditions.MinVehicleRating != null
-					&& searchConditions.MaxVehicleRating < searchConditions.MinVehicleRating)
-				return new HttpStatusCodeResult(400, "Invalid vehicle rating range");
-
 			if (!(searchConditions.OrderBy == null
 					|| Constants.ALLOWED_SORTING_PROPS_IN_SEARCH_PAGE.Any(r => r.Name == searchConditions.OrderBy)))
 				return new HttpStatusCodeResult(400, "Invalid sorting property");

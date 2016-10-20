@@ -16,10 +16,10 @@
             </div>
             <div class="col-md-4 pull-left m-l m-b">
                 <div class="checkbox">
-                    <input type="checkbox" id="byGarage">
+                    <input type="checkbox" id="byGarage" checked>
                     <label for="byGarage"> Lọc theo garage</label>
                 </div>
-                @Html.DropDownListFor(q => q.garageID, this.Model.listGarage, new { @class = "form-control", @id = "garageID", @disable="disable" })
+                @Html.DropDownListFor(q => q.garageID, this.Model.listGarage, new { @class = "form-control", @id = "garageID" })
             </div>
             <div class="pull-right m-r m-b table-bordered">
                 <h3>Trạng thái hóa đơn</h3>

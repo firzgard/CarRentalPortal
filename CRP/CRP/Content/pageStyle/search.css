@@ -92,6 +92,10 @@ body {
 	background-color: white;
 }
 
+.noUi-marker {
+	display: none;
+}
+
 #priceFilter .noUi-value{
 	background: #E5E5E5;
 	border: 1px solid #A8B5BC;
@@ -123,9 +127,15 @@ body {
 	border-left: 7px solid transparent;
 }
 
-#custom-select2 .fa, .select2-results .fa {
-	font-size: 1.2em;
+/* For model filter */
+/* ===================== */
+.brand-option {
+	font-weight: bold;
 }
+.model-option {
+	padding-left: 1em;
+}
+/* ===================== */
 
 .select2-container--default .select2-results__option[aria-disabled=true] {
     display: none;
@@ -234,14 +244,11 @@ body {
 	font-weight: bold;
 }
 
-.br-theme-fontawesome-stars .br-widget a {
-	font-size: 1.3em;
-}
-
 .vehicle-seat {
 	display: inline-block;
 	font-size: 20px;
 	margin-top: 0.4em;
+	white-space: nowrap;
 }
 .vehicle-seat img {
 	height: 40px;
