@@ -168,7 +168,7 @@ $(document).ready(() => {
 									           <div class ="form-group"><label>Thuộc garage</label><p>${GarageName}</p></div>
 									           <div class ="form-group"><label>Địa chỉ garage</label><p>${GarageAddress}</p></div>
                                               </div>
-                                               <button type="button" class ="btn btn-default" data-dismiss="modal">Đóng</button>
+                                               <button type="button" class ="btn btn-success" data-dismiss="modal">Đóng</button>
 									            <label></label>	<br/>`);
             }
             break;

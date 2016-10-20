@@ -130,6 +130,10 @@ namespace CRP.Areas.Customer.Controllers
                 {
                     item.IsCanceled = true;
                 }
+                if (item.IsSelfBooking == true)
+                {
+                    list.Remove(item);
+                }
             }
             var result = list.Select(q => new IConvertible[] {
                 q.ID,
