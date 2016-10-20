@@ -19,6 +19,7 @@ namespace CRP.Models.Entities
         {
             this.Vehicles = new HashSet<Vehicle>();
             this.GarageWorkingTimes = new HashSet<GarageWorkingTime>();
+            this.BookingReceipts = new HashSet<BookingReceipt>();
         }
     
         public int ID { get; set; }
@@ -41,5 +42,7 @@ namespace CRP.Models.Entities
         public virtual Location Location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GarageWorkingTime> GarageWorkingTimes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingReceipt> BookingReceipts { get; set; }
     }
 }

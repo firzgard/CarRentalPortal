@@ -97,8 +97,8 @@ namespace CRP.Models.Entities.Services
         public BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions)
         {
             // Get all available booking receipt
-            var bookings = repository.Get(b => b.Vehicle.GarageID == conditions.garageID
-                 && b.IsPending == false);
+            var bookings = repository.Get(b => b.GarageID == conditions.garageID
+                && b.IsPending == false);
 
             // Exclude canceled receipt while IsCanceled is not checked
             if(!conditions.IsCanceled)
@@ -114,7 +114,7 @@ namespace CRP.Models.Entities.Services
 
             if(conditions.IsInThePast != null)
             {
-                DateTime now = new DateTime();
+                DateTime now = DateTime.Now;
                 // while only IsInThePast is checked
                 if(conditions.IsInThePast == true)
                 {

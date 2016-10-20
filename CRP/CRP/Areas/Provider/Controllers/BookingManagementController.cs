@@ -26,7 +26,7 @@ namespace CRP.Areas.Provider.Controllers
                 {
                     Text = q.Name,
                     Value = q.ID.ToString(),
-                    Selected = true,
+                    Selected = false,
                 });
             return View("~/Areas/Provider/Views/BookingManagement/BookingManagement.cshtml", garageView);
         }
