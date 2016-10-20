@@ -340,7 +340,38 @@ function renderSelectorOptions(type, selectedID, html = ''){
                         }
                     }
                 } break;
-                case 'garage':{} break;
+                case 'garage':{
+                    if (action === "deactivate" || action === "reactivate") {
+                        for(var i=0; i< items.length; i++) {
+                            var id = items[i].id;
+                            $.ajax({
+                                url: `/api/garage/status/${id}`,
+                                type: "PATCH",
+                                success: function (data) {
+                                    alert("ok");
+                                },
+                                eror: function (data) {
+                                    alert("fail");
+                                }
+                            });
+                        }
+                    }
+                    if (action === "delete") {
+                        for(var i=0; i< items.length; i++) {
+                            var id = items[i].id;
+                            $.ajax({
+                                url: `/api/deleteGarage/${id}`,
+                                type: "DELETE",
+                                success: function (data) {
+                                    alert("ok");
+                                },
+                                eror: function (data) {
+                                    alert("fail");
+                                }
+                            });
+                        }
+                    }
+                } break;
                 case 'vehicle':{} break;
             }
         });

@@ -16,14 +16,14 @@ using System.Web.Mvc;
 namespace CRP.Areas.Provider.Controllers
 {
 
-	public class VehicleGroupController : BaseController
+	public class VehicleGroupManagementController : BaseController
 	{
         //VehicleGroupService service = new VehicleGroupService();
 		// Route to vehicleGroupManagement page
 		[Route("management/vehicleGroupManagement")]
 		public ViewResult VehicleGroupManagement()
 		{
-			return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupManagement.cshtml");
+			return View("~/Areas/Provider/Views/VehicleGroupManagement/VehicleGroupManagement.cshtml");
 		}
 
 		//// Route to group's detailed info page
@@ -33,7 +33,7 @@ namespace CRP.Areas.Provider.Controllers
             var service = this.Service<IVehicleGroupService>();
             VehicleGroupViewModel viewModel = this.Mapper.Map<VehicleGroupViewModel> (service.Get(id));
 
-            return View("~/Areas/Provider/Views/VehicleGroup/VehicleGroupDetail.cshtml", viewModel);
+            return View("~/Areas/Provider/Views/VehicleGroupManagement/VehicleGroupDetail.cshtml", viewModel);
 		}
 
 		// API Route to get list of group
@@ -61,7 +61,7 @@ namespace CRP.Areas.Provider.Controllers
         public ViewResult CreateVehicleGroup()
         {
             VehicleGroupViewModel viewModel = new VehicleGroupViewModel();
-            return View("~/Areas/Provider/Views/VehicleGroup/CreatePopup.cshtml", viewModel);
+            return View("~/Areas/Provider/Views/VehicleGroupManagement/CreatePopup.cshtml", viewModel);
         }
 
 		// API Route to create single new group

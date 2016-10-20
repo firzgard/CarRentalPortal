@@ -1,17 +1,32 @@
 const vehicleTableColumns = [
 	{ name: 'ID', data: 'ID', visible: false, orderable: false, searchable: false }
-	, { name: 'Name', title: 'Name', data: 'Name' }
-	, { name: 'LicenseNumber', title: 'License', data: 'LicenseNumber' }
-	, { name: 'GarageName', title: 'Garage', data: 'GarageName' }
-	, { name: 'VehicleGroupName', title: 'Group', data: 'VehicleGroupName' }
-	, { name: 'Location', title: 'Location', data: 'Location' }
-	, { name: 'Year', title: 'Year', data: 'Year' }
-	, { name: 'NumOfSeat', title: 'Seat', data: 'NumOfSeat' }
-	, { name: 'Star', title: "Rating", data: 'Star', width: '6.5em' }
+	, { name: 'Name', title: 'Tên', data: 'Name' }
+	, { name: 'LicenseNumber', title: 'Biển số', data: 'LicenseNumber' }
+	, { name: 'VehicleGroupName', title: 'Nhóm', data: 'VehicleGroupName' }
+	, { name: 'Year', title: 'Năm', data: 'Year' }
+	, { name: 'NumOfSeat', title: 'Số chỗ', data: 'NumOfSeat' }
+	, { name: 'Star', title: "Đánh giá", data: 'Star', width: '6.5em' }
 	, { name: 'Action', title: "Action", orderable: false, searchable: false }
 ]
 
-$(document).ready(function() {
+const viDatatables = {
+    lengthMenu: "Hiển thị _MENU_ dòng",
+    search: "Tìm kiếm",
+    paginate: {
+        first: "Trang đầu",
+        previous: "Trang trước",
+        next: "Trang sau",
+        last: "Trang cuối",
+    },
+    zeroRecords: "Không tìm thấy dữ liệu",
+    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    infoEmpty: "không có dữ liệu",
+    infoFiltered: "(được lọc ra từ _MAX_ dòng)"
+}
+
+$(document).ready(function () {
+    let garageID = parseInt($('#garageID').val());
+    
 	// set toogling dropdown event for filter dropdown buttons
 	$('#multiFilter .filter-toggle').on('click', function (event) {
 		let dropdownContainer = $(this).parent();
@@ -25,31 +40,33 @@ $(document).ready(function() {
 	});
 
 	let table = $(vehicleTable).DataTable({
-		dom: "ltipr"
+		dom: "lftipr"
 		, serverSide: true
 		, ajax: {
 			url: queryApiUrl
 			, data: (rawData) => {
 				console.log(rawData);
 				return {
-					Draw: rawData.draw
+				    Draw: rawData.draw,
+                    GarageID: garageID
 					, RecordPerPage: rawData.length
 					, Page: rawData.start / rawData.length + 1
 					, OrderBy: vehicleTableColumns[rawData.order[0].column].data
 					, IsDescendingOrder: rawData.order[0].dir == 'desc'
 				};
 			}
-		}
-		, retrieve: true
-		, scrollCollapse: true
-		, processing: true
-		, select: {
+		},
+		language: viDatatables,
+		retrieve: true,
+		scrollCollapse: true,
+		processing: true,
+		select: {
 			selector: 'td:not(:last-child)',
 			style: 'multi+shift'
-		}
+		},
 		//"iDisplayLength": 10,
-		, columns : vehicleTableColumns
-		, columnDefs: [
+		columns: vehicleTableColumns,
+		columnDefs: [
 			{
 				targets: -2
 				, render: function(data, type, row) {
@@ -77,6 +94,11 @@ $(document).ready(function() {
 				}
 			}
 		]
+	});
+
+	$('#garageID').change(function () {
+	    garageID = parseInt($('#garageID').val());
+	    table.ajax.reload();
 	});
 
 	// Dropzone.options.myAwesomeDropzone = {

@@ -10,7 +10,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="ibox ibox-content float-e-margins">
         <form action="#">
-            <input type="hidden" value="666" id="garageID" required>
+            @Html.HiddenFor(q => q.ID, new { @id="garageID" })
             <input type="hidden" value="true" id="isActive" required>
             <div class="row form-group">
                 <div class="col-md-6">
@@ -150,10 +150,12 @@
             <div id="tab-vehicle" class="tab-pane active">
                 <div class="panel-body">
                     <div class="ibox ibox-content float-e-margins">
-                        <button data-toggle="modal" data-target="#customModal" data-action="createVehicle" class="btn btn-success pull-right" style="margin-bottom: 1em;">
-                            <i class="fa fa-plus"></i> Thêm xe mới
-                        </button>
-                        <table class="table table-striped table-bordered table-hover" width="100%" id="vehicles"></table>
+                        <div class="pull-right">
+                            <button data-toggle="modal" data-target="#customModal" data-action="createVehicle" class="btn btn-success" style="margin-bottom: 1em;">
+                                <i class="fa fa-plus"></i> Thêm xe mới
+                            </button>
+                        </div>
+                        <table id="vehicles" class="table table-striped table-bordered table-hover" width="100%"></table>
                     </div>
                 </div>
             </div>
@@ -170,11 +172,9 @@
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/Garage")
                                 .Include("~/Content/awesome-bootstrap-checkbox.css",
+                                    "~/Content/DataTables/css/dataTables.bootstrap.css",
                                     "~/Content/chosen.css",
-                                    "~/Content/Datatable/css/jquery.dataTables.css",
-                                    "~/Content/Datatable/css/dataTables.bootstrap.css",
                                     "~/Content/jasny-bootstrap.min.css",
-                                    "~/Content/jsTree/themes/default/style.min.css",
                                     "~/Scripts/dropzone/basic.css",
                                     "~/Scripts/dropzone/dropzone.css"));
 }
@@ -191,11 +191,13 @@
                       "~/Scripts/Datatables/dataTables.bootstrap.js",
                       "~/Scripts/dropzone/dropzone.js",
                       "~/Scripts/jasny-bootstrap.min.js",
-                      "~/Scripts/jsTree3/jstree.min.js",
                       "~/Scripts/utils/generateUIElements.js",
                       "~/Scripts/utils/generateCustomDataTablesFilters.js",
                       "~/Scripts/pageScript/garage.js"));
 }
 @section Scripts {
+    <script type="text/javascript">
+		const queryApiUrl = '@Url.RouteUrl("GetVehicleListAPI", new { controller = "Vehicle" })'
+    </script>
     @Scripts.Render("~/Scripts/Garage")
 }

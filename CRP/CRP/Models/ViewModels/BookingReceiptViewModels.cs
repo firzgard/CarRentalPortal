@@ -57,4 +57,66 @@ namespace CRP.Models.ViewModels
 		public decimal Star { get; set; }
 		public string Comment { get; set; }
 	}
+
+    public class BookingsRecordJsonModel
+    {
+        public int ID { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomertEmail { get; set; }
+        public string CustomerPhone { get; set; }
+        public int? VehicleID { get; set; }
+        public string VehicleName { get; set; }
+        public string LicenseNumber { get; set; }
+        public double RentalPrice { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public decimal? Star { get; set; }
+        public string Comment { get; set; }
+        public BookingsRecordJsonModel(BookingReceipt receipt)
+        {
+            ID = receipt.ID;
+            CustomerName = receipt.AspNetUser.FullName;
+            CustomertEmail = receipt.AspNetUser.Email;
+            CustomerPhone = receipt.AspNetUser.PhoneNumber;
+            VehicleID = receipt.VehicleID;
+            VehicleName = receipt.VehicleName;
+            LicenseNumber = receipt.LicenseNumber;
+            RentalPrice = receipt.RentalPrice;
+            StartTime = receipt.StartTime;
+            EndTime = receipt.EndTime;
+            Star = receipt.Star;
+            Comment = receipt.Comment;
+        }
+    }
+
+    public class BookingsDataTablesJsonModel
+    {
+        public List<BookingsRecordJsonModel> data { get; set; }
+        public int draw { get; set; }
+        public int recordsTotal { get; set; }
+        public int recordsFiltered { get; set; }
+
+        public BookingsDataTablesJsonModel(List<BookingsRecordJsonModel> bookingList, int rDraw, int totalRecords, int FilteredRecords)
+        {
+            data = bookingList;
+            draw = rDraw;
+            recordsTotal = totalRecords;
+            recordsFiltered = FilteredRecords;
+        }
+    }
+
+    public class BookingsFilterConditions
+    {
+        public string providerID { get; set; }
+        public int garageID { get; set; }
+        public bool IsCanceled { get; set; }
+        public bool? IsInThePast { get; set; }
+        public bool IsSelfBooking { get; set; }
+
+        public string OrderBy { get; set; }
+        public bool IsDescendingOrder { get; set; }
+        public int Page { get; set; } = 1;
+        public int RecordPerPage { get; set; } = Constants.NUM_OF_SEARCH_RESULT_PER_PAGE;
+        public int Draw { get; set; }
+    }
 }

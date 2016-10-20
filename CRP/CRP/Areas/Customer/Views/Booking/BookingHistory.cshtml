@@ -1,4 +1,4 @@
-﻿
+﻿@model CRP.Models.ViewModels.BookingCommentModel
 @{
     ViewBag.Title = "Booking History";
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
@@ -72,7 +72,7 @@
                 </div>
             </th>
             <!-- per day price filter --
-        <!-- price filter -->
+            <!-- price filter -->
             <!-- Status -->
             <th>
                 <div id="Status" class="btn-group">
@@ -121,11 +121,12 @@
                     </div>
                 </div>
             </th>
-            </div>
-            <th></th>
-            </tfoot>
         </table>
     </div>
+    <th></th>
+    </tfoot>
+    </table>
+</div>
 </div>
 <div class="modal fade" id="mdModal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -134,24 +135,23 @@
     </div>
 </div>
 
-
-    @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingHistory")
-                            .Include("~/Content/awesome-bootstrap-checkbox.css",
-                                "~/Content/chosen.css",
-                                "~/Content/DataTables/css/dataTables.bootstrap.css",
-                                "~/Content/pageStyle/vehicleGroupManagement.css"));
-    }
-    @section Styles {
-        @Styles.Render("~/Styles/BookingHistory")
-    }
-    @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingHistory")
-                             .Include("~/Scripts/chosen.jquery.js",
-                                "~/Scripts/DataTables/jquery.dataTables.js",
-                                "~/Scripts/DataTables/dataTables.bootstrap.js",
-                                "~/Scripts/utils/generateUIElements.js",
-                                "~/Scripts/utils/generateCustomDataTablesFilters.js",
-                                "~/Scripts/pageScript/BookingHistory.js"));
-    }
-    @section Scripts {
-        @Scripts.Render("~/Scripts/BookingHistory")
-    }
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingHistory")
+                                          .Include("~/Content/awesome-bootstrap-checkbox.css",
+                                              "~/Content/chosen.css",
+                                              "~/Content/DataTables/css/dataTables.bootstrap.css",
+                                              "~/Content/pageStyle/vehicleGroupManagement.css"));
+}
+@section Styles {
+    @Styles.Render("~/Styles/BookingHistory")
+}
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingHistory")
+                                           .Include("~/Scripts/chosen.jquery.js",
+                                              "~/Scripts/DataTables/jquery.dataTables.js",
+                                              "~/Scripts/DataTables/dataTables.bootstrap.js",
+                                              "~/Scripts/utils/generateUIElements.js",
+                                              "~/Scripts/utils/generateCustomDataTablesFilters.js",
+                                              "~/Scripts/pageScript/BookingHistory.js"));
+}
+@section Scripts {
+    @Scripts.Render("~/Scripts/BookingHistory")
+}

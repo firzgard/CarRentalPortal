@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace CRP.Areas.Admin.Controllers
 {
-	public class UserController : Controller
+	public class UserManagementController : Controller
 	{
 		// Route to userManagement page
 		[Route("management/userManagement")]

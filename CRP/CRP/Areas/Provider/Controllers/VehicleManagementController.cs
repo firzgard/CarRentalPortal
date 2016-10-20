@@ -14,7 +14,7 @@ using Microsoft.AspNet.Identity;
 
 namespace CRP.Areas.Provider.Controllers
 {
-	public class VehicleController : BaseController
+	public class VehicleManagementController : BaseController
 	{
 		//VehicleService Service = new VehicleService();
 		//ModelService serviceModel = new ModelService();
@@ -27,8 +27,18 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("management/vehicleManagement")]
 		public ViewResult VehicleManagement()
 		{
-
-			return View("~/Areas/Provider/Views/Vehicle/VehicleManagement.cshtml");
+            var service = this.Service<IGarageService>();
+            FilterByGarageView garageView = new FilterByGarageView();
+            var providerID = User.Identity.GetUserId();
+            garageView.listGarage = service.Get()
+                .Where(q => q.OwnerID == providerID)
+                .Select(q => new SelectListItem()
+            {
+                Text = q.Name,
+                Value = q.ID.ToString(),
+                Selected = true,
+            });
+            return View("~/Areas/Provider/Views/VehicleManagement/VehicleManagement.cshtml", garageView);
 		}
 
 		// Route to vehicle's detailed info page
@@ -38,7 +48,7 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			var service = this.Service<IVehicleService>();
 			Vehicle vehicle = service.Get(id);
-			return View("~/Areas/Provider/Views/Vehicle/VehicleDetail.cshtml", vehicle);
+			return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehicle);
 		}
 
 		// API Route to get a list of vehicle to populate vehicleTable
@@ -61,16 +71,6 @@ namespace CRP.Areas.Provider.Controllers
 
 			return Json(vehicles, JsonRequestBehavior.AllowGet);
 		}
-
-        // Get list vehicle in garage
-        [Route("api/listVehicles/{id:int}")]
-        [HttpGet]
-        public JsonResult GetVehiclesAPI(int id)
-        {
-            var service = this.Service<IVehicleService>();
-            var vehicles = service.Get().Where(q => q.GarageID == id).ToList();
-            return Json("");
-        }
 
 		// API Route for getting vehicle's detailed infomations (for example, to duplicate vehicle)
 		[Route("api/vehicles/{id}")]

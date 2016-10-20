@@ -14,15 +14,17 @@ namespace CRP.Models.ViewModels
 		public List<Category> CategoryList { get; set; }
 		public List<Location> LocationList { get; set; }
 		public double MaxPrice { get; set; }
+		public double MinPrice { get; set; }
 		public int MaxYear { get; set; }
 		public int MinYear { get; set; }
 
-		public SearchPageViewModel(List<Brand> brandList, List<Category> categoryList, List<Location> locationList, double maxPrice, int maxYear, int minYear)
+		public SearchPageViewModel(List<Brand> brandList, List<Category> categoryList, List<Location> locationList, double maxPrice, double minPrice, int maxYear, int minYear)
 		{
 			BrandList = brandList;
 			CategoryList = categoryList;
 			LocationList = locationList;
 			MaxPrice = maxPrice;
+			MinPrice = minPrice;
 			MaxYear = maxYear;
 			MinYear = minYear;
 		}
@@ -30,13 +32,29 @@ namespace CRP.Models.ViewModels
 
 	// Model to map the search request
 	// Use as input for route ~/api/vehicles/search/ of HomeController
-	public class SearchConditionModel : VehicelFilterConditionModel
+	public class SearchConditionModel
 	{
 		public int[] NumberOfSeatList { get; set; }
 		public DateTime? StartTime { get; set; }
 		public DateTime? EndTime { get; set; }
 		public double? MaxPrice { get; set; }
 		public double? MinPrice { get; set; }
+		public int[] TransmissionTypeIDList { get; set; }
+		public int[] ColorIDList { get; set; }
+		public int?[] FuelTypeIDList { get; set; }
+		public int? LocationID { get; set; }
+		public int[] CategoryIDList { get; set; }
+		public decimal? MinVehicleRating { get; set; }
+		public decimal? MinGarageRating { get; set; }
+		public int? MaxProductionYear { get; set; }
+		public int? MinProductionYear { get; set; }
+		public int[] BrandIDList { get; set; } = new int[0];
+		public int[] ModelIDList { get; set; } = new int[0];
+
+		public string OrderBy { get; set; }
+		public bool IsDescendingOrder { get; set; }
+		public int Page { get; set; } = 1;
+		public int RecordPerPage { get; set; } = Constants.NUM_OF_SEARCH_RESULT_PER_PAGE;
 	}
 
 	// Returned json model for route ~/api/vehicles/search/ of HomeController
@@ -65,6 +83,7 @@ namespace CRP.Models.ViewModels
 	{
 		public string Location { get; set; }
 		public string GarageName { get; set; }
+		public decimal GarageRating { get; set; }
 		public string TransmissionTypeName { get; set; }
 		public string FuelTypeName { get; set; }
 		public List<string> CategoryList { get; set; }
@@ -78,7 +97,8 @@ namespace CRP.Models.ViewModels
 		public SearchResultItemJsonModel(Entities.Vehicle vehicle, int rentalTime) : base(vehicle)
 		{
 			Location = vehicle.Garage.Location.Name;
-			GarageName = vehicle.Garage.Name;CategoryList = vehicle.Model.Categories.Select(c => c.Name).ToList();
+			GarageName = vehicle.Garage.Name;
+			GarageRating = vehicle.Garage.Star;
 			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
 			NumOfComment = vehicle.BookingReceipts.Count(br => br.Comment != null);
 
@@ -99,7 +119,7 @@ namespace CRP.Models.ViewModels
 			{
 				if (item.MaxTime >= rentalTime)
 				{
-					BestPossibleRentalPeriod = item.MaxTime + (item.MaxTime == 1 ? " hour" : " hours");
+					BestPossibleRentalPeriod = item.MaxTime + "&nbsp;giờ";
 					BestPossibleRentalPrice = item.Price;
 					break;
 				}
@@ -107,7 +127,7 @@ namespace CRP.Models.ViewModels
 			// If not found, use the PerDayPrice
 			if (BestPossibleRentalPrice == 0.0d)
 			{
-				BestPossibleRentalPeriod = "day";
+				BestPossibleRentalPeriod = "ngày";
 				BestPossibleRentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice;
 			}
 		}
