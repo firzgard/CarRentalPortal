@@ -30,6 +30,7 @@ namespace CRP.Areas.Customer.Controllers
             lastBooking = 1;
             var service = this.Service<IBookingReceiptService>();
             var entity = await service.GetAsync(lastBooking);
+
             //model.IsPending = true;
             //var service = this.Service<IBookingReceiptService>();
             //var entity = this.Mapper.Map<BookingReceipt>(model);
