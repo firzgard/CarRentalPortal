@@ -74,6 +74,7 @@
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" Nullable="false" />
           <Property Name="GarageID" Type="int" />
+          <Property Name="GaragePhone" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="GarageName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="GarageAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="VehicleID" Type="int" />
@@ -815,6 +816,7 @@
           <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_BookingReceipt_Garage" FromRole="BookingReceipt" ToRole="Garage" />
           <NavigationProperty Name="Model" Relationship="CRPDBModel.FK_BookingReceipt_Model" FromRole="BookingReceipt" ToRole="Model" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="BookingReceipt" ToRole="Vehicle" />
+          <Property Name="GaragePhone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -1262,6 +1264,7 @@
           <EntitySetMapping Name="BookingReceipts">
             <EntityTypeMapping TypeName="CRPDBModel.BookingReceipt">
               <MappingFragment StoreEntitySet="BookingReceipt">
+                <ScalarProperty Name="GaragePhone" ColumnName="GaragePhone" />
                 <ScalarProperty Name="IsSelfBooking" ColumnName="IsSelfBooking" />
                 <ScalarProperty Name="IsPending" ColumnName="IsPending" />
                 <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
