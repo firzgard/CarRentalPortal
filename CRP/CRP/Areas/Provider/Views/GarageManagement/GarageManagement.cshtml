@@ -142,7 +142,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                @using (Html.BeginForm("Create", "Garage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                @using (Html.BeginForm("Create", "GarageManagement", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary("", new { @class = "text-danger" })

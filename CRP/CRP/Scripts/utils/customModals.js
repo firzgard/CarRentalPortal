@@ -1,4 +1,4 @@
-const mockupGarages = [
+﻿const mockupGarages = [
 	{id: 1, name: 'Garage Black'},
 	{id: 2, name: 'Garage White'},
 	{id: 3, name: 'Garage Red'},
@@ -294,14 +294,14 @@ function renderSelectorOptions(type, selectedID, html = ''){
 				</h2>
 			</div>
 			<div class="modal-body">
-				You are about to ${action} following ${type}(s):
+				Có phải bạn muốn ${action} ${type}(s) này?:
 				<ul>${items.reduce((html, item) => {
 				    return html + `<li>${item.name}</li>`
 				}, '')}</ul>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-				<button type="button" class="btn btn-danger btn-yes">Yes</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
+				<button type="button" class="btn btn-danger btn-yes">Đúng</button>
 			</div>
 		</div>
 	</div>`;
@@ -348,10 +348,12 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/garage/status/${id}`,
                                 type: "PATCH",
                                 success: function (data) {
-                                    alert("ok");
+                                    alert(data.message);
+                                    location.href = "/management/garageManagement"
                                 },
                                 eror: function (data) {
                                     alert("fail");
+                                    location.href = "/management/garageManagement"
                                 }
                             });
                         }
@@ -363,10 +365,11 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/deleteGarage/${id}`,
                                 type: "DELETE",
                                 success: function (data) {
-                                    alert("ok");
+                                    alert(data.message);
+                                    location.href = "/management/garageManagement";
                                 },
                                 eror: function (data) {
-                                    alert("fail");
+                                    alert("Còn Xe trong garage, vui lòng, di chuyển xe qua garage khác! Delete Failed!");
                                 }
                             });
                         }
