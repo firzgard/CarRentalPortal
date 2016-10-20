@@ -44,6 +44,7 @@ $(document).ready(() =>{
             //data: searchCondition
         },
         language: viDatatables,
+        order: [[ 1, "asc" ]],
         columnDefs: [
 			{
 				// Render status label

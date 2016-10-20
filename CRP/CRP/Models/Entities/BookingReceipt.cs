@@ -47,5 +47,6 @@ namespace CRP.Models.Entities
         public virtual Garage Garage { get; set; }
         public virtual Model Model { get; set; }
         public virtual Vehicle Vehicle { get; set; }
+        public virtual AspNetUser AspNetUser11 { get; set; }
     }
 }
