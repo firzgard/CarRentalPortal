@@ -96,6 +96,10 @@ namespace CRP.Models.ViewModels
 		public int? Year { get; set; }
 		public List<string> Category { get; set; }
         public List<string> ImageUrls { get; set; }
+        public IEnumerable<SelectListItem> listGarage { get; set; }
+        public IEnumerable<SelectListItem> listGroup { get; set; }
+        public IEnumerable<SelectListItem> listBrand { get; set; }
+        public IEnumerable<SelectListItem> listModel { get; set; }
 
         public VehicleDetailInfoModel()
         { }

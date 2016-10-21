@@ -1,4 +1,8 @@
-﻿@model CRP.Models.ViewModels.VehicleDetailInfoModel
+﻿@using CRP.Models
+@using CRP.Models.Entities
+@using CRP.Models.ViewModels
+
+@model CRP.Models.ViewModels.VehicleDetailInfoModel
 @{
     ViewBag.Title = "VehihicleDetail";
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
@@ -15,7 +19,19 @@
                     <div class="ibox product-detail">
                         <div class="ibox-content">
                             <div class="row">
-
+                                <div class="col-md-6">
+                                    <div class="col-md-4 text-right">
+                                        <label>Name</label>
+                                    </div>
+                                    <div class="justRead col-md-8">
+                                        <p>@this.Model.Name</p>
+                                    </div>
+                                    <div class="editFiel col-md-8 m-b" style="display:none">
+                                        @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4 text-right">
@@ -25,11 +41,9 @@
                                             <p>@this.Model.GarageName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select id="GarageName" class="form-control m-b">
-                                                <option selected>@this.Model.GarageName</option>
-                                                <option>Garage Y</option>
-                                                <option>Garage Z</option>
-                                            </select>
+                                            
+                                            @Html.DropDownListFor(q => q.GarageID, this.Model.listGarage, new { @class = "form-control", @id = "garageID" })
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -43,11 +57,7 @@
                                             <p>@this.Model.VehicleGroupName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select id="VehicleGroupName" class="form-control m-b">
-                                                <option selected>@this.Model.VehicleGroupName</option>
-                                                <option>Group B</option>
-                                                <option>Group C</option>
-                                            </select>
+                                            @Html.DropDownListFor(q => q.VehicleGroupID, this.Model.listGroup, new { @class = "form-control", @id = "groupID" })
                                         </div>
                                     </div>
                                 </div>
@@ -62,11 +72,7 @@
                                             <p>@this.Model.BrandName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select id="BrandName" class="form-control m-b">
-                                                <option>Audi</option>
-                                                <option>BMW</option>
-                                                <option selected>@this.Model.BrandName</option>
-                                            </select>
+                                            @Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })
                                         </div>
                                     </div>
                                 </div>
@@ -81,6 +87,7 @@
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
                                             <select id="ModelName" class="form-control m-b">
+                                                @*@Html.DropDownListFor(q=>q.ModelID, this.Model.listModel, new { @class = "form-control", @id = "brandID" })*@
                                                 <option>CRV-2015</option>
                                                 <option selected>@this.Model.ModelName</option>
                                             </select>
@@ -131,10 +138,12 @@
                                             <p>@this.Model.FuelTypeName</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            <select id="FuelTypeName" class="form-control">
-                                                <option selected>@this.Model.FuelTypeName</option>
-                                                <option>Gas</option>
-                                                <option>Electric</option>
+                                            <select id="FuelType" class="form-control">
+                                                <option value="1">Xăng</option>
+                                                <option value="2">Dầu Diesel</option>
+                                                <option value="3">Điện</option>
+                                                <option value="4">Điện lai</option>
+                                                <option value="5">Điện lai sạc điện</option>
                                             </select>
                                         </div>
                                     </div>
@@ -150,8 +159,8 @@
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
                                             <div id="TranmissionTypeName" class="form-control">
-                                                <div class="col-md-6"><input type="radio" checked value="Automatic" name="trans"> Số tự động</div>
-                                                <div class="col-md-6"><input type="radio" value="Manual" name="trans"> Số sàn</div>
+                                                <div class="col-md-6"><input type="radio" value="1" name="trans"> Số tự động</div>
+                                                <div class="col-md-6"><input type="radio" value="2" name="trans"> Số sàn</div>
                                             </div>
                                         </div>
                                     </div>
@@ -163,9 +172,22 @@
                                         <div class="col-md-4 text-right">
                                             <label>Màu</label>
                                         </div>
+                                        <span class="justRead">@this.Model.ColorName</span>
                                         <div class="col-md-8 m-b" style="height: 200px;">
-                                            <div class="row m-l">
-                                                <span id="car-color"><i class="fa fa-lg fa-car"></i></span> <span id="color-name">Black</span>
+                                            <div class="form-group row" id="colorFilter">
+   
+                                                <div class="editFiel col-xs-12" style="display:none">
+                                                    @for (int i = 1; i < Constants.COLOR.Count(); i++)
+                                                    {
+                                                        <div class="color-selector">
+                                                            <input id="color@(Constants.COLOR[i])" value="@i" type="checkbox">
+                                                            <label for="color@(Constants.COLOR[i])" style="background-color: @Constants.COLOR[i];"></label>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                            @*<div class="row m-l">
+                                                <span id="car-color"><i class="fa fa-lg fa-car"></i></span> <span id="color-name">@this.Model.ColorName</span>
                                                 <a class="editFiel btn btn-sm btn-default m-l-xs" id="change-color" style="display:none">Change</a>
 
                                                 <div id="panel-color" class="panel panel-primary m-r m-t">
@@ -189,7 +211,7 @@
                                                         <a id="close-color-panel" class="btn btn-sm btn-primary">close</a>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>*@
                                         </div>
                                     </div>
                                 </div>

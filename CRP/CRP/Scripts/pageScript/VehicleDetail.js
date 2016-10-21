@@ -76,13 +76,13 @@
 });
 $(document).on('click', "#save-btn", function () {
     let model = {};
-    //model.Garage.Name = GarageName;
-    //model.Brand.Name = BrandName;
+    model.GarageID = garageID;
+    model.BrandID = brandID;
     model.LicenseNumber = LicenseNumber;
-    model.FuelType = FuelTypeName;
-    model.VehicleGroup.Name = VehicleGroupName;
+    model.VehicleGroupID = groupID;
     model.Model.Name = ModelName;
     model.Engine = Engine;
+    model.FuelType = FuelType;
 
     $.ajax({
         type: "PATCH",
