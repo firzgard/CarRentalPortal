@@ -47,8 +47,39 @@ namespace CRP.Areas.Provider.Controllers
 		public ViewResult VehihicleDetail(int id)
 		{
 			var service = this.Service<IVehicleService>();
-			Vehicle vehicle = service.Get(id);
-			return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehicle);
+            var garageService = this.Service<IGarageService>();
+            var groupService = this.Service<IVehicleGroupService>();
+            var brandService = this.Service<IBrandService>();
+            var modelService = this.Service<IModelService>();
+            Vehicle vehicle = service.Get(id);
+            VehicleDetailInfoModel vehiIn = new VehicleDetailInfoModel(vehicle);
+            //FilterByGarageView garageView = new FilterByGarageView();
+            var providerID = User.Identity.GetUserId();
+            vehiIn.listGarage = garageService.Get()
+                .Where(q => q.OwnerID == providerID)
+                .Select(q => new SelectListItem()
+                {
+                    Text = q.Name,
+                    Value = q.ID.ToString(),
+                    Selected = true,
+                });
+            vehiIn.listGroup = groupService.Get()
+                 .Where(q => q.OwnerID == providerID)
+                 .Select(q => new SelectListItem()
+                 {
+                     Text = q.Name,
+                     Value = q.ID.ToString(),
+                     Selected = true,
+                 });
+            vehiIn.listBrand = brandService.Get()
+                 .Select(q => new SelectListItem()
+                 {
+                     Text = q.Name,
+                     Value = q.ID.ToString(),
+                     Selected = true,
+                 });
+            
+            return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehiIn);
 		}
 
 		// API Route to get a list of vehicle to populate vehicleTable
