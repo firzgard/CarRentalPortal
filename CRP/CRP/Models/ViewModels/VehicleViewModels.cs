@@ -87,6 +87,7 @@ namespace CRP.Models.ViewModels
 		public string TransmissionTypeName { get; set; }
 		public int? FuelTypeID { get; set; }
 		public string FuelTypeName { get; set; }
+        public string Engine { get; set; }
 		public int ColorID { get; set; }
 		public string ColorName { get; set; }
 		public decimal Star { get; set; }
@@ -94,8 +95,15 @@ namespace CRP.Models.ViewModels
 		public int NumOfSeat { get; set; }
 		public int? Year { get; set; }
 		public List<string> Category { get; set; }
+        public List<string> ImageUrls { get; set; }
+        public IEnumerable<SelectListItem> listGarage { get; set; }
+        public IEnumerable<SelectListItem> listGroup { get; set; }
+        public IEnumerable<SelectListItem> listBrand { get; set; }
+        public IEnumerable<SelectListItem> listModel { get; set; }
 
-		public VehicleDetailInfoModel(Vehicle vehicle)
+        public VehicleDetailInfoModel()
+        { }
+        public VehicleDetailInfoModel(Vehicle vehicle)
 		{
 			this.ID = vehicle.ID;
 			this.LicenseNumber = vehicle.LicenseNumber;
@@ -108,6 +116,7 @@ namespace CRP.Models.ViewModels
 			this.GarageName = vehicle.Garage.Name;
 			this.VehicleGroupID = vehicle.VehicleGroupID;
 			this.VehicleGroupName = vehicle.VehicleGroup.Name;
+            this.Engine = vehicle.Engine;
 
 			this.TransmissionTypeID = vehicle.TransmissionType;
 			string tmpString = null;
@@ -133,7 +142,9 @@ namespace CRP.Models.ViewModels
 			this.Year = vehicle.Year;
 			this.Category = vehicle.Model.Categories.Aggregate(
 				new List<string>(), (categories, mapping) => { categories.Add(mapping.Name); return categories; });
-		}
+            this.ImageUrls = vehicle.VehicleImages.Aggregate(
+                new List<string>(), (images, mapping) => { images.Add(mapping.URL); return images; });
+        }
 	}
 
 	public class VehicleCalendarModel
