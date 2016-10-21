@@ -73,8 +73,8 @@ namespace CRP.Models.Entities.Services
 			var rentalTime = (int)Math.Ceiling(rentalTimeSpan.TotalHours);
 
 			// vehicleGroup's max rental time constraint
-			vehicles = vehicles.Where(v => v.VehicleGroup.MaxRentalPeriod == null
-										|| v.VehicleGroup.MaxRentalPeriod * 24 > rentalTime);
+			vehicles = vehicles.Where(v => v.VehicleGroup.PriceGroup.MaxRentalPeriod == null
+										|| v.VehicleGroup.PriceGroup.MaxRentalPeriod * 24 > rentalTime);
 
 			// get only vehicles that are free in the booking period condition
 			vehicles = vehicles.Where(v =>

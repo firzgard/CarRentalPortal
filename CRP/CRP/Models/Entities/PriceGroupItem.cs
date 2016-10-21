@@ -17,6 +17,7 @@ namespace CRP.Models.Entities
         public int PriceGroupID { get; set; }
         public int MaxTime { get; set; }
         public double Price { get; set; }
+        public Nullable<int> MaxDistance { get; set; }
     
         public virtual PriceGroup PriceGroup { get; set; }
     }
