@@ -18,7 +18,7 @@ namespace CRP.Models.Entities.Services
             mailMessage.Subject = "Thông tin booking " + " " + booking.Vehicle.Name;
             bodyEmail = "Bạn vừa có booking vào " + today.ToString() + "\n Thông tin Booking như sau: " + "\n Tên xe: "
                 + booking.VehicleName + "\n Người thuê: " + booking.AspNetUser.UserName + "\n Số điện thoại: " + booking.AspNetUser.PhoneNumber +
-                "\n Nhà cung cấp: " + booking.AspNetUser11.UserName + "\n Số điện thoại:" + booking.AspNetUser11.PhoneNumber + "\n Địa chỉ: " +
+                "\n Nhà cung cấp: " + booking.AspNetUser1.UserName + "\n Số điện thoại:" + booking.AspNetUser1.PhoneNumber + "\n Địa chỉ: " +
                 booking.GarageAddress + "\n Xin hai bên vui lòng liên hệ trực tiếp với nhau để nhận xe!";
             mailMessage.Body = bodyEmail;
 
