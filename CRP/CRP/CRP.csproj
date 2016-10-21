@@ -325,6 +325,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\UserManagementController.cs" />
+    <Compile Include="Areas\Customer\Controllers\BecomeroviderController.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BookingManagementController.cs" />
@@ -391,6 +392,7 @@
     <Compile Include="Models\Entities\PriceGroupItem.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Repositories\RoleRepository.cs" />
     <Compile Include="Models\Entities\Repositories\UserRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleImageRepository.cs" />
     <Compile Include="Models\Entities\Services\CategoryService.cs" />
@@ -399,6 +401,8 @@
     <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
     <Compile Include="Models\Entities\Services\PriceGroupItemService.cs" />
     <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
+    <Compile Include="Models\Entities\Services\RoleService.cs" />
+    <Compile Include="Models\Entities\Services\SystemService.cs" />
     <Compile Include="Models\Entities\Services\UserService.cs" />
     <Compile Include="Models\Entities\Services\VehicleImageService.cs" />
     <Compile Include="Models\Entities\UnitOfWork.cs" />
@@ -1504,6 +1508,7 @@
     <Content Include="Content\NoUiSlider\nouislider.min.css" />
     <Content Include="Content\NoUiSlider\nouislider.pips.css" />
     <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
+    <Content Include="Content\pageStyle\becomeProvider.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
     <Content Include="Content\pageStyle\home.css" />
@@ -1691,6 +1696,8 @@
     <Content Include="Areas\Provider\Views\VehicleManagement\VehicleManagement.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingConfirm.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingReceipt.cshtml" />
+    <Content Include="Areas\Customer\Views\Becomerovider\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\Becomerovider\Info.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1862,6 +1869,7 @@
     <Folder Include="Areas\Provider\Views\PriceGroup\" />
     <Folder Include="Models\JsonModels\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\System\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI;
 
 namespace CRP.Areas.Customer.Controllers
 {
@@ -30,6 +31,7 @@ namespace CRP.Areas.Customer.Controllers
             lastBooking = 1;
             var service = this.Service<IBookingReceiptService>();
             var entity = await service.GetAsync(lastBooking);
+
             //model.IsPending = true;
             //var service = this.Service<IBookingReceiptService>();
             //var entity = this.Mapper.Map<BookingReceipt>(model);
@@ -77,6 +79,7 @@ namespace CRP.Areas.Customer.Controllers
         [System.Web.Mvc.Route("bookingReceipt")]
 		public async Task<ViewResult> BookingReceipt()
 		{
+            SystemService sysService = new SystemService();
             lastBooking = 1;
             var service = this.Service<IBookingReceiptService>();
             var entity = await service.GetAsync(lastBooking);
@@ -97,6 +100,11 @@ namespace CRP.Areas.Customer.Controllers
             //    DeleteBookingThread = true;
             //    ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
             //}
+
+            //send mail bao cho Provider va Customer
+            sysService.SendMailBooking("tamntse61384@fpt.edu.vn", entity);
+            //sysService.SendMailBooking(entity.AspNetUser11.Email, entity);
+
             return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", entity);
 		}
 
@@ -118,6 +126,9 @@ namespace CRP.Areas.Customer.Controllers
         [System.Web.Mvc.Route("booking/Payment")]
         public void payment()
         {
+
+            //string pageurl = "https://www.nganluong.vn/button_payment.php?receiver=Tamntse61384@fpt.edu.vn&product_name=Booking+Fee&price=10000&return_url=news.zing.vn&comments=Thanh+Toan+Booking+Fee+De+Booking+Xe";
+            //Response.Write("window.open('" + pageurl + "','_blank')");
             Response.Redirect("https://www.nganluong.vn/button_payment.php?receiver=Tamntse61384@fpt.edu.vn&product_name=Booking+Fee&price=10000&return_url=news.zing.vn&comments=Thanh+Toan+Booking+Fee+De+Booking+Xe");
         }
 
@@ -127,9 +138,9 @@ namespace CRP.Areas.Customer.Controllers
         {
             String customerID = User.Identity.GetUserId();
             var service = this.Service<IBookingReceiptService>();
-            var list = service.GetBookingReceipt(customerID);
+            var list = service.GetBookingReceiptWithUser(customerID);
             DateTime now = System.DateTime.Now;
-            foreach(BookingReceipt item in list)
+            foreach(BookingReceipt item in list.ToList())
             {
                 if (item.EndTime < now)
                 {
@@ -268,6 +279,7 @@ namespace CRP.Areas.Customer.Controllers
         [System.Web.Mvc.HttpPost]
         public async Task<JsonResult> EditPC()
         {
+            SystemService sysService = new SystemService();
             int id = int.Parse(Request.Params["id"]);
             String comment = Request.Params["comment"];
             decimal star = decimal.Parse(Request.Params["star"]);
@@ -278,6 +290,9 @@ namespace CRP.Areas.Customer.Controllers
                 entity.Comment = comment;
                 entity.Star = star;
                 await service.UpdateAsync(entity);
+                //update ratng cho garage va vihicle tuong ung
+                sysService.UpdateRatingGarage(entity.GarageID.GetValueOrDefault());
+                sysService.UpdateRatingVehicle(entity.VehicleID.GetValueOrDefault());
                 return Json(new { result = true, message = "Change status success!" });
             }
             return Json(new { result = false, message = "Change status failed!" });

@@ -1,0 +1,44 @@
+﻿@model CRP.Models.Entities.AspNetUser
+@{
+    ViewBag.Title = "Information of Provider";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div class="margin-signup padding-signup backgroundStyle">
+        <div>
+            <h1 class="logo-name">CRP</h1>
+        </div>
+        <h3 style="color:white">Cám ơn bạn đã sử dụng dịch vụ của chúng tôi!</h3>
+        <h4 style="color:white">Xin vui lòng đăng nhập lại để hoàn tất việc thanh toán!</h4>
+            <div>
+                 <label>Tên:@Model.UserName</label><br/>
+                <label>Email:@Model.Email</label>
+                <label>Là Provider đến ngày:@Model.IsProviderUntil</label>
+                <a href="logOut" class="btn btn-primary block full-width m-b" style="color:white">Đăng nhập lại</a>
+            </div> 
+        <p class="m-t" style="color:white"> <small>Contact us at carrentalportal@gmail.com</small> </p>
+    </div>
+</div>
+
+
+<!--
+  <script>
+        $(document).ready(function(){
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+</script>  
+-->
+
+
+
+@section PageStyle {
+    @Styles.Render("~/Content/pageStyle/login.css")
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

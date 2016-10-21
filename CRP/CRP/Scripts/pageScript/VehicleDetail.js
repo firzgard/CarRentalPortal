@@ -1,17 +1,16 @@
-/** car.js ver1.0 */
-$(document).ready(function() {
+﻿$(document).ready(function() {
             
     $('.btn-edit').on('click', function() {
         $('#edit-car').modal('show');
     });
-    
-    $('#edit-btn').on('click', function() {
-        $('#justRead').hide();
-        $('#editFiel').css('display','inline-block');
-    });
-    
+
     $('#change-color').on('click', function() {
         $('#panel-color').show();
+    });
+
+    $('#edit-btn').on('click', function () {
+        $('.justRead').hide();
+        $('.editFiel').css('display', 'inline-block');
     });
 
     $('.btn-color').on('click', function() {
@@ -46,7 +45,7 @@ $(document).ready(function() {
         uploadMultiple: true,
         acceptedFiles: "image/jpeg,image/png,image/gif",
         parallelUploads: 20,
-        maxFiles: 20,
+        maxFiles: 10,
         maxFilesize: 1,
         dictDefaultMessage: "Drop files here to upload (or click)",
         dictInvalidFileType: "Accept image only",
@@ -74,4 +73,25 @@ $(document).ready(function() {
         }
 
     }
+});
+$(document).on('click', "#save-btn", function () {
+    let model = {};
+    model.GarageID = garageID;
+    model.BrandID = brandID;
+    model.LicenseNumber = LicenseNumber;
+    model.VehicleGroupID = groupID;
+    model.Model.Name = ModelName;
+    model.Engine = Engine;
+    model.FuelType = FuelType;
+
+    $.ajax({
+        type: "PATCH",
+        url: "api/vehicles",
+        success: function (data) {
+            alert("ok");
+        },
+        eror: function (data) {
+            alert("fail");
+        }
+    });
 });

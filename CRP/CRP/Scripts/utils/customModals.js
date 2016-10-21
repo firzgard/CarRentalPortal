@@ -365,7 +365,8 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/garage/status/${id}`,
                                 type: "PATCH",
                                 success: function (data) {
-                                    alert("ok");
+                                    alert(data.message);
+                                    location.href = "/management/garageManagement";
                                 },
                                 eror: function (data) {
                                     alert("fail");
@@ -380,7 +381,8 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/deleteGarage/${id}`,
                                 type: "DELETE",
                                 success: function (data) {
-                                    alert("ok");
+                                    alert(data.message);
+                                    location.href = "/management/garageManagement";
                                 },
                                 eror: function (data) {
                                     alert("fail");

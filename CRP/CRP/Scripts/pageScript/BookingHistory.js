@@ -229,11 +229,11 @@ $(document).ready(() => {
                 url: `/api/booking/status/${id}`,
                 type: "DELETE",
                 success: function (data) {
-                    alert("ok");
+                    alert(data.message);
                     location.href = "/management/bookingHistory";
                 },
                 eror: function (data) {
-                    alert("fail");
+                    alert(data.message);
                     location.href = "/management/bookingHistory";
                 }
                 });
@@ -251,17 +251,16 @@ $(document).ready(() => {
                         comment: comment,
                         star: star,
                     },
-                    error: function () {
-                        alert("Problem")
+                    error: function (data) {
+                        alert(data.message);
                         location.href = "/management/bookingHistory";
                     },
                     success: function (data) {
-                        alert("Comment successfully");
+                        alert(data.message);
                         location.href = "/management/bookingHistory";
                     },
                     type: 'POST'
                 });
             });
-            
     });
 });
