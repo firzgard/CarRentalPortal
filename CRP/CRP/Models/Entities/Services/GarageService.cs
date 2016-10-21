@@ -12,6 +12,10 @@ namespace CRP.Models.Entities.Services
     }
     public class GarageService :BaseService<Garage>, IGarageService
     {
+        public GarageService()
+        {
+        }
+
         public GarageService(IUnitOfWork unitOfWork, IGarageRepository repository) :base(unitOfWork, repository)
         {
 

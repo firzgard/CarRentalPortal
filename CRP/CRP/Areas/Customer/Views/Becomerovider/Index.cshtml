@@ -1,0 +1,79 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="wrapper wrapper-content text-center animated fadeInDown">
+    <div id="description">
+        <div>Trở thành nhà cung cấp</div>
+        <div id="subDescription">Enjoy the ultimate rental management experience</div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 m-t-lg">
+            <div class="subcription-plan one-month center-block">
+                <div class="plan-header">
+                    <h1><b>Cho 1 tháng</b></h1>
+                </div>
+                <div class="plan-body">
+                 <p class="price-param"><span class="price">100.000&#8363;</span><span>/month</span></p>
+                 @if (User.IsInRole("Provider"))
+                {
+                <p><a href="becomeProvider/payment/1" class="btn btn-rounded">Gia hạn</a></p>
+                 }
+                 else
+                 {
+                    <p><a href="becomeProvider/payment/1" class="btn btn-rounded">Đăng kí</a></p>
+                 }
+                    <small>100.000&#8363; cho mỗi tháng</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 m-t-lg">
+            <div class="subcription-plan three-month center-block">
+                <div class="plan-header">
+                    <h1><b>Cho 3 tháng</b></h1>
+                </div>
+                <div class="plan-body">
+                    <p class="price-param"><span class="price">90.000&#8363;</span><span>/month</span></p>
+                    @if (User.IsInRole("Provider"))
+                    {
+                        <p><a href="becomeProvider/payment/1" class="btn btn-rounded">Gia hạn</a></p>
+                    }
+                    else
+                    {
+                        <p><a href="becomeProvider/payment/1" class="btn btn-rounded">Đăng kí</a></p>
+                    }
+                    <small>270.000&#8363; cho 3 tháng</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 m-t-lg">
+            <div class="subcription-plan six-month center-block">
+                <div class="plan-header">
+                    <h1><b>Cho 6 thang</b></h1>
+                </div>
+                <div class="plan-body">
+                    <p class="price-param"><span class="price">80.000&#8363;</span><span>/month</span></p>
+                    @if (User.IsInRole("Provider"))
+                    {
+                        <p><a href="becomeProvider/payment/1" class="btn btn-rounded">Gia hạn</a></p>
+                    }
+                    else
+                    {
+                        <p><a href="becomeProvider/payment/1" class="btn btn-rounded">Đăng kí</a></p>
+                    }
+                    <small>480.000&#8363; cho 6 tháng</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section PageStyle {
+    @Styles.Render("~/Content/pageStyle/becomeProvider.css")
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
