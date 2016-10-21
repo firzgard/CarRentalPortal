@@ -43,6 +43,7 @@
         <AssociationConnector Association="CRPDBModel.FK_VehicleImage_Vehicle" />
         <AssociationConnector Association="CRPDBModel.AspNetUserRoles" />
         <AssociationConnector Association="CRPDBModel.ModelCategoryMapping" />
+        <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_Provider" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

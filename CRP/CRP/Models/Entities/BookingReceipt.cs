@@ -40,11 +40,13 @@ namespace CRP.Models.Entities
         public bool IsCanceled { get; set; }
         public bool IsPending { get; set; }
         public bool IsSelfBooking { get; set; }
+        public string GaragePhone { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual Garage Garage { get; set; }
         public virtual Model Model { get; set; }
         public virtual Vehicle Vehicle { get; set; }
+        public virtual AspNetUser AspNetUser11 { get; set; }
     }
 }

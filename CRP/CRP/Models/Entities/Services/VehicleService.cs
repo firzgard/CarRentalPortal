@@ -2,6 +2,7 @@
 using System.Linq;
 using CRP.Models.Entities.Repositories;
 using CRP.Models.ViewModels;
+using System.Collections.Generic;
 
 namespace CRP.Models.Entities.Services
 {
@@ -9,6 +10,8 @@ namespace CRP.Models.Entities.Services
 	{
 		SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions);
 		VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions);
+        List<Vehicle> searchWithGarage(int garageID);
+
 	}
 
 	public class VehicleService : BaseService<Vehicle>, IVehicleService
@@ -280,5 +283,14 @@ namespace CRP.Models.Entities.Services
 
 			return vehicle.Any();
 		}
-	}
+
+        public List<Vehicle> searchWithGarage(int garageID)
+        {
+            var vehicleList = this.repository.Get();
+            List<Vehicle> lstVehicle = vehicleList
+             .Where(q => q.GarageID == garageID)
+             .ToList();
+            return lstVehicle;
+        }
+    }
 }

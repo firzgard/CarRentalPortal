@@ -1508,6 +1508,7 @@
     <Content Include="Content\pageStyle\garageList.css" />
     <Content Include="Content\pageStyle\home.css" />
     <Content Include="Content\pageStyle\login.css" />
+    <Content Include="Content\pageStyle\receipt.css" />
     <Content Include="Content\pageStyle\search.css" />
     <Content Include="Content\pageStyle\signUp.css" />
     <Content Include="Content\pageStyle\VehicleDetail.css" />
@@ -1690,6 +1691,8 @@
     <Content Include="Areas\Provider\Views\VehicleGroupManagement\VehicleGroupDetail.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroupManagement\VehicleGroupManagement.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleManagement\VehicleManagement.cshtml" />
+    <Content Include="Areas\Customer\Views\Booking\BookingConfirm.cshtml" />
+    <Content Include="Areas\Customer\Views\Booking\BookingReceipt.cshtml" />
     <Content Include="Areas\Provider\Views\Vehicle\VehicleDetail.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleManagement\VehicleDetail.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -1699,9 +1702,11 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.barrating.min.js" />
     <Content Include="Scripts\jquery.slimscroll.js" />
     <Content Include="Scripts\jquery.slimscroll.min.js" />
+    <Content Include="Scripts\jquery.barrating.min.js.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -1802,6 +1807,8 @@
     <Content Include="Scripts\waypoints\waypoints.debug.js" />
     <Content Include="Scripts\waypoints\zepto.waypoints.js" />
     <Content Include="Scripts\waypoints\zepto.waypoints.min.js" />
+    <Content Include="Scripts\wNumb\bootstrap-stars.css" />
+    <Content Include="Scripts\wNumb\examples.js" />
     <Content Include="Scripts\wNumb\wNumb.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config">

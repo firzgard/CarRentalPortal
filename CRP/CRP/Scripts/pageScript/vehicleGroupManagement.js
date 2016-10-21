@@ -1,21 +1,41 @@
-$(document).ready(()=>{
-    // set toogling dropdown event for filter dropdown buttons
-	$('#multiFilter .filter-toggle').on('click', function (event) {
-		let dropdownContainer = $(this).parent();
+const vehicleGroupTableColumns = [
+			{ name: 'ID', visible: false },
+			{ name: 'Name', title: 'Tên nhóm', width: '30%' },
+			{ name: 'Maxrent', title: 'Kỳ hạn thuê tối đa', width: '10%', defaultContent: "-" },
+			{ name: 'Deposit', title: 'Đặt cọc',  width: '15%' },
+            { name: 'PerDayPrice', title: 'Giá theo ngày', width: '15%' },
+			{ name: 'NumOfCar', title: 'Số lượng xe', width: '10%' },
+			{ name: 'Status', title: 'Trạng thái', width: '10%' },
+			{
+			    title: 'Thao tác',
+			    width: '10%',
+			    orderable: false,
+			    searchable: false
+			}
+]
 
-		if(dropdownContainer.hasClass('open')){
-			$('#multiFilter .filter-toggle').parent().removeClass('open');
-		} else {
-			$('#multiFilter .filter-toggle').parent().removeClass('open');
-			dropdownContainer.addClass('open');
-		}
-	});
+const viDatatables = {
+    lengthMenu: "Hiển thị _MENU_ dòng",
+    search: "Tìm kiếm",
+    paginate: {
+        first: "Trang đầu",
+        previous: "Trang trước",
+        next: "Trang sau",
+        last: "Trang cuối",
+    },
+    zeroRecords: "Không tìm thấy dữ liệu",
+    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    infoEmpty: "không có dữ liệu",
+    infoFiltered: "(được lọc ra từ _MAX_ dòng)"
+}
+let table = null;
+$(document).ready(() =>{
     
 	var searchCondition = {
 	    
 	};
 	// Render table
-	let table = $('#garages').DataTable({
+	table = $('#garages').DataTable({
         dom: "ltipr",
 	    //data: mockupData,
         ajax: {
@@ -23,68 +43,40 @@ $(document).ready(()=>{
             type: "GET",
             //data: searchCondition
         },
-		columnDefs: [
+        language: viDatatables,
+        order: [[ 1, "asc" ]],
+        columnDefs: [
 			{
 				// Render status label
-				targets: 6,
-				render: (data, type) => {
-					if(type === 'display'){
-						return `<div class="status-label" >
-							<p class="label label-${data ? 'primary': 'danger'}">${data ? 'Active': 'Inactive'}</p>
-						</div>`;
-					}
-					return data;
+				targets: -2,
+				render: (data, type, row) => {
+					return `<div class="status-label" >
+						<p class="label label-${data ? 'primary': 'danger'}">${data ? 'đang hoạt động': 'ngưng hoạt động'}</p>
+					</div>`;
 				}
 			},
 			{
 				// Render action button
-				targets: 7,
+				targets: -1,
 				render: (data, type, row) => {
 				    return `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
+							<i class="fa fa-gear"></i> Thao tác <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="/management/vehicleGroupManagement/${row[0]}">Edit</a></li>
+							<li><a href="/management/vehicleGroupManagement/${row[0]}">Sửa thông tin</a></li>
                         ${row[6] === true?
-                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row[0]}" data-name="${row[1]}" >Deactivate</a></li>`:
-                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row[0]}" data-name="${row[1]}" >Reactivate</a></li>`
+                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row[0]}" data-name="${row[1]}" >Ngừng hoạt động</a></li>`:
+                        `<li><a data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row[0]}" data-name="${row[1]}" >Tái kích hoạt</a></li>`
 							}
-                        <li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Delete</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Xóa</a></li>
 						</ul>
 					</div>`;
 				}
 			}
 		],
-		columns: [
-			{ name: 'ID', visible: false },
-			{ name: 'Name', title: 'Name', width: '30%' },
-			{ name: 'Maxrent', title: 'Max rental period', width: '10%', defaultContent: "N/A" },
-			{ name: 'Deposit', title: 'Deposit',  width: '15%' },
-            { name: 'PerDayPrice', title: 'Per day price', width: '15%' },
-			{ name: 'NumOfCar', title: 'Number of car', width: '10%' },
-			{ name: 'Status', title: 'Status', width: '10%' },
-			{
-				title: 'Action',
-				width: '10%',
-				orderable: false,
-				searchable: false
-			}
-		]
+		columns: vehicleGroupTableColumns,
 	});
-
-    // garage's name text filter
-	createTextFilter(table, $('#name'), 'Name');
-    // garage's name text filter
-	createTextFilter(table, $('#maxrent'), 'Maxrent');
-    // garage's address text filter
-	createTextFilter(table, $('#deposit'), 'Deposit');
-    // garage's name text filter
-	createTextFilter(table, $('#perday'), 'Per day price');
-    // garage's name text filter
-	createTextFilter(table, $('#price'), 'Price');
-    // status checkbox filter
-    createCheckboxFilter(table, $('#status'), 5);
     
 	// Render confirmation modal for actions
 	$('#mdModal').on('show.bs.modal', function(event) {
@@ -94,13 +86,13 @@ $(document).ready(()=>{
 			name = button.data('name');
 			switch (action) {
 			    case "activate": {
-			        renderConfirmModal('vehicle group', 'reactivate', this, [{ id: button.data('id'), name: button.data('name') }]);
+			        renderConfirmModal(table, 'vehicle group', 'reactivate', this, [{ id: button.data('id'), name: button.data('name') }]);
 			    } break;
 			    case "deactivate": {
-			        renderConfirmModal('vehicle group', 'deactivate', this, [{ id: button.data('id'), name: button.data('name') }]);
+			        renderConfirmModal(table, 'vehicle group', 'deactivate', this, [{ id: button.data('id'), name: button.data('name') }]);
 			    } break;
 			    case "delete": {
-			        renderConfirmModal('vehicle group', 'delete', this, [{ id: button.data('id'), name: button.data('name') }]);
+			        renderConfirmModal(table, 'vehicle group', 'delete', this, [{ id: button.data('id'), name: button.data('name') }]);
 			    } break;
 			}
 	});
@@ -281,10 +273,15 @@ $(document).on('click', "#btnCreate", function () {
         contentType: "application/json",
         dataType: "json",
         success: function (data) {
-            alert("ok");
+            if (data.result) {
+                $('.modal').modal('hide');
+                table.ajax.reload();
+            } else {
+                alert("fail");
+            }
         },
         error: function (e) {
-            alert("fail");
+            alert("error");
         }
     });
 });

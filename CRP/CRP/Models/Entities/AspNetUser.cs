@@ -24,6 +24,7 @@ namespace CRP.Models.Entities
             this.Garages = new HashSet<Garage>();
             this.VehicleGroups = new HashSet<VehicleGroup>();
             this.AspNetRoles = new HashSet<AspNetRole>();
+            this.BookingReceipts11 = new HashSet<BookingReceipt>();
         }
     
         public string Id { get; set; }
@@ -56,5 +57,7 @@ namespace CRP.Models.Entities
         public virtual ICollection<VehicleGroup> VehicleGroups { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<BookingReceipt> BookingReceipts11 { get; set; }
     }
 }

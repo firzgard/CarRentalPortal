@@ -25,23 +25,22 @@ namespace CRP.Areas.Customer.Controllers
         private Boolean DeleteBookingThread = false;
         // Route to bookingConfirm page (Page for confirming booking details before paying)
         [System.Web.Mvc.Route("bookingConfirm")]
-        public async System.Threading.Tasks.Task<ViewResult> BookingConfirm(BookingReceiptViewModel model)
+        public async Task<ViewResult> BookingConfirm(BookingReceiptViewModel model)
         {
-            if (!this.ModelState.IsValid)
-            {
-                return this.View(model);
-            }
-            model.IsPending = true;
+            lastBooking = 1;
             var service = this.Service<IBookingReceiptService>();
-            var entity = this.Mapper.Map<BookingReceipt>(model);
-            //luu booking xuong database, nhung 
-            await service.CreateAsync(entity);
-            lastBooking = entity.ID;
-            //goi api thanh toan, neu ok, thi xet ispending = false, +
-            //sau 5 phut kiem tra neu ispending = false thi ko co gi, con is peding = true thi delete booking va return message overtime
-            checkisPending(entity.ID);
+            var entity = await service.GetAsync(lastBooking);
 
-            return View("~/Areas/CuopenTimeMonstomer/Views/Booking/BookingHistory.cshtml");
+            //model.IsPending = true;
+            //var service = this.Service<IBookingReceiptService>();
+            //var entity = this.Mapper.Map<BookingReceipt>(model);
+            ////luu booking xuong database, nhung 
+            //await service.CreateAsync(entity);
+            //lastBooking = entity.ID;
+            ////goi api thanh toan, neu ok, thi xet ispending = false, +
+            ////sau 5 phut kiem tra neu ispending = false thi ko co gi, con is peding = true thi delete booking va return message overtime
+            //checkisPending(entity.ID);
+            return View("~/Areas/Customer/Views/Booking/BookingConfirm.cshtml", entity);
         }
         private void checkisPending(int bookingID)
         {
@@ -77,30 +76,31 @@ namespace CRP.Areas.Customer.Controllers
         }
         // Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
         [System.Web.Mvc.Route("bookingReceipt")]
-		public ViewResult BookingReceipt()
+		public async Task<ViewResult> BookingReceipt()
 		{
-
+            lastBooking = 1;
             var service = this.Service<IBookingReceiptService>();
-            var entity = service.Get(lastBooking);
-            //kiem tra xem da thanh toan thanh cong hay chua
-            Boolean paySuccess = true;
-            //xuong databse ispending = false neu thanh toan thanh cong, xoa booking neu no ko thanh cong
-            //neu thanh toan thanh cong
-            if (paySuccess)
-            {
-                entity.IsPending = false;
-                service.Update(entity);
-               //tra ve model cua entity booking moi nhat
+            var entity = await service.GetAsync(lastBooking);
+            ////kiem tra xem da thanh toan thanh cong hay chua
+            //Boolean paySuccess = true;
+            ////xuong databse ispending = false neu thanh toan thanh cong, xoa booking neu no ko thanh cong
+            ////neu thanh toan thanh cong
+            //if (paySuccess)
+            //{
+            //    entity.IsPending = false;
+            //    service.Update(entity);
+            //   //tra ve model cua entity booking moi nhat
 
-            } else
-            {
-                service.Delete(entity);
-                //stop stread sau 5p kiem tra
-                DeleteBookingThread = true;
-                ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
-            }
-            return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
+            //} else
+            //{
+            //    service.Delete(entity);
+            //    //stop stread sau 5p kiem tra
+            //    DeleteBookingThread = true;
+            //    ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
+            //}
+            return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", entity);
 		}
+
 
 		// Route to bookingHistory page
 		[System.Web.Mvc.Route("management/bookingHistory")]
@@ -116,6 +116,12 @@ namespace CRP.Areas.Customer.Controllers
             return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
+        [System.Web.Mvc.Route("booking/Payment")]
+        public void payment()
+        {
+            Response.Redirect("https://www.nganluong.vn/button_payment.php?receiver=Tamntse61384@fpt.edu.vn&product_name=Booking+Fee&price=10000&return_url=news.zing.vn&comments=Thanh+Toan+Booking+Fee+De+Booking+Xe");
+        }
+
         [System.Web.Mvc.Route("api/BookingHistorys")]
         [System.Web.Mvc.HttpGet]
         public JsonResult GetBookingHistorypListAPI()
@@ -129,6 +135,10 @@ namespace CRP.Areas.Customer.Controllers
                 if (item.EndTime < now)
                 {
                     item.IsCanceled = true;
+                }
+                if (item.IsSelfBooking == true)
+                {
+                    list.Remove(item);
                 }
             }
             var result = list.Select(q => new IConvertible[] {

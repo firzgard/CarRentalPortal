@@ -114,7 +114,7 @@ $(document).ready(function () {
 	    VehicleGroupIDList: [groupID]
 	}
 	// Load vehicles belonging to this garage
-	let table = $('#vehicles').DataTable({
+	let table = $(vehicles).DataTable({
 		//data: mockupData,
 	    dom: 'ltipr',
 	    ajax: {

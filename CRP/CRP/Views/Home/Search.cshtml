@@ -5,7 +5,7 @@
 @model SearchPageViewModel
 
 @{
-	ViewBag.Title = "Search";
+	ViewBag.Title = "Tìm xe";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -21,7 +21,7 @@
 			<!-- Location -->
 			<div class="col-xs-4">
 				<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
+					<span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
 					<select id="locationFilter" class="form-control" style="width: 100%;" >
 						<option></option>
 						@foreach (Location entry in Model.LocationList)
@@ -32,25 +32,20 @@
 				</div>
 			</div>
 			<!-- Time -->
-			<div class="col-xs-4">
-				<div class="input-group">
-					<span class="input-group-addon"><i class="fa fa-calendar-o"></i></span>
-					<input type="text" id="startTimeFilter" class="form-control" readonly/>
-				</div>
-			</div>
-			<div class="col-xs-4">
+			<div class="col-xs-8">
 				<div class="input-group">
 					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+					<input type="text" id="startTimeFilter" class="form-control" readonly/>
+					<span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
 					<input type="text" id="endTimeFilter" class="form-control" readonly/>
 				</div>
 			</div>
 		</div>
-		<hr>
 	</div>
 	<!-- side filter -->
 	<div class="animated fadeInLeft col-md-offset-1 col-md-3 white-bg" style="padding: 0;">
 		<div id="sideFilters">
-			<button class="btn btn-primary btn-block" style="margin-bottom: 1em;">Xóa bộ lọc</button>
+			<button id="filterResetter" class="btn btn-primary btn-block" style="margin-bottom: 1em;">Xóa bộ lọc</button>
 			<!-- NumOfSeat -->
 			<div class="row">
 				<label class="col-xs-12 filter-label">Số chỗ ngồi</label>
@@ -267,12 +262,12 @@
 			, SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR
 			, SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR
 			, LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = @Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY
-			, queryApiUrl = '@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })'
-			, vehicleInfoUrl = '/vehicleInfo'
-			, yearSliderMax = @Model.MaxYear
-			, yearSliderMin = @Model.MinYear
-			, priceSliderMax = @Model.MaxPrice
-			, priceSliderMin = @Model.MinPrice;
+			, QUERY_API_URL = '@Url.RouteUrl("SearchVehiclesAPI", new { controller = "Home" })'
+			, VEHICLE_INFO_URL = '/vehicleInfo'
+			, YEAR_SLIDER_MAX = @Model.MaxYear
+			, YEAR_SLIDER_MIN = @Model.MinYear
+			, PRICE_SLIDER_MAX = @Model.MaxPrice
+			, PRICE_SLIDER_MIN = @Model.MinPrice;
 	</script>
 	@Scripts.Render("~/Scripts/Search")
 }
