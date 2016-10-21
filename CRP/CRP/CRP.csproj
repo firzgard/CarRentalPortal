@@ -350,16 +350,46 @@
     <Compile Include="Models\AutofacModules\RepositoryModule.cs" />
     <Compile Include="Models\AutofacModules\ServiceModule.cs" />
     <Compile Include="Models\ControllerExtensions.cs" />
+    <Compile Include="Models\Entities\AspNetRole.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\AspNetUser.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\AspNetUserClaim.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\AspNetUserLogin.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\BookingReceipt.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Brand.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Category.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Garage.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\GarageWorkingTime.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Location.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Model.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\Nation.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\PriceGroup.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\PriceGroupItem.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Repositories\RoleRepository.cs" />
@@ -379,19 +409,16 @@
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
     <Compile Include="Models\Entities\Services\ModelService.cs" />
+    <Compile Include="Models\Entities\Vehicle.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\VehicleGroup.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\VehicleImage.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
-    <Compile Include="Models\Entities\AspNetRole.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\AspNetUser.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\BookingReceipt.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\Brand.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\CRP.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -407,24 +434,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CRP.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\Garage.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\Location.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\Model.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\Nation.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\PriceGroup.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\PriceGroupItem.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BookingReceiptRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
@@ -439,15 +448,6 @@
     <Compile Include="Models\Entities\Services\LocationService.cs" />
     <Compile Include="Models\Entities\Services\VehicleGroupService.cs" />
     <Compile Include="Models\Entities\Services\VehicleService.cs" />
-    <Compile Include="Models\Entities\Vehicle.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\VehicleGroup.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\VehicleImage.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ViewModels\GarageViewModels.cs" />
     <Compile Include="Models\ViewModels\BookingReceiptViewModels.cs" />

@@ -173,6 +173,9 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="DepositPercentage" Type="decimal" Precision="3" Scale="2" Nullable="false" />
           <Property Name="PerDayPrice" Type="float" Nullable="false" />
+          <Property Name="MaxRentalPeriod" Type="int" />
+          <Property Name="MaxDistancePerDay" Type="int" />
+          <Property Name="ExtraChargePerKm" Type="float" />
         </EntityType>
         <EntityType Name="PriceGroupItem">
           <Key>
@@ -182,6 +185,7 @@
           <Property Name="PriceGroupID" Type="int" Nullable="false" />
           <Property Name="MaxTime" Type="int" Nullable="false" />
           <Property Name="Price" Type="float" Nullable="false" />
+          <Property Name="MaxDistance" Type="int" />
         </EntityType>
         <EntityType Name="Vehicle">
           <Key>
@@ -210,8 +214,8 @@
           <Property Name="OwnerID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="MaxRentalPeriod" Type="int" />
-          <Property Name="DefaultPriceGroupID" Type="int" Nullable="false" />
+          <Property Name="DefaultPriceGroupID" Type="int" />
+          <Property Name="NoDriverPriceGroup" Type="int" />
         </EntityType>
         <EntityType Name="VehicleImage">
           <Key>
@@ -482,7 +486,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_VehicleGroup_PriceGroup1">
-          <End Role="PriceGroup" Type="Self.PriceGroup" Multiplicity="1" />
+          <End Role="PriceGroup" Type="Self.PriceGroup" Multiplicity="0..1" />
           <End Role="VehicleGroup" Type="Self.VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PriceGroup">
@@ -652,7 +656,7 @@
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="BookingReceipt" EntitySet="BookingReceipts" />
           </AssociationSet>
-          <AssociationSet Name="FK_BookingReceipt_AspNetUsers1" Association="CRPDBModel.FK_BookingReceipt_AspNetUsers1">
+          <AssociationSet Name="FK_BookingReceipt_Provider" Association="CRPDBModel.FK_BookingReceipt_Provider">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="BookingReceipt" EntitySet="BookingReceipts" />
           </AssociationSet>
@@ -724,10 +728,6 @@
             <End Role="Category" EntitySet="Categories" />
             <End Role="Model" EntitySet="Models" />
           </AssociationSet>
-          <AssociationSet Name="FK_BookingReceipt_Provider" Association="CRPDBModel.FK_BookingReceipt_Provider">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="BookingReceipt" EntitySet="BookingReceipts" />
-          </AssociationSet>
         </EntityContainer>
         <EntityType Name="AspNetRole">
           <Key>
@@ -780,11 +780,10 @@
           <NavigationProperty Name="AspNetUserClaims" Relationship="CRPDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="CRPDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="AspNetUser" ToRole="BookingReceipt" />
-          <NavigationProperty Name="BookingReceipts1" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers1" FromRole="AspNetUser" ToRole="BookingReceipt" />
+          <NavigationProperty Name="BookingReceipts1" Relationship="CRPDBModel.FK_BookingReceipt_Provider" FromRole="AspNetUser" ToRole="BookingReceipt" />
           <NavigationProperty Name="Garages" Relationship="CRPDBModel.FK_Garage_AspNetUsers" FromRole="AspNetUser" ToRole="Garage" />
           <NavigationProperty Name="VehicleGroups" Relationship="CRPDBModel.FK_VehicleGroup_AspNetUsers" FromRole="AspNetUser" ToRole="VehicleGroup" />
           <NavigationProperty Name="AspNetRoles" Relationship="CRPDBModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
-          <NavigationProperty Name="BookingReceipts11" Relationship="CRPDBModel.FK_BookingReceipt_Provider" FromRole="AspNetUser" ToRole="BookingReceipt" />
         </EntityType>
         <EntityType Name="BookingReceipt">
           <Key>
@@ -801,6 +800,7 @@
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GarageID" Type="Int32" />
+          <Property Name="GaragePhone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="GarageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="GarageAddress" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="VehicleID" Type="Int32" />
@@ -817,12 +817,10 @@
           <Property Name="IsPending" Type="Boolean" Nullable="false" />
           <Property Name="IsSelfBooking" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="BookingReceipt" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers1" FromRole="BookingReceipt" ToRole="AspNetUser" />
+          <NavigationProperty Name="AspNetUser1" Relationship="CRPDBModel.FK_BookingReceipt_Provider" FromRole="BookingReceipt" ToRole="AspNetUser" />
           <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_BookingReceipt_Garage" FromRole="BookingReceipt" ToRole="Garage" />
           <NavigationProperty Name="Model" Relationship="CRPDBModel.FK_BookingReceipt_Model" FromRole="BookingReceipt" ToRole="Model" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="BookingReceipt" ToRole="Vehicle" />
-          <Property Name="GaragePhone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="AspNetUser11" Relationship="CRPDBModel.FK_BookingReceipt_Provider" FromRole="BookingReceipt" ToRole="AspNetUser" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -913,6 +911,9 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="DepositPercentage" Type="Decimal" Nullable="false" Precision="3" Scale="2" />
           <Property Name="PerDayPrice" Type="Double" Nullable="false" />
+          <Property Name="MaxRentalPeriod" Type="Int32" />
+          <Property Name="MaxDistancePerDay" Type="Int32" />
+          <Property Name="ExtraChargePerKm" Type="Double" />
           <NavigationProperty Name="PriceGroupItems" Relationship="CRPDBModel.FK_PriceGroupItem_PriceGroup1" FromRole="PriceGroup" ToRole="PriceGroupItem" />
           <NavigationProperty Name="VehicleGroups" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup1" FromRole="PriceGroup" ToRole="VehicleGroup" />
         </EntityType>
@@ -924,6 +925,7 @@
           <Property Name="PriceGroupID" Type="Int32" Nullable="false" />
           <Property Name="MaxTime" Type="Int32" Nullable="false" />
           <Property Name="Price" Type="Double" Nullable="false" />
+          <Property Name="MaxDistance" Type="Int32" />
           <NavigationProperty Name="PriceGroup" Relationship="CRPDBModel.FK_PriceGroupItem_PriceGroup1" FromRole="PriceGroupItem" ToRole="PriceGroup" />
         </EntityType>
         <EntityType Name="Vehicle">
@@ -954,12 +956,12 @@
           <Key>
             <PropertyRef Name="ID" />
           </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="OwnerID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="MaxRentalPeriod" Type="Int32" />
-          <Property Name="DefaultPriceGroupID" Type="Int32" Nullable="false" />
+          <Property Name="DefaultPriceGroupID" Type="Int32" />
+          <Property Name="NoDriverPriceGroup" Type="Int32" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_VehicleGroup_AspNetUsers" FromRole="VehicleGroup" ToRole="AspNetUser" />
           <NavigationProperty Name="PriceGroup" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup1" FromRole="VehicleGroup" ToRole="PriceGroup" />
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Car_CarGroup" FromRole="VehicleGroup" ToRole="Vehicle" />
@@ -1013,7 +1015,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BookingReceipt_AspNetUsers1">
+        <Association Name="FK_BookingReceipt_Provider">
           <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
           <End Type="CRPDBModel.BookingReceipt" Role="BookingReceipt" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1021,7 +1023,7 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="BookingReceipt">
-              <PropertyRef Name="CustomerID" />
+              <PropertyRef Name="ProviderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1170,7 +1172,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_VehicleGroup_PriceGroup1">
-          <End Type="CRPDBModel.PriceGroup" Role="PriceGroup" Multiplicity="1" />
+          <End Type="CRPDBModel.PriceGroup" Role="PriceGroup" Multiplicity="0..1" />
           <End Type="CRPDBModel.VehicleGroup" Role="VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PriceGroup">
@@ -1212,18 +1214,6 @@
         <Association Name="ModelCategoryMapping">
           <End Type="CRPDBModel.Category" Role="Category" Multiplicity="*" />
           <End Type="CRPDBModel.Model" Role="Model" Multiplicity="*" />
-        </Association>
-        <Association Name="FK_BookingReceipt_Provider">
-          <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="CRPDBModel.BookingReceipt" Role="BookingReceipt" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingReceipt">
-              <PropertyRef Name="ProviderID" />
-            </Dependent>
-          </ReferentialConstraint>
         </Association>
         </Schema>
     </edmx:ConceptualModels>
@@ -1282,7 +1272,6 @@
           <EntitySetMapping Name="BookingReceipts">
             <EntityTypeMapping TypeName="CRPDBModel.BookingReceipt">
               <MappingFragment StoreEntitySet="BookingReceipt">
-                <ScalarProperty Name="GaragePhone" ColumnName="GaragePhone" />
                 <ScalarProperty Name="IsSelfBooking" ColumnName="IsSelfBooking" />
                 <ScalarProperty Name="IsPending" ColumnName="IsPending" />
                 <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
@@ -1298,6 +1287,7 @@
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
                 <ScalarProperty Name="GarageAddress" ColumnName="GarageAddress" />
                 <ScalarProperty Name="GarageName" ColumnName="GarageName" />
+                <ScalarProperty Name="GaragePhone" ColumnName="GaragePhone" />
                 <ScalarProperty Name="GarageID" ColumnName="GarageID" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
@@ -1388,6 +1378,9 @@
           <EntitySetMapping Name="PriceGroups">
             <EntityTypeMapping TypeName="CRPDBModel.PriceGroup">
               <MappingFragment StoreEntitySet="PriceGroup">
+                <ScalarProperty Name="ExtraChargePerKm" ColumnName="ExtraChargePerKm" />
+                <ScalarProperty Name="MaxDistancePerDay" ColumnName="MaxDistancePerDay" />
+                <ScalarProperty Name="MaxRentalPeriod" ColumnName="MaxRentalPeriod" />
                 <ScalarProperty Name="PerDayPrice" ColumnName="PerDayPrice" />
                 <ScalarProperty Name="DepositPercentage" ColumnName="DepositPercentage" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -1397,6 +1390,7 @@
           <EntitySetMapping Name="PriceGroupItems">
             <EntityTypeMapping TypeName="CRPDBModel.PriceGroupItem">
               <MappingFragment StoreEntitySet="PriceGroupItem">
+                <ScalarProperty Name="MaxDistance" ColumnName="MaxDistance" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="MaxTime" ColumnName="MaxTime" />
                 <ScalarProperty Name="PriceGroupID" ColumnName="PriceGroupID" />
@@ -1426,8 +1420,8 @@
           <EntitySetMapping Name="VehicleGroups">
             <EntityTypeMapping TypeName="CRPDBModel.VehicleGroup">
               <MappingFragment StoreEntitySet="VehicleGroup">
+                <ScalarProperty Name="NoDriverPriceGroup" ColumnName="NoDriverPriceGroup" />
                 <ScalarProperty Name="DefaultPriceGroupID" ColumnName="DefaultPriceGroupID" />
-                <ScalarProperty Name="MaxRentalPeriod" ColumnName="MaxRentalPeriod" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
