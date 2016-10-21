@@ -279,7 +279,7 @@ function renderSelectorOptions(type, selectedID, html = ''){
         });
     }
 
-    function renderConfirmModal(type, action, modalNode, items){
+    function renderConfirmModal(table, type, action, modalNode, items){
         modalNode.innerHTML = `<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header red-bg">
@@ -287,26 +287,33 @@ function renderSelectorOptions(type, selectedID, html = ''){
 					<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
 				</button>
 				<h2 class="modal-title">
-					${action === 'delete' ? 'Deletion'
-                            : (action === 'deactivate' ? 'Deactivation'
-                            : (action === 'activate' ? 'Activation'
-                            : ''))} Confirmation
+                Xác nhận
+					${action === 'delete' ? 'xóa'
+                            : (action === 'deactivate' ? 'hủy kích hoạt'
+                            : (action === 'reactivate' ? 'kích hoạt'
+                            : ''))}
 				</h2>
 			</div>
 			<div class="modal-body">
-				You are about to ${action} following ${type}(s):
+                Bạn có chắc chắn ${action === 'delete' ? 'xóa'
+                            : (action === 'deactivate' ? 'hủy kích hoạt'
+                            : (action === 'reactivate' ? 'kích hoạt lại'
+                            : ''))} ${type === 'vehicle group' ? 'nhóm giá'
+                                    : (type === 'garage' ? 'garage'
+                                    : (type === 'vehicle' ? 'xe'
+                                    : '')) } này?
 				<ul>${items.reduce((html, item) => {
 				    return html + `<li>${item.name}</li>`
 				}, '')}</ul>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-				<button type="button" class="btn btn-danger btn-yes">Yes</button>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
+				<button type="button" id="btn-yes" class="btn btn-danger btn-yes">Có</button>
 			</div>
 		</div>
 	</div>`;
 
-        $(document).on('click', '.btn-yes', function(event) {
+        $(document).one('click', '#btn-yes', function(event) {
             switch(type) {
                 case 'vehicle group':{
                     if (action === "deactivate" || action === "reactivate") {
@@ -316,10 +323,15 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/vehicleGroups/status/${id}`,
                                 type: "PATCH",
                                 success: function (data) {
-                                    alert("ok");
+                                    if(data.result) {
+                                        $('.modal').modal('hide');
+                                        table.ajax.reload();
+                                    } else {
+                                        alert("fail");
+                                    }
                                 },
                                 eror: function (data) {
-                                    alert("fail");
+                                    alert("error");
                                 }
                             });
                         }
@@ -331,10 +343,15 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/vehicleGroups/${id}`,
                                 type: "DELETE",
                                 success: function (data) {
-                                    alert("ok");
+                                    if(data.result) {
+                                        $('.modal').modal('hide');
+                                        table.ajax.reload();
+                                    } else {
+                                        alert("fail");
+                                    }
                                 },
                                 eror: function (data) {
-                                    alert("fail");
+                                    alert("error");
                                 }
                             });
                         }

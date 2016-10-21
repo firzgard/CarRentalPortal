@@ -110,17 +110,17 @@ namespace CRP.Areas.Provider.Controllers
 			return new HttpStatusCodeResult(200, "Deleted successfully.");
 		}
 
-        [Route("management/GarageManagement/create")]
-        [HttpGet]
-        public ViewResult CreateGarage()
-        {
-            var locationService = this.Service<ILocationService>();
-            List<Location> lstLocation = new List<Location>();
-            lstLocation = locationService.Get().ToList();
-            ViewBag.locationList = lstLocation;
-            createNewGarageViewModel viewModel = new createNewGarageViewModel();
-            return View("~/Areas/Provider/Views/VehicleGroupManagement/CreatePopup.cshtml", viewModel);
-        }
+       
+        //[HttpGet]
+        //public ViewResult CreateGarage()
+        //{
+        //    var locationService = this.Service<ILocationService>();
+        //    List<Location> lstLocation = new List<Location>();
+        //    lstLocation = locationService.Get().ToList();
+        //    ViewBag.locationList = lstLocation;
+        //    createNewGarageViewModel viewModel = new createNewGarageViewModel();
+        //    return View("~/Areas/Provider/Views/VehicleGroupManagement/CreatePopup.cshtml", viewModel);
+        //}
 
         [Route("api/deleteGarage/{id:int}")]
         [HttpDelete]
@@ -128,11 +128,17 @@ namespace CRP.Areas.Provider.Controllers
         {
             var service = this.Service<IGarageService>();
             var entity = await service.GetAsync(id);
-            if (entity != null)
-                    {
-                    return Json(new { result = true, message = "Delete success!" });
+            var vehicleService = this.Service<IVehicleService>();
+            if (vehicleService.searchWithGarage(id) != null)
+            {
+                return Json(new { result = false, message = "Còn Xe trong garage, vui lòng, di chuyển xe qua garage khác! Delete Failed!" });
+            } else
+            {
+                if (entity != null)
+                {
+                    return Json(new { result = true, message = "Xóa thành công" });
                 }
-
+            }
             return Json(new { result = false, message = "Delete failed!" });
         }
 
@@ -152,6 +158,7 @@ namespace CRP.Areas.Provider.Controllers
             return Json(new { result = false, message = "Change status failed!" });
         }
 
+        [Route("management/GarageManagement/create")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(createNewGarageViewModel model)
@@ -170,6 +177,7 @@ namespace CRP.Areas.Provider.Controllers
                     IsActive = true
                 };
                 service.Create(garage);
+                return RedirectToAction("GarageManagement", "GarageManagement");
             }
 
             // If we got this far, something failed, redisplay form

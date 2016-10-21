@@ -63,7 +63,7 @@ $(document).ready(() => {
 			    render: (data, type) => {
 			        if (type === 'display') {
 			            return `<div class="status-label" >
-							<p class ="label label-${data ? 'danger' : 'primary'}">${data ? 'Đã hủy hoặc hoàn thành': 'During'}</p>
+							<p class ="label label-${data ? 'danger' : 'primary'}">${data ? 'Đã hủy hoặc hoàn thành': 'Đang thuê'}</p>
 						</div>`;
 			        }
 			        return data;
@@ -85,7 +85,7 @@ $(document).ready(() => {
 			    render: (data, type, row) => {
 			        return `<div class="btn-group" >
 						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
+							<i class="fa fa-gear"></i> Hành động <i class="caret"></i>
 						</button>
 						<ul class ="dropdown-menu">
                         	<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="detail" data-id="${row[0]}"
@@ -94,9 +94,9 @@ $(document).ready(() => {
                             data-model="${row[11]}" data-star="${row[5]}"
                             >Chi tiết</a></li>
 							${row[4] === true ?
-								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="comment" data-id="${row[0]}">Nhận Xét</a></li>`
+								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="comment" data-id="${row[0]}">Đánh giá</a></li>`
                                 :
-								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="cancle" data-id="${row[0]}">Hủy</a></li>`}
+								`<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="cancle" data-id="${row[0]}">Hủy đặt xe</a></li>`}
 						</ul>
 					</div>`;
 			    }
@@ -153,40 +153,55 @@ $(document).ready(() => {
         switch (action) {
             case 'detail': {
                 $(this).find('.modal-content').html(`<div class="row" style="text-align:center; margin-top:10px">
-											<h3 style="font-size:200%;">Booking of</h3>
+											<h3 style="font-size:200%;">Chi tiết đặt xe ${VehicleName}</h3>
 											  <div class="col-sm-6 b-r" style="float: left">
-												<div class ="form-group"><label>Rental Price</label><p>${RentalPrice}</p></div>
-                                                <div class ="form-group"><label>Booking Fee</label><p>${BookingFee}</p></div>
-                                                <div class ="form-group"><label>Star</label><p>${renderStarRating(star)}</p></div>
-                                                <div class ="form-group"><label>Start time</label><p>${Date(starTime).toString()}</p></div>
-									            <div class ="form-group"><label>End time</label><p>${Date(endTime).toString()}</p></div>
+												<div class ="form-group"><label>Tổng tiền thuê</label><p>${RentalPrice}</p></div>
+                                                <div class ="form-group"><label>Phí thuê xe</label><p>${BookingFee}</p></div>
+                                                <div class ="form-group"><label>Xếp hạng</label><p>${renderStarRating(star)}</p></div>
+                                                <div class ="form-group"><label>Thời gian bắt đầu</label><p>${Date(starTime).toString()}</p></div>
+									            <div class ="form-group"><label>Thời gian kết thúc</label><p>${Date(endTime).toString()}</p></div>
                                               </div>
 								              <div class ="col-sm-6" style="float: right">
-                                               <div class ="form-group"><label>Vehicle Name</label><p>${VehicleName}</p></div>
+                                               <div class ="form-group"><label>Tên xe</label><p>${VehicleName}</p></div>
                                                <div class ="form-group"><label>Model</label><p>${Model}</p></div>
-                                               <div class ="form-group"><label>Color</label><p>${Color}</p></div>
-									           <div class ="form-group"><label>Garage Name</label><p>${GarageName}</p></div>
-									           <div class ="form-group"><label>Garage Address</label><p>${GarageAddress}</p></div>
+                                               <div class ="form-group"><label>Màu sắc</label><p>${Color}</p></div>
+									           <div class ="form-group"><label>Thuộc garage</label><p>${GarageName}</p></div>
+									           <div class ="form-group"><label>Địa chỉ garage</label><p>${GarageAddress}</p></div>
                                               </div>
-                                               <button type="button" class ="btn btn-default" data-dismiss="modal">Close</button>
+                                               <button type="button" class ="btn btn-success" data-dismiss="modal">Đóng</button>
 									            <label></label>	<br/>`);
             }
             break;
             case 'comment': {
                 $(this).find('.modal-content').html(`<div class="row" style="text-align:center; margin-top:30px">
-											<h3 style="font-size:200%;">Comment And Rate ${VehicleName}</h3>
+											<h3 style="font-size:200%;">Nhận xét và đánh giá ${VehicleName}</h3>
                                   
-											  <div class="col-sm-12" style="text-align: center">
+											<div class="col-sm-12" style="text-align: center">
 												<label>Comment</label>
                                                 <input type="text" class="form-control" id="comment">
                                                 <input type="hidden" class ="form-control" value="${id}" id="id" />
                                                 <label>Rate</label>
-                                                 <input type="text" class ="form-control" id="star">
+                                             <div class ="stars stars-example-bootstrap">
+                                                  <div class ="br-wrapper br-theme-bootstrap-stars">
+                                                    <select id="star" name="star" autocomplete="off">
+                                                        <option value="1">1</option>
+                                                        <option value="2">2</option>
+                                                        <option value="3">3</option>
+                                                        <option value="4">4</option>
+                                                        <option value="5">5</option>
+                                                        </select>
+                                                   </div>
+                                            </div>
                                               </div>
                                                <label></label>	<br/>
-                                              <button type="button" class ="btn btn-default" data-dismiss="modal">Close</button>
-                                              <button type="button" class ="btn btn-success btn-yeah">Submit</button>
+                                              <button type="button" class ="btn btn-default" data-dismiss="modal">Đóng</button>
+                                              <button type="button" class ="btn btn-success btn-yeah">Gửi</button>
 									            <label></label>	<br/>`);
+                $(function () {
+                    $('#star').barrating({
+                        theme: 'fontawesome-stars'
+                    });
+                });
                
                 }
             break;
@@ -200,11 +215,11 @@ $(document).ready(() => {
 			</h2>
 		    </div>
 		    <div class="modal-body">
-			You are about to <b>${action}</b> this booking?</b>. Are you sure?
+			Có phải bạn muốn <b>${action}</b> booking này?</b>. Bạn chắc chứ?
 		    </div>
 		    <div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-			<button type="button" class="btn btn-danger btn-yes">Yes</button>
+			<button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
+			<button type="button" class="btn btn-danger btn-yes">Đúng</button>
 		    </div>`);
             }
             break;   

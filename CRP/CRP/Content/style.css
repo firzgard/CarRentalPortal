@@ -8248,6 +8248,25 @@ body{
   font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+#wrapper > .row.border-bottom {
+  margin-left: 0;
+  margin-right: 0;
+}
+#wrapper > .border-bottom {
+  border-bottom: 0!important;
+}
+
+.green-bg {
+  background-color: #1ab394;
+  color: white;
+}
+.green-bg a {
+  color: white;
+}
+.green-bg .nav.navbar-right > li > a {
+  color:  white;
+}
+
 .fa-beige {
   color: beige;
 }
@@ -8333,6 +8352,15 @@ body{
 } */
 
 /* ============================================================================== */
+/* Select2 */
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
   background-color: transparent;
+}
+
+/* datetimepicker */
+.datepicker .day.disabled {
+  background-color: #B2DFDB;
+}
+.datepicker .day.disabled:hover {
+  background-color: #B2DFDB;
 }
