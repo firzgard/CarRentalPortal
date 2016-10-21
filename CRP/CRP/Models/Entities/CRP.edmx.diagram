@@ -6,12 +6,12 @@
     <edmx:Diagrams>
       <Diagram DiagramId="1633cb2c7c394dc3beaa8fdde1032e10" Name="Diagram1">
         <EntityTypeShape EntityType="CRPDBModel.AspNetRole" Width="1.5" PointX="0.75" PointY="14" />
-        <EntityTypeShape EntityType="CRPDBModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="31.25" />
+        <EntityTypeShape EntityType="CRPDBModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="31.625" />
         <EntityTypeShape EntityType="CRPDBModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="12.625" />
-        <EntityTypeShape EntityType="CRPDBModel.AspNetUser" Width="1.5" PointX="3" PointY="12.375" />
-        <EntityTypeShape EntityType="CRPDBModel.BookingReceipt" Width="1.5" PointX="8.25" PointY="11.5" />
-        <EntityTypeShape EntityType="CRPDBModel.Brand" Width="1.5" PointX="6" PointY="0.75" />
-        <EntityTypeShape EntityType="CRPDBModel.Category" Width="1.5" PointX="6" PointY="3.375" />
+        <EntityTypeShape EntityType="CRPDBModel.AspNetUser" Width="1.5" PointX="3" PointY="12.25" />
+        <EntityTypeShape EntityType="CRPDBModel.BookingReceipt" Width="1.5" PointX="8.25" PointY="11.375" />
+        <EntityTypeShape EntityType="CRPDBModel.Brand" Width="1.5" PointX="6" PointY="3.375" />
+        <EntityTypeShape EntityType="CRPDBModel.Category" Width="1.5" PointX="6" PointY="0.75" />
         <EntityTypeShape EntityType="CRPDBModel.Garage" Width="1.5" PointX="5.25" PointY="6.625" />
         <EntityTypeShape EntityType="CRPDBModel.GarageWorkingTime" Width="1.5" PointX="7.5" PointY="8.25" />
         <EntityTypeShape EntityType="CRPDBModel.Location" Width="1.5" PointX="3" PointY="7.875" />
@@ -25,6 +25,7 @@
         <AssociationConnector Association="CRPDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="CRPDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_AspNetUsers" />
+        <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_AspNetUsers1" />
         <AssociationConnector Association="CRPDBModel.FK_Garage_AspNetUsers" />
         <AssociationConnector Association="CRPDBModel.FK_VehicleGroup_AspNetUsers" />
         <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_Garage" />
