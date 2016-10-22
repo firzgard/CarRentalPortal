@@ -1,0 +1,73 @@
+﻿@using CRP.Models
+@using CRP.Models.Entities
+
+@{
+	ViewBag.Title = "View";
+	ViewBag.ScrollSpyOnBody = "VehicleInfo";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<nav class="navbar navbar-inverse navbar-fixed-top" id="infoNavBar">
+	<ul class="nav navbar-nav">
+		<li><a href="#vehicleSection">Thông tin xe</a></li>
+		<li><a href="#reviewSection">Đánh giá</a></li>
+		<li><a href="#garageSection">Garage</a></li>
+		<li><a href="#policySection">Điều khoản thuê</a></li>
+		<li><a href="#calenderSection">Lịch đặt xe</a></li>
+	</ul>
+</nav>
+
+<div id="bookingSection">
+	
+</div>
+
+<div id="vehicleSection">
+	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+</div>
+
+<div id="reviewSection">
+	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+</div>
+
+<div id="garageSection">
+	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+</div>
+
+<div id="policySection">
+	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+</div>
+
+<div id="calenderSection">
+	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+</div>
+
+
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleInfo")
+							.Include("~/Content/awesome-bootstrap-checkbox.css",
+								"~/Content/bootstrap-datetimepicker/bootstrap-datetimepicker.css",
+								"~/Content/select2/select2.css"));
+}
+@section Styles {
+	@Styles.Render("~/Styles/VehicleInfo")
+}
+@section PageStyle {
+	@Styles.Render("~/Content/pageStyle/vehicleInfo.css")
+}
+
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleInfo")
+						.Include(
+							"~/Scripts/moment.js",
+							"~/Scripts/bootstrap-datetimepicker/bootstrap-datetimepicker.js",
+							"~/Scripts/twbsPagination/jquery.twbsPagination.js",
+							"~/Scripts/utils/generateUIElements.js",
+							"~/Scripts/pageScript/vehicleInfo.js"));
+}
+@section Scripts {
+	<script type="text/javascript">
+		const NUM_RECORD_PER_PAGE = @Constants.NUM_OF_SEARCH_RESULT_PER_PAGE,
+				SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR,
+				SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR,
+				LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = @Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY;
+	</script>
+	@Scripts.Render("~/Scripts/VehicleInfo")
+}

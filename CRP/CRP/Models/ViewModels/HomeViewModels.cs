@@ -30,6 +30,103 @@ namespace CRP.Models.ViewModels
 		}
 	}
 
+	// Model to populate the vehicle info page
+	//public class VehicleInfoPageViewModel
+	//{
+	//	public int ID { get; set; }
+	//	public string Engine { get; set; }
+	//	public string TransmissionTypeName { get; set; }
+	//	public List<string> ImageList { get; set; };
+	//	public VehicleGarageInfo Garage { get; set; };
+	//	public VehiclePriceGroupInfo PriceGroupInfo { get; set; }
+
+	//	public VehicleInfoPageViewModel(Vehicle vehicle)
+	//	{
+	//		ID = vehicle.ID;
+	//		Engine = vehicle.Engine;
+
+	//		vehicle.Description;
+	//		vehicle.Garage.GarageWorkingTimes.Select(i => i.)
+
+	//		ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
+
+	//		Garage = new VehicleGarageInfo(vehicle.Garage);
+
+	//		string tmpString = null;
+	//		Constants.TRANSMISSION_TYPE.TryGetValue(vehicle.TransmissionType, out tmpString);
+	//		TransmissionTypeName = tmpString;
+	//	}
+
+
+	//	public class VehicleGarageInfo
+	//	{
+	//		public string Name { get; set; }
+	//		public string Address { get; set; }
+	//		public string Phone1 { get; set; }
+	//		public string Phone2 { get; set; }
+	//		public string Description { get; set; }
+	//		public string Policy { get; set; }
+	//		public decimal Star { get; set; }
+	//		public List<WorkingTimeInfo> WorkingTimeList { get; set; }
+
+	//		public VehicleGarageInfo(Garage garage)
+	//		{
+	//			Name = garage.Name;
+	//			Address = garage.Address + ", " + garage.Location.Name;
+	//			Phone1 = garage.Phone1;
+	//			Phone2 = garage.Phone2;
+	//			Description = garage.Description;
+	//			Policy = garage.Policy;
+	//			Star = garage.Star;
+
+	//			WorkingTimeList = new List<WorkingTimeInfo>();
+	//		}
+
+
+	//		public class WorkingTimeInfo
+	//		{
+	//			public int DayOfWeek { get; set; }
+	//			public string OpenTime { get; set; }
+	//			public string CloseTime { get; set; }
+
+	//			public WorkingTimeInfo(GarageWorkingTime workingTime)
+	//			{
+	//				DayOfWeek = workingTime.DayOfWeek;
+	//				OpenTime = (int)Math.Floor((double)workingTime.OpenTimeInMinute / 60)
+	//						   + ":"
+	//						   + workingTime.OpenTimeInMinute % 60;
+	//				CloseTime = (int)Math.Floor((double)workingTime.CloseTimeInMinute / 60)
+	//						   + ":"
+	//						   + workingTime.CloseTimeInMinute % 60;
+	//			}
+	//		}
+	//	}
+
+	//	public class VehiclePriceGroupInfo
+	//	{
+	//		public decimal DepositPercentage 
+	//		public List<PriceGroupItemInfo> PriceGroupItemList { get; set; }
+
+	//		public class PriceGroupItemInfo
+	//		{
+	//			public int MaxTime { get; set; }
+	//			public double Price { get; set; }
+	//			public int MaxDistance { get; set; }
+
+	//			public PriceGroupItemInfo(PriceGroupItem priceGroupItem)
+	//			{
+	//				MaxTime = priceGroupItem.MaxTime;
+	//				Price = priceGroupItem.Price;
+	//			}
+	//		}
+
+	//		public VehiclePriceGroupInfo(PriceGroup priceGroup)
+	//		{
+				
+	//		}
+	//	}
+	//}
+
 	// Model to map the search request
 	// Use as input for route ~/api/vehicles/search/ of HomeController
 	public class SearchConditionModel

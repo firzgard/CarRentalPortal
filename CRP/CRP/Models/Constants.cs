@@ -55,8 +55,8 @@ namespace CRP.Models
 			{ 1, "Xăng" },
 			{ 2, "Dầu Diesel" },
 			{ 3, "Điện" },
-			{ 4, "Điện lai" },
-			{ 5, "Điện lai sạc điện" },
+			{ 4, "Điện hybrid" },
+			{ 5, "Điện plug-in hybrid" },
 		};
 
 		public static readonly Dictionary<int, string> TRANSMISSION_TYPE = new Dictionary<int, string> {

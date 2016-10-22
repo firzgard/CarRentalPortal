@@ -344,6 +344,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\APICheckoutV3.cs" />
     <Compile Include="Models\AutofacModules\AutoMapperModule.cs" />
     <Compile Include="Models\AutofacModules\EntityFrameworkModule.cs" />
     <Compile Include="Models\AutofacModules\RepositoryModule.cs" />
@@ -1849,6 +1850,7 @@
     <Content Include="Views\Shared\_CommonLayout.cshtml" />
     <Content Include="Views\Shared\_HeaderBarPartial.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Home\VehicleInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
