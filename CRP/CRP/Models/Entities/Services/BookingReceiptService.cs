@@ -12,8 +12,8 @@ namespace CRP.Models.Entities.Services
 	public interface IBookingReceiptService : IService<BookingReceipt>
 	{
 		BookingReceiptModel GetBookingHistory(string customerID, int page, int recordPerPage);
-        List<BookingReceipt> GetBookingReceipt(string customerID);
-
+        List<BookingReceipt> GetBookingReceiptWithUser(string customerID);
+        List<BookingReceipt> GetBookingReceiptWithGarage(int garageID);
         int CancelBooking(string customerID, int bookingID);
 		int RateBooking(string customerID, BookingCommentModel commentModel);
         BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions);
@@ -25,7 +25,11 @@ namespace CRP.Models.Entities.Services
 
 		}
 
-		public BookingReceiptModel GetBookingHistory(string customerID, int page, int recordPerPage)
+        public BookingReceiptService()
+        {
+        }
+
+        public BookingReceiptModel GetBookingHistory(string customerID, int page, int recordPerPage)
 		{
 			BookingReceiptModel bookingModel = new BookingReceiptModel();
 			var bookingRecieptList = this.repository.Get();
@@ -42,12 +46,21 @@ namespace CRP.Models.Entities.Services
 			return bookingModel;
 		}
 
-        public List<BookingReceipt> GetBookingReceipt(string customerID)
+        public List<BookingReceipt> GetBookingReceiptWithUser(string customerID)
         {
             var bookingReceiptList = this.repository.Get();
             List<BookingReceipt> lstBooking = bookingReceiptList
                  .Where(q => q.CustomerID == customerID)
                  .OrderByDescending(q => q.ID)
+                 .ToList();
+            return lstBooking;
+        }
+
+        public List<BookingReceipt> GetBookingReceiptWithGarage(int garageID)
+        {
+            var bookingReceiptList = this.repository.Get();
+            List<BookingReceipt> lstBooking = bookingReceiptList
+                 .Where(q => q.GarageID == garageID)
                  .ToList();
             return lstBooking;
         }

@@ -4,7 +4,12 @@ $(document).ready(function() {
     $('.btn-edit').on('click', function() {
         $('#edit-car').modal('show');
     });
-
+    
+    $('#edit-btn').on('click', function() {
+        $('#justRead').hide();
+        $('#editFiel').css('display','inline-block');
+    });
+    
     $('#change-color').on('click', function() {
         $('#panel-color').show();
     });
