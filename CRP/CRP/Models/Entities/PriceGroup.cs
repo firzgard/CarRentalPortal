@@ -19,7 +19,6 @@ namespace CRP.Models.Entities
         {
             this.PriceGroupItems = new HashSet<PriceGroupItem>();
             this.VehicleGroups = new HashSet<VehicleGroup>();
-            this.VehicleGroups1 = new HashSet<VehicleGroup>();
         }
     
         public int ID { get; set; }
@@ -33,7 +32,5 @@ namespace CRP.Models.Entities
         public virtual ICollection<PriceGroupItem> PriceGroupItems { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VehicleGroup> VehicleGroups { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<VehicleGroup> VehicleGroups1 { get; set; }
     }
 }

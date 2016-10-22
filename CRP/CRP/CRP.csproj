@@ -1519,6 +1519,7 @@
     <Content Include="Content\pageStyle\signUp.css" />
     <Content Include="Content\pageStyle\vehicleGroup.css" />
     <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
+    <Content Include="Content\pageStyle\vehicleInfo.css" />
     <Content Include="Content\pageStyle\vehicleManagement.css" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
@@ -1736,6 +1737,7 @@
     <Content Include="Scripts\pageScript\search.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
+    <Content Include="Scripts\pageScript\vehicleInfo.js" />
     <Content Include="Scripts\pageScript\vehicleManagement.js" />
     <Content Include="Scripts\prototype.js" />
     <Content Include="Scripts\respond.js" />

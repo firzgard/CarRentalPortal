@@ -25,11 +25,9 @@ namespace CRP.Models.Entities
         public string Name { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> WithDriverPriceGroupID { get; set; }
-        public Nullable<int> NoDriverPriceGroupID { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual PriceGroup PriceGroup { get; set; }
-        public virtual PriceGroup PriceGroup1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehicle> Vehicles { get; set; }
     }

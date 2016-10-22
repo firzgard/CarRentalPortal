@@ -1,0 +1,14 @@
+.custom-page-wrapper {
+	background-color: white;
+}
+#vehiclePrimaryImage {
+	background-position: top center;
+	background-size: 100% auto;
+	background-repeat: no-repeat;
+	height: 70vh;
+	width: 100%;
+}
+
+.info-section{
+	min-height: 1000px;
+}

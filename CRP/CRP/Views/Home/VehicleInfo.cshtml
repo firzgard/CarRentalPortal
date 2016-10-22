@@ -1,49 +1,104 @@
 ﻿@using CRP.Models
 @using CRP.Models.Entities
 
+@model Vehicle
+
 @{
 	ViewBag.Title = "View";
 	ViewBag.ScrollSpyOnBody = "VehicleInfo";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<nav class="navbar navbar-inverse navbar-fixed-top" id="infoNavBar">
-	<ul class="nav navbar-nav">
-		<li><a href="#vehicleSection">Thông tin xe</a></li>
-		<li><a href="#reviewSection">Đánh giá</a></li>
-		<li><a href="#garageSection">Garage</a></li>
-		<li><a href="#policySection">Điều khoản thuê</a></li>
-		<li><a href="#calenderSection">Lịch đặt xe</a></li>
-	</ul>
-</nav>
+	
 
-<div id="bookingSection">
-	<div class="input-group">
-		<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-		<input type="text" id="startTimeFilter" class="form-control" readonly/>
-		<span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
-		<input type="text" id="endTimeFilter" class="form-control" readonly/>
+<div id="vehiclePrimaryImage" style="background-image: url(@Model.VehicleImages.ToList()[0].URL)"></div>
+
+<div class="row">
+	<nav class="navbar navbar-inverse navbar-fixed-top" id="infoNavBar">
+
+		<div class="col-md-offset-2 col-md-8">
+		
+			<ul class="nav navbar-nav">
+				<li><a href="#vehicleSection">Thông tin xe</a></li>
+				<li><a href="#reviewSection">Đánh giá</a></li>
+				<li><a href="#garageSection">Garage</a></li>
+				<li><a href="#policySection">Điều khoản thuê</a></li>
+				<li><a href="#calenderSection">Lịch đặt xe</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="col-md-offset-2 col-md-6">
+		<div class="col-xs-12"><h3>Thông tin xe</h3></div>
+		<div id="vehicleSection" class="info-section row">
+			<label class="col-xs-12">Mô tả chung</label>
+			<div class="col-xs-12">@Model.Description</div>
+		</div>
+
+		<div id="reviewSection" class="info-section">
+			<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+		</div>
+
+		<div id="garageSection" class="info-section">
+			<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+		</div>
+
+		<div id="policySection" class="info-section">
+			<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+		</div>
+
+		<div id="calenderSection" class="info-section">
+			<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+		</div>
 	</div>
-</div>
-
-<div id="vehicleSection">
-	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
-</div>
-
-<div id="reviewSection">
-	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
-</div>
-
-<div id="garageSection">
-	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
-</div>
-
-<div id="policySection">
-	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
-</div>
-
-<div id="calenderSection">
-	<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+	<div class="col-md-2">
+		<div id="bookingSection" class="row">
+			<div class="col-xs-12 text-center">12.000.000</div>
+			<div class="form-group" >
+				<label class="col-xs-12">Thời gian nhận xe</label>
+				<div class="col-xs-12">
+					<input type="text" id="startTimeFilter" class="form-control" readonly/>
+				</div>
+			</div>
+			<div class="col-xs-12"><hr></div>
+			<div class="form-group">
+				<label class="col-xs-12">Gói thời gian thuê</label>
+				<div class="col-xs-12">
+					<select id="priceType" class="form-control" style="width: 100%;">
+						<option value="0">Thuê theo ngày</option>
+						@foreach (PriceGroupItem entry in Model.VehicleGroup.PriceGroup.PriceGroupItems)
+						{
+							<option value="@entry.MaxTime">Thuê @entry.MaxTime giờ</option>
+						}
+					</select>
+				</div>
+			</div>
+			<div class="col-xs-12"><hr></div>
+			<div class="form-group" >
+				<label class="col-xs-7">Số ngày thuê</label>
+				<div class="col-xs-5">
+					<input id="numOfDay" type="number" step="1" min="1" max="@Model.VehicleGroup.PriceGroup.MaxRentalPeriod" style="width: 100%;"/>
+				</div>
+			</div>
+			<div class="col-xs-12"><hr></div>
+			<div class="form-group" >
+				<label class="col-xs-6">Tiền đặt cọc</label>
+				<div class="col-xs-6 text-right" id="depositPrice">11</div>
+			</div>
+			<div class="col-xs-12"><hr></div>
+			<div class="form-group" >
+				<label class="col-xs-6">Phí dịch vụ</label>
+				<div class="col-xs-6 text-right" id="servicePrice">11</div>
+			</div>
+			<div class="col-xs-12"><hr></div>
+			<div class="form-group" >
+				<label class="col-xs-6">Tổng cộng</label>
+				<div class="col-xs-6 text-right" id="totalPrice">11</div>
+			</div>
+			<div class="col-xs-12"><button class="btn btn-primary btn-block" id="bookingBtn">Đặt xe</button></div>
+			<div class="col-xs-12 text-center"><small>Bạn chỉ phải trả trước phí dịch vụ</small></div>
+		</div>
+	</div>
 </div>
 
 
