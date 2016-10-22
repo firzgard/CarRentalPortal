@@ -69,18 +69,18 @@ namespace CRP.Controllers
 
 			// Reorder each brand's models by name
 			// Only get brand w/ model w/ registered vehicles
-			brandList = brandList.Aggregate(new List<Brand>(), (newBrandList, b) =>
+			brandList = brandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
 			{
-				b.Models = b.Models.Aggregate(new List<Model>(), (newModelList, m) =>
+				b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
 				{
 					if (m.Vehicles.Any())
 						newModelList.Add(m);
 					return newModelList;
 				});
 
-				if (b.Models.Any())
+				if (b.VehicleModels.Any())
 				{
-					b.Models = b.Models.OrderBy(m => m.Name).ToList();
+					b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
 					newBrandList.Add(b);
 				}
 
@@ -118,7 +118,7 @@ namespace CRP.Controllers
 		{
 			var vehicle = this.Service<IVehicleService>().Get(id);
 
-			return View(vehicle);
+			return View(new VehicleInfoPageViewModel(vehicle));
 		}
 
 		// API Route for guest/customer to search vehicle for booking

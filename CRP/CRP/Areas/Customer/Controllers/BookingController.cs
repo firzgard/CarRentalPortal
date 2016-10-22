@@ -163,7 +163,7 @@ namespace CRP.Areas.Customer.Controllers
                 q.GarageName,
                 q.GarageAddress,
                 q.Color,
-                q.Model.Name,
+                q.VehicleModel.Name,
             });
             return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
         }

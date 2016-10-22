@@ -366,9 +366,6 @@
     <Compile Include="Models\Entities\BookingReceipt.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\Brand.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Category.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
@@ -379,9 +376,6 @@
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Location.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\Model.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Nation.cs">
@@ -413,10 +407,16 @@
     <Compile Include="Models\Entities\Vehicle.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\VehicleBrand.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\VehicleGroup.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\VehicleImage.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\VehicleModel.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />

@@ -1,6 +1,7 @@
 .custom-page-wrapper {
 	background-color: white;
 }
+
 #vehiclePrimaryImage {
 	background-position: top center;
 	background-size: 100% auto;
@@ -10,5 +11,5 @@
 }
 
 .info-section{
-	min-height: 1000px;
+	min-height: 500px;
 }
