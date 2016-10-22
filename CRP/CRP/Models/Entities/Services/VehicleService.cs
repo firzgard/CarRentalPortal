@@ -10,7 +10,7 @@ namespace CRP.Models.Entities.Services
 	{
 		SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions);
 		VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions);
-        List<Vehicle> searchWithGarage(int garageID);
+        List<Vehicle> SearchWithGarage(int garageID);
 
 	}
 
@@ -284,7 +284,7 @@ namespace CRP.Models.Entities.Services
 			return vehicle.Any();
 		}
 
-        public List<Vehicle> searchWithGarage(int garageID)
+        public List<Vehicle> SearchWithGarage(int garageID)
         {
             var vehicleList = this.repository.Get();
             List<Vehicle> lstVehicle = vehicleList

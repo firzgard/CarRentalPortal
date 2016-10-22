@@ -129,7 +129,7 @@ namespace CRP.Areas.Provider.Controllers
             var service = this.Service<IGarageService>();
             var entity = await service.GetAsync(id);
             var vehicleService = this.Service<IVehicleService>();
-            if (vehicleService.searchWithGarage(id) != null)
+            if (vehicleService.SearchWithGarage(id) != null)
             {
                 return Json(new { result = false, message = "Còn Xe trong garage, vui lòng, di chuyển xe qua garage khác! Delete Failed!" });
             } else

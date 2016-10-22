@@ -214,8 +214,8 @@
           <Property Name="OwnerID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="DefaultPriceGroupID" Type="int" />
-          <Property Name="NoDriverPriceGroup" Type="int" />
+          <Property Name="WithDriverPriceGroupID" Type="int" />
+          <Property Name="NoDriverPriceGroupID" Type="int" />
         </EntityType>
         <EntityType Name="VehicleImage">
           <Key>
@@ -485,7 +485,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_VehicleGroup_PriceGroup1">
+        <Association Name="FK_VehicleGroup_PriceGroup">
           <End Role="PriceGroup" Type="Self.PriceGroup" Multiplicity="0..1" />
           <End Role="VehicleGroup" Type="Self.VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
@@ -493,7 +493,19 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="VehicleGroup">
-              <PropertyRef Name="DefaultPriceGroupID" />
+              <PropertyRef Name="WithDriverPriceGroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VehicleGroup_PriceGroup2">
+          <End Role="PriceGroup" Type="Self.PriceGroup" Multiplicity="0..1" />
+          <End Role="VehicleGroup" Type="Self.VehicleGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceGroup">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VehicleGroup">
+              <PropertyRef Name="NoDriverPriceGroupID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -613,7 +625,11 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="VehicleGroup" EntitySet="VehicleGroup" />
           </AssociationSet>
-          <AssociationSet Name="FK_VehicleGroup_PriceGroup1" Association="Self.FK_VehicleGroup_PriceGroup1">
+          <AssociationSet Name="FK_VehicleGroup_PriceGroup" Association="Self.FK_VehicleGroup_PriceGroup">
+            <End Role="PriceGroup" EntitySet="PriceGroup" />
+            <End Role="VehicleGroup" EntitySet="VehicleGroup" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehicleGroup_PriceGroup2" Association="Self.FK_VehicleGroup_PriceGroup2">
             <End Role="PriceGroup" EntitySet="PriceGroup" />
             <End Role="VehicleGroup" EntitySet="VehicleGroup" />
           </AssociationSet>
@@ -708,7 +724,11 @@
             <End Role="PriceGroup" EntitySet="PriceGroups" />
             <End Role="PriceGroupItem" EntitySet="PriceGroupItems" />
           </AssociationSet>
-          <AssociationSet Name="FK_VehicleGroup_PriceGroup1" Association="CRPDBModel.FK_VehicleGroup_PriceGroup1">
+          <AssociationSet Name="FK_VehicleGroup_PriceGroup" Association="CRPDBModel.FK_VehicleGroup_PriceGroup">
+            <End Role="PriceGroup" EntitySet="PriceGroups" />
+            <End Role="VehicleGroup" EntitySet="VehicleGroups" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehicleGroup_PriceGroup2" Association="CRPDBModel.FK_VehicleGroup_PriceGroup2">
             <End Role="PriceGroup" EntitySet="PriceGroups" />
             <End Role="VehicleGroup" EntitySet="VehicleGroups" />
           </AssociationSet>
@@ -915,7 +935,8 @@
           <Property Name="MaxDistancePerDay" Type="Int32" />
           <Property Name="ExtraChargePerKm" Type="Double" />
           <NavigationProperty Name="PriceGroupItems" Relationship="CRPDBModel.FK_PriceGroupItem_PriceGroup1" FromRole="PriceGroup" ToRole="PriceGroupItem" />
-          <NavigationProperty Name="VehicleGroups" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup1" FromRole="PriceGroup" ToRole="VehicleGroup" />
+          <NavigationProperty Name="VehicleGroups" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup" FromRole="PriceGroup" ToRole="VehicleGroup" />
+          <NavigationProperty Name="VehicleGroups1" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup2" FromRole="PriceGroup" ToRole="VehicleGroup" />
         </EntityType>
         <EntityType Name="PriceGroupItem">
           <Key>
@@ -960,10 +981,11 @@
           <Property Name="OwnerID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="DefaultPriceGroupID" Type="Int32" />
-          <Property Name="NoDriverPriceGroup" Type="Int32" />
+          <Property Name="WithDriverPriceGroupID" Type="Int32" />
+          <Property Name="NoDriverPriceGroupID" Type="Int32" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_VehicleGroup_AspNetUsers" FromRole="VehicleGroup" ToRole="AspNetUser" />
-          <NavigationProperty Name="PriceGroup" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup1" FromRole="VehicleGroup" ToRole="PriceGroup" />
+          <NavigationProperty Name="PriceGroup" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup" FromRole="VehicleGroup" ToRole="PriceGroup" />
+          <NavigationProperty Name="PriceGroup1" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup2" FromRole="VehicleGroup" ToRole="PriceGroup" />
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Car_CarGroup" FromRole="VehicleGroup" ToRole="Vehicle" />
         </EntityType>
         <EntityType Name="VehicleImage">
@@ -1171,7 +1193,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_VehicleGroup_PriceGroup1">
+        <Association Name="FK_VehicleGroup_PriceGroup">
           <End Type="CRPDBModel.PriceGroup" Role="PriceGroup" Multiplicity="0..1" />
           <End Type="CRPDBModel.VehicleGroup" Role="VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
@@ -1179,7 +1201,19 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="VehicleGroup">
-              <PropertyRef Name="DefaultPriceGroupID" />
+              <PropertyRef Name="WithDriverPriceGroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VehicleGroup_PriceGroup2">
+          <End Type="CRPDBModel.PriceGroup" Role="PriceGroup" Multiplicity="0..1" />
+          <End Type="CRPDBModel.VehicleGroup" Role="VehicleGroup" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PriceGroup">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VehicleGroup">
+              <PropertyRef Name="NoDriverPriceGroupID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1420,8 +1454,8 @@
           <EntitySetMapping Name="VehicleGroups">
             <EntityTypeMapping TypeName="CRPDBModel.VehicleGroup">
               <MappingFragment StoreEntitySet="VehicleGroup">
-                <ScalarProperty Name="NoDriverPriceGroup" ColumnName="NoDriverPriceGroup" />
-                <ScalarProperty Name="DefaultPriceGroupID" ColumnName="DefaultPriceGroupID" />
+                <ScalarProperty Name="NoDriverPriceGroupID" ColumnName="NoDriverPriceGroupID" />
+                <ScalarProperty Name="WithDriverPriceGroupID" ColumnName="WithDriverPriceGroupID" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />

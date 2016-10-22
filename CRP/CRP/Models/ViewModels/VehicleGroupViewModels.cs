@@ -27,8 +27,8 @@ namespace CRP.Models.ViewModels
 			this.ID = vg.ID;
 			this.Name = vg.Name;
 			this.IsActive = vg.IsActive;
-			this.NoDriverPriceGroup = vg.NoDriverPriceGroup;
-			this.DefaultPriceGroupID = vg.DefaultPriceGroupID;
+			this.NoDriverPriceGroupID = vg.NoDriverPriceGroupID;
+			this.WithDriverPriceGroupID = vg.WithDriverPriceGroupID;
 			this.PriceGroup = vg.PriceGroup;
 			this.Vehicles = vg.Vehicles;
 		}
