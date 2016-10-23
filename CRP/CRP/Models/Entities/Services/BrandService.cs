@@ -6,11 +6,11 @@ using System.Web;
 
 namespace CRP.Models.Entities.Services
 {
-	public interface IBrandService : IService<Brand>
+	public interface IBrandService : IService<VehicleBrand>
 	{
 	}
 
-	public class BrandService : BaseService<Brand>, IBrandService
+	public class BrandService : BaseService<VehicleBrand>, IBrandService
 	{
 		public BrandService(IUnitOfWork unitOfWork, IBrandRepository repository) : base(unitOfWork, repository)
         {

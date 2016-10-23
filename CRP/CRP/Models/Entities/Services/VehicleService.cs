@@ -10,7 +10,7 @@ namespace CRP.Models.Entities.Services
 	{
 		SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions);
 		VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions);
-        List<Vehicle> searchWithGarage(int garageID);
+        List<Vehicle> SearchWithGarage(int garageID);
 
 	}
 
@@ -43,7 +43,7 @@ namespace CRP.Models.Entities.Services
 
 			// Category condition
 			if (filterConditions.CategoryIDList != null)
-				vehicles = vehicles.Where(v => v.Model.Categories.Any(r => filterConditions.CategoryIDList.Contains(r.ID)));
+				vehicles = vehicles.Where(v => v.VehicleModel.Categories.Any(r => filterConditions.CategoryIDList.Contains(r.ID)));
 
 			// Max/Min ProductionYear condition
 			// Do not validate Max > Min here. Do it before this in the controller
@@ -61,12 +61,12 @@ namespace CRP.Models.Entities.Services
 
 			// Brand and Model condition
 			if (filterConditions.BrandIDList.Any() || filterConditions.ModelIDList.Any())
-				vehicles = vehicles.Where(v => filterConditions.BrandIDList.Contains(v.Model.BrandID)
+				vehicles = vehicles.Where(v => filterConditions.BrandIDList.Contains(v.VehicleModel.BrandID)
 											|| filterConditions.ModelIDList.Contains(v.ModelID));
 
 			// NumOfSeatList condition
 			if (filterConditions.NumberOfSeatList != null)
-				vehicles = vehicles.Where(v => filterConditions.NumberOfSeatList.Contains(v.Model.NumOfSeat));
+				vehicles = vehicles.Where(v => filterConditions.NumberOfSeatList.Contains(v.VehicleModel.NumOfSeat));
 
 			// Get the rental time in hour
 			var rentalTimeSpan = (DateTime)filterConditions.EndTime - (DateTime)filterConditions.StartTime;
@@ -284,7 +284,7 @@ namespace CRP.Models.Entities.Services
 			return vehicle.Any();
 		}
 
-        public List<Vehicle> searchWithGarage(int garageID)
+        public List<Vehicle> SearchWithGarage(int garageID)
         {
             var vehicleList = this.repository.Get();
             List<Vehicle> lstVehicle = vehicleList

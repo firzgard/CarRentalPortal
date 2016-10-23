@@ -182,7 +182,7 @@ namespace CRP.Areas.Provider.Controllers
             // 1
             await priceGroupService.CreateAsync(priceGroupEntity);
             //2
-            entity.DefaultPriceGroupID = priceGroupEntity.ID;
+            entity.WithDriverPriceGroupID = priceGroupEntity.ID;
             await service.CreateAsync(entity);
 
             return Json(new { result = true, message = "Create successful!" });
