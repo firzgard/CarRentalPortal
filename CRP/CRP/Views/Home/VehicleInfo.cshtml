@@ -12,27 +12,48 @@
 	
 
 <div id="vehiclePrimaryImage" style="background-image: url(@Model.Vehicle.VehicleImages.ToList()[0].URL)"></div>
+<div id="vehicleCarousel">
+	<div id="carouselDisplay"></div>
+	<!-- Controls -->
+	<a class="left carousel-control">
+		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+	</a>
+	<a class="right carousel-control">
+		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+	</a>
+	<i class="fa fa-times"></i>
+</div>
 
 <div class="row">
-	<nav class="navbar navbar-inverse navbar-fixed-top" id="infoNavBar">
-
+	<nav class="navbar navbar-inverse navbar-fixed-top hidden-info-nav" id="infoNavBar">
 		<div class="col-md-offset-2 col-md-8">
-		
 			<ul class="nav navbar-nav">
 				<li><a href="#vehicleSection">Thông tin xe</a></li>
 				<li><a href="#reviewSection">Đánh giá</a></li>
 				<li><a href="#garageSection">Cửa hàng</a></li>
-				<li><a href="#policySection">Điều khoản thuê</a></li>
 				<li><a href="#calenderSection">Lịch đặt xe</a></li>
 			</ul>
 		</div>
 	</nav>
 
 	<div class="col-md-offset-2 col-md-5">
+		<div class="row">
+			<div id="vehicleHeaderInfo">
+				<h1 class="col-md-12 section-header"><b>@Model.Vehicle.Name (@Model.Vehicle.Year)</b></h1>
+				<div class="col-md-12"><span class="rating-no-badge" data-rating="@Model.Vehicle.Star"></span> · @Model.NumOfComment đánh giá</div>
+			</div>
+			<div style="font-size:1.1em;margin-top: 4em; margin-left: 3em;">
+				<p>Cửa hàng @Model.Vehicle.Garage.Name · <span class="rating-no-badge" data-rating="@Model.Vehicle.Garage.Star"></span></p>
+				<p><i class="fa fa-map-marker"></i> @Model.Vehicle.Garage.Location.Name</p>
+			</div>
+		</div>
+		<hr style="position: relative;width: 150vw;left: -500px;"/>
 		<div id="vehicleSection" class="info-section row">
 			<h2 class="col-md-12 section-header"><b>Thông tin xe</b></h2>
 			<div class="col-md-12">@Model.Vehicle.Description</div>
-			<div class="col-md-12"><hr></div>
+			<div class="col-md-12"><hr/></div>
 			<label class="col-md-3">Chi tiết</label>
 			<div class="col-md-9">
 				<div class="col-xs-6">
@@ -50,73 +71,123 @@
 					{<p><span>Động cơ: </span><b>@Model.Vehicle.Engine</b></p>}
 				</div>
 			</div>
-			<div class="col-md-12"><hr></div>
-			<label class="col-md-3">Điều khoản thuê</label>
+			<div class="col-md-12"><hr/></div>
+			<label class="col-md-3">Điều khoản cơ bản</label>
+			<div class="col-md-9">
+				<div class="col-xs-12">
+					<p><span>Số ngày thuê tối đa: </span>
+						<b>@(Model.Vehicle.VehicleGroup.PriceGroup.MaxRentalPeriod != null
+							     ? Model.Vehicle.VehicleGroup.PriceGroup.MaxRentalPeriod + " ngày"
+							     : "Không giới hạn")</b>
+					</p>
+					<p><span>Phụ thu cho mỗi km phát sinh: </span>
+						<b>@(Model.Vehicle.VehicleGroup.PriceGroup.MaxRentalPeriod != null
+							     ? ((int)Model.Vehicle.VehicleGroup.PriceGroup.ExtraChargePerKm).ToString("#,##0") + "₫/km"
+							     : "Không tính phí")</b>
+					</p>
+				</div>
+			</div>
+			<div class="col-md-12"><hr /></div>
+			<label class="col-md-12">Điều khoản phụ</label>
 			<div class="col-md-12">@Model.Vehicle.Garage.Policy</div>
 		</div>
-		<hr/>
-		<div id="reviewSection" class="info-section">
-			<h2 class="col-md-12 section-header"><b>@(Model.NumOfComment) đánh giá</b></h2><span id="rating" data-rating="@Model.Vehicle.Star"></span>
+		<hr style="position: relative;width: 150vw;left: -500px;"/>
+		<div id="reviewSection" class="info-section row">
+			<h2 class="col-md-12 section-header"><b>@(Model.NumOfComment) đánh giá</b> · <span class="rating" data-rating="@Model.Vehicle.Star"></span></h2>
+			<div class="col-md-12"><hr/></div>
 			<p>Comment section here</p>
 		</div>
-
-		<div id="garageSection" class="info-section">
-			<p></p><h2 class="col-md-12 section-header"><b>Cửa hàng</b></h2>
-
-		<div id="calenderSection" class="info-section">
-			<p>Try to scroll this page and look at the navigation bar while scrolling!</p>
+		<hr style="position: relative;width: 150vw;left: -500px;"/>
+		<div id="garageSection" class="info-section row">
+			<h2 class="col-md-12 section-header"><b>Cửa hàng</b></h2>
+			<div class="col-md-12"><hr></div>
+			<h3 class="col-md-12">@Model.Vehicle.Garage.Name</h3>
+			<div class="col-md-12">
+				<h3 class="rating col-md-3" data-rating="@Model.Vehicle.Garage.Star"></h3>
+				<div class="col-md-9">
+					<p>Địa chỉ: @(Model.Vehicle.Garage.Address), @(Model.Vehicle.Garage.Location.Name)</p>
+					<p>Liên lạc: <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#infoModal">
+						<span><i class="fa fa-phone"></i> Nhấn vào để lấy thông tin liên lạc</span>
+					</button></p>
+				</div>
+			</div>
+				
+			<div class="col-md-12"><hr/></div>
+			<div class="col-md-12">@Model.Vehicle.Garage.Description</div>
+		</div>
+		<hr style="position: relative;width: 150vw;left: -500px;"/>
+		<div id="calenderSection" class="info-section row">
+			<h2 class="col-md-12 section-header"><b>Lịch đặt xe</b></h2>
+			<div class="col-md-12"><hr/></div>
 		</div>
 	</div>
 	<div class="col-md-3">
-		<div id="bookingSection" class="row">
-			<div class="col-xs-12 text-center">12.000.000</div>
-			<div class="form-group" >
-				<label class="col-xs-12">Thời gian nhận xe</label>
-				<div class="col-xs-12">
-					<input type="text" id="startTimeFilter" class="form-control" readonly/>
-				</div>
-			</div>
-			<div class="col-xs-12"><hr></div>
-			<div class="form-group">
+		<div id="bookingSection">
+			<div class="text-center" id="rentalTypePrice"></div>
+			<div class="form-group row">
 				<label class="col-xs-12">Gói thời gian thuê</label>
 				<div class="col-xs-12">
-					<select id="priceType" class="form-control" style="width: 100%;">
-						<option value="0">Thuê theo ngày</option>
+					<select id="rentalType" class="form-control" style="width: 100%;">
+						<option value="0" data-max-distance="@Model.Vehicle.VehicleGroup.PriceGroup.MaxDistancePerDay"
+								data-price="@Model.Vehicle.VehicleGroup.PriceGroup.PerDayPrice" selected>Thuê theo ngày</option>
 						@foreach (PriceGroupItem entry in Model.Vehicle.VehicleGroup.PriceGroup.PriceGroupItems)
 						{
-							<option value="@entry.MaxTime">Thuê @entry.MaxTime giờ</option>
+							<option value="@entry.MaxTime" data-max-distance="@entry.MaxDistance" data-price="@entry.Price" >Thuê @entry.MaxTime giờ</option>
 						}
 					</select>
 				</div>
 			</div>
-			<div class="col-xs-12"><hr></div>
-			<div class="form-group" >
+			<div class="form-group row" >
 				<label class="col-xs-7">Số ngày thuê</label>
 				<div class="col-xs-5">
-					<input id="numOfDay" type="number" step="1" min="1" max="@Model.Vehicle.VehicleGroup.PriceGroup.MaxRentalPeriod" style="width: 100%;"/>
+					<input id="numOfDay" type="number" step="1" min="1" max="@Model.Vehicle.VehicleGroup.PriceGroup.MaxRentalPeriod" value="1" class="form-control" style="width: 100%; text-align: right;"/>
 				</div>
 			</div>
-			<div class="col-xs-12"><hr></div>
-			<div class="form-group" >
-				<label class="col-xs-6">Tiền đặt cọc</label>
-				<div class="col-xs-6 text-right" id="depositPrice">11</div>
+			<div class="form-group row" >
+				<label class="col-xs-12">Thời gian nhận xe</label>
+				<div class="col-xs-12">
+					<input type="text" id="startTimePicker" class="form-control" readonly/>
+				</div>
 			</div>
-			<div class="col-xs-12"><hr></div>
-			<div class="form-group" >
-				<label class="col-xs-6">Phí dịch vụ</label>
-				<div class="col-xs-6 text-right" id="servicePrice">11</div>
+			<hr/>
+			<div class="form-group row" style="margin-bottom: 0;" >
+				<label class="col-xs-6">Phí thuê xe <span data-toggle="tooltip" title="Tổng phí mà bạn phải trả cho chủ xe." class="badge">?</span></label>
+				<p class="col-xs-6 text-right" id="rentalPrice"></p>
 			</div>
-			<div class="col-xs-12"><hr></div>
-			<div class="form-group" >
-				<label class="col-xs-6">Tổng cộng</label>
-				<div class="col-xs-6 text-right" id="totalPrice">11</div>
+			<hr/>
+			<div class="form-group row" style="margin-bottom: 0;">
+				<label class="col-xs-6">Phí dịch vụ <span data-toggle="tooltip" title="Phí này giúp chúng tôi duy trì hoạt động." class="badge">?</span></label>
+				<p class="col-xs-6 text-right" id="servicePrice"></p>
 			</div>
-			<div class="col-xs-12"><button class="btn btn-primary btn-block" id="bookingBtn">Đặt xe</button></div>
-			<div class="col-xs-12 text-center"><small>Bạn chỉ phải trả trước phí dịch vụ</small></div>
+			<hr/>
+			<div class="form-group row" style="font-size: 1.3em;font-weight: bold;margin-bottom: 0;">
+				<p class="col-xs-6">Tổng chi phí <span data-toggle="tooltip" title="Gồm phí thuê xe và phí dịch vụ." class="badge">?</span></p>
+				<b><p class="col-xs-6 text-right" id="totalPrice"></p></b>
+			</div>
+			<div class="form-group row" style="margin-bottom: 2em;">
+				<p class="col-xs-6">Đặt cọc <span data-toggle="tooltip" title="Phần tiền phải đặt cọc khi bạn kí hợp đồng với chủ xe." class="badge">?</span></p>
+				<p class="col-xs-6 text-right" id="depositPrice"></p>
+			</div>
+			<button class="btn btn-primary btn-block" id="bookingBtn"><b>Đặt xe</b></button>
+			<div class="text-center" style="margin-bottom: 1.5em;"><small>Bạn chỉ phải trả trước phí dịch vụ</small></div>
 		</div>
 	</div>
 </div>
 
+<div class="modal fade bs-example-modal" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel">
+	<div class="modal-dialog" role="document" style="padding-top: 10em;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h2 class="modal-title" id="infoModalLabel"><b>Thông tin liên lạc</b></h2>
+			</div>
+			<div class="modal-body"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleInfo")
 							.Include("~/Content/awesome-bootstrap-checkbox.css",
@@ -135,6 +206,8 @@
 							"~/Scripts/moment.js",
 							"~/Scripts/bootstrap-datetimepicker/bootstrap-datetimepicker.js",
 							"~/Scripts/twbsPagination/jquery.twbsPagination.js",
+							"~/Scripts/waypoints/jquery.waypoints.js",
+							"~/Scripts/waypoints/sticky.js",
 							"~/Scripts/utils/generateUIElements.js",
 							"~/Scripts/pageScript/vehicleInfo.js"));
 }
@@ -143,7 +216,12 @@
 		const NUM_RECORD_PER_PAGE = @Constants.NUM_OF_SEARCH_RESULT_PER_PAGE,
 				SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR,
 				SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR,
-				LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = @Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY;
+				LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = @Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY,
+				PHONE1 = "@Model.Vehicle.Garage.Phone1",
+				PHONE2 = "@Model.Vehicle.Garage.Phone2",
+				EMAIL = "@Model.Vehicle.Garage.Email",
+				DEPOSIT_PERCENTAGE = @Model.Vehicle.VehicleGroup.PriceGroup.DepositPercentage,
+				IMAGE_LIST = @Html.Raw(System.Web.Helpers.Json.Encode(Model.Vehicle.VehicleImages.Select(img => img.URL).ToList()));
 	</script>
 	@Scripts.Render("~/Scripts/VehicleInfo")
 }
