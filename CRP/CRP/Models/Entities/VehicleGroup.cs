@@ -28,7 +28,6 @@ namespace CRP.Models.Entities
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual PriceGroup PriceGroup { get; set; }
-        public virtual PriceGroup PriceGroup1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehicle> Vehicles { get; set; }
     }

@@ -4,9 +4,6 @@ const vehicleGroupTableColumns = [
 			{ name: 'Maxrent', title: 'Kỳ hạn thuê tối đa</br>(có tài xế)', width: '20%', defaultContent: "-" },
 			{ name: 'Deposit', title: 'Đặt cọc</br>(có tài xế)', width: '10%' },
             { name: 'PerDayPrice', title: 'Giá theo ngày</br>(có tài xế)', width: '15%' },
-            { name: 'Maxrent', title: 'Kỳ hạn thuê tối đa</br>(tự lái)', width: '20%', defaultContent: "-", visible: false },
-			{ name: 'Deposit', title: 'Đặt cọc</br>(tự lái)', width: '10%', visible: false },
-            { name: 'PerDayPrice', title: 'Giá theo ngày</br>(tự lái)', width: '15%', visible: false },
 			{ name: 'NumOfCar', title: 'Số lượng xe', width: '10%' },
 			{ name: 'Status', title: 'Trạng thái', width: '15%' },
 			{
@@ -74,18 +71,6 @@ $(document).ready(() =>{
 		],
 		columns: vehicleGroupTableColumns,
 	});
-
-	$('input[name="includeDriver"]').on('change', function () {
-	    yDriverCols = table.columns([2, 3, 4]);
-	    nDriverCols = table.columns([5, 6, 7]);
-	    if ($('input[name="includeDriver"]:checked').val() === 'yes') {
-	        yDriverCols.visible(true);
-	        nDriverCols.visible(false);
-	    } else {
-	        yDriverCols.visible(false);
-	        nDriverCols.visible(true);
-	    }
-	});
     
 	// Render confirmation modal for actions
 	$('#mdModal').on('show.bs.modal', function(event) {
@@ -114,7 +99,6 @@ $(document).ready(() =>{
             success: function (data) {
                 $('#myModal').html(data);
                 let table1 = null;
-                let table2 = null;
 
                 function bindMinusBtn() {
                     $('.minus-btn').unbind('click').click(function () {
@@ -183,73 +167,6 @@ $(document).ready(() =>{
                     });
                 })();
 
-                function bindMinusBtnN() {
-                    $('.minus-btn-n').unbind('click').click(function () {
-                        table2.row($(this).parents('tr')).remove().draw();
-                        if ($('.max-time-n').length == 0) {
-                            table2.destroy();
-                            $('#groupPop-n').empty();
-                            table2 = null;
-                        }
-                    });
-                }
-                bindMinusBtnN();
-                (function bindPlusBtnN() {
-                    $('.plus-btn-n').unbind('click').click(function () {
-                        if (table2 == null) {
-                            table2 = $('#groupPop-n').DataTable({
-                                dom: "ti",
-                                displayLength: 23,
-                                ordering: false,
-                                columnDefs: [
-                                    {
-                                        // Render action button
-                                        targets: 0
-                                        , render: (data, type, row) => {
-                                            return `
-        <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn-n"  data-type="minus">
-        <i class="fa fa-minus"></i>
-        </button>`;
-                                        }
-                                    }
-                                ],
-                                language: viDatatables,
-                                columns: [
-                                    {
-                                        searchable: false,
-                                        sortable: false,
-                                        width: '10%'
-                                    },
-                                    {
-                                        title: 'Thời gian (giờ)',
-                                        width: '30%',
-                                        data: "MaxTime"
-                                    },
-                                    {
-                                        title: 'Giá tiền (VNĐ)',
-                                        width: '30%',
-                                        data: "Price"
-                                    },
-                                    {
-                                        title: 'Số Km tối đa (Km)',
-                                        width: '30%',
-                                        data: "MaxDistance"
-                                    }
-                                ]
-                            });
-                        }
-                        // limit 23 row
-                        if ($('.max-time-n').length < 23) {
-                            table2.row.add({
-                                "MaxTime": `<input type="number" min="1" max="23" class="max-time-n form-control" value="" />`,
-                                "Price": `<input type="number" class="price-n form-control" value="" />`,
-                                "MaxDistance": `<input type="number" class="max-distance-n form-control" value="" />`,
-                            }).draw();
-                            bindMinusBtnN();
-                        }
-                    });
-                })();
-
                 $('#myModal').modal('show');
             },
             eror: function (e) {
@@ -277,14 +194,20 @@ $(document).on('click', "#btnCreate", function () {
             var item = {};
             item.MaxTime = parseInt($(`.max-time:eq(${i})`).val());
             item.Price = parseInt($(`.price:eq(${i})`).val());
+            if ($(`.max-distance:eq(${i})`).val()) {
+                item.MaxDistance = parseInt($(`.max-distance:eq(${i})`).val());
+            } else {
+                item.MaxDistance = null;
+            }
+            
             if (item.MaxTime < 1 || item.MaxTime > 23) {
-                alert("so gio bi sai");
+                alert("số giờ bị sai");
             } else {
                 if (jQuery.inArray(item.MaxTime,checkTimeArray) >= 0) {
-                    alert("trung gio");
+                    alert("trùng giờ");
                 } else {
                     if (item.Price < 0) {
-                        alert("so tien bi am");
+                        alert("số tiền bị âm");
                     } else {
                         priceGroupItemList.push(item);
                         checkTimeArray.push(item.MaxTime);
@@ -293,39 +216,6 @@ $(document).on('click', "#btnCreate", function () {
             }
         }
     }
-
-    let priceGroupItemListN = [];
-    let checkTimeArrayN = [];
-    for (var i = 0; i < $('.max-time-n').length; i++) {
-        if ($(`.max-time-n:eq(${i})`).val() && !$(`.price-n:eq(${i})`).val()) {
-            alert("chua nhap tien");
-        }
-        if (!$(`.max-time-n:eq(${i})`).val() && $(`.price-n:eq(${i})`).val()) {
-            alert("chua nhap gio");
-        }
-        if ($(`.max-time-n:eq(${i})`).val() && $(`.price-n:eq(${i})`).val()) {
-            var item = {};
-            item.MaxTime = parseInt($(`.max-time-n:eq(${i})`).val());
-            item.Price = parseInt($(`.price-n:eq(${i})`).val());
-            item.
-            if (item.MaxTime < 1 || item.MaxTime > 23) {
-                alert("so gio bi sai");
-            } else {
-                if (jQuery.inArray(item.MaxTime,checkTimeArrayN) >= 0) {
-                    alert("trung gio");
-                } else {
-                    if (item.Price < 0) {
-                        alert("so tien bi am");
-                    } else {
-                        priceGroupItemListN.push(item);
-                        checkTimeArrayN.push(item.MaxTime);
-                    }
-                }
-            }
-        }
-    }
-
-
 
     let model = {};
     model.Name = null;
@@ -338,7 +228,7 @@ $(document).on('click', "#btnCreate", function () {
     model.PriceGroup.ExtraChargePerKm = null;
     
     model.PriceGroup.PriceGroupItems = {};
-    model.PriceGroup.PriceGroupItems = priceGroupItemListN;
+    model.PriceGroup.PriceGroupItems = priceGroupItemList;
 
     if (!$('#group-name').val()) {
         alert("Name is required!");
@@ -370,8 +260,22 @@ $(document).on('click', "#btnCreate", function () {
         model.PriceGroup.PerDayPrice = parseInt($('#per-day-price').val());
     }
     if ($('#max-rent').val()) {
-        model.MaxRentalPeriod = parseInt($('#max-rent').val());
-        if (model.MaxRentalPeriod < 0) {
+        model.PriceGroup.MaxRentalPeriod = parseInt($('#max-rent').val());
+        if (model.PriceGroup.MaxRentalPeriod < 0) {
+            alert("not allow negative number");
+            return false;
+        }
+    }
+    if($('#max-distance-day').val()) {
+        model.PriceGroup.MaxDistancePerDay = parseInt($('#max-distance-day').val());
+        if (model.PriceGroup.MaxDistancePerDay < 0) {
+            alert("not allow negative number");
+            return false;
+        }
+    }
+    if ($('#extra-charge-day').val()) {
+        model.PriceGroup.ExtraChargePerKm = parseInt($('#extra-charge-day').val());
+        if (model.PriceGroup.ExtraChargePerKm < 0) {
             alert("not allow negative number");
             return false;
         }
