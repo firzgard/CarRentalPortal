@@ -1,11 +1,14 @@
 const vehicleGroupTableColumns = [
 			{ name: 'ID', visible: false },
-			{ name: 'Name', title: 'Tên nhóm', width: '30%' },
-			{ name: 'Maxrent', title: 'Kỳ hạn thuê tối đa', width: '10%', defaultContent: "-" },
-			{ name: 'Deposit', title: 'Đặt cọc',  width: '15%' },
-            { name: 'PerDayPrice', title: 'Giá theo ngày', width: '15%' },
+			{ name: 'Name', title: 'Tên nhóm', width: '20%' },
+			{ name: 'Maxrent', title: 'Kỳ hạn thuê tối đa</br>(có tài xế)', width: '20%', defaultContent: "-" },
+			{ name: 'Deposit', title: 'Đặt cọc</br>(có tài xế)', width: '10%' },
+            { name: 'PerDayPrice', title: 'Giá theo ngày</br>(có tài xế)', width: '15%' },
+            { name: 'Maxrent', title: 'Kỳ hạn thuê tối đa</br>(tự lái)', width: '20%', defaultContent: "-", visible: false },
+			{ name: 'Deposit', title: 'Đặt cọc</br>(tự lái)', width: '10%', visible: false },
+            { name: 'PerDayPrice', title: 'Giá theo ngày</br>(tự lái)', width: '15%', visible: false },
 			{ name: 'NumOfCar', title: 'Số lượng xe', width: '10%' },
-			{ name: 'Status', title: 'Trạng thái', width: '10%' },
+			{ name: 'Status', title: 'Trạng thái', width: '15%' },
 			{
 			    title: 'Thao tác',
 			    width: '10%',
@@ -24,7 +27,7 @@ const viDatatables = {
         last: "Trang cuối",
     },
     zeroRecords: "Không tìm thấy dữ liệu",
-    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    info: "Đang hiển thị _START_ đến _END_ trên tổng cộng _TOTAL_ dòng",
     infoEmpty: "không có dữ liệu",
     infoFiltered: "(được lọc ra từ _MAX_ dòng)"
 }
@@ -33,11 +36,9 @@ $(document).ready(() =>{
 	// Render table
 	table = $('#garages').DataTable({
         dom: "ltipr",
-	    //data: mockupData,
         ajax: {
             url: "/api/vehicleGroups",
             type: "GET",
-            //data: searchCondition
         },
         language: viDatatables,
         order: [[ 1, "asc" ]],
@@ -73,6 +74,18 @@ $(document).ready(() =>{
 		],
 		columns: vehicleGroupTableColumns,
 	});
+
+	$('input[name="includeDriver"]').on('change', function () {
+	    yDriverCols = table.columns([2, 3, 4]);
+	    nDriverCols = table.columns([5, 6, 7]);
+	    if ($('input[name="includeDriver"]:checked').val() === 'yes') {
+	        yDriverCols.visible(true);
+	        nDriverCols.visible(false);
+	    } else {
+	        yDriverCols.visible(false);
+	        nDriverCols.visible(true);
+	    }
+	});
     
 	// Render confirmation modal for actions
 	$('#mdModal').on('show.bs.modal', function(event) {
@@ -101,6 +114,7 @@ $(document).ready(() =>{
             success: function (data) {
                 $('#myModal').html(data);
                 let table1 = null;
+                let table2 = null;
 
                 function bindMinusBtn() {
                     $('.minus-btn').unbind('click').click(function () {
@@ -120,11 +134,6 @@ $(document).ready(() =>{
                                 dom: "ti",
                                 displayLength: 23,
                                 ordering: false,
-                                //data: mockupData3,
-                                /*ajax: {
-                                    url: `/api/priceGroup/${groupID}`,
-                                    type: "GET",
-                                },*/
                                 columnDefs: [
                                     {
                                         // Render action button
@@ -142,19 +151,23 @@ $(document).ready(() =>{
                                     {
                                         searchable: false,
                                         sortable: false,
-                                        width: '24%'
+                                        width: '10%'
                                     },
                                     {
                                         title: 'Thời gian (giờ)',
-                                        width: '38%',
+                                        width: '30%',
                                         data: "MaxTime"
                                     },
                                     {
                                         title: 'Giá tiền (VNĐ)',
-                                        width: '38%',
+                                        width: '30%',
                                         data: "Price"
+                                    },
+                                    {
+                                        title: 'Số Km tối đa (Km)',
+                                        width: '30%',
+                                        data: "MaxDistance"
                                     }
-
                                 ]
                             });
                         }
@@ -163,11 +176,80 @@ $(document).ready(() =>{
                             table1.row.add({
                                 "MaxTime": `<input type="number" min="1" max="23" class="max-time form-control" value="" />`,
                                 "Price": `<input type="number" class="price form-control" value="" />`,
+                                "MaxDistance": `<input type="number" class="max-distance form-control" value="" />`,
                             }).draw();
                             bindMinusBtn();
                         }
                     });
                 })();
+
+                function bindMinusBtnN() {
+                    $('.minus-btn-n').unbind('click').click(function () {
+                        table2.row($(this).parents('tr')).remove().draw();
+                        if ($('.max-time-n').length == 0) {
+                            table2.destroy();
+                            $('#groupPop-n').empty();
+                            table2 = null;
+                        }
+                    });
+                }
+                bindMinusBtnN();
+                (function bindPlusBtnN() {
+                    $('.plus-btn-n').unbind('click').click(function () {
+                        if (table2 == null) {
+                            table2 = $('#groupPop-n').DataTable({
+                                dom: "ti",
+                                displayLength: 23,
+                                ordering: false,
+                                columnDefs: [
+                                    {
+                                        // Render action button
+                                        targets: 0
+                                        , render: (data, type, row) => {
+                                            return `
+        <button type="button" class ="btn btn-danger btn-circle btn-number minus-btn-n"  data-type="minus">
+        <i class="fa fa-minus"></i>
+        </button>`;
+                                        }
+                                    }
+                                ],
+                                language: viDatatables,
+                                columns: [
+                                    {
+                                        searchable: false,
+                                        sortable: false,
+                                        width: '10%'
+                                    },
+                                    {
+                                        title: 'Thời gian (giờ)',
+                                        width: '30%',
+                                        data: "MaxTime"
+                                    },
+                                    {
+                                        title: 'Giá tiền (VNĐ)',
+                                        width: '30%',
+                                        data: "Price"
+                                    },
+                                    {
+                                        title: 'Số Km tối đa (Km)',
+                                        width: '30%',
+                                        data: "MaxDistance"
+                                    }
+                                ]
+                            });
+                        }
+                        // limit 23 row
+                        if ($('.max-time-n').length < 23) {
+                            table2.row.add({
+                                "MaxTime": `<input type="number" min="1" max="23" class="max-time-n form-control" value="" />`,
+                                "Price": `<input type="number" class="price-n form-control" value="" />`,
+                                "MaxDistance": `<input type="number" class="max-distance-n form-control" value="" />`,
+                            }).draw();
+                            bindMinusBtnN();
+                        }
+                    });
+                })();
+
                 $('#myModal').modal('show');
             },
             eror: function (e) {
@@ -212,14 +294,51 @@ $(document).on('click', "#btnCreate", function () {
         }
     }
 
+    let priceGroupItemListN = [];
+    let checkTimeArrayN = [];
+    for (var i = 0; i < $('.max-time-n').length; i++) {
+        if ($(`.max-time-n:eq(${i})`).val() && !$(`.price-n:eq(${i})`).val()) {
+            alert("chua nhap tien");
+        }
+        if (!$(`.max-time-n:eq(${i})`).val() && $(`.price-n:eq(${i})`).val()) {
+            alert("chua nhap gio");
+        }
+        if ($(`.max-time-n:eq(${i})`).val() && $(`.price-n:eq(${i})`).val()) {
+            var item = {};
+            item.MaxTime = parseInt($(`.max-time-n:eq(${i})`).val());
+            item.Price = parseInt($(`.price-n:eq(${i})`).val());
+            item.
+            if (item.MaxTime < 1 || item.MaxTime > 23) {
+                alert("so gio bi sai");
+            } else {
+                if (jQuery.inArray(item.MaxTime,checkTimeArrayN) >= 0) {
+                    alert("trung gio");
+                } else {
+                    if (item.Price < 0) {
+                        alert("so tien bi am");
+                    } else {
+                        priceGroupItemListN.push(item);
+                        checkTimeArrayN.push(item.MaxTime);
+                    }
+                }
+            }
+        }
+    }
+
+
+
     let model = {};
     model.Name = null;
-    model.MaxRentalPeriod = null;
+
     model.PriceGroup = {};
     model.PriceGroup.DepositPercentage = null;
     model.PriceGroup.PerDayPrice = null;
+    model.PriceGroup.MaxRentalPeriod = null;
+    model.PriceGroup.MaxDistancePerDay = null;
+    model.PriceGroup.ExtraChargePerKm = null;
+    
     model.PriceGroup.PriceGroupItems = {};
-    model.PriceGroup.PriceGroupItems = priceGroupItemList;
+    model.PriceGroup.PriceGroupItems = priceGroupItemListN;
 
     if (!$('#group-name').val()) {
         alert("Name is required!");

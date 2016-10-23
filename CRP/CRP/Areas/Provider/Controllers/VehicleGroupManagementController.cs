@@ -70,9 +70,12 @@ namespace CRP.Areas.Provider.Controllers
             var result = list.Select(q => new IConvertible[] {
                 q.ID,
                 q.Name,
-                q.PriceGroup.MaxRentalPeriod != null ? q.PriceGroup.MaxRentalPeriod : null,
-                (q.PriceGroup.DepositPercentage * 100m).ToString("#") + "%",
-                q.PriceGroup.PerDayPrice,
+                q.PriceGroup1 != null ? (q.PriceGroup1.MaxRentalPeriod != null ? q.PriceGroup1.MaxRentalPeriod : null) : null,
+                q.PriceGroup1 != null ? (q.PriceGroup1.DepositPercentage * 100m).ToString("#") + "%" : null,
+                q.PriceGroup1 != null ? q.PriceGroup1.PerDayPrice.ToString() : null,
+                q.PriceGroup != null ? (q.PriceGroup.MaxRentalPeriod != null ? q.PriceGroup.MaxRentalPeriod : null) : null,
+                q.PriceGroup != null ? (q.PriceGroup.DepositPercentage * 100m).ToString("#") + "%" : null,
+                q.PriceGroup != null ? q.PriceGroup.PerDayPrice.ToString() : null,
                 q.Vehicles.Count,
                 q.IsActive
             });
