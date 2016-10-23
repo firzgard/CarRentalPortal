@@ -10,7 +10,7 @@ namespace CRP.Models.ViewModels
 	// Model to populate the filters in search page
 	public class SearchPageViewModel
 	{
-		public List<Brand> BrandList { get; set; }
+		public List<VehicleBrand> BrandList { get; set; }
 		public List<Category> CategoryList { get; set; }
 		public List<Location> LocationList { get; set; }
 		public double MaxPrice { get; set; }
@@ -18,7 +18,7 @@ namespace CRP.Models.ViewModels
 		public int MaxYear { get; set; }
 		public int MinYear { get; set; }
 
-		public SearchPageViewModel(List<Brand> brandList, List<Category> categoryList, List<Location> locationList, double maxPrice, double minPrice, int maxYear, int minYear)
+		public SearchPageViewModel(List<VehicleBrand> brandList, List<Category> categoryList, List<Location> locationList, double maxPrice, double minPrice, int maxYear, int minYear)
 		{
 			BrandList = brandList;
 			CategoryList = categoryList;
@@ -27,6 +27,19 @@ namespace CRP.Models.ViewModels
 			MinPrice = minPrice;
 			MaxYear = maxYear;
 			MinYear = minYear;
+		}
+	}
+
+	// Model to populate the vehicle info page
+	public class VehicleInfoPageViewModel
+	{
+		public Vehicle Vehicle { get; set; }
+		public int NumOfComment { get; set; }
+
+		public VehicleInfoPageViewModel(Vehicle vehicle)
+		{
+			Vehicle = vehicle;
+			NumOfComment = vehicle.BookingReceipts.Count(br => br.Comment != null);
 		}
 	}
 

@@ -47,8 +47,39 @@ namespace CRP.Areas.Provider.Controllers
 		public ViewResult VehihicleDetail(int id)
 		{
 			var service = this.Service<IVehicleService>();
-			Vehicle vehicle = service.Get(id);
-			return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehicle);
+            var garageService = this.Service<IGarageService>();
+            var groupService = this.Service<IVehicleGroupService>();
+            var brandService = this.Service<IBrandService>();
+            var modelService = this.Service<IModelService>();
+            Vehicle vehicle = service.Get(id);
+            VehicleDetailInfoModel vehiIn = new VehicleDetailInfoModel(vehicle);
+            //FilterByGarageView garageView = new FilterByGarageView();
+            var providerID = User.Identity.GetUserId();
+            vehiIn.listGarage = garageService.Get()
+                .Where(q => q.OwnerID == providerID)
+                .Select(q => new SelectListItem()
+                {
+                    Text = q.Name,
+                    Value = q.ID.ToString(),
+                    Selected = true,
+                });
+            vehiIn.listGroup = groupService.Get()
+                 .Where(q => q.OwnerID == providerID)
+                 .Select(q => new SelectListItem()
+                 {
+                     Text = q.Name,
+                     Value = q.ID.ToString(),
+                     Selected = true,
+                 });
+            vehiIn.listBrand = brandService.Get()
+                 .Select(q => new SelectListItem()
+                 {
+                     Text = q.Name,
+                     Value = q.ID.ToString(),
+                     Selected = true,
+                 });
+            
+            return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehiIn);
 		}
 
 		// API Route to get a list of vehicle to populate vehicleTable
@@ -101,8 +132,8 @@ namespace CRP.Areas.Provider.Controllers
 			var VehicleImageService = this.Service<IVehicleImageService>();
 
 			var entity = this.Mapper.Map<Vehicle>(model);
-			var ModelEntity = this.Mapper.Map<Model>(model.Model);
-			var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
+			var ModelEntity = this.Mapper.Map<VehicleModel>(model.VehicleModel);
+			var BrandEntity = this.Mapper.Map<VehicleBrand>(model.VehicleModel.VehicleBrand);
 			var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
 			var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
 			var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
@@ -137,8 +168,8 @@ namespace CRP.Areas.Provider.Controllers
 			var VehicleImageService = this.Service<IVehicleImageService>();
 
 			var entity = this.Mapper.Map<Vehicle>(model);
-			var ModelEntity = this.Mapper.Map<Model>(model.Model);
-			var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
+			var ModelEntity = this.Mapper.Map<VehicleModel>(model.VehicleModel);
+			var BrandEntity = this.Mapper.Map<VehicleBrand>(model.VehicleModel.VehicleBrand);
 			var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
 			var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
 			var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);

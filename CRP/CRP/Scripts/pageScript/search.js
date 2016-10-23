@@ -51,7 +51,7 @@ function renderSearchResultItem(searchResult){
 				<div class="col-xs-9">
 				<div style="font-size:0.88em;">&nbsp;${searchResult.GarageName} · ${renderStarRating(searchResult.GarageRating, '#1ab394', false)}</div>
 					<a href="${VEHICLE_INFO_URL}/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
-					<div class="center-flex">${renderStarRating(searchResult.Star, '#1ab394')} · ${searchResult.NumOfComment} ${searchResult.NumOfComment > 1 ? 'reviews' : 'review' }</div>
+					<div class="center-flex">${renderStarRating(searchResult.Star, '#1ab394')} · ${searchResult.NumOfComment} đánh giá</div>
 				</div>
 				<div class="col-xs-3 text-right vehicle-seat center-flex">${searchResult.NumOfSeat}<img src="/Content/img/icons/person.png"/></div>	
 				<div class="col-xs-12">

@@ -30,10 +30,6 @@ const viDatatables = {
 }
 let table = null;
 $(document).ready(() =>{
-    
-	var searchCondition = {
-	    
-	};
 	// Render table
 	table = $('#garages').DataTable({
         dom: "ltipr",
@@ -44,6 +40,7 @@ $(document).ready(() =>{
             //data: searchCondition
         },
         language: viDatatables,
+        order: [[ 1, "asc" ]],
         columnDefs: [
 			{
 				// Render status label
@@ -63,7 +60,7 @@ $(document).ready(() =>{
 							<i class="fa fa-gear"></i> Thao tác <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="/management/vehicleGroupManagement/${row[0]}">Sửa thông tin</a></li>
+							<li><a href="/management/vehicleGroupManagement/${row[0]}">Thông tin chi tiết</a></li>
                         ${row[6] === true?
                         `<li><a data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row[0]}" data-name="${row[1]}" >Ngừng hoạt động</a></li>`:
                         `<li><a data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row[0]}" data-name="${row[1]}" >Tái kích hoạt</a></li>`
@@ -140,6 +137,7 @@ $(document).ready(() =>{
                                         }
                                     }
                                 ],
+                                language: viDatatables,
                                 columns: [
                                     {
                                         searchable: false,
@@ -147,12 +145,12 @@ $(document).ready(() =>{
                                         width: '24%'
                                     },
                                     {
-                                        title: 'Max time',
+                                        title: 'Thời gian (giờ)',
                                         width: '38%',
                                         data: "MaxTime"
                                     },
                                     {
-                                        title: 'Price',
+                                        title: 'Giá tiền (VNĐ)',
                                         width: '38%',
                                         data: "Price"
                                     }

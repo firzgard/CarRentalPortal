@@ -55,7 +55,7 @@ namespace CRP.Models.ViewModels
 			LicenseNumber = vehicle.LicenseNumber;
 			Name = vehicle.Name;
 			Year = vehicle.Year;
-			NumOfSeat = vehicle.Model.NumOfSeat;
+			NumOfSeat = vehicle.VehicleModel.NumOfSeat;
 			Star = vehicle.Star;
 		}
 	}
@@ -87,6 +87,7 @@ namespace CRP.Models.ViewModels
 		public string TransmissionTypeName { get; set; }
 		public int? FuelTypeID { get; set; }
 		public string FuelTypeName { get; set; }
+        public string Engine { get; set; }
 		public int ColorID { get; set; }
 		public string ColorName { get; set; }
 		public decimal Star { get; set; }
@@ -94,20 +95,28 @@ namespace CRP.Models.ViewModels
 		public int NumOfSeat { get; set; }
 		public int? Year { get; set; }
 		public List<string> Category { get; set; }
+        public List<string> ImageUrls { get; set; }
+        public IEnumerable<SelectListItem> listGarage { get; set; }
+        public IEnumerable<SelectListItem> listGroup { get; set; }
+        public IEnumerable<SelectListItem> listBrand { get; set; }
+        public IEnumerable<SelectListItem> listModel { get; set; }
 
-		public VehicleDetailInfoModel(Vehicle vehicle)
+        public VehicleDetailInfoModel()
+        { }
+        public VehicleDetailInfoModel(Vehicle vehicle)
 		{
 			this.ID = vehicle.ID;
 			this.LicenseNumber = vehicle.LicenseNumber;
 			this.Name = vehicle.Name;
 			this.ModelID = vehicle.ModelID;
-			this.ModelName = vehicle.Model.Name;
-			this.BrandID = vehicle.Model.BrandID;
-			this.BrandName = vehicle.Model.Brand.Name;
+			this.ModelName = vehicle.VehicleModel.Name;
+			this.BrandID = vehicle.VehicleModel.BrandID;
+			this.BrandName = vehicle.VehicleModel.VehicleBrand.Name;
 			this.GarageID = vehicle.GarageID;
 			this.GarageName = vehicle.Garage.Name;
 			this.VehicleGroupID = vehicle.VehicleGroupID;
 			this.VehicleGroupName = vehicle.VehicleGroup.Name;
+            this.Engine = vehicle.Engine;
 
 			this.TransmissionTypeID = vehicle.TransmissionType;
 			string tmpString = null;
@@ -128,12 +137,14 @@ namespace CRP.Models.ViewModels
 			this.ColorName = tmpString;
 
 			this.Star = vehicle.Star;
-			this.NumOfDoor = vehicle.Model.NumOfDoor;
-			this.NumOfSeat = vehicle.Model.NumOfSeat;
+			this.NumOfDoor = vehicle.VehicleModel.NumOfDoor;
+			this.NumOfSeat = vehicle.VehicleModel.NumOfSeat;
 			this.Year = vehicle.Year;
-			this.Category = vehicle.Model.Categories.Aggregate(
+			this.Category = vehicle.VehicleModel.Categories.Aggregate(
 				new List<string>(), (categories, mapping) => { categories.Add(mapping.Name); return categories; });
-		}
+            this.ImageUrls = vehicle.VehicleImages.Aggregate(
+                new List<string>(), (images, mapping) => { images.Add(mapping.URL); return images; });
+        }
 	}
 
 	public class VehicleCalendarModel
