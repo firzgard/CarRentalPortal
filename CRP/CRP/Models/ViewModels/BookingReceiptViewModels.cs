@@ -8,9 +8,9 @@ namespace CRP.Models.ViewModels
 {
 	public class BookingCreatingModel
 	{
-		public int VehicleID { get; set; }
+		public int? VehicleID { get; set; }
 		public DateTime StartTime { get; set; }
-		public int RentalType { get; set; }
+		public int? RentalType { get; set; }
 		public int? NumOfDay { get; set; }
 	}
 

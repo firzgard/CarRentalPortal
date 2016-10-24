@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Web;
 using System.Web.Mvc;
 using API_NganLuong;
@@ -19,65 +20,147 @@ namespace CRP.Areas.Customer.Controllers
 {
 	public class BookingController : BaseController
 	{
-		//luu lai ID cua booking vua luu xuong databse
-		private int lastBooking;
-		//trong thoi gian 5 phut nen booking da duoc xoa thi ko chay luong
-		private Boolean DeleteBookingThread = false;
+		// API route to create a booking if possible
+		[Authorize(Roles = "Customer")]
+		[System.Web.Http.HttpPost]
+		[System.Web.Mvc.Route("api/bookings", Name = "TryBookingAPI")]
+		public System.Web.Mvc.ActionResult TryBookingAPI(BookingCreatingModel model)
+		{
+			// Check if vehicleID exists
+			if (model.VehicleID == null)
+				return new HttpStatusCodeResult(400, "Invalid vehicle id.");
+
+			// Check if rentalType was specified
+			if (model.RentalType == null)
+				return new HttpStatusCodeResult(400, "No valid rental period specified.");
+
+			// Check if startTime was specified and is valid
+			if (model.StartTime < DateTime.Now.AddHours(Models.Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR)
+					|| model.StartTime > DateTime.Now.AddDays(Models.Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY))
+				return new HttpStatusCodeResult(400, "No valid rental period specified.");
+
+			var vehicleService = this.Service<IVehicleService>();
+			var vehicle = vehicleService.Get(v => v.ID == model.VehicleID.Value
+																&& v.Garage.IsActive
+																&& !v.Garage.IsDisabled
+																&& v.VehicleGroup != null
+																&& v.VehicleGroup.IsActive
+				).FirstOrDefault();
+
+			// Check if vehicle exists
+			if (vehicle == null)
+				return new HttpStatusCodeResult(400, "Invalid vehicle id.");
+
+			// Deduce the endtime / priceGroupItem based on acquired model
+			DateTime endTime;
+			PriceGroupItem priceGroupItem = null;
+			if (model.RentalType.Value == 0)
+			{
+				// Check if numOfDay exists and is valid 
+				if (model.NumOfDay == null || model.NumOfDay < 1 || model.NumOfDay > vehicle.VehicleGroup.PriceGroup.MaxRentalPeriod)
+					return new HttpStatusCodeResult(400, "No valid rental period specified.");
+
+				endTime = model.StartTime.AddDays(model.NumOfDay.Value);
+			}
+			else
+			{
+				// Check if priceGroupItem exists
+				priceGroupItem = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.FirstOrDefault(r => r.MaxTime != model.RentalType.Value);
+				if (priceGroupItem == null)
+					return new HttpStatusCodeResult(400, "No valid rental period specified.");
+
+				endTime = model.StartTime.AddHours(model.RentalType.Value);
+			}
+
+			if (!vehicleService.CheckVehicleAvailability(model.VehicleID.Value, model.StartTime, endTime))
+				return new HttpStatusCodeResult(403, "Cannot book this vehicle in this period");
+
+
+			// All validation passed. Create new receipt with isPending = true
+			var bookingService = this.Service<IBookingReceiptService>();
+			var newBooking = this.Mapper.Map<BookingReceipt>(vehicle);
+			newBooking.ID = 0;
+			newBooking.CustomerID = User.Identity.GetUserId();
+			newBooking.ProviderID = vehicle.Garage.AspNetUser.Id;
+			newBooking.VehicleID = vehicle.ID;
+
+			newBooking.GaragePhone = vehicle.Garage.Phone1;
+			newBooking.VehicleName = vehicle.Name;
+			newBooking.Star = null;
+
+			newBooking.StartTime = model.StartTime;
+			newBooking.EndTime = endTime;
+
+			newBooking.IsPending = true;
+
+			if (model.RentalType.Value == 0)
+			{
+				newBooking.RentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice * model.NumOfDay.Value;
+			}
+			else
+			{
+				newBooking.RentalPrice = priceGroupItem.Price;
+			}
+
+			newBooking.Deposit = newBooking.RentalPrice * (double)vehicle.VehicleGroup.PriceGroup.DepositPercentage;
+			newBooking.BookingFee = newBooking.RentalPrice * Models.Constants.BOOKING_FEE_PERCENTAGE;
+
+			bookingService.Create(newBooking);
+
+			// Set timer to delete the booking if it is still pending after x-milisec
+			System.Timers.Timer checkPendingBookingTimer = new System.Timers.Timer(30000);
+			checkPendingBookingTimer.AutoReset = false;
+
+			// Add callback
+			checkPendingBookingTimer.Elapsed += delegate { CheckPendingBooking(newBooking.ID); };
+			checkPendingBookingTimer.Start();
+
+			//return View("~/Areas/Customer/Views/Booking/BookingConfirm.cshtml", entity);
+			return JavaScript("window.location = '/bookingConfirm/" + newBooking.ID + "'");
+		}
+
+		// Handler for TryBookingApi
+		private void CheckPendingBooking(int bookingID)
+		{
+			var bookingReceipt = this.Service<IBookingReceiptService>().Get(bookingID);
+
+
+		}
 
 		// Route to bookingConfirm page (Page for confirming booking details before paying)
 		[Authorize(Roles = "Customer")]
-		[System.Web.Http.HttpGet]
-		[Microsoft.AspNetCore.Mvc.Route("bookingConfirm")]
-		public async Task<System.Web.Mvc.ActionResult> BookingConfirm(BookingCreatingModel model)
+		[System.Web.Http.HttpPost]
+		[System.Web.Mvc.Route("bookingConfirm/{bookingID}", Name = "BookingConfirm")]
+		public System.Web.Mvc.ActionResult BookingConfirm(int bookingID)
 		{
-			//lastBooking = 1;
-			//var service = this.Service<IBookingReceiptService>();
-			//var entity = await service.GetAsync(lastBooking);
-
-			//model.IsPending = true;
-			//var service = this.Service<IBookingReceiptService>();
-			//var entity = this.Mapper.Map<BookingReceipt>(model);
-			////luu booking xuong database, nhung 
-			//await service.CreateAsync(entity);
-			//lastBooking = entity.ID;
-			////goi api thanh toan, neu ok, thi xet ispending = false, +
-			////sau 5 phut kiem tra neu ispending = false thi ko co gi, con is peding = true thi delete booking va return message overtime
-			//checkisPending(entity.ID);
-			//return View("~/Areas/Customer/Views/Booking/BookingConfirm.cshtml", entity);
 			return View();
 		}
-		private void checkisPending(int bookingID)
-		{
-			Thread aNewThread = new Thread(
-				() => deleteBooking(bookingID));
-			aNewThread.Start();
-		}
 
-		//cho nay nen return json, de xu ly
-		private void deleteBooking(int bookingID)
-		{
-			TimeSpan span = new TimeSpan(0, 0, 5, 0);
-			Thread.Sleep(span);
-			if (DeleteBookingThread == true)
-			{
-				Thread.ResetAbort();
-			} 
-			else
-			{
-				var service = this.Service<IBookingReceiptService>();
-				var entity = service.Get(bookingID);
-				//neu ispending van bang true thi xoa booking do
-				Boolean isDelete = entity.IsPending;
-				if (isDelete)
-				{
-					service.Delete(entity);
-				}
-				else
-				{
-					Thread.ResetAbort();
-				}
-			} 
-		}
+		////cho nay nen return json, de xu ly
+		//private void deleteBooking(int bookingID)
+		//{
+		//	TimeSpan span = new TimeSpan(0, 0, 5, 0);
+		//	Thread.Sleep(span);
+		//	if (DeleteBookingThread == true)
+		//	{
+		//		Thread.ResetAbort();
+		//	} 
+		//	else
+		//	{
+		//		var service = this.Service<IBookingReceiptService>();
+		//		var entity = service.Get(bookingID);
+		//		//neu ispending van bang true thi xoa booking do
+		//		Boolean isDelete = entity.IsPending;
+		//		if (isDelete)
+		//		{
+		//			service.Delete(entity);
+		//		}
+		//		else
+		//		{
+		//			Thread.ResetAbort();
+		//		}
+		//	} 
+		//}
 
 		// Route for paying with nganluong)
 		[Authorize(Roles = "Customer")]
@@ -114,13 +197,13 @@ namespace CRP.Areas.Customer.Controllers
 		}
 
 		// Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
-		[System.Web.Mvc.Route("bookingReceipt")]
-		public async Task<ViewResult> BookingReceipt()
-		{
-			SystemService sysService = new SystemService();
-			lastBooking = 1;
-			var service = this.Service<IBookingReceiptService>();
-			var entity = await service.GetAsync(lastBooking);
+		//[System.Web.Mvc.Route("bookingReceipt")]
+		//public async Task<ViewResult> BookingReceipt()
+		//{
+			//SystemService sysService = new SystemService();
+			//lastBooking = 1;
+			//var service = this.Service<IBookingReceiptService>();
+			//var entity = await service.GetAsync(lastBooking);
 			////kiem tra xem da thanh toan thanh cong hay chua
 			//Boolean paySuccess = true;
 			////xuong databse ispending = false neu thanh toan thanh cong, xoa booking neu no ko thanh cong
@@ -140,11 +223,11 @@ namespace CRP.Areas.Customer.Controllers
 			//}
 
 			//send mail bao cho Provider va Customer
-			sysService.SendMailBooking("tamntse61384@fpt.edu.vn", entity);
+			//sysService.SendMailBooking("tamntse61384@fpt.edu.vn", entity);
 			//sysService.SendMailBooking(entity.AspNetUser11.Email, entity);
 
-			return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", entity);
-		}
+			//return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", entity);
+		//}
 
 
 		// Route to bookingHistory page

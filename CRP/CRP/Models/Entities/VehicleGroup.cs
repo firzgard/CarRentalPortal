@@ -24,7 +24,7 @@ namespace CRP.Models.Entities
         public string OwnerID { get; set; }
         public string Name { get; set; }
         public bool IsActive { get; set; }
-        public Nullable<int> WithDriverPriceGroupID { get; set; }
+        public int WithDriverPriceGroupID { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual PriceGroup PriceGroup { get; set; }

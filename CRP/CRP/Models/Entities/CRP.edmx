@@ -74,9 +74,10 @@
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" Nullable="false" />
           <Property Name="GarageID" Type="int" />
-          <Property Name="GaragePhone" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="GarageName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="GarageAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="GaragePhone" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GarageEmail" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="VehicleID" Type="int" />
           <Property Name="LicenseNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="VehicleName" Type="nvarchar" MaxLength="100" Nullable="false" />
@@ -204,7 +205,7 @@
           <Property Name="OwnerID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="WithDriverPriceGroupID" Type="int" />
+          <Property Name="WithDriverPriceGroupID" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="VehicleImage">
           <Key>
@@ -485,7 +486,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_VehicleGroup_PriceGroup1">
-          <End Role="PriceGroup" Type="Self.PriceGroup" Multiplicity="0..1" />
+          <End Role="PriceGroup" Type="Self.PriceGroup" Multiplicity="1" />
           <End Role="VehicleGroup" Type="Self.VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PriceGroup">
@@ -799,9 +800,10 @@
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GarageID" Type="Int32" />
-          <Property Name="GaragePhone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="GarageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="GarageAddress" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="GaragePhone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GarageEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="VehicleID" Type="Int32" />
           <Property Name="LicenseNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="VehicleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
@@ -945,7 +947,7 @@
           <Property Name="OwnerID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="WithDriverPriceGroupID" Type="Int32" />
+          <Property Name="WithDriverPriceGroupID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_VehicleGroup_AspNetUsers" FromRole="VehicleGroup" ToRole="AspNetUser" />
           <NavigationProperty Name="PriceGroup" Relationship="CRPDBModel.FK_VehicleGroup_PriceGroup1" FromRole="VehicleGroup" ToRole="PriceGroup" />
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Car_CarGroup" FromRole="VehicleGroup" ToRole="Vehicle" />
@@ -1146,7 +1148,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_VehicleGroup_PriceGroup1">
-          <End Type="CRPDBModel.PriceGroup" Role="PriceGroup" Multiplicity="0..1" />
+          <End Type="CRPDBModel.PriceGroup" Role="PriceGroup" Multiplicity="1" />
           <End Type="CRPDBModel.VehicleGroup" Role="VehicleGroup" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="PriceGroup">
@@ -1283,9 +1285,10 @@
                 <ScalarProperty Name="VehicleName" ColumnName="VehicleName" />
                 <ScalarProperty Name="LicenseNumber" ColumnName="LicenseNumber" />
                 <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="GarageEmail" ColumnName="GarageEmail" />
+                <ScalarProperty Name="GaragePhone" ColumnName="GaragePhone" />
                 <ScalarProperty Name="GarageAddress" ColumnName="GarageAddress" />
                 <ScalarProperty Name="GarageName" ColumnName="GarageName" />
-                <ScalarProperty Name="GaragePhone" ColumnName="GaragePhone" />
                 <ScalarProperty Name="GarageID" ColumnName="GarageID" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />

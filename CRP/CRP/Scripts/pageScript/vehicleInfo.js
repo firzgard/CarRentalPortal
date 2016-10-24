@@ -15,7 +15,7 @@ $(document).ready(function(){
 		handler: function(direction) {
 			$('#infoNavBar').toggleClass('hidden-info-nav');
 		},
-		offset: 71
+		offset: 75
 	})
 
 	// Scrolling handlers for scrollspy, scroll to 70px above a section
@@ -55,7 +55,7 @@ $(document).ready(function(){
 	if(!sessionStartTime || (sessionStartTime.isBefore(soonestPossibleBookingStartTimeFromNow) && sessionStartTime.isAfter(latestPossibleBookingStartTimeFromNow)))
 		sessionStartTime = now.clone().add(1, 'days');
 
-	$('#startTimePicker').datetimepicker({
+	let $startTimePicker = $('#startTimePicker').datetimepicker({
 		useCurrent: false,
 		defaultDate: sessionStartTime,
 		minDate: soonestPossibleBookingStartTimeFromNow,
@@ -167,7 +167,7 @@ $(document).ready(function(){
 		rentalPriceValue = rentalTypeValue == 0 ? rentalUnitPrice * numOfDayValue : rentalUnitPrice
 		$rentalPrice.html(`${rentalPriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
-		servicePriceValue = Number.parseInt(rentalPriceValue * 0.05);
+		servicePriceValue = Number.parseInt(rentalPriceValue * BOOKING_FEE_PERCENTAGE);
 		$servicePrice.html(`${servicePriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
 		$totalPrice.html(`${(rentalPriceValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
@@ -190,12 +190,36 @@ $(document).ready(function(){
 		rentalPriceValue = rentalTypeValue == '0' ? rentalUnitPrice * numOfDayValue : rentalUnitPrice
 		$rentalPrice.html(`${rentalPriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
-		servicePriceValue = Number.parseInt(rentalPriceValue * 0.05);
+		servicePriceValue = Number.parseInt(rentalPriceValue * BOOKING_FEE_PERCENTAGE);
 		$servicePrice.html(`${servicePriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
 		$totalPrice.html(`${(rentalPriceValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 		$depositPrice.html(`${Number.parseInt(rentalPriceValue * DEPOSIT_PERCENTAGE).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 	})
+
+	// Booking button
+	$('#bookingBtn').click(() => {
+		let bookingData = {
+			VehicleID: VEHICLE_ID
+			, StartTime: $startTimePicker.data("DateTimePicker").date().toJSON()
+			, RentalType: rentalTypeValue
+		};
+
+		if(rentalTypeValue == 0)
+			bookingData.NumOfDay = numOfDayValue;
+
+		$.ajax({
+			url: BOOKING_HANDLER_URL,
+			data: bookingData,
+		})
+		.done(function(data, textStatus, jqXHR) {
+			console.log(data, textStatus, jqXHR);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		
+	});
 });
 	
 // 	var booked = ['2016-09-29 19:00','2016-09-30 17:00','2016-09-28 13:00','2016-09-28 14:00'];
