@@ -27,7 +27,7 @@
                                         <p>@this.Model.Name</p>
                                     </div>
                                     <div class="editFiel col-md-8 m-b" style="display:none">
-                                        @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control" })
+                                        @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control", @id = "name" })
                                     </div>
                                 </div>
                             </div>
@@ -72,7 +72,15 @@
                                             <p>@this.Model.BrandName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            @Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })
+                                            @foreach (Brand brand in Model.BrandList)
+                                            {
+                                                <option data-lvl="0" value="@(brand.ID)">b@(brand.Name)</option>
+                                                foreach (Model entry in brand.Models)
+                                                {
+                                                    <option data-lvl="1" data-brand="@brand.ID" value="@(entry.ID)">m@(brand.Name)&nbsp;@entry.Name</option>
+                                                }
+                                            }
+                                            @*@Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })*@
                                         </div>
                                     </div>
                                 </div>
@@ -87,9 +95,9 @@
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
                                             <select id="ModelName" class="form-control m-b">
-                                                @*@Html.DropDownListFor(q=>q.ModelID, this.Model.listModel, new { @class = "form-control", @id = "brandID" })*@
-                                                <option>CRV-2015</option>
-                                                <option selected>@this.Model.ModelName</option>
+                                                
+                                                @*<option data-brand="@Model.BrandID" value="@(Model.ModelID)">@Model.listModel</option>*@
+                                                
                                             </select>
                                         </div>
                                     </div>
@@ -105,8 +113,8 @@
                                             <p>@this.Model.LicenseNumber</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <div id="LicenseNumber" class="m-b">
-                                                @Html.TextBoxFor(q => q.LicenseNumber, new { @type = "text", @class = "form-control"}) 
+                                            <div class="m-b">
+                                                @Html.TextBoxFor(q => q.LicenseNumber, new { @type = "text", @class = "form-control", @id = "licenseNumber"}) 
                                             </div>
                                         </div>
                                     </div>
@@ -121,8 +129,8 @@
                                             <p>@this.Model.Engine</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            <div id="Engine">
-                                                @Html.TextBoxFor(q => q.Engine, new { @type = "text", @class = "form-control" })
+                                            <div>
+                                                @Html.TextBoxFor(q => q.Engine, new { @type = "text", @class = "form-control", @id = "engine" })
                                             </div>
                                         </div>
                                     </div>
@@ -138,12 +146,18 @@
                                             <p>@this.Model.FuelTypeName</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            <select id="FuelType" class="form-control">
-                                                <option value="1">Xăng</option>
-                                                <option value="2">Dầu Diesel</option>
-                                                <option value="3">Điện</option>
-                                                <option value="4">Điện lai</option>
-                                                <option value="5">Điện lai sạc điện</option>
+                                            <select id="fuelFilter" class="form-control">
+                                                @foreach (KeyValuePair<int, string> entry in Constants.FUEL_TYPE)
+                                                {
+                                                    if (@entry.Value != Model.FuelTypeName)
+                                                    {
+                                                        <option value="@entry.Key">@entry.Value</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@entry.Key" selected>@entry.Value</option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -158,9 +172,24 @@
                                             <p>@this.Model.TransmissionTypeName</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            <div id="TranmissionTypeName" class="form-control">
-                                                <div class="col-md-6"><input type="radio" value="1" name="trans"> Số tự động</div>
-                                                <div class="col-md-6"><input type="radio" value="2" name="trans"> Số sàn</div>
+                                            <div id="tranmissionType" class="form-control">
+                                                @foreach (KeyValuePair<int, string> entry in Constants.TRANSMISSION_TYPE)
+                                                {
+                                                    if(@entry.Value != Model.TransmissionTypeName)
+                                                    {
+                                                        <div class="checkbox checkbox-inline checkbox-primary">
+                                                        <input value="@entry.Key" id="transmission@(entry.Value)" type="checkbox">
+                                                        <label for="transmission@(entry.Value)">@entry.Value</label>
+                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="checkbox checkbox-inline checkbox-primary">
+                                                            <input value="@entry.Key" id="transmission@(entry.Value)" type="checkbox" checked>
+                                                            <label for="transmission@(entry.Value)">@entry.Value</label>
+                                                        </div>
+                                                    }
+                                                }
                                             </div>
                                         </div>
                                     </div>
@@ -176,7 +205,7 @@
                                         <div class="col-md-8 m-b" style="height: 200px;">
                                             <div class="form-group row" id="colorFilter">
    
-                                                <div class="editFiel col-xs-12" style="display:none">
+                                                <div id="colorFilter" class="editFiel col-xs-12" style="display:none">
                                                     @for (int i = 1; i < Constants.COLOR.Count(); i++)
                                                     {
                                                         <div class="color-selector">

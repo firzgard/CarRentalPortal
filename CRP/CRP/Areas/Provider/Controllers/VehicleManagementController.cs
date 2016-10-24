@@ -78,7 +78,13 @@ namespace CRP.Areas.Provider.Controllers
                      Value = q.ID.ToString(),
                      Selected = true,
                  });
-            
+            vehiIn.listModel = modelService.Get()
+                 .Select(q => new SelectListItem()
+                 {
+                     Text = q.Name,
+                     Value = q.ID.ToString(),
+                     Selected = true,
+                 });
             return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehiIn);
 		}
 
