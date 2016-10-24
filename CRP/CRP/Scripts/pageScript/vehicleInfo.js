@@ -1,5 +1,226 @@
-// /** carInfo ver1.0 */
-// /* rent by hour */
+$(document).ready(function(){
+	// Render star ratings
+	$('.rating').each(function(){ $(this).html(renderStarRating($(this).data('rating'), '#1ab394')); })
+	$('.rating-no-badge').each(function(){ $(this).html(renderStarRating($(this).data('rating'), '#1ab394', false)); })
+
+	// Stick the bookingSection upon scrolling past it.
+	new Waypoint.Sticky({
+		element: $('#bookingSection'),
+		offset: 50
+	})
+
+	// Display scrollspy upon scrolling past 1st infoSection
+	new Waypoint({
+		element: $('.info-section')[0],
+		handler: function(direction) {
+			$('#infoNavBar').toggleClass('hidden-info-nav');
+		},
+		offset: 75
+	})
+
+	// Scrolling handlers for scrollspy, scroll to 70px above a section
+	$('#infoNavBar a').click(function (event) {
+		var scrollPos = $('body > #wrapper').find($(this).attr('href')).offset().top - 70;
+		$('body,html').animate({
+			scrollTop: scrollPos
+		}, 500);
+		return false;
+	});
+
+	$('#infoModal').on('show.bs.modal', function (e) {
+		let modalBodyContent = 
+			`<div class="row" style="font-size:1.2em;">
+				<label class="col-xs-12">Email</label>
+				<div class="col-xs-12"><a class="btn btn-primary btn-block btn-outline" href="mailto:${EMAIL}">${EMAIL}</a></div>
+				<label class="col-xs-12">Số điện thoại chính</label>
+				<div class="col-xs-12"><a class="btn btn-primary btn-block btn-outline" href="callto:${PHONE1}">+${PHONE1}</a></div>
+				${PHONE2
+					? `<label class="col-xs-12">Số điện thoại thay thế</label>
+						<div class="col-xs-12"><a class="btn btn-primary btn-block btn-outline" href="callto:${PHONE2}">+${PHONE2}</a></div>`
+					: ''}
+			</div>`
+
+		$(this).find('.modal-body').html(modalBodyContent);
+	})
+
+	let now = moment();
+	// StartTimePicker
+	let soonestPossibleBookingStartTimeFromNow = now.clone().add(SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes'),
+		latestPossibleBookingStartTimeFromNow = now.clone().add(LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY, 'days').add(1, 'minutes');
+
+	// Get the startTime from the search page to populate the booking section
+	let sessionStartTime = sessionStorage.getItem('startTime');
+	sessionStartTime = sessionStartTime && moment(sessionStartTime);
+
+	if(!sessionStartTime || (sessionStartTime.isBefore(soonestPossibleBookingStartTimeFromNow) && sessionStartTime.isAfter(latestPossibleBookingStartTimeFromNow)))
+		sessionStartTime = now.clone().add(1, 'days');
+
+	let $startTimePicker = $('#startTimePicker').datetimepicker({
+		useCurrent: false,
+		defaultDate: sessionStartTime,
+		minDate: soonestPossibleBookingStartTimeFromNow,
+		maxDate: latestPossibleBookingStartTimeFromNow,
+		format: 'YYYY/MM/DD HH:mm',
+		ignoreReadonly: true,
+		widgetParent: 'body',
+	})
+	// This on is for rendering the popup at the correct position
+	.on('dp.show', function() {
+		let datepicker = $('.bootstrap-datetimepicker-widget:last');
+		datepicker.css({
+			'top': `${$(this).offset().top + $(this).outerHeight()}px`,
+			'bottom': 'auto',
+			'left': `${$(this).offset().left}px`
+		});
+	})
+	.on('dp.error', (data)=>{
+		console.log(data);
+	});
+
+	// In case the section is scrolled, reupdate datetimepicker's position
+	$(window).scroll(function(event) {
+		var datepicker = $('.bootstrap-datetimepicker-widget:last');
+		datepicker.css({
+			'top': `${$('#startTimePicker').offset().top + $('#startTimePicker').outerHeight()}px`,
+		});
+	});
+
+	// ============================================
+	// Image carousel rendering
+	let imageIndex = 0,
+		lastImageIndex = IMAGE_LIST.length - 1,
+		$vehicleCarousel = $('#vehicleCarousel'),
+		$carouselDisplay = $('#carouselDisplay');
+
+	const changeImg = () =>{
+		$carouselDisplay.addClass('animated fadeOut')
+		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
+			$carouselDisplay.removeClass('animated fadeOut')
+			.css('background-image', `url('${IMAGE_LIST[imageIndex]}')`)
+			.addClass('animated fadeIn')
+			.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
+				$carouselDisplay.removeClass('animated fadeIn')
+			});
+		});
+	}
+	changeImg();
+
+	$('#vehiclePrimaryImage').click(() => {
+		$vehicleCarousel.addClass('active');
+		$('body').addClass('modal-open');
+	})
+
+	// bind the carousel's controllers
+	$vehicleCarousel.find('.fa-times').click(()=>{
+		$vehicleCarousel.removeClass('active');
+		$('body').removeClass('modal-open');
+	});
+	$vehicleCarousel.find('.left.carousel-control').click(() => {
+		imageIndex = (imageIndex === 0) ? lastImageIndex : imageIndex - 1;
+		changeImg();
+	});
+
+	$vehicleCarousel.find('.right.carousel-control').click(() => {
+		imageIndex = (imageIndex === lastImageIndex) ? 0 : imageIndex + 1;
+		changeImg();
+	});
+
+	// bind esc button
+	$(document).keyup(function(e){
+		if(e.keyCode === 27){
+			$vehicleCarousel.removeClass('active');
+			$('body').removeClass('modal-open');
+		}
+	});
+	// ============================================
+
+	// Tooltip for booking section
+	$("[data-toggle='tooltip']").tooltip();
+
+	// Render the booking section info
+	let $rentalType = $('#rentalType'),
+		$rentalTypePrice = $('#rentalTypePrice')
+		$rentalPrice = $('#rentalPrice'),
+		$servicePrice = $('#servicePrice'),
+		$totalPrice = $('#totalPrice'),
+		$depositPrice = $('#depositPrice'),
+		$numOfDay = $('#numOfDay');
+
+	let rentalTypeValue
+		, rentalUnitPrice
+		, rentalPriceValue
+		, servicePriceValue
+		, numOfDayValue = Number.parseInt($numOfDay.val());
+
+	renderBookingInfo = () =>{
+		// Enable numOfDay input if it is perDay rental
+		rentalTypeValue = Number.parseInt($rentalType.val());
+		if(rentalTypeValue == 0)
+			$numOfDay.prop('disabled', false);
+		else
+			$numOfDay.prop('disabled', true);
+
+		// Render the price per unit display
+		rentalUnitPrice = $rentalType.find('option:selected').data('price');
+		$rentalTypePrice.html(`${rentalUnitPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫/${rentalTypeValue == 0 ? 'ngày' : `${rentalTypeValue} giờ`}`);
+
+		rentalPriceValue = rentalTypeValue == 0 ? rentalUnitPrice * numOfDayValue : rentalUnitPrice
+		$rentalPrice.html(`${rentalPriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
+		servicePriceValue = Number.parseInt(rentalPriceValue * BOOKING_FEE_PERCENTAGE);
+		$servicePrice.html(`${servicePriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
+		$totalPrice.html(`${(rentalPriceValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+		$depositPrice.html(`${Number.parseInt(rentalPriceValue * DEPOSIT_PERCENTAGE).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+	}
+	renderBookingInfo();
+
+	// Also rerender on changes
+	$rentalType.change(renderBookingInfo);
+
+	$numOfDay.change(() => {
+		if(Number.parseInt($numOfDay.val()) > Number.parseInt($numOfDay.prop('max'))) {
+			$numOfDay.val($numOfDay.prop('max'));
+		} else if (Number.parseInt($numOfDay.val()) < Number.parseInt($numOfDay.prop('min'))) {
+			$numOfDay.val($numOfDay.prop('min'));
+		}
+
+		numOfDayValue = Number.parseInt($numOfDay.val());
+
+		rentalPriceValue = rentalTypeValue == '0' ? rentalUnitPrice * numOfDayValue : rentalUnitPrice
+		$rentalPrice.html(`${rentalPriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
+		servicePriceValue = Number.parseInt(rentalPriceValue * BOOKING_FEE_PERCENTAGE);
+		$servicePrice.html(`${servicePriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
+		$totalPrice.html(`${(rentalPriceValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+		$depositPrice.html(`${Number.parseInt(rentalPriceValue * DEPOSIT_PERCENTAGE).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+	})
+
+	// Booking button
+	$('#bookingBtn').click(() => {
+		let bookingData = {
+			VehicleID: VEHICLE_ID
+			, StartTime: $startTimePicker.data("DateTimePicker").date().toJSON()
+			, RentalType: rentalTypeValue
+		};
+
+		if(rentalTypeValue == 0)
+			bookingData.NumOfDay = numOfDayValue;
+
+		$.ajax({
+			url: BOOKING_HANDLER_URL,
+			data: bookingData,
+		})
+		.done(function(data, textStatus, jqXHR) {
+			console.log(data, textStatus, jqXHR);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		
+	});
+});
 	
 // 	var booked = ['2016-09-29 19:00','2016-09-30 17:00','2016-09-28 13:00','2016-09-28 14:00'];
 // 	var time = [];

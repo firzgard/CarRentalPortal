@@ -4,28 +4,24 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="1633cb2c7c394dc3beaa8fdde1032e10" Name="Diagram1" ZoomLevel="107">
-<<<<<<< HEAD
-        
-        <EntityTypeShape EntityType="CRPDBModel.Brand" Width="1.5" PointX="6" PointY="1.625" />
-        <EntityTypeShape EntityType="CRPDBModel.Model" Width="1.5" PointX="8.25" PointY="2.125" />
-        <EntityTypeShape EntityType="CRPDBModel.AspNetRole" Width="1.5" PointX="9.0546420892023676" PointY="12.553307449702782" />
-        <EntityTypeShape EntityType="CRPDBModel.AspNetUserClaim" Width="1.5" PointX="11.274443277751303" PointY="28.587930335005712" />
-        <EntityTypeShape EntityType="CRPDBModel.AspNetUserLogin" Width="1.5" PointX="5.9443212831133607" PointY="17.747238823094982" />
-        <EntityTypeShape EntityType="CRPDBModel.AspNetUser" Width="1.5" PointX="4.0154304672104448" PointY="7.0083369496317287" />
-        <EntityTypeShape EntityType="CRPDBModel.BookingReceipt" Width="1.5" PointX="5.7467221011159584" PointY="28.168732030395759" />
-        <EntityTypeShape EntityType="CRPDBModel.Category" Width="1.5" PointX="8.63552398077935" PointY="9.8403907315062309" />
-        <EntityTypeShape EntityType="CRPDBModel.Garage" Width="1.5" PointX="9.26518163330163" PointY="31.861998349363915" />
-        <EntityTypeShape EntityType="CRPDBModel.GarageWorkingTime" Width="1.5" PointX="5.5540569375986495" PointY="29.199506311304638" />
-        <EntityTypeShape EntityType="CRPDBModel.Location" Width="1.5" PointX="7.2763363268581855" PointY="4.2327695210616891" />
-        <EntityTypeShape EntityType="CRPDBModel.Nation" Width="1.5" PointX="0.45089155084029375" PointY="21.916768292857693" />
-        <EntityTypeShape EntityType="CRPDBModel.PriceGroup" Width="1.5" PointX="3.6870449072155376" PointY="21.894854078951688" />
-        <EntityTypeShape EntityType="CRPDBModel.PriceGroupItem" Width="1.5" PointX="8.1484256312942254" PointY="3.3261105880728508" />
-        <EntityTypeShape EntityType="CRPDBModel.Vehicle" Width="1.5" PointX="6.13192804070745" PointY="9.9877549307363829" />
-        <EntityTypeShape EntityType="CRPDBModel.VehicleBrand" Width="1.5" PointX="5.0298338313725939" PointY="11.38823228114668" />
-        <EntityTypeShape EntityType="CRPDBModel.VehicleGroup" Width="1.5" PointX="3.0066946330511453" PointY="29.197787790185671" />
-        <EntityTypeShape EntityType="CRPDBModel.VehicleImage" Width="1.5" PointX="0.67396726490648806" PointY="26.5088831756771" />
-        <EntityTypeShape EntityType="CRPDBModel.VehicleModel" Width="1.5" PointX="6.9486684142372894" PointY="30.658314108223802" />
+      <Diagram DiagramId="1633cb2c7c394dc3beaa8fdde1032e10" Name="Diagram1">
+        <EntityTypeShape EntityType="CRPDBModel.AspNetRole" Width="1.5" PointX="0.75" PointY="13.25" />
+        <EntityTypeShape EntityType="CRPDBModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="25.125" />
+        <EntityTypeShape EntityType="CRPDBModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="31.25" />
+        <EntityTypeShape EntityType="CRPDBModel.AspNetUser" Width="1.5" PointX="3" PointY="11.5" />
+        <EntityTypeShape EntityType="CRPDBModel.BookingReceipt" Width="1.5" PointX="7.5" PointY="10.375" />
+        <EntityTypeShape EntityType="CRPDBModel.Category" Width="1.5" PointX="3" PointY="17.75" />
+        <EntityTypeShape EntityType="CRPDBModel.Garage" Width="1.5" PointX="5.25" PointY="11.875" />
+        <EntityTypeShape EntityType="CRPDBModel.GarageWorkingTime" Width="1.5" PointX="7.5" PointY="19.125" />
+        <EntityTypeShape EntityType="CRPDBModel.Location" Width="1.5" PointX="3" PointY="4.125" />
+        <EntityTypeShape EntityType="CRPDBModel.Nation" Width="1.5" PointX="0.75" PointY="4.25" />
+        <EntityTypeShape EntityType="CRPDBModel.PriceGroup" Width="1.5" PointX="3" PointY="7.75" />
+        <EntityTypeShape EntityType="CRPDBModel.PriceGroupItem" Width="1.5" PointX="5.25" PointY="4.125" />
+        <EntityTypeShape EntityType="CRPDBModel.Vehicle" Width="1.5" PointX="10.5" PointY="9.75" />
+        <EntityTypeShape EntityType="CRPDBModel.VehicleBrand" Width="1.5" PointX="3" PointY="20.125" />
+        <EntityTypeShape EntityType="CRPDBModel.VehicleGroup" Width="1.5" PointX="5.25" PointY="7.75" />
+        <EntityTypeShape EntityType="CRPDBModel.VehicleImage" Width="1.5" PointX="12.75" PointY="11.25" />
+        <EntityTypeShape EntityType="CRPDBModel.VehicleModel" Width="1.5" PointX="5.25" PointY="18.375" />
         <AssociationConnector Association="CRPDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="CRPDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="CRPDBModel.FK_BookingReceipt_AspNetUsers" />
@@ -47,51 +43,6 @@
         <AssociationConnector Association="CRPDBModel.FK_CarModel_CarBrand" />
         <AssociationConnector Association="CRPDBModel.AspNetUserRoles" />
         <AssociationConnector Association="CRPDBModel.ModelCategoryMapping" />
-        
-        
-        
-        
-        
-        
-=======
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-&gt;&gt;&gt;&gt;&gt;&gt;&gt; refs/remotes/origin/master
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

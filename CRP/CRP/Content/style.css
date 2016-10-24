@@ -167,8 +167,11 @@ h5 {
   transition: all 0.4s;
 }
 .nav > li.active {
-  border-left: 4px solid #19aa8d;
-  background: #293846;
+  background: #1ab394;
+  border-bottom: 4px solid #19aa8d;
+}
+.nav > li.active > a {
+  padding-bottom: 10px;
 }
 .nav.nav-second-level > li.active {
   border: none;
@@ -8309,6 +8312,11 @@ hr {
   display: flex;
   align-items: center;
 }
+
+.stuck {
+  position:fixed!important;
+  top:0!important;
+}
 /* ============================================================================== */
 /* datatables' filters */
 /* #multiFilter {
@@ -8362,6 +8370,10 @@ hr {
 }
 
 /* datetimepicker */
+.bootstrap-datetimepicker-widget.dropdown-menu {
+  z-index: 2031;
+}
+
 .datepicker .day.disabled {
   background-color: #B2DFDB;
 }
