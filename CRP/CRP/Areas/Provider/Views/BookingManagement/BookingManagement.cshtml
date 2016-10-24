@@ -8,6 +8,8 @@
 <style>
     #bookings .label {
 	    font-size: 13px;
+        font-style: italic;
+        font-weight: 500;
 	    padding: 5px 10%;
     }
 
@@ -58,6 +60,123 @@
             </div>
         </div>
         <table id="bookings" class="table table-stripped table-bordered table-hover" width="100%"></table>
+    </div>
+</div>
+
+<div id="detailBooking" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông tin đặt xe</h4>
+            </div>
+            <div class="modal-body">
+                <div class="ibox">
+                    <div class="ibox-title">Thông tin khách hàng</div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label>Tên khách hàng</label>
+                            </div>
+                            <div id="customerName" class="col-md-4 text-center"></div>
+
+                            <div class="col-md-2 text-right">
+                                <label>Email liên hệ</label>
+                            </div>
+                            <div id="customerEmail" class="col-md-4 text-center"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ibox">
+                    <div class="ibox-title">Thông tin xe cho thuê</div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label>Tên xe</label>
+                            </div>
+                            <div id="vehicleName" class="col-md-4 text-center"></div>
+
+                            <div class="col-md-2 text-right">
+                                <label>Biển số xe</label>
+                            </div>
+                            <div id="licenseNumber" class="col-md-4 text-center"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ibox">
+                    <div class="ibox-title">Nội dung đặt xe chi tiết</div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label>Giá cho thuê</label>
+                            </div>
+                            <div id="rentalPrice" class="col-md-4 text-center"></div>
+
+                            <div class="col-md-2 text-right">
+                                <label>Thời gian thuê</label>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                Từ <span id="startTime"></span>
+                                <br>
+                                Đến <span id="endTime"></span>
+                            </div>
+                            <div class="col-md-3 text-center">
+                                <label>Đánh giá và nhận xét</label>
+                            </div>
+                            <div class="col-md-6">
+                                <p id="rating"></p>
+                                <p id="comment"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    
+
+                    <div class="col-md-6">
+                    </div>
+
+                    <div class="col-md-6">
+                    </div>
+
+                    <div class="col-md-6">
+                    </div>
+
+                    <div class="col-md-6">
+                    </div>
+
+                    <div class="col-md-6">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="cancelBooking" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Hủy đặt xe</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="br-id" />
+                Bạn có chắc chắn hủy đặt xe <span id="vehicle-name"></span> trong khoảng từ <span id="start-time"></span> đến <span id="end-time"></span> không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button id="btnCancelBooking" class="btn btn-primary" type="button">Đồng ý</button>
+            </div>
+        </div>
     </div>
 </div>
 
