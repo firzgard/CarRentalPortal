@@ -24,6 +24,9 @@ namespace CRP.Models.Entities
         public int ID { get; set; }
         public decimal DepositPercentage { get; set; }
         public double PerDayPrice { get; set; }
+        public Nullable<int> MaxRentalPeriod { get; set; }
+        public Nullable<int> MaxDistancePerDay { get; set; }
+        public Nullable<double> ExtraChargePerKm { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PriceGroupItem> PriceGroupItems { get; set; }

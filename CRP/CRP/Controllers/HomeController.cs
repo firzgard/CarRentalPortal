@@ -20,6 +20,44 @@ namespace CRP.Controllers
 			return View(locationService.Get().OrderBy(l => l.Name).ToList());
 		}
 
+		//[Route("testNganLuong", Name = "TestNganLuong")]
+		//public ActionResult TestNganLuong()
+		//{
+		//	string payment_method = Request.Form["option_payment"];
+		//	string str_bankcode = Request.Form["bankcode"];
+
+
+		//	RequestInfo info = new RequestInfo();
+		//	info.Merchant_id = "47990";
+		//	info.Merchant_password = "2c91870ef1fc9e506d46c46fe61d3b08";
+		//	info.Receiver_email = "megafirzen@gmai.com";
+
+		//	info.cur_code = "vnd";
+		//	info.bank_code = str_bankcode;
+
+		//	info.Order_code = "Test code";
+		//	info.Total_amount = "2000";
+		//	info.fee_shipping = "0";
+		//	info.Discount_amount = "0";
+		//	info.order_description = "Test";
+		//	info.return_url = "http://localhost/3000";
+		//	info.cancel_url = "http://localhost/3001";
+
+		//	info.Buyer_fullname = buyer_fullname.Value;
+		//	info.Buyer_email = buyer_email.Value;
+		//	info.Buyer_mobile = buyer_mobile.Value;
+
+		//	APICheckoutV3 objNLChecout = new APICheckoutV3();
+		//	ResponseInfo result = objNLChecout.GetUrlCheckout(info, payment_method);
+
+		//	if (result.Error_code == "00")
+		//	{
+		//		return Redirect(result.Checkout_url);
+		//	}
+
+		//	return new HttpStatusCodeResult(400, "Invalid request");
+		//}
+
 		// Route to vehicle search results
 		[Route("search", Name = "SearchPage")]
 		public ActionResult Search()
@@ -31,18 +69,18 @@ namespace CRP.Controllers
 
 			// Reorder each brand's models by name
 			// Only get brand w/ model w/ registered vehicles
-			brandList = brandList.Aggregate(new List<Brand>(), (newBrandList, b) =>
+			brandList = brandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
 			{
-				b.Models = b.Models.Aggregate(new List<Model>(), (newModelList, m) =>
+				b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
 				{
 					if (m.Vehicles.Any())
 						newModelList.Add(m);
 					return newModelList;
 				});
 
-				if (b.Models.Any())
+				if (b.VehicleModels.Any())
 				{
-					b.Models = b.Models.OrderBy(m => m.Name).ToList();
+					b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
 					newBrandList.Add(b);
 				}
 
@@ -78,8 +116,9 @@ namespace CRP.Controllers
 		[Route("vehicleInfo/{id:int}", Name = "VehicleInfo")]
 		public ActionResult VehicleInfo(int id)
 		{
-			return View();
-			
+			var vehicle = this.Service<IVehicleService>().Get(id);
+
+			return View(new VehicleInfoPageViewModel(vehicle));
 		}
 
 		// API Route for guest/customer to search vehicle for booking

@@ -30,17 +30,17 @@ namespace CRP.Models.Entities
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<BookingReceipt> BookingReceipts { get; set; }
-        public virtual DbSet<Brand> Brands { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Garage> Garages { get; set; }
         public virtual DbSet<GarageWorkingTime> GarageWorkingTimes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
-        public virtual DbSet<Model> Models { get; set; }
         public virtual DbSet<Nation> Nations { get; set; }
         public virtual DbSet<PriceGroup> PriceGroups { get; set; }
         public virtual DbSet<PriceGroupItem> PriceGroupItems { get; set; }
         public virtual DbSet<Vehicle> Vehicles { get; set; }
+        public virtual DbSet<VehicleBrand> VehicleBrands { get; set; }
         public virtual DbSet<VehicleGroup> VehicleGroups { get; set; }
         public virtual DbSet<VehicleImage> VehicleImages { get; set; }
+        public virtual DbSet<VehicleModel> VehicleModels { get; set; }
     }
 }
