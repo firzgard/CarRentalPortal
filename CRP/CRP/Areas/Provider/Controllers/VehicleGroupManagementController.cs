@@ -70,9 +70,9 @@ namespace CRP.Areas.Provider.Controllers
             var result = list.Select(q => new IConvertible[] {
                 q.ID,
                 q.Name,
-                q.PriceGroup.MaxRentalPeriod != null ? q.PriceGroup.MaxRentalPeriod : null,
-                (q.PriceGroup.DepositPercentage * 100m).ToString("#") + "%",
-                q.PriceGroup.PerDayPrice,
+                q.PriceGroup != null ? (q.PriceGroup.MaxRentalPeriod != null ? q.PriceGroup.MaxRentalPeriod : null) : null,
+                q.PriceGroup != null ? (q.PriceGroup.DepositPercentage * 100m).ToString("#") + "%" : null,
+                q.PriceGroup != null ? q.PriceGroup.PerDayPrice.ToString() : null,
                 q.Vehicles.Count,
                 q.IsActive
             });
@@ -163,17 +163,22 @@ namespace CRP.Areas.Provider.Controllers
             var service = this.Service<IVehicleGroupService>();
             var priceGroupService = this.Service<IPriceGroupService>();
             var priceGroupItemService = this.Service<IPriceGroupItemService>();
+
+            if (model == null)
+            {
+                return Json(new { result = false, message = "Update failed!" });
+            }
+            else if (model.PriceGroup == null)
+            {
+                return Json(new { result = false, message = "Update failed!" });
+            }
+
             model.OwnerID = User.Identity.GetUserId();
             model.IsActive = true;
             
             var entity = this.Mapper.Map<VehicleGroup>(model);
             var priceGroupEntity = this.Mapper.Map<PriceGroup>(model.PriceGroup);
             var priceGroupItemsEntity = model.PriceGroup.PriceGroupItems;
-
-            if(entity == null || priceGroupEntity == null || priceGroupItemsEntity == null || priceGroupItemsEntity.Count == 0)
-            {
-                return Json(new { result = false, message = "Create failed!" });
-            }
 
             // create follow this step
             // 1
@@ -188,7 +193,7 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to edit single group
 		[Route("api/vehicleGroups")]
 		[HttpPatch]
-		public async Task<JsonResult> EditVehicleGroupAPI(VehicleGroupViewModel model)
+		public async Task<JsonResult> EditVehicleGroupAPI(VehicleGroup model)
 		{
             if (!this.ModelState.IsValid)
             {
@@ -198,22 +203,36 @@ namespace CRP.Areas.Provider.Controllers
             var priceGroupService = this.Service<IPriceGroupService>();
             var priceGroupItemService = this.Service<IPriceGroupItemService>();
 
-            var entity = this.Mapper.Map<VehicleGroup>(model);
-            var priceGroupEntity = this.Mapper.Map<PriceGroup>(model.PriceGroup);
-            var priceGroupItemEntity = this.Mapper.Map<PriceGroupItem>(model.PriceGroup.PriceGroupItems);
-
-            if (entity == null || priceGroupEntity == null || priceGroupItemEntity == null)
+            if (model == null)
+            {
+                return Json(new { result = false, message = "Update failed!" });
+            } else if(model.PriceGroup == null)
             {
                 return Json(new { result = false, message = "Update failed!" });
             }
 
-            // update follow this step
-            // 1
-            await priceGroupItemService.UpdateAsync(priceGroupItemEntity);
-            // 2
-            await priceGroupService.UpdateAsync(priceGroupEntity);
-            // 3
+            var entity = await service.GetAsync(model.ID);
+            entity.Name = model.Name;
+
+            var priceGroupEntity = await priceGroupService.GetAsync(model.PriceGroup.ID);
+            priceGroupEntity.DepositPercentage = model.PriceGroup.DepositPercentage;
+            priceGroupEntity.PerDayPrice = model.PriceGroup.PerDayPrice;
+            priceGroupEntity.MaxRentalPeriod = model.PriceGroup.MaxRentalPeriod;
+            priceGroupEntity.MaxDistancePerDay = model.PriceGroup.MaxDistancePerDay;
+            priceGroupEntity.ExtraChargePerKm = model.PriceGroup.ExtraChargePerKm;
+            priceGroupEntity.PriceGroupItems = model.PriceGroup.PriceGroupItems;
+
+            var listItem = priceGroupItemService.Get(q => q.PriceGroupID == model.PriceGroup.ID);
+            if(listItem.Count() > 0)
+            {
+                foreach (var item in listItem)
+                {
+                    priceGroupItemService.DeleteAsync(item);
+                }
+            }
+
             await service.UpdateAsync(entity);
+            await priceGroupService.UpdateAsync(priceGroupEntity);
 
             return Json(new { result = true, message = "Update success!" });
         }
@@ -228,6 +247,11 @@ namespace CRP.Areas.Provider.Controllers
             var priceGroupItemService = this.Service<IPriceGroupItemService>();
 
             var entity = await service.GetAsync(id);
+            if(entity.Vehicles.Count > 0)
+            {
+                return Json(new { result = false, message = "Chỉ có thể xóa khi không còn xe trong nhóm, thật xin lỗi!" });
+            }
+
             if(entity != null)
             {
                 var priceGroupEntity = await priceGroupService.GetAsync(entity.PriceGroup.ID);
@@ -237,7 +261,7 @@ namespace CRP.Areas.Provider.Controllers
                     await service.DeleteAsync(entity);
                     foreach(var item in priceGroupItemsEntity)
                     {
-                        await priceGroupItemService.DeleteAsync(item);
+                        priceGroupItemService.DeleteAsync(item);
                     }
                     await priceGroupService.DeleteAsync(priceGroupEntity);
                     
