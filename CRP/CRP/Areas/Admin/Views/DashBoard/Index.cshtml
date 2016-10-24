@@ -1,0 +1,207 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+}
+
+<div class="tabs-container">
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#tab-1"> Báo Cáo</a></li>
+        <li class=""><a data-toggle="tab" href="#tab-2">Nhà cung cấp và garage</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab-1" class="tab-pane active">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="ibox float-e-margins" style="border: 1px solid #868080">
+                            <div class="ibox-title">
+                                <h5>Lượt booking</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">386,200</h1>
+                                <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
+                                <small>Lượt</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="ibox float-e-margins" style="border: 1px solid #868080">
+                            <div class="ibox-title">
+                                <h5>Booking thành công</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">80,800</h1>
+                                <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>
+                                <small>Lượt</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins" style="border: 1px solid #868080">
+                            <div class="ibox-title">
+                                <h5>Số lượng xe</h5>
+                            </div>
+                                <div class="ibox-content">
+                                    <h1 class="no-margins">80,800</h1>
+                                    <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>
+                                    <small>Xe</small>
+                                </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins" style="border: 1px solid #868080">
+                            <div class="ibox-title">
+                                <h5>Doanh thu</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 class="no-margins">80,800 vnd</h1>
+                                <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>
+                                <small>Lượt</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="ibox float-e-margins" style="border: 1px solid #868080">
+                            <div class="ibox-content">
+                                <div>
+                                    <span class="pull-right text-right">
+                                        <small>Average value of sales in the past month in: <strong>United states</strong></small>
+                                        <br>
+                                        All sales: 162,862
+                                    </span>
+                                    <h3 class="font-bold no-margins">
+                                        Half-year revenue margin
+                                    </h3>
+                                    <small>Sales marketing.</small>
+                                </div>
+
+                                <div class="m-t-sm">
+
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div>
+                                                <canvas id="lineChart" height="286" width="755" style="width: 604px; height: 229px;"></canvas>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <ul class="stat-list m-t-lg">
+                                                <li>
+                                                    <h2 class="no-margins">2,346</h2>
+                                                    <small>Total orders in period</small>
+                                                    <div class="progress progress-mini">
+                                                        <div class="progress-bar" style="width: 48%;"></div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <h2 class="no-margins ">4,422</h2>
+                                                    <small>Orders in last month</small>
+                                                    <div class="progress progress-mini">
+                                                        <div class="progress-bar" style="width: 60%;"></div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="m-t-md">
+                                    <small class="pull-right">
+                                        <i class="fa fa-clock-o"> </i>
+                                        Update on 16.07.2015
+                                    </small>
+                                    <small>
+                                        <strong>Analysis of sales:</strong> The value has been changed over time, and last month reached a level over $50,000.
+                                    </small>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins" style="border: 1px solid #868080">
+                            <div class="ibox-title">
+                                <span class="label label-warning pull-right">Dữ liệu đang thay đổi</span>
+                                <h5>Thông tin thành viên</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <h4>Nhà cung cấp</h4>
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <small class="stats-label">Số lượng</small>
+                                        <h4>46.11%</h4>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <small class="stats-label">Đang hoạt động</small>
+                                        <h4>432.021</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <h4>Khách hàng</h4>
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <small class="stats-label">Số lượng</small>
+                                        <h4>92.43%</h4>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <small class="stats-label">Đang hoạt động</small>
+                                        <h4>564.554</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <h4>Garage</h4>
+                                    </div>
+
+                                    <div class="col-xs-4">
+                                        <small class="stats-label">Số lượng</small>
+                                        <h4>150.23%</h4>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <small class="stats-label">Đang hoạt động</small>
+                                        <h4>124.990</h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div id="tab-2" class="tab-pane">
+            <div class="panel-body">
+                <strong>Donec quam felis</strong>
+
+                <p>
+                    Thousand unknown plants are noticed by me: when I hear the buzz of the little world among the stalks, and grow familiar with the countless indescribable forms of the insects
+                    and flies, then I feel the presence of the Almighty, who formed us in his own image, and the breath
+                </p>
+
+                <p>
+                    I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so happy, my dear friend, so absorbed in the exquisite
+                    sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at the present moment; and yet.
+                </p>
+            </div>
+        </div>
+    </div>
+   </div>
+
+
+
