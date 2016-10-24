@@ -17,12 +17,15 @@ const viDatatables = {
         last: "Trang cuối",
     },
     zeroRecords: "Không tìm thấy dữ liệu",
-    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    info: "Đang hiển thị _START_ đến _END_ trên tổng cộng _TOTAL_ dòng",
     infoEmpty: "không có dữ liệu",
     infoFiltered: "(được lọc ra từ _MAX_ dòng)"
 }
 
 let table1 = null;
+const groupID = $('#groupID').val();
+const priceGroupID = $('#priceGroupID').val();
+
 $(document).ready(function () {
     $('#drpVehicle').select2({
         width: '100%',
@@ -30,13 +33,41 @@ $(document).ready(function () {
     $('#drpGroup').select2({
         width: '100%',
     });
-    const groupID = $('#groupID').val();
+
+    $('#priceGroupItemD').DataTable({
+        dom: "ti",
+        ordering: false,
+        ajax: {
+            url: `/api/priceGroup/${priceGroupID}`,
+            type: "GET",
+        },
+        language: viDatatables,
+        columns: [
+            {
+                title: 'Thời gian (giờ)',
+                width: '30%',
+                data: "0"
+            },
+            {
+                title: 'Giá tiền (VNĐ)',
+                width: '40%',
+                data: "1"
+            },
+            {
+                title: 'Số Km tối đa (Km)',
+                width: '30%',
+                data: "2"
+            }
+        ]
+    });
+
+
     table1 = $('#priceGroupItem').DataTable({
         dom: "ti",
         displayLength: 23,
         ordering: false,
         ajax: {
-            url: `/api/priceGroup/${groupID}`,
+            url: `/api/priceGroup/${priceGroupID}`,
             type: "GET",
         },
         columnDefs: [
@@ -60,48 +91,37 @@ $(document).ready(function () {
                 render: (data, type, row) => {
                     return `<input type="number" class="price form-control" value="${row[1]}" />`;
                 }
+            },
+            {
+                targets: 3,
+                render: (data, type, row) => {
+                    return `<input type="number" min="1" max="2400" class="max-distance form-control" value="${row[2]}" />`;
+                }
             }
         ],
         language: viDatatables,
         columns: [
             {
-                searchable: false,
-                sortable: false,
-                width: '24%'
+                width: '10%'
             },
             {
                 title: 'Thời gian (giờ)',
-                width: '38%',
+                width: '30%',
                 data: "0"
             },
             {
                 title: 'Giá tiền (VNĐ)',
-                width: '38%',
+                width: '30%',
                 data: "1"
+            },
+            {
+                title: 'Số Km tối đa (Km)',
+                width: '30%',
+                data: "2"
             }
-
         ]
     });
-
-	// Render re/deactivate button
-    function renderActivationBtn() {
-        let isActivateInput = ($('#isActive').val() === 'true');
-		let btn = $('#activationBtn')
-		if(isActivateInput == true){
-		    btn.attr('data-action', 'deactivateCarGroup');
-			btn.html('Ngừng hoạt động');
-			btn.removeClass('btn-success');
-			btn.addClass('btn-warning');
-		} else {
-		    btn.attr('data-action', 'reactivateCarGroup');
-			btn.html('Tái kích hoạt');
-			btn.removeClass('btn-warning');
-			btn.addClass('btn-success');
-		}
-	}
-	renderActivationBtn();
-	// Bind the change event of isActive input with rerendering the btn
-	$('#isActive').on('change', renderActivationBtn);
+	renderActivation();
 
 	// Render star-rating
 	let starRatingDiv = $('#starRating'),
@@ -232,81 +252,21 @@ $(document).ready(function () {
 
 	// Custom modal's content renders dynamically
 	$('#customModal').on('show.bs.modal', function (event) {
-		let button = $(event.relatedTarget),
-			action = button.data('action'),
-	        id = button.data('id'),
-            name = button.data('name');
-
+	    let button = $(event.relatedTarget),
+			action = button.data('action');
 		switch(action){
-			case 'changeGarage':{
-				renderSelectorModal('garage', this, [ button.data('vehicle-id') ]);
-			}
-			break;case 'changeGarageMulti':{
-				let vehicles = [],
-					data = table.rows({ selected: true }).data();
-					
-				for(let i = 0; i < data.length; i++){
-					vehicles.push(data[i].id);
-				}
-
-				renderSelectorModal('garage', this, vehicles);
-			}
-			break;case 'changeGroup':{
-				renderSelectorModal('group', this, [ button.data('vehicle-id') ]);
-			}
-			break;case 'changeGroupMulti':{
-				let vehicles = [],
-					data = table.rows({ selected: true }).data();
-					
-				for(let i = 0; i < data.length; i++){
-					vehicles.push(data[i].id);
-				}
-
-				renderSelectorModal('group', this, vehicles);
-			}
-			break;case 'duplicateVehicle':{
-				// Ajax to get the prototype vehicle's info using id: button.data('vehicle-id')
-				let protoVehicle = {
-					name: 'Audi A8ZR',
-					modelID: 4,
-					year: 2015,
-					garageID: 1,
-					groupID: 1,
-					transmissionType: 1,
-					transmissionDetail: '8-speed ZF 8HP tiptronic automatic',
-					engine: '4.2 V8 TDI',
-					fuel: 6,
-					color: 'black',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, qui, temporibus. Eius, id iusto repellat fugiat. Quo adipisci sint natus magni facilis tempore, possimus, pariatur perferendis consequatur eum quas rerum.'
-				}
-
-				renderCreateVehicleModal(this, protoVehicle);
-			}
-			break;case 'createVehicle':{
-				renderCreateVehicleModal(this, { });
-			}
-			break;case 'deleteVehicle':{
-				renderConfirmModal('vehicle', 'delete', this, [{ id: button.data('vehicle-id'), name: button.data('vehicle-name') }]);
-			}
-			break;case 'deleteVehicleMulti':{
-				let vehicles = [],
-					data = table.rows({ selected: true }).data();
-
-				for(let i = 0; i < data.length; i++){
-					vehicles.push({ id: data[i].id, name: data[i].name });
-				}
-
-				renderConfirmModal('vehicle', 'delete', this, vehicles);
-			}
-			    break;
+			
 			case 'deactivateCarGroup': {
-			    renderConfirmModal('vehicle group', 'deactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			    renderConfirmModal('','vehicleGroupDetail', 'deactivate', this, [{ id: $('#groupID').val(), name: $('#groupNameD').val() }]);
 			}
 			    break;
 			case 'reactivateCarGroup': {
-			    renderConfirmModal('vehicle group', 'reactivate', this, [{ id: $('#groupID').val(), name: $('#groupName').val() }]);
+			    renderConfirmModal('','vehicleGroupDetail', 'reactivate', this, [{ id: $('#groupID').val(), name: $('#groupNameD').val() }]);
 			}
-			break;
+			    break;
+		    case 'deleteVehicleGroup': {
+		        renderConfirmModal('', 'vehicleGroupDetail', 'delete', this, [{ id: $('#groupID').val(), name: $('#groupNameD').val() }]);
+		    }
 		}
 	});
 
@@ -332,6 +292,17 @@ $('#depositDisplay').on('focusout', function () {
     $('#deposit').val(parseFloat($('#depositDisplay').val() / 100));
 });
 
+$(document).on('click', '#btnEditGroup', function () {
+    $('.display-control').css('display', 'none');
+    $('.edit-control').css('display', 'inherit');
+});
+
+$(document).on('click', '#cancelChange', function () {
+    $('.display-control').css('display', 'inherit');
+    $('.edit-control').css('display', 'none');
+    renderActivation();
+});
+
 $(document).on('click','.plus-btn', function () {
     if (table1 == null) {
         table1 = $('#priceGroupItem').DataTable({
@@ -350,23 +321,26 @@ $(document).on('click','.plus-btn', function () {
                     }
                 }
             ],
+            language: viDatatables,
             columns: [
                 {
-                    searchable: false,
-                    sortable: false,
-                    width: '24%'
+                    width: '10%'
                 },
                 {
-                    title: 'Max time',
-                    width: '38%',
+                    title: 'Thời gian (giờ)',
+                    width: '30%',
                     data: "MaxTime"
                 },
                 {
-                    title: 'Price',
-                    width: '38%',
+                    title: 'Giá tiền (VNĐ)',
+                    width: '30%',
                     data: "Price"
+                },
+                {
+                    title: 'Số Km tối đa (Km)',
+                    width: '30%',
+                    data: "MaxDistance"
                 }
-
             ]
         });
     }
@@ -375,6 +349,7 @@ $(document).on('click','.plus-btn', function () {
         table1.row.add({
             "MaxTime": `<input type="number" min="1" max="23" class="max-time form-control" value="" />`,
             "Price": `<input type="number" class="price form-control" value="" />`,
+            "MaxDistance": `<input type="number" min="1" max="2400" class="max-distance form-control" value="" />`,
         }).draw();
     }
 });
@@ -387,3 +362,164 @@ $(document).on('click', '.minus-btn', function () {
         $('#priceGroupItem').empty();
     }
 });
+
+$(document).on('click', '#saveChange', function () {
+    let priceGroupItemList = [];
+    let checkTimeArray = [];
+    for (var i = 0; i < $('.max-time').length; i++) {
+        if ($(`.max-time:eq(${i})`).val() && !$(`.price:eq(${i})`).val()) {
+            alert("chua nhap tien");
+        }
+        if (!$(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
+            alert("chua nhap gio");
+        }
+        if ($(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
+            var item = {};
+            item.MaxTime = parseInt($(`.max-time:eq(${i})`).val());
+            item.Price = parseInt($(`.price:eq(${i})`).val());
+            if ($(`.max-distance:eq(${i})`).val()) {
+                item.MaxDistance = parseInt($(`.max-distance:eq(${i})`).val());
+            } else {
+                item.MaxDistance = null;
+            }
+
+            if (item.MaxTime < 1 || item.MaxTime > 23) {
+                alert("số giờ bị sai");
+            } else {
+                if (jQuery.inArray(item.MaxTime, checkTimeArray) >= 0) {
+                    alert("trùng giờ");
+                } else {
+                    if (item.Price < 0) {
+                        alert("số tiền bị âm");
+                    } else {
+                        priceGroupItemList.push(item);
+                        checkTimeArray.push(item.MaxTime);
+                    }
+                }
+            }
+        }
+    }
+
+    let model = {};
+    model.ID = parseInt(groupID);
+    model.Name = null;
+    model.IsActive = ($('#isActive').val() === 'True');
+    model.WithDriverPriceGroupID = parseInt(priceGroupID);
+    model.PriceGroup = {};
+    model.PriceGroup.ID = parseInt(priceGroupID);
+    model.PriceGroup.DepositPercentage = null;
+    model.PriceGroup.PerDayPrice = null;
+    model.PriceGroup.MaxRentalPeriod = null;
+    model.PriceGroup.MaxDistancePerDay = null;
+    model.PriceGroup.ExtraChargePerKm = null;
+
+    model.PriceGroup.PriceGroupItems = {};
+    model.PriceGroup.PriceGroupItems = priceGroupItemList;
+
+    if (!$('#groupName').val()) {
+        alert("Name is required!");
+        return false;
+    } else if ($('#groupName').val().length > 50) {
+        alert("Name's length is over");
+        return false;
+    } else {
+        model.Name = $('#groupName').val();
+    }
+
+    if (!$('#deposit').val()) {
+        alert("Deposit is required!");
+        return false;
+    } else if (parseFloat($('#deposit').val()) < 0 || parseFloat($('#deposit').val()) > 100) {
+        alert("Deposit must in range 0~100");
+        return false;
+    } else {
+        model.PriceGroup.DepositPercentage = parseFloat($('#deposit').val());
+    }
+
+    if (!$('#per-day-price').val()) {
+        alert("Per day price is required");
+        return false;
+    } else if (parseInt($('#per-day-price').val()) < 0) {
+        alert("not allow negative number");
+        return false;
+    } else {
+        model.PriceGroup.PerDayPrice = parseInt($('#per-day-price').val());
+    }
+
+    if ($('#max-rent').val()) {
+        model.PriceGroup.MaxRentalPeriod = parseInt($('#max-rent').val());
+        if (model.PriceGroup.MaxRentalPeriod < 0) {
+            alert("not allow negative number");
+            return false;
+        }
+    }
+    if ($('#max-distance-day').val()) {
+        model.PriceGroup.MaxDistancePerDay = parseInt($('#max-distance-day').val());
+        if (model.PriceGroup.MaxDistancePerDay < 0) {
+            alert("not allow negative number");
+            return false;
+        }
+    }
+    if ($('#extra-charge-day').val()) {
+        model.PriceGroup.ExtraChargePerKm = parseInt($('#extra-charge-day').val());
+        if (model.PriceGroup.ExtraChargePerKm < 0) {
+            alert("not allow negative number");
+            return false;
+        }
+    }
+
+    $.ajax({
+        url: `/api/vehicleGroups`,
+        type: 'PATCH',
+        data: model,
+        success: function (data) {
+            if (data.result) {
+
+            } else {
+                alert('fail');
+            }
+        },
+        error: function () {
+            alert('error');
+        }
+    });
+});
+
+// Render re/deactivate button
+function renderActivation() {
+    let isActivateInput = ($('#isActive').val() === 'True');
+    let btn = $('#activationBtn');
+    let name = $('#displayGroupName');
+    let dName = $('#groupNameD').val();
+    if (isActivateInput == true) {
+        name.removeClass('bg-danger');
+        name.addClass('bg-success');
+        name.html(`
+                <div class ="col-md-6 text-left m-t m-l m-b" style="font-size: 25px;">
+                    <span>${dName}</span>
+                    <label class ="label label-primary label-lg">đang hoạt động</label>
+                </div>
+                <div class ="col-md-2 pull-right m-t m-r-lg">
+                    <a id="btnEditGroup" class ="btn btn-success"><i class ="fa fa-pencil-square-o"></i><span> Chỉnh sửa thông tin</span></a>
+                </div>`);
+        btn.attr('data-action', 'deactivateCarGroup');
+        btn.html('Ngừng hoạt động');
+        btn.removeClass('btn-success');
+        btn.addClass('btn-warning');
+    } else {
+        name.removeClass('bg-success');
+        name.addClass('bg-danger');
+        name.html(`
+                <div class ="col-md-6 text-left m-t m-l m-b" style="font-size: 25px;">
+                    <span>${dName}</span>
+                    <label class ="label label-danger label-lg">ngưng hoạt động</label>
+                </div>
+                <div class ="col-md-2 pull-right m-t m-r-lg">
+                    <a id="btnEditGroup" class ="btn btn-success"><i class ="fa fa-pencil-square-o"></i><span> Chỉnh sửa thông tin</span></a>
+                </div>`);
+        btn.attr('data-action', 'reactivateCarGroup');
+        btn.html('Tái kích hoạt');
+        btn.removeClass('btn-warning');
+        btn.addClass('btn-success');
+    }
+}

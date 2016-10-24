@@ -163,17 +163,22 @@ namespace CRP.Areas.Provider.Controllers
             var service = this.Service<IVehicleGroupService>();
             var priceGroupService = this.Service<IPriceGroupService>();
             var priceGroupItemService = this.Service<IPriceGroupItemService>();
+
+            if (model == null)
+            {
+                return Json(new { result = false, message = "Update failed!" });
+            }
+            else if (model.PriceGroup == null)
+            {
+                return Json(new { result = false, message = "Update failed!" });
+            }
+
             model.OwnerID = User.Identity.GetUserId();
             model.IsActive = true;
             
             var entity = this.Mapper.Map<VehicleGroup>(model);
             var priceGroupEntity = this.Mapper.Map<PriceGroup>(model.PriceGroup);
             var priceGroupItemsEntity = model.PriceGroup.PriceGroupItems;
-
-            if(entity == null || priceGroupEntity == null || priceGroupItemsEntity == null || priceGroupItemsEntity.Count == 0)
-            {
-                return Json(new { result = false, message = "Create failed!" });
-            }
 
             // create follow this step
             // 1
@@ -188,7 +193,7 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to edit single group
 		[Route("api/vehicleGroups")]
 		[HttpPatch]
-		public async Task<JsonResult> EditVehicleGroupAPI(VehicleGroupViewModel model)
+		public async Task<JsonResult> EditVehicleGroupAPI(VehicleGroup model)
 		{
             if (!this.ModelState.IsValid)
             {
@@ -198,16 +203,18 @@ namespace CRP.Areas.Provider.Controllers
             var priceGroupService = this.Service<IPriceGroupService>();
             var priceGroupItemService = this.Service<IPriceGroupItemService>();
 
-            var entity = this.Mapper.Map<VehicleGroup>(model);
-            var priceGroupEntity = this.Mapper.Map<PriceGroup>(model.PriceGroup);
-            var priceGroupItemEntity = this.Mapper.Map<PriceGroupItem>(model.PriceGroup.PriceGroupItems);
-
-            if (entity == null || priceGroupEntity == null || priceGroupItemEntity == null)
+            if (model == null)
+            {
+                return Json(new { result = false, message = "Update failed!" });
+            } else if(model.PriceGroup == null)
             {
                 return Json(new { result = false, message = "Update failed!" });
             }
 
-            // update follow this step
+            var entity = this.Mapper.Map<VehicleGroup>(model);
+            var priceGroupEntity = this.Mapper.Map<PriceGroup>(model.PriceGroup);
+            var priceGroupItemEntity = this.Mapper.Map<PriceGroupItem>(model.PriceGroup.PriceGroupItems);
+
             // 1
             await priceGroupItemService.UpdateAsync(priceGroupItemEntity);
             // 2
@@ -237,7 +244,7 @@ namespace CRP.Areas.Provider.Controllers
                     await service.DeleteAsync(entity);
                     foreach(var item in priceGroupItemsEntity)
                     {
-                        await priceGroupItemService.DeleteAsync(item);
+                        priceGroupItemService.DeleteAsync(item);
                     }
                     await priceGroupService.DeleteAsync(priceGroupEntity);
                     
