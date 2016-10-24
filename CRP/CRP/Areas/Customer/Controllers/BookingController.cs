@@ -14,6 +14,7 @@ using System.Timers;
 using System.Web;
 using System.Web.Mvc;
 using API_NganLuong;
+using CRP.Models.Entities.Repositories;
 using Microsoft.AspNet.Identity.Owin;
 
 namespace CRP.Areas.Customer.Controllers
@@ -22,8 +23,8 @@ namespace CRP.Areas.Customer.Controllers
 	{
 		// API route to create a booking if possible
 		[Authorize(Roles = "Customer")]
-		[System.Web.Http.HttpPost]
 		[System.Web.Mvc.Route("api/bookings", Name = "TryBookingAPI")]
+		[System.Web.Mvc.HttpPost]
 		public System.Web.Mvc.ActionResult TryBookingAPI(BookingCreatingModel model)
 		{
 			// Check if vehicleID exists
@@ -86,6 +87,7 @@ namespace CRP.Areas.Customer.Controllers
 
 			newBooking.GaragePhone = vehicle.Garage.Phone1;
 			newBooking.VehicleName = vehicle.Name;
+			newBooking.GarageAddress = vehicle.Garage.Address + ", " + vehicle.Garage.Location.Name;
 			newBooking.Star = null;
 
 			newBooking.StartTime = model.StartTime;
@@ -108,7 +110,7 @@ namespace CRP.Areas.Customer.Controllers
 			bookingService.Create(newBooking);
 
 			// Set timer to delete the booking if it is still pending after x-milisec
-			System.Timers.Timer checkPendingBookingTimer = new System.Timers.Timer(30000);
+			System.Timers.Timer checkPendingBookingTimer = new System.Timers.Timer(Models.Constants.BOOKING_PENDING_PERIOD_IN_MILISEC);
 			checkPendingBookingTimer.AutoReset = false;
 
 			// Add callback
@@ -122,9 +124,12 @@ namespace CRP.Areas.Customer.Controllers
 		// Handler for TryBookingApi
 		private void CheckPendingBooking(int bookingID)
 		{
-			var bookingReceipt = this.Service<IBookingReceiptService>().Get(bookingID);
+			var dbContext = new CRPEntities();
+			var bookingService = new BookingReceiptService(new UnitOfWork(dbContext), new BookingReceiptRepository(dbContext));
+			var bookingReceipt = bookingService.Get(bookingID);
 
-
+			if(bookingReceipt.IsPending)
+				bookingService.Delete(bookingReceipt);
 		}
 
 		// Route to bookingConfirm page (Page for confirming booking details before paying)
@@ -133,7 +138,14 @@ namespace CRP.Areas.Customer.Controllers
 		[System.Web.Mvc.Route("bookingConfirm/{bookingID}", Name = "BookingConfirm")]
 		public System.Web.Mvc.ActionResult BookingConfirm(int bookingID)
 		{
-			return View();
+			var userID = User.Identity.GetUserId();
+			var bookingReceipt = this.Service<IBookingReceiptService>()
+					.Get(br => br.ID == bookingID && br.CustomerID == userID).FirstOrDefault();
+
+			if (bookingReceipt == null)
+				return new HttpStatusCodeResult(403, "Access denied.");
+
+			return View("~/Areas/Customer/Views/Booking/BookingConfirm.cshtml", bookingReceipt);
 		}
 
 		////cho nay nen return json, de xu ly

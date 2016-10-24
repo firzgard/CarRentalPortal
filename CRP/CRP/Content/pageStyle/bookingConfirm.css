@@ -1,0 +1,7 @@
+﻿body{
+	background-attachment: fixed;
+	background-image: url('/Content/img/backgrounds/1.jpg');
+	background-position: right top;
+	background-size: cover;
+	background-repeat: no-repeat;
+}

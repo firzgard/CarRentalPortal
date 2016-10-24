@@ -216,7 +216,7 @@
 }
 @section Scripts {
 	<script type="text/javascript">
-		const BOOKING_HANDLER_URL = '/api/bookings';
+		const BOOKING_HANDLER_URL = '@Url.RouteUrl("TryBookingAPI", new { controller = "Booking" })';
 		const BOOKING_FEE_PERCENTAGE = @Constants.BOOKING_FEE_PERCENTAGE,
 			SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR,
 			SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR,

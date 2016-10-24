@@ -210,7 +210,8 @@ $(document).ready(function(){
 
 		$.ajax({
 			url: BOOKING_HANDLER_URL,
-			data: bookingData,
+			type: 'POST',
+			data: bookingData
 		})
 		.done(function(data, textStatus, jqXHR) {
 			console.log(data, textStatus, jqXHR);
