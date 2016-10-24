@@ -2,7 +2,7 @@ const vehicleTableColumns = [
 	{ name: 'ID', data: 'ID', visible: false, orderable: false, searchable: false }
 	, { name: 'Name', title: 'Tên', data: 'Name' }
 	, { name: 'LicenseNumber', title: 'Biển số', data: 'LicenseNumber' }
-	, { name: 'VehicleGroupName', title: 'Nhóm', data: 'VehicleGroupName' }
+	, { name: 'VehicleGroupName', title: 'Nhóm', data: 'VehicleGroupName', defaultContent: '-chưa có nhóm-' }
 	, { name: 'Year', title: 'Năm', data: 'Year' }
 	, { name: 'NumOfSeat', title: 'Số chỗ', data: 'NumOfSeat' }
 	, { name: 'Star', title: "Đánh giá", data: 'Star', width: '6.5em' }
