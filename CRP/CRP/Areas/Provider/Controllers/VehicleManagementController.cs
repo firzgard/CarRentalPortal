@@ -138,8 +138,8 @@ namespace CRP.Areas.Provider.Controllers
 			var VehicleImageService = this.Service<IVehicleImageService>();
 
 			var entity = this.Mapper.Map<Vehicle>(model);
-			var ModelEntity = this.Mapper.Map<Model>(model.Model);
-			var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
+			var ModelEntity = this.Mapper.Map<VehicleModel>(model.VehicleModel);
+			var BrandEntity = this.Mapper.Map<VehicleBrand>(model.VehicleModel.VehicleBrand);
 			var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
 			var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
 			var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
@@ -174,8 +174,8 @@ namespace CRP.Areas.Provider.Controllers
 			var VehicleImageService = this.Service<IVehicleImageService>();
 
 			var entity = this.Mapper.Map<Vehicle>(model);
-			var ModelEntity = this.Mapper.Map<Model>(model.Model);
-			var BrandEntity = this.Mapper.Map<Brand>(model.Model.Brand);
+			var ModelEntity = this.Mapper.Map<VehicleModel>(model.VehicleModel);
+			var BrandEntity = this.Mapper.Map<VehicleBrand>(model.VehicleModel.VehicleBrand);
 			var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
 			var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
 			var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);

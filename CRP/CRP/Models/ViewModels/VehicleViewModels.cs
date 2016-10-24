@@ -55,7 +55,7 @@ namespace CRP.Models.ViewModels
 			LicenseNumber = vehicle.LicenseNumber;
 			Name = vehicle.Name;
 			Year = vehicle.Year;
-			NumOfSeat = vehicle.Model.NumOfSeat;
+			NumOfSeat = vehicle.VehicleModel.NumOfSeat;
 			Star = vehicle.Star;
 		}
 	}
@@ -109,9 +109,9 @@ namespace CRP.Models.ViewModels
 			this.LicenseNumber = vehicle.LicenseNumber;
 			this.Name = vehicle.Name;
 			this.ModelID = vehicle.ModelID;
-			this.ModelName = vehicle.Model.Name;
-			this.BrandID = vehicle.Model.BrandID;
-			this.BrandName = vehicle.Model.Brand.Name;
+			this.ModelName = vehicle.VehicleModel.Name;
+			this.BrandID = vehicle.VehicleModel.BrandID;
+			this.BrandName = vehicle.VehicleModel.VehicleBrand.Name;
 			this.GarageID = vehicle.GarageID;
 			this.GarageName = vehicle.Garage.Name;
 			this.VehicleGroupID = vehicle.VehicleGroupID;
@@ -137,10 +137,10 @@ namespace CRP.Models.ViewModels
 			this.ColorName = tmpString;
 
 			this.Star = vehicle.Star;
-			this.NumOfDoor = vehicle.Model.NumOfDoor;
-			this.NumOfSeat = vehicle.Model.NumOfSeat;
+			this.NumOfDoor = vehicle.VehicleModel.NumOfDoor;
+			this.NumOfSeat = vehicle.VehicleModel.NumOfSeat;
 			this.Year = vehicle.Year;
-			this.Category = vehicle.Model.Categories.Aggregate(
+			this.Category = vehicle.VehicleModel.Categories.Aggregate(
 				new List<string>(), (categories, mapping) => { categories.Add(mapping.Name); return categories; });
             this.ImageUrls = vehicle.VehicleImages.Aggregate(
                 new List<string>(), (images, mapping) => { images.Add(mapping.URL); return images; });

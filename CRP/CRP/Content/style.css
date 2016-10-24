@@ -8248,6 +8248,10 @@ body{
   font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
+hr {
+  border-color: #CCCCCC;
+}
+
 #wrapper > .row.border-bottom {
   margin-left: 0;
   margin-right: 0;

@@ -345,6 +345,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\APICheckoutV3.cs" />
     <Compile Include="Models\AutofacModules\AutoMapperModule.cs" />
     <Compile Include="Models\AutofacModules\EntityFrameworkModule.cs" />
     <Compile Include="Models\AutofacModules\RepositoryModule.cs" />
@@ -365,9 +366,6 @@
     <Compile Include="Models\Entities\BookingReceipt.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\Brand.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Category.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
@@ -378,9 +376,6 @@
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Location.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\Model.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Nation.cs">
@@ -412,10 +407,16 @@
     <Compile Include="Models\Entities\Vehicle.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\VehicleBrand.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\VehicleGroup.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\VehicleImage.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\VehicleModel.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
@@ -1518,6 +1519,7 @@
     <Content Include="Content\pageStyle\signUp.css" />
     <Content Include="Content\pageStyle\vehicleGroup.css" />
     <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
+    <Content Include="Content\pageStyle\vehicleInfo.css" />
     <Content Include="Content\pageStyle\vehicleManagement.css" />
     <Content Include="Content\patterns\1.png" />
     <Content Include="Content\patterns\2.png" />
@@ -1735,6 +1737,7 @@
     <Content Include="Scripts\pageScript\search.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
+    <Content Include="Scripts\pageScript\vehicleInfo.js" />
     <Content Include="Scripts\pageScript\vehicleManagement.js" />
     <Content Include="Scripts\prototype.js" />
     <Content Include="Scripts\respond.js" />
@@ -1856,6 +1859,7 @@
     <Content Include="Views\Shared\_CommonLayout.cshtml" />
     <Content Include="Views\Shared\_HeaderBarPartial.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Views\Home\VehicleInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
