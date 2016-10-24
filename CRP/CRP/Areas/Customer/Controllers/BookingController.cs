@@ -293,9 +293,9 @@ namespace CRP.Areas.Customer.Controllers
                 //update ratng cho garage va vihicle tuong ung
                 sysService.UpdateRatingGarage(entity.GarageID.GetValueOrDefault());
                 sysService.UpdateRatingVehicle(entity.VehicleID.GetValueOrDefault());
-                return Json(new { result = true, message = "Change status success!" });
+                return Json(new { result = true, message = "Cám ơn bạn đã đánh giá!" });
             }
-            return Json(new { result = false, message = "Change status failed!" });
+            return Json(new { result = false, message = "Có lỗi xảy ra!" });
         }
     }
 }

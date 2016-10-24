@@ -18,4 +18,25 @@ namespace CRP.Models.ViewModels
         public int garage { get; set; }
         public int garageActive { get; set; }
     }
+
+    public class ReportProviderViewModel
+    {
+        public string ID { get; set; }
+        public String ProviderName { get; set; }
+        public double money { get; set; }
+        public double compare { get; set; }
+        public int car { get; set; }
+        public Boolean status { get; set; }
+    }
+
+    public class ReportGarageViewModel
+    {
+        public int ID { get; set; }
+        public String GarageName { get; set; }
+        public double money { get; set; }
+        public double compare { get; set; }
+        public int car { get; set; }
+        public string owner { get; set; }
+        public Boolean status { get; set; }
+    }
 }

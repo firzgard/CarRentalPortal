@@ -1740,6 +1740,7 @@
     <Content Include="Scripts\pageScript\search.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
+    <Content Include="Scripts\pageScript\report.js" />
     <Content Include="Scripts\pageScript\vehicleInfo.js" />
     <Content Include="Scripts\pageScript\vehicleManagement.js" />
     <Content Include="Scripts\prototype.js" />
