@@ -5,13 +5,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace CRP.Models.ViewModels
 {
 	public class VehicleGroupViewModel : VehicleGroup
 	{
+        public int vehicleID { get; set; }
+        public int otherGroupID { get; set; }
+        public IEnumerable<SelectListItem> listVehicle { get; set; }
+        public IEnumerable<SelectListItem> listGroup { get; set; }
 
-		public VehicleGroupViewModel() : base() { }
+        public VehicleGroupViewModel() : base() { }
 
 		public VehicleGroupViewModel(VehicleGroup vg, IMapper mapper) : this()
 		{
@@ -22,7 +27,7 @@ namespace CRP.Models.ViewModels
 			this.ID = vg.ID;
 			this.Name = vg.Name;
 			this.IsActive = vg.IsActive;
-			this.MaxRentalPeriod = vg.MaxRentalPeriod;
+			this.NoDriverPriceGroup = vg.NoDriverPriceGroup;
 			this.DefaultPriceGroupID = vg.DefaultPriceGroupID;
 			this.PriceGroup = vg.PriceGroup;
 			this.Vehicles = vg.Vehicles;

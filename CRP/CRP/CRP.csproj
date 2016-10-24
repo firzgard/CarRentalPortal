@@ -325,6 +325,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\UserManagementController.cs" />
+    <Compile Include="Areas\Customer\Controllers\BecomeroviderController.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BookingManagementController.cs" />
@@ -349,37 +350,16 @@
     <Compile Include="Models\AutofacModules\RepositoryModule.cs" />
     <Compile Include="Models\AutofacModules\ServiceModule.cs" />
     <Compile Include="Models\ControllerExtensions.cs" />
-    <Compile Include="Models\Entities\AspNetUserClaim.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\AspNetUserLogin.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\Category.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\GarageWorkingTime.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\Repositories\UserRepository.cs" />
-    <Compile Include="Models\Entities\Repositories\VehicleImageRepository.cs" />
-    <Compile Include="Models\Entities\Services\CategoryService.cs" />
-    <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />
-    <Compile Include="Models\Entities\Repositories\PriceGroupItemRepository.cs" />
-    <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
-    <Compile Include="Models\Entities\Services\PriceGroupItemService.cs" />
-    <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
-    <Compile Include="Models\Entities\Services\UserService.cs" />
-    <Compile Include="Models\Entities\Services\VehicleImageService.cs" />
-    <Compile Include="Models\Entities\UnitOfWork.cs" />
-    <Compile Include="Models\Constants.cs" />
-    <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
-    <Compile Include="Models\Entities\Services\ModelService.cs" />
-    <Compile Include="Models\ViewModels\AccountViewModels.cs" />
     <Compile Include="Models\Entities\AspNetRole.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\AspNetUser.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\AspNetUserClaim.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\AspNetUserLogin.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\BookingReceipt.cs">
@@ -388,22 +368,13 @@
     <Compile Include="Models\Entities\Brand.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\CRP.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CRP.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\CRP.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
+    <Compile Include="Models\Entities\Category.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\CRP.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CRP.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Garage.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\GarageWorkingTime.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Entities\Location.cs">
@@ -421,6 +392,48 @@
     <Compile Include="Models\Entities\PriceGroupItem.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Repositories\RoleRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\UserRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\VehicleImageRepository.cs" />
+    <Compile Include="Models\Entities\Services\CategoryService.cs" />
+    <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\PriceGroupItemRepository.cs" />
+    <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
+    <Compile Include="Models\Entities\Services\PriceGroupItemService.cs" />
+    <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
+    <Compile Include="Models\Entities\Services\RoleService.cs" />
+    <Compile Include="Models\Entities\Services\SystemService.cs" />
+    <Compile Include="Models\Entities\Services\UserService.cs" />
+    <Compile Include="Models\Entities\Services\VehicleImageService.cs" />
+    <Compile Include="Models\Entities\UnitOfWork.cs" />
+    <Compile Include="Models\Constants.cs" />
+    <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
+    <Compile Include="Models\Entities\Services\ModelService.cs" />
+    <Compile Include="Models\Entities\Vehicle.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\VehicleGroup.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\VehicleImage.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ViewModels\AccountViewModels.cs" />
+    <Compile Include="Models\Entities\CRP.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CRP.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\CRP.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Entities\CRP.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CRP.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Repositories\BaseRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BookingReceiptRepository.cs" />
     <Compile Include="Models\Entities\Repositories\BrandRepository.cs" />
@@ -435,15 +448,6 @@
     <Compile Include="Models\Entities\Services\LocationService.cs" />
     <Compile Include="Models\Entities\Services\VehicleGroupService.cs" />
     <Compile Include="Models\Entities\Services\VehicleService.cs" />
-    <Compile Include="Models\Entities\Vehicle.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\VehicleGroup.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Entities\VehicleImage.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ViewModels\GarageViewModels.cs" />
     <Compile Include="Models\ViewModels\BookingReceiptViewModels.cs" />
@@ -1504,6 +1508,7 @@
     <Content Include="Content\NoUiSlider\nouislider.min.css" />
     <Content Include="Content\NoUiSlider\nouislider.pips.css" />
     <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
+    <Content Include="Content\pageStyle\becomeProvider.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
     <Content Include="Content\pageStyle\home.css" />
@@ -1511,7 +1516,6 @@
     <Content Include="Content\pageStyle\receipt.css" />
     <Content Include="Content\pageStyle\search.css" />
     <Content Include="Content\pageStyle\signUp.css" />
-    <Content Include="Content\pageStyle\VehicleDetail.css" />
     <Content Include="Content\pageStyle\vehicleGroup.css" />
     <Content Include="Content\pageStyle\vehicleGroupManagement.css" />
     <Content Include="Content\pageStyle\vehicleManagement.css" />
@@ -1681,11 +1685,10 @@
     <Content Include="Models\Entities\CRP.edmx.diagram">
       <DependentUpon>CRP.edmx</DependentUpon>
     </Content>
-    <Content Include="Areas\Provider\Views\VehicleGroupManagement\CreatePopup.cshtml" />
-    <Content Include="Areas\Provider\Views\VehicleGroupManagement\VehicleGroupManagement.cshtml" />
-    <Content Include="Areas\Provider\Views\VehicleGroupManagement\VehicleGroupDetail.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingHistory.cshtml" />
     <Content Include="Areas\Provider\Views\GarageManagement\CreatePopup.cshtml" />
+    <Content Include="Areas\Provider\Views\GarageManagement\GarageDetail.cshtml" />
+    <Content Include="Areas\Provider\Views\GarageManagement\GarageManagement.cshtml" />
     <Content Include="Areas\Provider\Views\BookingManagement\BookingManagement.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroupManagement\CreatePopup.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleGroupManagement\VehicleGroupDetail.cshtml" />
@@ -1693,8 +1696,8 @@
     <Content Include="Areas\Provider\Views\VehicleManagement\VehicleManagement.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingConfirm.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingReceipt.cshtml" />
-    <Content Include="Areas\Provider\Views\Vehicle\VehicleDetail.cshtml" />
-    <Content Include="Areas\Provider\Views\VehicleManagement\VehicleDetail.cshtml" />
+    <Content Include="Areas\Customer\Views\Becomerovider\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\Becomerovider\Info.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1725,13 +1728,11 @@
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
     <Content Include="Scripts\pageScript\BookingHistory.js" />
-    <Content Include="Scripts\pageScript\bookingsManagement.js" />
+    <Content Include="Scripts\pageScript\bookingManagement.js" />
     <Content Include="Scripts\pageScript\garage.js" />
-    <Content Include="Scripts\pageScript\garageList.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
     <Content Include="Scripts\pageScript\home.js" />
     <Content Include="Scripts\pageScript\search.js" />
-    <Content Include="Scripts\pageScript\VehicleDetail.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
     <Content Include="Scripts\pageScript\vehicleManagement.js" />
@@ -1868,6 +1869,7 @@
     <Folder Include="Areas\Provider\Views\PriceGroup\" />
     <Folder Include="Models\JsonModels\" />
     <Folder Include="Views\Base\" />
+    <Folder Include="Views\System\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
