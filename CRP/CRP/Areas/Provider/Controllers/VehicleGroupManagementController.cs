@@ -211,16 +211,28 @@ namespace CRP.Areas.Provider.Controllers
                 return Json(new { result = false, message = "Update failed!" });
             }
 
-            var entity = this.Mapper.Map<VehicleGroup>(model);
-            var priceGroupEntity = this.Mapper.Map<PriceGroup>(model.PriceGroup);
-            var priceGroupItemEntity = this.Mapper.Map<PriceGroupItem>(model.PriceGroup.PriceGroupItems);
+            var entity = await service.GetAsync(model.ID);
+            entity.Name = model.Name;
 
-            // 1
-            await priceGroupItemService.UpdateAsync(priceGroupItemEntity);
-            // 2
-            await priceGroupService.UpdateAsync(priceGroupEntity);
-            // 3
+            var priceGroupEntity = await priceGroupService.GetAsync(model.PriceGroup.ID);
+            priceGroupEntity.DepositPercentage = model.PriceGroup.DepositPercentage;
+            priceGroupEntity.PerDayPrice = model.PriceGroup.PerDayPrice;
+            priceGroupEntity.MaxRentalPeriod = model.PriceGroup.MaxRentalPeriod;
+            priceGroupEntity.MaxDistancePerDay = model.PriceGroup.MaxDistancePerDay;
+            priceGroupEntity.ExtraChargePerKm = model.PriceGroup.ExtraChargePerKm;
+            priceGroupEntity.PriceGroupItems = model.PriceGroup.PriceGroupItems;
+
+            var listItem = priceGroupItemService.Get(q => q.PriceGroupID == model.PriceGroup.ID);
+            if(listItem.Count() > 0)
+            {
+                foreach (var item in listItem)
+                {
+                    priceGroupItemService.DeleteAsync(item);
+                }
+            }
+
             await service.UpdateAsync(entity);
+            await priceGroupService.UpdateAsync(priceGroupEntity);
 
             return Json(new { result = true, message = "Update success!" });
         }
@@ -235,6 +247,11 @@ namespace CRP.Areas.Provider.Controllers
             var priceGroupItemService = this.Service<IPriceGroupItemService>();
 
             var entity = await service.GetAsync(id);
+            if(entity.Vehicles.Count > 0)
+            {
+                return Json(new { result = false, message = "Chỉ có thể xóa khi không còn xe trong nhóm, thật xin lỗi!" });
+            }
+
             if(entity != null)
             {
                 var priceGroupEntity = await priceGroupService.GetAsync(entity.PriceGroup.ID);

@@ -271,11 +271,11 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/vehicleGroups/${id}`,
                                 type: "DELETE",
                                 success: function (data) {
+                                    $('.modal').modal('hide');
                                     if(data.result) {
-                                        $('.modal').modal('hide');
                                         table.ajax.reload();
                                     } else {
-                                        alert("fail");
+                                        alert(data.message);
                                     }
                                 },
                                 eror: function (data) {
@@ -321,7 +321,8 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                     if(data.result) {
                                         window.location.pathname = "/management/vehicleGroupManagement";
                                     } else {
-                                        alert("fail");
+                                        $('.modal').modal('hide');
+                                        alert(data.message);
                                     }
                                 },
                                 eror: function (data) {

@@ -11,3 +11,11 @@
     font-size: 13px !important;
     font-weight: 500 !important;
 }
+
+.ibox-title {
+    padding: 0 15px !important;
+}
+
+.ibox-title .label {
+    float: none !important;
+}

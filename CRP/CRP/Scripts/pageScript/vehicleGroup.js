@@ -35,7 +35,7 @@ $(document).ready(function () {
     });
 
     $('#priceGroupItemD').DataTable({
-        dom: "ti",
+        dom: "t",
         ordering: false,
         ajax: {
             url: `/api/priceGroup/${priceGroupID}`,
@@ -63,7 +63,7 @@ $(document).ready(function () {
 
 
     table1 = $('#priceGroupItem').DataTable({
-        dom: "ti",
+        dom: "t",
         displayLength: 23,
         ordering: false,
         ajax: {
@@ -119,8 +119,16 @@ $(document).ready(function () {
                 width: '30%',
                 data: "2"
             }
-        ]
+        ],
+        initComplete: function (settings, json) {
+            if ($('.max-time').length == 0) {
+                table1.destroy();
+                table1 = null;
+                $('#priceGroupItem').empty();
+            }
+        }
     });
+
 	renderActivation();
 
 	// Render star-rating
@@ -306,7 +314,7 @@ $(document).on('click', '#cancelChange', function () {
 $(document).on('click','.plus-btn', function () {
     if (table1 == null) {
         table1 = $('#priceGroupItem').DataTable({
-            dom: "ti",
+            dom: "t",
             displayLength: 23,
             ordering: false,
             columnDefs: [
@@ -403,8 +411,6 @@ $(document).on('click', '#saveChange', function () {
     let model = {};
     model.ID = parseInt(groupID);
     model.Name = null;
-    model.IsActive = ($('#isActive').val() === 'True');
-    model.WithDriverPriceGroupID = parseInt(priceGroupID);
     model.PriceGroup = {};
     model.PriceGroup.ID = parseInt(priceGroupID);
     model.PriceGroup.DepositPercentage = null;
@@ -471,10 +477,12 @@ $(document).on('click', '#saveChange', function () {
     $.ajax({
         url: `/api/vehicleGroups`,
         type: 'PATCH',
-        data: model,
+        data: JSON.stringify(model),
+        contentType: "application/json",
+        dataType: "json",
         success: function (data) {
             if (data.result) {
-
+                window.location.pathname = `management/vehicleGroupManagement/${groupID}`;
             } else {
                 alert('fail');
             }
@@ -495,7 +503,7 @@ function renderActivation() {
         name.removeClass('bg-danger');
         name.addClass('bg-success');
         name.html(`
-                <div class ="col-md-6 text-left m-t m-l m-b" style="font-size: 25px;">
+                <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
                     <label class ="label label-primary label-lg">đang hoạt động</label>
                 </div>
@@ -510,7 +518,7 @@ function renderActivation() {
         name.removeClass('bg-success');
         name.addClass('bg-danger');
         name.html(`
-                <div class ="col-md-6 text-left m-t m-l m-b" style="font-size: 25px;">
+                <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
                     <label class ="label label-danger label-lg">ngưng hoạt động</label>
                 </div>
