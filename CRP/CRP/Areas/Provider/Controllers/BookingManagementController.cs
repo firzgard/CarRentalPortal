@@ -32,7 +32,7 @@ namespace CRP.Areas.Provider.Controllers
         }
 
         [Authorize(Roles = "Provider")]
-        [Route("api/bookings", Name = "GetBookingListAPI")]
+        [Route("api/management/bookings", Name = "GetBookingListAPI")]
         [HttpGet]
         public ActionResult GetListBooking(BookingsFilterConditions conditions)
         {
