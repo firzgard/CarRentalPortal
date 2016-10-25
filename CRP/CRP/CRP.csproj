@@ -331,6 +331,7 @@
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BookingManagementController.cs" />
     <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
+    <Compile Include="Areas\Provider\Controllers\DashBoardController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageManagementController.cs" />
     <Compile Include="Areas\Provider\Controllers\ModelController.cs" />
     <Compile Include="Areas\Provider\Controllers\PriceGroupItemController.cs" />
@@ -1666,6 +1667,15 @@
     <Content Include="Scripts\dropzone\dropzone.js" />
     <Content Include="Scripts\dropzone\dropzone.min.css" />
     <Content Include="Scripts\dropzone\dropzone.min.js" />
+    <Content Include="Scripts\flot\curvedLines.js" />
+    <Content Include="Scripts\flot\excanvas.min.js" />
+    <Content Include="Scripts\flot\jquery.flot.js" />
+    <Content Include="Scripts\flot\jquery.flot.pie.js" />
+    <Content Include="Scripts\flot\jquery.flot.resize.js" />
+    <Content Include="Scripts\flot\jquery.flot.spline.js" />
+    <Content Include="Scripts\flot\jquery.flot.symbol.js" />
+    <Content Include="Scripts\flot\jquery.flot.time.js" />
+    <Content Include="Scripts\flot\jquery.flot.tooltip.min.js" />
     <Content Include="Scripts\inspinia.js" />
     <Content Include="Scripts\jasny-bootstrap.js" />
     <Content Include="Scripts\jasny-bootstrap.min.js" />
@@ -1704,6 +1714,8 @@
     <Content Include="Areas\Customer\Views\Becomerovider\Index.cshtml" />
     <Content Include="Areas\Customer\Views\Becomerovider\Info.cshtml" />
     <Content Include="Areas\Admin\Views\DashBoard\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManagement\UserManagement.cshtml" />
+    <Content Include="Areas\Provider\Views\DashBoard\Index.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1739,6 +1751,7 @@
     <Content Include="Scripts\pageScript\garage.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
     <Content Include="Scripts\pageScript\home.js" />
+    <Content Include="Scripts\pageScript\usermanagement.js" />
     <Content Include="Scripts\pageScript\search.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
@@ -1877,7 +1890,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Areas\Admin\Views\User\" />
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />

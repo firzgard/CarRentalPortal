@@ -39,4 +39,14 @@ namespace CRP.Models.ViewModels
         public string owner { get; set; }
         public Boolean status { get; set; }
     }
+    public class UserViewModel
+    {
+        public string ID { get; set; }
+        public String UserName { get; set; }
+        public String Email { get; set; }
+        public string phoneNumber { get; set; }
+        public String role { get; set; }
+        public String providerUtil { get; set; }
+        public Boolean status { get; set; }
+    }
 }
