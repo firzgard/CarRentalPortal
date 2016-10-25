@@ -1704,6 +1704,7 @@
     <Content Include="Areas\Customer\Views\Becomerovider\Index.cshtml" />
     <Content Include="Areas\Customer\Views\Becomerovider\Info.cshtml" />
     <Content Include="Areas\Admin\Views\DashBoard\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\UserManagement\UserManagement.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1739,6 +1740,7 @@
     <Content Include="Scripts\pageScript\garage.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
     <Content Include="Scripts\pageScript\home.js" />
+    <Content Include="Scripts\pageScript\usermanagement.js" />
     <Content Include="Scripts\pageScript\search.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
@@ -1877,7 +1879,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
-    <Folder Include="Areas\Admin\Views\User\" />
     <Folder Include="Areas\Customer\Models\" />
     <Folder Include="Areas\Customer\Views\Shared\" />
     <Folder Include="Areas\Provider\Models\" />
