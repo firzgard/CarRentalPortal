@@ -8,7 +8,7 @@
         <div>
             <h1 class="logo-name">CRP</h1>
         </div>
-        <h3 style="color:white">Login to Car Rental Portal</h3>
+        <h3 style="color:white">Đăng nhập</h3>
         @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
         {
             @Html.AntiForgeryToken()
@@ -24,8 +24,8 @@
                 </div>
                 <button type="submit" class="btn btn-primary block full-width m-b" style="color:white">Login</button>
                 @Html.ActionLink("Forgot Password", "ForgotPassword")
-                <p class="text-muted text-center" style="color:white"><small>Do not have an account?</small></p>
-                @Html.ActionLink("Register as a new user", "Register")
+                <p class="text-muted text-center" style="color:white"><small>Bạn chưa có tài khoản?</small></p>
+                @Html.ActionLink("Đăng kí một tài khoản", "Register")
             </div>
         }
 
