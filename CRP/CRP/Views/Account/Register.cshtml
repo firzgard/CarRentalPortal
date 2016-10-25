@@ -9,8 +9,8 @@
             <h1 class="logo-name">CRP</h1>
 
         </div>
-        <h3 style="color:white">Register to Car Rental Portal</h3>
-        <p style="color:white">Create account to see it in action.</p>
+        <h3 style="color:white">Tạo một tài khoản</h3>
+        <p style="color:white">Để sử dụng dịch vụ chuẩn của chúng tôi!</p>
 
        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
        {
@@ -18,30 +18,30 @@
           @Html.ValidationSummary("", new { @class = "text-danger" })
             <div>
                 <div class="form-group ">
-                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Name" })
+                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Tên" })
                 </div>
                 <div class="form-group ">
                     @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email" })
                 </div>
                 <div class="form-group ">
        
-                    @Html.TextBoxFor(m => m.ConfirmEmail, new { @class = "form-control", placeholder = "Confirm Email" })
+                    @Html.TextBoxFor(m => m.ConfirmEmail, new { @class = "form-control", placeholder = "Xác nhận Email" })
                 </div>
                 <div class="form-group ">
 
-                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Mật khẩu" })
                 </div>
                 <div class="form-group ">
     
-                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password" })
+                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Xác nhận mật khẩu" })
                 </div>
                 <div class="form-group ">
           
-                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "PhoneNumber" })
+                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Số điện thoại" })
                 </div>
-                <button type="submit" class="btn btn-primary block full-width m-b" style="color:white">Register</button>
+                <button type="submit" class="btn btn-primary block full-width m-b" style="color:white">Đăng kí</button>
 
-                <p class="text-muted text-center" style="color:white"><small>Already have an account?</small></p>
+                <p class="text-muted text-center" style="color:white"><small>Bạn đã tài khoản?</small></p>
                 @Html.ActionLink("Login", "Login", "Account", new { @class = "btn btn-sm btn-white btn-block" })
             </div>
        }

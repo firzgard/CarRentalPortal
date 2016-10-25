@@ -173,10 +173,10 @@ namespace CRP.Areas.Provider.Controllers
             {
                 entity.IsActive = !entity.IsActive;
                 await service.UpdateAsync(entity);
-                return Json(new { result = true, message = "Change status success!" });
+                return Json(new { result = true, message = "Đã thay đổi thành công!" });
             }
 
-            return Json(new { result = false, message = "Change status failed!" });
+            return Json(new { result = false, message = "Có lỗi xảy ra!" });
         }
 
         [Route("management/GarageManagement/create")]

@@ -138,18 +138,18 @@ $(document).ready(() => {
     // Render confirmation modal for actions
     $('#mdModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget),
-			action = button.data('action')
-            id = button.data('id')
-            VehicleName = button.data('name')
-            starTime = button.data('starttime')
-            star = button.data('star')
-            endTime = button.data('endtime')
-            RentalPrice = button.data('rentalprice')
-            BookingFee = button.data('bookingfee')
-            GarageName = button.data('garage')
-            GarageAddress = button.data('garageadd')
-            Color = button.data('color')
-            Model = button.data('model')
+			action = button.data('action'),
+            id = button.data('id'),
+            VehicleName = button.data('name'),
+            starTime = button.data('starttime'),
+            star = button.data('star'),
+            endTime = button.data('endtime'),
+            RentalPrice = button.data('rentalprice'),
+            BookingFee = button.data('bookingfee'),
+            GarageName = button.data('garage'),
+            GarageAddress = button.data('garageadd'),
+            Color = button.data('color'),
+            Model = button.data('model');
         switch (action) {
             case 'detail': {
                 $(this).find('.modal-content').html(`<div class="row" style="text-align:center; margin-top:10px">

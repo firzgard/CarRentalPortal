@@ -8248,7 +8248,22 @@ body.md-skin {
 /* ============================================================================== */
 /* Custom */
 body{
+  background-color: #4CAF50;
   font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.nav-header {
+  background-image: url('patterns/header-profile-skin-3.png')
+}
+.navbar-default .nav > li > a, .navbar-default .nav > li > a {
+  color: white;
+}
+.navbar-default .nav > li > a:hover, .navbar-default .nav > li > a:focus {
+  background-color: #388E3C;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+  background-color: #388E3C;
 }
 
 hr {
@@ -8263,8 +8278,29 @@ hr {
   border-bottom: 0!important;
 }
 
+.ibox-title {
+  background-color: #4CAF50;
+  border-top-color: #388E3C;
+  color: white;
+}
+
+.btn-primary {
+  background-color: #4CAF50;
+  border-color: #4CAF50;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:hover, .btn-primary.active:focus {
+  background-color: #388E3C;
+  border-color: #388E3C;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+  background-color: #388E3C;
+  border-color: #388E3C;
+}
+
 .green-bg {
-  background-color: #1ab394;
+  background-color: #4CAF50;
   color: white;
 }
 .green-bg a {
@@ -8379,4 +8415,9 @@ hr {
 }
 .datepicker .day.disabled:hover {
   background-color: #B2DFDB;
+}
+
+/* NoUISlider */
+.noUi-connect {
+  background-color: #4CAF50;
 }
