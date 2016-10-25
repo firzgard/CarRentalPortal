@@ -1,281 +1,260 @@
 ﻿@model CRP.Models.Entities.BookingReceipt
 @{
 	ViewBag.Title = "Booking Confirm";
-	Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="row wrapper border-bottom white-bg page-heading">
-	<h2>Xác nhận Booking</h2>
-</div>
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-md-9">
-            <div class="ibox">
-                <div class="ibox-title">
 
-                    <h5>Thông tin Booking</h5>
-                </div>
-                <div class="ibox-content">
-                    <div class="table-responsive">
-                        <table class="table shoping-cart-table">
-                            <tbody>
-                                <tr>
-                                    <td width="100">
-                                        <div class="cart-product-imitation">
-                                        </div>
-                                    </td>
-                                    <td class="desc">
-                                        <dl class="small m-b-none" style="text-align: center;">
-                                            <dt>Thông tin xe</dt>
-                                            <div class="ibox-content text-center">
-                                                <span class="small">
-                                                    <h6>Hãng và Model : @Model.VehicleName @Model.VehicleModel.Name</h6>
-                                                    <h7>Biển số xe: @Model.LicenseNumber</h7><br />
-                                                    <h7>Màu sắc: @Model.Color</h7>
-                                                </span>
-                                            </div>
-                                        </dl>
-                                        <dl class="small m-b-none" style="text-align: center;">
-                                            <dt>Nhà cung cấp: @Model.AspNetUser1.UserName</dt>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <div class="ibox-content text-center">
-                                                @Model.Garage.Name
-                                                <h6><i class="fa fa-phone"></i> @Model.GaragePhone</h6>
-                                                <span class="small">
-                                                    <h6><i class="fa fa-envelope-o"></i> provider@mgail.com</h6>
-                                                    <span class="small"><h6><i class="fa fa-location-arrow"></i> @Model.GarageAddress</h6></span>
-                                                </span>
-                                            </div>
-                                        </dl>
+<div class="wrapper-content">
+	<div class="row">
+		<div class="col-md-offset-1 col-md-7 animated fadeInLeft">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h2>Thông tin đặt xe</h2>
+				</div>
+				<div class="ibox-content">
+					<div class="table-responsive">
+						<table class="table shoping-cart-table">
+							<tbody>
+								<tr>
+									<td width="100">
+										<div class="cart-product-imitation">
+										</div>
+									</td>
+									<td class="desc">
+										<dl class="m-b-none" style="text-align: center;">
+											<dt>Thông tin xe</dt>
+											<div class="ibox-content text-center">
+												<span class="small">
+													<h6>Dòng xe : @Model.VehicleModel.VehicleBrand.Name @Model.VehicleModel.Name</h6>
+													<h7>Màu sắc: @Model.Color</h7>
+												</span>
+											</div>
+										</dl>
+										<dl class="small m-b-none" style="text-align: center;">
+											<dt>Nhà cung cấp: @Model.AspNetUser1.UserName</dt>
+											<div class="ibox-content text-center">
+												@Model.Garage.Name
+												<h6><i class="fa fa-phone"></i> @Model.GaragePhone</h6>
+												<span class="small">
+													<h6><i class="fa fa-envelope-o"></i> provider@mgail.com</h6>
+													<span class="small"><h6><i class="fa fa-location-arrow"></i> @Model.GarageAddress</h6></span>
+												</span>
+											</div>
+										</dl>
 
-                                    </td>
-                                    <td class="desc" style="width: 40%;  border: 1px solid black; border-radius: 5px;">
-                                        <table class="table shoping-cart-table">
-                                            <tr>
-                                                <td><h5>Bắt đầu:</h5></td>
-                                                <td>@Model.StartTime</td>
-                                                <td><h5>Đến</h5></td>
-                                                <td>@Model.EndTime</td>
-                                            </tr>
-                                            <tr>
-                                                <td> </td>
-                                            </tr>
-                                            <tr>
-                                                <td> <h5>Khoảng thời gian sẽ thuê:</h5></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
+									</td>
+									<td class="desc" style="width: 40%;  border: 1px solid black; border-radius: 5px;">
+										<table class="table shoping-cart-table">
+											<tr>
+												<td><h5>Bắt đầu:</h5></td>
+												<td>@Model.StartTime</td>
+												<td><h5>Đến</h5></td>
+												<td>@Model.EndTime</td>
+											</tr>
+											<tr>
+												<td> </td>
+											</tr>
+											<tr>
+												<td> <h5>Khoảng thời gian sẽ thuê:</h5></td>
+												<td></td>
+												<td></td>
+												<td>
 </td>
-                                            </tr>
-                                            <tr>
-                                                <td> </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <h5>Tổng tiền:</h5>
-                                                </td>
-                                                <td></td>
-                                                <td></td>
-                                                <td>
-                                                    <h2 class="font-bold">
-                                                        @Model.RentalPrice vnd
-                                                    </h2>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="m-t-sm">
-                                                        <button class="btn btn-info " type="button"><i class="fa fa-paste"></i> Thay đổi booking</button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
+											</tr>
+											<tr>
+												<td> </td>
+											</tr>
+											<tr>
+												<td>
+													<h5>Tổng tiền:</h5>
+												</td>
+												<td></td>
+												<td></td>
+												<td>
+													<h2 class="font-bold">
+														@Model.RentalPrice vnd
+													</h2>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<div class="m-t-sm">
+														<button class="btn btn-info " type="button"><i class="fa fa-paste"></i> Thay đổi booking</button>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</td>
 
 
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3" style="height:100%">
-            <div class="ibox">
-                <div class="ibox-title">
-                    <h5>Phí đặt xe</h5>
-                </div>
-                <div class="ibox-content">
-                    <span>
-                        Tổng cộng
-                    </span>
-                    <h2 class="font-bold">
-                        @Model.BookingFee
-                    </h2>
-
-                    <hr />
-                    <span class="text-muted small">
-                        Sau khi thanh toán, vui lòng liên hệ trực tiếp với provider để nhận xe! Chân thành cảm ơn đã sử dụng dịch vụ của chúng tôi!
-                    </span>
-                    <div class="m-t-sm">
-                        <div class="btn-group">
-                            <a href="payment" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Pay for Booking Fee</a>
-                            <a href="#" class="btn btn-white btn-sm"> Hủy bỏ</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="ibox">
-            <div class="ibox-title">
-                <h5>Những xe khác có thể bạn thích!</h5>
-            </div>
-
-            <div class="ibox-content">
-                <div class="wrapper wrapper-content animated fadeInRight">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="ibox">
-                                <div class="ibox-content product-box">
-                                    <div class="product-imitation">
-                                        [ INFO ]
-                                    </div>
-                                    <div class="product-desc">
-                                        <span class="product-price">
-                                            $10
-                                        </span>
-                                        <small class="text-muted">Category</small>
-                                        <a href="#" class="product-name"> Product</a>
-
-
-
-                                        <div class="small m-t-xs">
-                                            Many desktop publishing packages and web page editors now.
-                                        </div>
-                                        <div class="m-t text-righ">
-
-                                            <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="ibox">
-                                <div class="ibox-content product-box">
-
-                                    <div class="product-imitation">
-                                        [ INFO ]
-                                    </div>
-                                    <div class="product-desc">
-                                        <span class="product-price">
-                                            $10
-                                        </span>
-                                        <small class="text-muted">Category</small>
-                                        <a href="#" class="product-name"> Product</a>
-
-
-
-                                        <div class="small m-t-xs">
-                                            Many desktop publishing packages and web page editors now.
-                                        </div>
-                                        <div class="m-t text-righ">
-
-                                            <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="ibox">
-                                <div class="ibox-content product-box">
-
-                                    <div class="product-imitation">
-                                        [ INFO ]
-                                    </div>
-                                    <div class="product-desc">
-                                        <span class="product-price">
-                                            $10
-                                        </span>
-                                        <small class="text-muted">Category</small>
-                                        <a href="#" class="product-name"> Product</a>
-
-
-
-                                        <div class="small m-t-xs">
-                                            Many desktop publishing packages and web page editors now.
-                                        </div>
-                                        <div class="m-t text-righ">
-
-                                            <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="ibox">
-                                <div class="ibox-content product-box">
-
-                                    <div class="product-imitation">
-                                        [ INFO ]
-                                    </div>
-                                    <div class="product-desc">
-                                        <span class="product-price">
-                                            $10
-                                        </span>
-                                        <small class="text-muted">Category</small>
-                                        <a href="#" class="product-name"> Product</a>
-
-
-
-                                        <div class="small m-t-xs">
-                                            Many desktop publishing packages and web page editors now.
-                                        </div>
-                                        <div class="m-t text-righ">
-
-                                            <a href="#" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-            <div class="ibox-content">
-
-                <button class="btn btn-white"><i class="fa fa-arrow-left"></i> Return Booking</button>
-
-            </div>
-        </div>
-    </div>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3 animated fadeInRight">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h2>Chi phí</h2>
+				</div>
+				<div class="ibox-content">
+					<div class="row" style="font-size: 1.2em;">
+						<label class="col-md-7">Phí thuê xe</label>
+						<div class="col-md-5 text-right">@Model.RentalPrice</div>
+					</div>
+					<div class="row">
+						<span class="col-md-7">Đặt cọc</span>
+						<div class="col-md-5 text-right">@Model.Deposit</div>
+					</div>
+					<hr>
+					<div class="row" style="font-size: 1.2em;">
+						<label class="col-md-7">Phí dịch vụ</label>
+						<div class="col-md-5 text-right">@Model.BookingFee</div>
+					</div>
+					<div class="m-t-sm">
+						<div class="btn-group">
+							<a href="payment" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Pay for Booking Fee</a>
+							<a href="#" class="btn btn-white btn-sm"> Hủy bỏ</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/GarageList")
-	.Include("~/Content/awesome-bootstrap-checkbox.css",
-		"~/Content/chosen.css",
-		"~/Content/DataTables/css/jquery.dataTables.css",
-		"~/Content/DataTables/css/dataTables.bootstrap.css"));
-}
+
+<div class="wrapper-content">
+	<div class="row">
+		<div class="col-md-offset-1 col-md-7">
+			<div class="ibox">
+				<div class="ibox-title">
+
+					<h3>Thông tin đặt xe</h3>
+				</div>
+				<div class="ibox-content">
+					<div class="table-responsive">
+						<table class="table shoping-cart-table">
+							<tbody>
+								<tr>
+									<td width="100">
+										<div class="cart-product-imitation">
+										</div>
+									</td>
+									<td class="desc">
+										<dl class="m-b-none" style="text-align: center;">
+											<dt>Thông tin xe</dt>
+											<div class="ibox-content text-center">
+												<span class="small">
+													<h6>Dòng xe : @Model.VehicleModel.VehicleBrand.Name @Model.VehicleModel.Name</h6>
+													<h7>Màu sắc: @Model.Color</h7>
+												</span>
+											</div>
+										</dl>
+										<dl class="small m-b-none" style="text-align: center;">
+											<dt>Nhà cung cấp: @Model.AspNetUser1.UserName</dt>
+											<div class="ibox-content text-center">
+												@Model.Garage.Name
+												<h6><i class="fa fa-phone"></i> @Model.GaragePhone</h6>
+												<span class="small">
+													<h6><i class="fa fa-envelope-o"></i> provider@mgail.com</h6>
+													<span class="small"><h6><i class="fa fa-location-arrow"></i> @Model.GarageAddress</h6></span>
+												</span>
+											</div>
+										</dl>
+
+									</td>
+									<td class="desc" style="width: 40%;  border: 1px solid black; border-radius: 5px;">
+										<table class="table shoping-cart-table">
+											<tr>
+												<td><h5>Bắt đầu:</h5></td>
+												<td>@Model.StartTime</td>
+												<td><h5>Đến</h5></td>
+												<td>@Model.EndTime</td>
+											</tr>
+											<tr>
+												<td> </td>
+											</tr>
+											<tr>
+												<td> <h5>Khoảng thời gian sẽ thuê:</h5></td>
+												<td></td>
+												<td></td>
+												<td>
+</td>
+											</tr>
+											<tr>
+												<td> </td>
+											</tr>
+											<tr>
+												<td>
+													<h5>Tổng tiền:</h5>
+												</td>
+												<td></td>
+												<td></td>
+												<td>
+													<h2 class="font-bold">
+														@Model.RentalPrice vnd
+													</h2>
+												</td>
+											</tr>
+											<tr>
+												<td>
+													<div class="m-t-sm">
+														<button class="btn btn-info " type="button"><i class="fa fa-paste"></i> Thay đổi booking</button>
+													</div>
+												</td>
+											</tr>
+										</table>
+									</td>
+
+
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3  animated fadeInRight" style="height:100%">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h5>Phí đặt xe</h5>
+				</div>
+				<div class="ibox-content">
+					<span>
+						Tổng cộng
+					</span>
+					<h2 class="font-bold">
+						@Model.BookingFee
+					</h2>
+
+					<hr />
+					<span class="text-muted small">
+						Sau khi thanh toán, vui lòng liên hệ trực tiếp với provider để nhận xe! Chân thành cảm ơn đã sử dụng dịch vụ của chúng tôi!
+					</span>
+					<div class="m-t-sm">
+						<div class="btn-group">
+							<a href="payment" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Pay for Booking Fee</a>
+							<a href="#" class="btn btn-white btn-sm"> Hủy bỏ</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 @section Styles {
-	@Styles.Render("~/Styles/GarageList")
+	@Styles.Render("~/Styles/BookingConfirm")
 }
 @section PageStyle {
-	@Styles.Render("~/Content/pageStyle/garageList.css")
+	@Styles.Render("~/Content/pageStyle/bookingConfirm.css")
 }
 
-@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/GarageList")
-      .Include("~/Scripts/chosen.jquery.js",
-         "~/Scripts/DataTables/jquery.dataTables.js",
-                                "~/Scripts/DataTables/dataTables.bootstrap.js",
-                                "~/Scripts/utils/generateUIElements.js",
-                                "~/Scripts/utils/customModals.js",
-                                "~/Scripts/utils/generateCustomDataTablesFilters.js",
-         "~/Scripts/pageScript/garageManagement.js"));
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingConfirm")
+	.Include("~/Scripts/pageScript/bookingConfirm.js"));
 }
 @section Scripts {
-	@Scripts.Render("~/Scripts/GarageList")
+	@Scripts.Render("~/Scripts/BookingConfirm")
 }

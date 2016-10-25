@@ -324,7 +324,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
-    <Compile Include="Areas\Admin\Controllers\DashBoardController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserManagementController.cs" />
     <Compile Include="Areas\Customer\Controllers\BecomeroviderController.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
@@ -458,7 +457,6 @@
     <Compile Include="Models\ViewModels\PriceGroupViewModels.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
-    <Compile Include="Models\ViewModels\ReportViewModel.cs" />
     <Compile Include="Models\ViewModels\VehicleGroupViewModels.cs" />
     <Compile Include="Models\ViewModels\VehicleViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1512,6 +1510,7 @@
     <Content Include="Content\NoUiSlider\nouislider.pips.css" />
     <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
     <Content Include="Content\pageStyle\becomeProvider.css" />
+    <Content Include="Content\pageStyle\bookingConfirm.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
     <Content Include="Content\pageStyle\home.css" />
@@ -1702,7 +1701,7 @@
     <Content Include="Areas\Customer\Views\Booking\BookingReceipt.cshtml" />
     <Content Include="Areas\Customer\Views\Becomerovider\Index.cshtml" />
     <Content Include="Areas\Customer\Views\Becomerovider\Info.cshtml" />
-    <Content Include="Areas\Admin\Views\DashBoard\Index.cshtml" />
+    <Content Include="Areas\Provider\Views\VehicleManagement\VehicleDetail.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1732,6 +1731,7 @@
     <Content Include="Scripts\NoUISlider\nouislider.js" />
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
+    <Content Include="Scripts\pageScript\bookingConfirm.js" />
     <Content Include="Scripts\pageScript\BookingHistory.js" />
     <Content Include="Scripts\pageScript\bookingManagement.js" />
     <Content Include="Scripts\pageScript\garage.js" />
@@ -1740,7 +1740,6 @@
     <Content Include="Scripts\pageScript\search.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
-    <Content Include="Scripts\pageScript\report.js" />
     <Content Include="Scripts\pageScript\vehicleInfo.js" />
     <Content Include="Scripts\pageScript\vehicleManagement.js" />
     <Content Include="Scripts\prototype.js" />
@@ -1802,6 +1801,10 @@
     <Content Include="Scripts\utils\customModals.js" />
     <Content Include="Scripts\utils\generateCustomDataTablesFilters.js" />
     <Content Include="Scripts\utils\generateUIElements.js" />
+    <Content Include="Scripts\waypoints\infinite.js" />
+    <Content Include="Scripts\waypoints\infinite.min.js" />
+    <Content Include="Scripts\waypoints\inview.js" />
+    <Content Include="Scripts\waypoints\inview.min.js" />
     <Content Include="Scripts\waypoints\jquery.waypoints.js" />
     <Content Include="Scripts\waypoints\jquery.waypoints.min.js" />
     <Content Include="Scripts\waypoints\noframework.waypoints.js" />
@@ -1812,6 +1815,8 @@
     <Content Include="Scripts\waypoints\shortcuts\inview.min.js" />
     <Content Include="Scripts\waypoints\shortcuts\sticky.js" />
     <Content Include="Scripts\waypoints\shortcuts\sticky.min.js" />
+    <Content Include="Scripts\waypoints\sticky.js" />
+    <Content Include="Scripts\waypoints\sticky.min.js" />
     <Content Include="Scripts\waypoints\waypoints.debug.js" />
     <Content Include="Scripts\waypoints\zepto.waypoints.js" />
     <Content Include="Scripts\waypoints\zepto.waypoints.min.js" />
