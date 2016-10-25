@@ -18,8 +18,14 @@ const viDatatables = {
         next: "Trang sau",
         last: "Trang cuối",
     },
+    select: {
+        rows: {
+            _: "%d dòng đang được chọn",
+            0: "",
+        }
+    },
     zeroRecords: "Không tìm thấy dữ liệu",
-    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    info: "Đang hiển thị _START_ đến _END_ trên tổng cộng _TOTAL_ dòng",
     infoEmpty: "không có dữ liệu",
     infoFiltered: "(được lọc ra từ _MAX_ dòng)"
 }
@@ -40,7 +46,7 @@ $(document).ready(function () {
 	});
 
 	let table = $(vehicleTable).DataTable({
-		dom: "ltipr"
+		dom: "lftipr"
 		, serverSide: true
 		, ajax: {
 			url: queryApiUrl
@@ -82,23 +88,160 @@ $(document).ready(function () {
 						<button data-toggle="dropdown" class="btn btn-info btn-block dropdown-toggle" aria-expanded="false">
 							<i class="fa fa-gear"></i> Thao tác <i class="caret"></i>
 						</button>
-						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarage" data-vehicle-id="${row.id}" >Chuyển garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroup" data-vehicle-id="${row.id}" >Đổi nhóm</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.id}" data-vehicle-name="${row.name}" >Xóa</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${row.id}" >Thêm xe tương tự</a></li>
-							<li><a href="/management/vehicleManagement/${row.ID}" target="_blank">Sửa thông tin</a></li>
+						<ul class ="dropdown-menu">
+                            <li><a data-toggle="modal" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${row.ID}" >Thêm xe tương tự</a></li>
+							<li><a data-toggle="modal" data-target="#changeGarage" data-vehicle-id="${row.ID}" >Chuyển garage</a></li>
+							<li><a data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.ID}" data-vehicle-name="${row.Name}" >Xóa</a></li>
 						</ul>
 					</div>`;
-					return action;
+				    var duplicate = `<a class="btn btn-primary" data-toggle="modal" data-target="#customModal" data-vehicle-id="${row.ID}" ><i class="fa fa-copy"></i><span> Thêm xe tương tự</span></a>`;
+				    var del = `<a class="btn btn-danger" data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.ID}" data-name="${row.Name}" ><i class="fa fa-trash"></i><span> Xóa</span></a>`;
+
+					return duplicate + " " + del;
 				}
 			}
 		]
 	});
 
+	var arrayVehicle = [];
+    table.on('select', function () {
+        arrayVehicle = [];
+	    table.rows('.selected').every(function (rowIdx) {
+	        arrayVehicle.push(table.row(rowIdx).data())
+	    });
+	}).on('deselect', function () {
+	    arrayVehicle = [];
+	    table.rows('.selected').every(function (rowIdx) {
+	        arrayVehicle.push(table.row(rowIdx).data())
+	    });
+	});
+
+	$('#customModal').on('show.bs.modal', function (event) {
+	    let button = $(event.relatedTarget),
+            action = button.data('action'),
+            id = button.data('vehicle-id'),
+            name = button.data('name');
+
+	    if (action === "deleteVehicle") {
+            renderConfirmModal(table, 'vehicle', 'delete', this, [{ id: id, name: name }]);
+	    }
+	});
+
 	$('#garageID').change(function () {
 	    garageID = parseInt($('#garageID').val());
 	    table.ajax.reload();
+	});
+
+	$('#changeGarage').on('show.bs.modal', function (event) {
+
+	    var listVehicle = '';
+        
+	    for (var i = 0; i < arrayVehicle.length; i++) {
+	        listVehicle += `<li>${arrayVehicle[i].Name}</li>`;
+	    }
+
+	    $('#list-car-name').html(listVehicle);
+
+	    $.ajax({
+	        url: `/api/listOtherGarage/${garageID}`,
+	        type: 'GET',
+	        success: function (data) {
+	            var options = "";
+	            $.each(data.list, function (k, v) {
+	                options += "<option value='" + v.Value + "'>" + v.Text + "</option>";
+	            });
+	            $("#drpGarage").html(options);
+	            $('#drpGarage').select2({
+	                width: '100%',
+	            });
+	        },
+	        error: function (e) {
+	            alert('fail to load');
+	        }
+	    });
+	});
+
+	$('#changeGroup').on('show.bs.modal', function (event) {
+
+	    var listVehicle = '';
+
+	    for (var i = 0; i < arrayVehicle.length; i++) {
+	        listVehicle += `<li>${arrayVehicle[i].Name}</li>`;
+	    }
+
+	    $('#list-car-name-group').html(listVehicle);
+
+	    $.ajax({
+	        url: `/api/listGroup`,
+	        type: 'GET',
+	        success: function (data) {
+	            var options = "";
+	            $.each(data.list, function (k, v) {
+	                options += "<option value='" + v.Value + "'>" + v.Text + "</option>";
+	            });
+	            $("#drpGroup").html(options);
+	            $('#drpGroup').select2({
+	                width: '100%',
+	            });
+	        },
+	        error: function (e) {
+	            alert('fail to load');
+	        }
+	    });
+	});
+
+	$('#btnChangeGarage').on('click', function () {
+	    targetGarageID = $('#drpGarage').val();
+	    var fail = false;
+
+	    for (var i = 0; i < arrayVehicle.length; i++) {
+	        $.ajax({
+	            url: `/api/garage/updateVehicle/${arrayVehicle[i].ID}/${targetGarageID}`,
+	            type: 'PATCH',
+	            success: function (data) {
+	                if (!data.result) {
+	                    fail = true;
+	                }
+	            },
+	            error: function (e) {
+	                alert('error');
+	            }
+	        });
+	    }
+
+	    $('.modal').modal('hide');
+	    if (fail) {
+	        alert('fail');
+	    } else {
+	        table.ajax.reload();
+	    }
+	});
+
+	$('#btnChangeGroup').on('click', function () {
+	    targetGroupID = $('#drpGroup').val();
+	    var fail = false;
+
+	    for (var i = 0; i < arrayVehicle.length; i++) {
+	        $.ajax({
+	            url: `/api/vehicleGroup/updateVehicle/${arrayVehicle[i].ID}/${targetGroupID}`,
+	            type: 'PATCH',
+	            success: function (data) {
+	                if (!data.result) {
+	                    fail = true;
+	                }
+	            },
+	            error: function (e) {
+	                alert('error');
+	            }
+	        });
+	    }
+
+	    $('.modal').modal('hide');
+	    if (fail) {
+	        alert('fail');
+	    } else {
+	        table.ajax.reload();
+	    }
 	});
 
 	// Dropzone.options.myAwesomeDropzone = {
