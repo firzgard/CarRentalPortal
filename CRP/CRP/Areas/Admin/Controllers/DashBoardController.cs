@@ -49,6 +49,8 @@ namespace CRP.Areas.Admin.Controllers
             List<BookingReceipt> lstBooking = new List<BookingReceipt>();
             var lstProvider = serviceUser.Get(q => q.AspNetRoles.Any(r => r.Name == "Provider")).ToList();
             List<ReportProviderViewModel> listPro = new List<ReportProviderViewModel>();
+            DateTime today = DateTime.Now;
+            DateTime lastMonth = today.AddMonths(-1);
             foreach(AspNetUser item in lstProvider)
             {
                 ReportProviderViewModel item2 = new ReportProviderViewModel();
@@ -60,7 +62,12 @@ namespace CRP.Areas.Admin.Controllers
                 {
                     item2.money = (item2.money + boo.RentalPrice);
                 }
-                item2.compare = 60000;
+                lstBooking = serviceBooking.Get(q => q.AspNetUser1.Id == item.Id && q.IsSelfBooking == false && q.IsCanceled == false &&
+                q.IsPending == false && q.EndTime < lastMonth).ToList();
+                foreach (BookingReceipt boo in lstBooking)
+                {
+                    item2.compare = (item2.compare + boo.RentalPrice);
+                }
                 item2.car = serviceCar.Get(q => q.Garage.OwnerID.Contains(item.Id)).ToList().Count();
                 item2.status = !item.LockoutEnabled;
                 listPro.Add(item2);
@@ -78,7 +85,9 @@ namespace CRP.Areas.Admin.Controllers
             List<BookingReceipt> lstBooking = new List<BookingReceipt>();
             List<ReportGarageViewModel> listGarage = new List<ReportGarageViewModel>();
             var listGara = serviceGarage.Get().ToList();
-            foreach(Garage item in listGara)
+            DateTime today = DateTime.Now;
+            DateTime lastMonth = today.AddMonths(-1);
+            foreach (Garage item in listGara)
             {
                 ReportGarageViewModel item2 = new ReportGarageViewModel();
                 item2.ID = item.ID;
@@ -89,7 +98,13 @@ namespace CRP.Areas.Admin.Controllers
                 {
                     item2.money = (item2.money + boo.RentalPrice);
                 }
-                item2.compare = 60000;
+
+                lstBooking = serviceBooking.Get(q => q.GarageID == item.ID && q.IsSelfBooking == false && q.IsCanceled == false &&
+                q.IsPending == false && q.EndTime < lastMonth).ToList();
+                foreach (BookingReceipt boo in lstBooking)
+                {
+                    item2.compare = (item2.compare + boo.RentalPrice);
+                }
                 item2.car = serviceCar.Get(q => q.GarageID == item.ID).ToList().Count();
                 item2.owner = item.AspNetUser.UserName;
                 item2.status = item.IsActive;

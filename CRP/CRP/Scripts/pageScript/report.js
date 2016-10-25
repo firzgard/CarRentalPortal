@@ -41,12 +41,14 @@ $(document).ready(() => {
             render: (data, type, row) => {
                 return `<div class="btn-group" >
             <button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
-<i class="fa fa-gear"></i> Hành động <i class="caret"></i>
-</button>
-<ul class ="dropdown-menu">
-<li><a data-toggle="modal" data-target="#mdModal" data-action="cancle" data-id="${row[0]}" data-name="${row[1]}" >Chặn</a></li>
-</ul>
-</div>`;
+            <i class="fa fa-gear"></i> Hành động <i class="caret"></i>
+            </button>
+            <ul class ="dropdown-menu">
+             ${row.status=== true ?
+		    `<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="chan" data-id="${row.ID}">Chặn</a></li>`:
+		    `<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="bochan" data-id="${row.ID}">Bỏ chặn</a></li>`}
+            </ul>
+            </div>`;
             }
         }
         ],
@@ -65,6 +67,7 @@ $(document).ready(() => {
         }
         ]
     });
+
     let table2 = $('#garages').DataTable({
      dom: "ltipr",
      //data: mockupData,
@@ -123,10 +126,27 @@ $(document).ready(() => {
     $('#mdModal').on('show.bs.modal', function (event) {
         let button = $(event.relatedTarget),
         action = button.data('action'),
-        id = button.data('id'),
-        name = button.data('name');
+        id = button.data('id');
         switch (action) {
-            case 'cancle': {
+            case 'bochan': {
+                $(this).find('.modal-content').html(`<div class="modal-header">
+            <button type="button" class ="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times; </span>
+            </button>
+            <h2 class="modal-title">
+            Xác nhận thông tin
+            </h2>
+            </div>
+            <div class="modal-body">
+             Có phải bạn muốn <b>${action}</b> provider này?</b>. Bạn chắc chứ?
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
+            <button type="button" class ="btn btn-danger btn-yes">Đúng</button>
+            </div>`);
+            } break;
+
+            case 'chan': {
             $(this).find('.modal-content').html(`<div class="modal-header">
             <button type="button" class ="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times; </span>
@@ -136,13 +156,14 @@ $(document).ready(() => {
             </h2>
             </div>
             <div class="modal-body">
-             Có phải bạn muốn <b>${action}</b> garage này?</b>. Bạn chắc chứ?
+             Có phải bạn muốn <b>${action}</b> provider này?</b>. Bạn chắc chứ?
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
-            <button type="button" class="btn btn-danger btn-yes">Đúng</button>
+            <button type="button" class ="btn btn-danger btn-yes">Đúng</button>
             </div>`);
             } break;
+
             case 'dongcua': {
                 $(this).find('.modal-content').html(`<div class="modal-header">
             <button type="button" class ="close" data-dismiss="modal" aria-label="Close">
@@ -153,7 +174,7 @@ $(document).ready(() => {
             </h2>
             </div>
             <div class="modal-body">
-            Có phải bạn muốn <b>${action}</b> garage này?</b>. Bạn chắc chứ?
+            Có phải bạn muốn <b>${action}</b> provider này?</b>. Bạn chắc chứ?
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
@@ -182,7 +203,27 @@ $(document).ready(() => {
         }
 
         $(document).on('click', '.btn-yes', function (event) {
-            $.ajax({
+            switch (action) {
+                case 'chan': {
+                }
+                case 'bochan': {
+                        $.ajax({
+                            url: `/api/user/status`,
+                            data: {
+                                id: id,
+                            },
+                            type: "PATCH",
+                            success: function (data) {
+                                alert(data.message);
+                                location.href = "/Admin/DashBoard/Index";
+                            },
+                            eror: function (data) {
+                                alert("fail");
+                            }
+                        });
+                } break;
+                default: {
+                $.ajax({
                 url: `/api/garage/status/${id}`,
                 type: "PATCH",
                 success: function (data) {
@@ -193,6 +234,8 @@ $(document).ready(() => {
                     alert("fail");
                 }
             });
+                } break;
+            }
         });
     });
 });

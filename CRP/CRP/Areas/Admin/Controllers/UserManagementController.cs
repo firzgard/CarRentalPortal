@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -48,6 +49,22 @@ namespace CRP.Areas.Admin.Controllers
                 q.LockoutEndDateUtc
             });
             return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Route("api/user/status")]
+        [HttpPatch]
+        public async Task<JsonResult> ChangeStatus()
+        {
+            String ID = Request.Params["id"];
+            var service = this.Service<IUserReceiptService>();
+            var entity = await service.GetAsync(ID);
+            if (entity != null)
+            {
+                entity.LockoutEnabled = !entity.LockoutEnabled;
+                await service.UpdateAsync(entity);
+                return Json(new { result = true, message = "Đã thay đổi thành công!" });
+            }
+            return Json(new { result = false, message = "Có lỗi xảy ra!" });
         }
     }
 }
