@@ -6,7 +6,22 @@ using CRP.Models.Entities;
 
 namespace CRP.Models.ViewModels
 {
-    public class BookingReceiptViewModel
+	public class BookingCreatingModel
+	{
+		public int? VehicleID { get; set; }
+		public DateTime StartTime { get; set; }
+		public int? RentalType { get; set; }
+		public int? NumOfDay { get; set; }
+	}
+
+	public class NganLuongBookingModel
+	{
+		public string PaymentMethod;
+		public string BankCode;
+		public string OrderCode;
+	}
+
+	public class BookingReceiptViewModel
     {
         public int ID { get; set; }
 

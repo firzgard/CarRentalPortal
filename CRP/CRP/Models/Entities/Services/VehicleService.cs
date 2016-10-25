@@ -10,7 +10,8 @@ namespace CRP.Models.Entities.Services
 	{
 		SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions);
 		VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions);
-        List<Vehicle> SearchWithGarage(int garageID);
+		bool CheckVehicleAvailability(int vehicleId, DateTime startTime, DateTime endTime);
+		List<Vehicle> SearchWithGarage(int garageID);
 
 	}
 
@@ -118,7 +119,7 @@ namespace CRP.Models.Entities.Services
 			// Max/Min Price conditions
 			// Do not validate MaxPrice > MinPrice here. Do it before this in the controller
 			if (filterConditions.MaxPrice != null
-			    && filterConditions.MinPrice != null)
+				&& filterConditions.MinPrice != null)
 			{
 				results = results.Where(
 					r => filterConditions.MaxPrice >= r.BestPossibleRentalPrice
@@ -272,7 +273,7 @@ namespace CRP.Models.Entities.Services
 				{
 					// Check if this vehicle has any other bookings in the timespan of this booking
 					vehicle = vehicle.Where(v =>
-						v.BookingReceipts.Any(br => !br.IsCanceled
+						!v.BookingReceipts.Any(br => !br.IsCanceled
 								&& (
 										(startTime > br.StartTime && startTime < br.EndTime)
 									 || (endTime > br.StartTime && endTime < br.EndTime)
@@ -284,13 +285,13 @@ namespace CRP.Models.Entities.Services
 			return vehicle.Any();
 		}
 
-        public List<Vehicle> SearchWithGarage(int garageID)
-        {
-            var vehicleList = this.repository.Get();
-            List<Vehicle> lstVehicle = vehicleList
-             .Where(q => q.GarageID == garageID)
-             .ToList();
-            return lstVehicle;
-        }
-    }
+		public List<Vehicle> SearchWithGarage(int garageID)
+		{
+			var vehicleList = this.repository.Get();
+			List<Vehicle> lstVehicle = vehicleList
+			 .Where(q => q.GarageID == garageID)
+			 .ToList();
+			return lstVehicle;
+		}
+	}
 }
