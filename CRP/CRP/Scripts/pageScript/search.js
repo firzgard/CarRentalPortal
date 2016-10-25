@@ -28,11 +28,13 @@ function renderSearchResultItem(searchResult){
 		<div class="ibox ibox-content product-box search-result" id="vehicle${searchResult.ID}">
 			<div class="vehicle-img-container">
 				<div>
-					<div class="vehicle-img"
-							${searchResult.ImageList
-								&& searchResult.ImageList.length != 0
-								&& `style="background-image:url('${searchResult.ImageList[0]}');"`} >
-					</div>
+					<a href="${VEHICLE_INFO_URL}/${searchResult.ID}" target="_blank">
+						<div class="vehicle-img"
+								${searchResult.ImageList
+									&& searchResult.ImageList.length != 0
+									&& `style="background-image:url('${searchResult.ImageList[0]}');"`} >
+						</div>
+					</a>
 					<!-- Controls -->
 					<a class="left carousel-control">
 						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -50,7 +52,7 @@ function renderSearchResultItem(searchResult){
 			<div class="vehicle-info row">
 				<div class="col-xs-9">
 				<div style="font-size:0.88em;">&nbsp;${searchResult.GarageName} · ${renderStarRating(searchResult.GarageRating, '#1ab394', false)}</div>
-					<a href="${VEHICLE_INFO_URL}/${searchResult.ID}" class="vehicle-name"> ${searchResult.Name} <b>(${searchResult.Year})</b></a>
+					<a href="${VEHICLE_INFO_URL}/${searchResult.ID}" class="vehicle-name" target="_blank">${searchResult.Name} <b>(${searchResult.Year})</b></a>
 					<div class="center-flex">${renderStarRating(searchResult.Star, '#1ab394')} · ${searchResult.NumOfComment} đánh giá</div>
 				</div>
 				<div class="col-xs-3 text-right vehicle-seat center-flex">${searchResult.NumOfSeat}<img src="/Content/img/icons/person.png"/></div>	
@@ -264,10 +266,13 @@ $(document).ready(() => {
 	if(!sessionEndTime || sessionEndTime.isBefore(soonestPossibleBookingEndTimeFromNow))
 		sessionEndTime = now.clone().add(2, 'days');
 
-	searchConditions.StartTime = sessionStartTime.toJSON()
-	searchConditions.EndTime = sessionEndTime.toJSON()
+	if(sessionEndTime.isBefore(sessionStartTime))
+		sessionStartTime.clone().add(1, 'hours');
 
-	sessionStorage.setItem('startTime', sessionEndTime.toJSON());
+	searchConditions.StartTime = sessionStartTime.toJSON();
+	searchConditions.EndTime = sessionEndTime.toJSON();
+
+	sessionStorage.setItem('startTime', sessionStartTime.toJSON());
 	sessionStorage.setItem('endTime', sessionEndTime.toJSON());
 
 	let sessionLocationID = sessionStorage.getItem('locationID');
@@ -400,14 +405,6 @@ $(document).ready(() => {
 	});
 
 	$(endTimeFilter).data('DateTimePicker').date();
-
-	// In case the filter section is scrolled, reupdate datetimepicker's position
-	jQueryNodes.filters.scroll(function(event) {
-		var datepicker = $('.bootstrap-datetimepicker-widget:last');
-		datepicker.css({
-			'top': `${$(startTimeFilter).offset().top + $(startTimeFilter).outerHeight()}px`,
-		});
-	});
 
 	// ============================================================
 	// Select2 selectors

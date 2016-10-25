@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using CRP.Models;
 using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
-using CRP.Models.JsonModels;
 using CRP.Models.ViewModels;
 
 namespace CRP.Controllers

@@ -1,11 +1,11 @@
 const vehicleGroupTableColumns = [
 			{ name: 'ID', visible: false },
-			{ name: 'Name', title: 'Tên nhóm', width: '30%' },
-			{ name: 'Maxrent', title: 'Kỳ hạn thuê tối đa', width: '10%', defaultContent: "-" },
-			{ name: 'Deposit', title: 'Đặt cọc',  width: '15%' },
-            { name: 'PerDayPrice', title: 'Giá theo ngày', width: '15%' },
+			{ name: 'Name', title: 'Tên nhóm', width: '20%' },
+			{ name: 'Maxrent', title: 'Kỳ hạn thuê tối đa</br>(có tài xế)', width: '20%', defaultContent: "-" },
+			{ name: 'Deposit', title: 'Đặt cọc</br>(có tài xế)', width: '10%' },
+            { name: 'PerDayPrice', title: 'Giá theo ngày</br>(có tài xế)', width: '15%' },
 			{ name: 'NumOfCar', title: 'Số lượng xe', width: '10%' },
-			{ name: 'Status', title: 'Trạng thái', width: '10%' },
+			{ name: 'Status', title: 'Trạng thái', width: '15%' },
 			{
 			    title: 'Thao tác',
 			    width: '10%',
@@ -24,7 +24,7 @@ const viDatatables = {
         last: "Trang cuối",
     },
     zeroRecords: "Không tìm thấy dữ liệu",
-    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    info: "Đang hiển thị _START_ đến _END_ trên tổng cộng _TOTAL_ dòng",
     infoEmpty: "không có dữ liệu",
     infoFiltered: "(được lọc ra từ _MAX_ dòng)"
 }
@@ -33,11 +33,9 @@ $(document).ready(() =>{
 	// Render table
 	table = $('#garages').DataTable({
         dom: "ltipr",
-	    //data: mockupData,
         ajax: {
             url: "/api/vehicleGroups",
             type: "GET",
-            //data: searchCondition
         },
         language: viDatatables,
         order: [[ 1, "asc" ]],
@@ -120,11 +118,6 @@ $(document).ready(() =>{
                                 dom: "ti",
                                 displayLength: 23,
                                 ordering: false,
-                                //data: mockupData3,
-                                /*ajax: {
-                                    url: `/api/priceGroup/${groupID}`,
-                                    type: "GET",
-                                },*/
                                 columnDefs: [
                                     {
                                         // Render action button
@@ -142,19 +135,23 @@ $(document).ready(() =>{
                                     {
                                         searchable: false,
                                         sortable: false,
-                                        width: '24%'
+                                        width: '10%'
                                     },
                                     {
                                         title: 'Thời gian (giờ)',
-                                        width: '38%',
+                                        width: '30%',
                                         data: "MaxTime"
                                     },
                                     {
                                         title: 'Giá tiền (VNĐ)',
-                                        width: '38%',
+                                        width: '30%',
                                         data: "Price"
+                                    },
+                                    {
+                                        title: 'Số Km tối đa (Km)',
+                                        width: '30%',
+                                        data: "MaxDistance"
                                     }
-
                                 ]
                             });
                         }
@@ -163,11 +160,13 @@ $(document).ready(() =>{
                             table1.row.add({
                                 "MaxTime": `<input type="number" min="1" max="23" class="max-time form-control" value="" />`,
                                 "Price": `<input type="number" class="price form-control" value="" />`,
+                                "MaxDistance": `<input type="number" class="max-distance form-control" value="" />`,
                             }).draw();
                             bindMinusBtn();
                         }
                     });
                 })();
+
                 $('#myModal').modal('show');
             },
             eror: function (e) {
@@ -195,14 +194,20 @@ $(document).on('click', "#btnCreate", function () {
             var item = {};
             item.MaxTime = parseInt($(`.max-time:eq(${i})`).val());
             item.Price = parseInt($(`.price:eq(${i})`).val());
+            if ($(`.max-distance:eq(${i})`).val()) {
+                item.MaxDistance = parseInt($(`.max-distance:eq(${i})`).val());
+            } else {
+                item.MaxDistance = null;
+            }
+            
             if (item.MaxTime < 1 || item.MaxTime > 23) {
-                alert("so gio bi sai");
+                alert("số giờ bị sai");
             } else {
                 if (jQuery.inArray(item.MaxTime,checkTimeArray) >= 0) {
-                    alert("trung gio");
+                    alert("trùng giờ");
                 } else {
                     if (item.Price < 0) {
-                        alert("so tien bi am");
+                        alert("số tiền bị âm");
                     } else {
                         priceGroupItemList.push(item);
                         checkTimeArray.push(item.MaxTime);
@@ -214,10 +219,14 @@ $(document).on('click', "#btnCreate", function () {
 
     let model = {};
     model.Name = null;
-    model.MaxRentalPeriod = null;
+
     model.PriceGroup = {};
     model.PriceGroup.DepositPercentage = null;
     model.PriceGroup.PerDayPrice = null;
+    model.PriceGroup.MaxRentalPeriod = null;
+    model.PriceGroup.MaxDistancePerDay = null;
+    model.PriceGroup.ExtraChargePerKm = null;
+    
     model.PriceGroup.PriceGroupItems = {};
     model.PriceGroup.PriceGroupItems = priceGroupItemList;
 
@@ -251,8 +260,22 @@ $(document).on('click', "#btnCreate", function () {
         model.PriceGroup.PerDayPrice = parseInt($('#per-day-price').val());
     }
     if ($('#max-rent').val()) {
-        model.MaxRentalPeriod = parseInt($('#max-rent').val());
-        if (model.MaxRentalPeriod < 0) {
+        model.PriceGroup.MaxRentalPeriod = parseInt($('#max-rent').val());
+        if (model.PriceGroup.MaxRentalPeriod < 0) {
+            alert("not allow negative number");
+            return false;
+        }
+    }
+    if($('#max-distance-day').val()) {
+        model.PriceGroup.MaxDistancePerDay = parseInt($('#max-distance-day').val());
+        if (model.PriceGroup.MaxDistancePerDay < 0) {
+            alert("not allow negative number");
+            return false;
+        }
+    }
+    if ($('#extra-charge-day').val()) {
+        model.PriceGroup.ExtraChargePerKm = parseInt($('#extra-charge-day').val());
+        if (model.PriceGroup.ExtraChargePerKm < 0) {
             alert("not allow negative number");
             return false;
         }

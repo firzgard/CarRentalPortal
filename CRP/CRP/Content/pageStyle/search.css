@@ -204,6 +204,7 @@ body {
 .vehicle-img {
 	animation-duration: 0.5s;
 	background-position: center;
+    background-repeat: no-repeat;
 	background-size: cover;
 	padding-top: 75%;
 	position: relative;

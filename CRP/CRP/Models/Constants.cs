@@ -9,6 +9,11 @@ namespace CRP.Models
 {
 	public class Constants
 	{
+		public const double BOOKING_FEE_PERCENTAGE = 0.05;
+
+		// 10 mins
+		public const int BOOKING_PENDING_PERIOD_IN_MILISEC = 1000*60*10;
+
 		public const int NUM_OF_SEARCH_RESULT_PER_PAGE = 10;
 		public const int SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = 6;
 		public const int SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = 7;
