@@ -5,3 +5,8 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 }
+
+.section-header {
+	font-size: 1.4em;
+	margin-bottom: 0.7em;
+}

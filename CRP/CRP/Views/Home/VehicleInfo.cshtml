@@ -83,7 +83,7 @@
 					<p><span>Phụ thu cho mỗi km phát sinh: </span>
 						<b>@(Model.Vehicle.VehicleGroup.PriceGroup.MaxRentalPeriod != null
 							     ? ((int)Model.Vehicle.VehicleGroup.PriceGroup.ExtraChargePerKm).ToString("#,##0") + "₫/km"
-							     : "Không tính phí")</b>
+								 : "Không tính phí")</b>
 					</p>
 				</div>
 			</div>
@@ -156,7 +156,7 @@
 			</div>
 			<hr/>
 			<div class="form-group row" style="margin-bottom: 0;">
-				<label class="col-xs-6">Phí dịch vụ <span data-toggle="tooltip" title="Phí này giúp chúng tôi duy trì hoạt động." class="badge">?</span></label>
+				<label class="col-xs-6">Phí dịch vụ <span data-toggle="tooltip" title="Phí này giúp chúng tôi duy trì hoạt động. Phí sẽ được dùng để trả cho nhà cung cấp xe trong trường hợp bạn hủy đặt xe." class="badge">?</span></label>
 				<p class="col-xs-6 text-right" id="servicePrice"></p>
 			</div>
 			<hr/>
