@@ -238,4 +238,108 @@ $(document).ready(() => {
             }
         });
     });
+
+
+
+
+   var data2 = [
+              [gd(2012, 1, 1), 5], [gd(2012, 2, 1), 6], [gd(2012, 3, 2), 7], [gd(2012, 4, 4), 12],
+              [gd(2012, 5, 5), 44], [gd(2012, 6, 6), 3], [gd(2012, 7, 7), 3], [gd(2012, 8, 8), 4],
+              [gd(2012, 9, 9), 5], [gd(2012, 10, 10), 6], [gd(2012, 11, 11), 12], [gd(2012, 12, 12), 4]
+    ];
+
+    var data3 = [
+        [gd(2012, 1, 1), 800], [gd(2012, 2, 1), 500], [gd(2012, 3, 2), 600], [gd(2012, 4, 4), 700],
+        [gd(2012, 5, 5), 500], [gd(2012, 6, 6), 456], [gd(2012, 7, 7), 800], [gd(2012, 8, 8), 589],
+        [gd(2012, 9, 9), 467], [gd(2012, 10, 10), 876], [gd(2012, 11, 11), 0], [gd(2012, 12, 12), 0]
+    ];
+
+
+    var dataset = [
+        {
+            label: "Doanh thu",
+            data: data3,
+            color: "#1ab394",
+            bars: {
+                show: true,
+                align: "center",
+                barWidth: 200 * 200 * 100 * 300,
+                lineWidth: 1
+            }
+
+        }, {
+            label: "Lượt Booking",
+            data: data2,
+            yaxis: 2,
+            color: "#1C84C6",
+            lines: {
+                lineWidth: 1,
+                show: true,
+                fill: true,
+                fillColor: {
+                    colors: [{
+                        opacity: 0.2
+                    }, {
+                        opacity: 0.4
+                    }]
+                }
+            },
+            splines: {
+                show: false,
+                tension: 0.6,
+                lineWidth: 1,
+                fill: 0.1
+            },
+        }
+    ];
+
+
+    var options = {
+        xaxis: {
+            mode: "time",
+            tickSize: [1, "month"],
+            tickLength: 0,
+            axisLabel: "month",
+            axisLabelUseCanvas: true,
+            axisLabelFontSizePixels: 4,
+            axisLabelFontFamily: 'Arial',
+            axisLabelPadding: 3,
+            color: "#d5d5d5"
+        },
+        yaxes: [{
+            position: "left",
+            max: 1070,
+            color: "#d5d5d5",
+            axisLabelUseCanvas: true,
+            axisLabelFontSizePixels: 2,
+            axisLabelFontFamily: 'Arial',
+            axisLabelPadding: 0
+        }, {
+            position: "right",
+            clolor: "#d5d5d5",
+            axisLabelUseCanvas: true,
+            axisLabelFontSizePixels: 0,
+            axisLabelFontFamily: ' Arial',
+            axisLabelPadding: 12
+        }
+        ],
+        legend: {
+            noColumns: 1,
+            labelBoxBorderColor: "#000000",
+            position: "nw"
+        },
+        grid: {
+            hoverable: false,
+            borderWidth: 0
+        }
+    };
+
+    function gd(year, month, day) {
+        return new Date(year, month - 1, day).getTime();
+    }
+
+    var previousPoint = null, previousLabel = null;
+
+    $.plot($("#flot-dashboard-chart"), dataset, options);
+
 });
