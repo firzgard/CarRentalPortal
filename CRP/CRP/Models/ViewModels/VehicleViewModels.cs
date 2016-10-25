@@ -98,8 +98,9 @@ namespace CRP.Models.ViewModels
         public List<string> ImageUrls { get; set; }
         public IEnumerable<SelectListItem> listGarage { get; set; }
         public IEnumerable<SelectListItem> listGroup { get; set; }
-        public IEnumerable<SelectListItem> listBrand { get; set; }
+        //public IEnumerable<SelectListItem> listBrand { get; set; }
         public IEnumerable<SelectListItem> listModel { get; set; }
+        public List<VehicleBrand> BrandList { get; set; }
 
         public VehicleDetailInfoModel()
         { }
@@ -115,7 +116,14 @@ namespace CRP.Models.ViewModels
 			this.GarageID = vehicle.GarageID;
 			this.GarageName = vehicle.Garage.Name;
 			this.VehicleGroupID = vehicle.VehicleGroupID;
-			this.VehicleGroupName = vehicle.VehicleGroup.Name;
+            if(VehicleGroupID != null)
+            {
+                this.VehicleGroupName = vehicle.VehicleGroup.Name;
+            }
+			else
+            {
+                this.VehicleGroupName = null;
+            }
             this.Engine = vehicle.Engine;
 
 			this.TransmissionTypeID = vehicle.TransmissionType;

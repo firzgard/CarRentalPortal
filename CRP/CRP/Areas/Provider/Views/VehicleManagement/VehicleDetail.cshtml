@@ -69,18 +69,21 @@
                                             <label>Hãng xe</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@this.Model.BrandName</p>
+                                            <p>@this.Model.BrandName @this.Model.ModelName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            @foreach (Brand brand in Model.BrandList)
-                                            {
-                                                <option data-lvl="0" value="@(brand.ID)">b@(brand.Name)</option>
-                                                foreach (Model entry in brand.Models)
+                                            <select id="modelFilter" class="form-control">
+                                                @*@Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })*@
+                                                @foreach (VehicleBrand brand in this.Model.BrandList)
                                                 {
-                                                    <option data-lvl="1" data-brand="@brand.ID" value="@(entry.ID)">m@(brand.Name)&nbsp;@entry.Name</option>
+                                                    <optgroup id="brandID"  value="@(brand.ID)" label="@(brand.Name)">
+                                                        @foreach (VehicleModel entry in brand.VehicleModels)
+                                                        {
+                                                        <option id="modelID" data-brand="@brand.ID" value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
+                                                        }
+                                                    </optgroup>
                                                 }
-                                            }
-                                            @*@Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })*@
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -88,17 +91,13 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4 text-right">
-                                            <label>Model</label>
+                                            <label>Year</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@this.Model.ModelName</p>
+                                            <p>@this.Model.Year</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select id="ModelName" class="form-control m-b">
-                                                
-                                                @*<option data-brand="@Model.BrandID" value="@(Model.ModelID)">@Model.listModel</option>*@
-                                                
-                                            </select>
+                                                @Html.TextBoxFor(q => q.Year, new { @type = "number", @class = "form-control", @id = "year", @max = Constants.MAX_YEAR, @min = Constants.MIN_YEAR})
                                         </div>
                                     </div>
                                 </div>
@@ -205,10 +204,10 @@
                                         <div class="col-md-8 m-b" style="height: 200px;">
                                             <div class="form-group row" id="colorFilter">
    
-                                                <div id="colorFilter" class="editFiel col-xs-12" style="display:none">
+                                                <div class="editFiel col-xs-12" style="display:none">
                                                     @for (int i = 1; i < Constants.COLOR.Count(); i++)
                                                     {
-                                                        <div class="color-selector">
+                                                        <div id="colorFilter" class="color-selector">
                                                             <input id="color@(Constants.COLOR[i])" value="@i" type="checkbox">
                                                             <label for="color@(Constants.COLOR[i])" style="background-color: @Constants.COLOR[i];"></label>
                                                         </div>
@@ -334,7 +333,8 @@
                                                               "~/Content/chosen.css",
                                                               "~/Scripts/dropzone/dropzone.css",
                                                               "~/Scripts/dropzone/basic.css",
-                                                              "~/Content/pageStyle/VehicleDetail.css"));
+                                                              "~/Content/pageStyle/VehicleDetail.css",
+                                                              "~/Content/select2/select2.css"));
     }
     @section Styles {
         @Styles.Render("~/Styles/VehicleDetail")
@@ -343,6 +343,7 @@
                                         .Include("~/Scripts/chosen.jquery.js",
                                            "~/Scripts/bootstrap.min.js",
                                            "~/Scripts/dropzone/dropzone.js",
+                                           "~/Scripts/select2/select2.full.js",
                                            "~/Scripts/pageScript/VehicleDetail.js"));
     }
     @section Scripts {

@@ -81,15 +81,15 @@ $(document).on('click', "#save-btn", function () {
     model.GarageID = $('#garageID').val();
     model.VehicleGroupID = $('#groupID').val();
     model.BrandID = $('#brandID').val();
-    model.ModelID = '4';
+    model.ModelID = $('#modelID').val();
     //model.Model.Name = ModelName;
     model.LicenseNumber = $('#licenseNumber').val();
     model.Engine = $('#engine').val();
     model.FuelType = $('#fuelFilter').val();
     model.TransmissionType = '1';
     model.Star = '4.1';
-    model.Color = '1';
-    model.Year = '2015';
+    model.Color = $('#colorFilter').val();
+    model.Year = $('#year').val();
 
     $.ajax({
         type: "PATCH",

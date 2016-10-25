@@ -71,20 +71,43 @@ namespace CRP.Areas.Provider.Controllers
                      Value = q.ID.ToString(),
                      Selected = true,
                  });
-            vehiIn.listBrand = brandService.Get()
-                 .Select(q => new SelectListItem()
-                 {
-                     Text = q.Name,
-                     Value = q.ID.ToString(),
-                     Selected = true,
-                 });
-            vehiIn.listModel = modelService.Get()
-                 .Select(q => new SelectListItem()
-                 {
-                     Text = q.Name,
-                     Value = q.ID.ToString(),
-                     Selected = true,
-                 });
+            vehiIn.BrandList = brandService.Get(
+                b => b.ID != 1 // Exclude unlisted brand
+            ).OrderBy(b => b.Name).ToList();
+
+            // Reorder each brand's models by name
+            // Only get brand w/ model w/ registered vehicles
+            vehiIn.BrandList = vehiIn.BrandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
+            {
+                b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
+                {
+                    if (m.Vehicles.Any())
+                        newModelList.Add(m);
+                    return newModelList;
+                });
+
+                if (b.VehicleModels.Any())
+                {
+                    b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
+                    newBrandList.Add(b);
+                }
+
+                return newBrandList;
+            });
+            //vehiIn.listBrand = brandService.Get()
+            //     .Select(q => new SelectListItem()
+            //     {
+            //         Text = q.Name,
+            //         Value = q.ID.ToString(),
+            //         Selected = true,
+            //     });
+            //vehiIn.listModel = modelService.Get()
+            //     .Select(q => new SelectListItem()
+            //     {
+            //         Text = q.Name,
+            //         Value = q.ID.ToString(),
+            //         Selected = true,
+            //     });
             return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehiIn);
 		}
 
@@ -167,28 +190,28 @@ namespace CRP.Areas.Provider.Controllers
 				return new HttpStatusCodeResult(400, "Updated unsuccessfully.");
 
 			var service = this.Service<IVehicleService>();
-			var ModelService = this.Service<IModelService>();
-			var BrandService = this.Service<IBrandService>();
+			//var ModelService = this.Service<IModelService>();
+			//var BrandService = this.Service<IBrandService>();
 			var GarageService = this.Service<IGarageService>();
 			var VehicleGroupService = this.Service<IVehicleGroupService>();
-			var VehicleImageService = this.Service<IVehicleImageService>();
+			//var VehicleImageService = this.Service<IVehicleImageService>();
 
 			var entity = this.Mapper.Map<Vehicle>(model);
-			var ModelEntity = this.Mapper.Map<VehicleModel>(model.VehicleModel);
-			var BrandEntity = this.Mapper.Map<VehicleBrand>(model.VehicleModel.VehicleBrand);
+			//var ModelEntity = this.Mapper.Map<VehicleModel>(model.VehicleModel);
+			//var BrandEntity = this.Mapper.Map<VehicleBrand>(model.VehicleModel.VehicleBrand);
 			var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
 			var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
-			var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
+			//var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
 
-			if (entity == null || ModelEntity == null || BrandEntity == null
-					|| GarageEntity == null || VehicleGroupEntity == null || VehicleImageEntity == null)
+			if (entity == null
+					|| GarageEntity == null || VehicleGroupEntity == null)
 				return new HttpStatusCodeResult(403, "Updated unsuccessfully.");
 
-			await BrandService.UpdateAsync(BrandEntity);
-			await ModelService.UpdateAsync(ModelEntity);
+			//await BrandService.UpdateAsync(BrandEntity);
+			//await ModelService.UpdateAsync(ModelEntity);
 			await GarageService.UpdateAsync(GarageEntity);
 			await VehicleGroupService.UpdateAsync(VehicleGroupEntity);
-			await VehicleImageService.UpdateAsync(VehicleImageEntity);
+			//await VehicleImageService.UpdateAsync(VehicleImageEntity);
 			await service.UpdateAsync(entity);
 
 			return new HttpStatusCodeResult(200, "Updated successfully.");

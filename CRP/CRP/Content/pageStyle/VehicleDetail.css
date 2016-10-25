@@ -50,3 +50,12 @@
 .color-selector input#colorWhite[type="checkbox"]:checked + label::after {
 	color: #000;
 }
+.brand-option {
+	font-weight: bold;
+}
+.model-option {
+	padding-left: 1em;
+}
+.select2-container--default .select2-results__option[aria-disabled=true] {
+    display: none;
+}

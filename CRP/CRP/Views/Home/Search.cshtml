@@ -107,10 +107,10 @@
 						<label class="col-xs-12">Dòng xe</label>
 						<div class="col-xs-12">
 							<select id="modelFilter" class="form-control" style="width: 100%;" multiple>
-								@foreach (Brand brand in Model.BrandList)
+								@foreach (VehicleBrand brand in Model.BrandList)
 								{
 									<option data-lvl="0" value="@(brand.ID)">b@(brand.Name)</option>
-									foreach (Model entry in brand.Models)
+									foreach (VehicleModel entry in brand.VehicleModels)
 									{
 										<option data-lvl="1" data-brand="@brand.ID" value="@(entry.ID)">m@(brand.Name)&nbsp;@entry.Name</option>
 									}
