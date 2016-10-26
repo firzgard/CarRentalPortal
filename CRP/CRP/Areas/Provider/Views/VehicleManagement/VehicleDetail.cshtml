@@ -221,8 +221,8 @@
                                                     @for (int i = 1; i < Constants.COLOR.Count(); i++)
                                                     {
                                                         <div id="colorFilter" class="color-selector">
-                                                            <input id="color@(Constants.COLOR[i])" value="@i" type="checkbox">
-                                                            <label for="color@(Constants.COLOR[i])" style="background-color: @Constants.COLOR[i];"></label>
+                                                            <input id="color@(Constants.COLOR[i])" name="group" value="@i" type="radio">
+                                                            <label for="color@(Constants.COLOR[i])" name="group" style="background-color: @Constants.COLOR[i];"></label>
                                                         </div>
                                                     }
                                                 </div>
@@ -293,7 +293,7 @@
                 </div>
             </div>
        <div id="delete-car" class="modal fade" role="dialog">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header" style="background-color:#4CAF50">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -303,8 +303,8 @@
                 <p> Bạn có chắc muốn xóa xe này ?</p>
             </div>
             <div class="modal-footer">
-                <button id="agreed-delete" type="button" class="btn btn-primary">Đồng ý</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button id="agreed-delete" type="button" class="btn btn-primary">Đồng ý</button> 
             </div>
         </div>
     </div>

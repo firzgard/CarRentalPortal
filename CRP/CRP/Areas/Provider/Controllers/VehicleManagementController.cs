@@ -139,7 +139,7 @@ namespace CRP.Areas.Provider.Controllers
                      Value = q.ID.ToString(),
                      Selected = true,
                  });
-            vehiIn.listModel = modelService.Get()
+            vehiIn.listModel = brandService.Get()
                  .Select(q => new SelectListItem()
                  {
                      Text = q.Name,
@@ -237,18 +237,17 @@ namespace CRP.Areas.Provider.Controllers
 			var entity = this.Mapper.Map<Vehicle>(model);
 			//var ModelEntity = this.Mapper.Map<VehicleModel>(model.VehicleModel);
 			//var BrandEntity = this.Mapper.Map<VehicleBrand>(model.VehicleModel.VehicleBrand);
-			var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
-			var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
+			//var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
+			//var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
 			//var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
 
-			if (entity == null
-					|| GarageEntity == null || VehicleGroupEntity == null)
+			if (entity == null)
 				return new HttpStatusCodeResult(403, "Updated unsuccessfully.");
 
 			//await BrandService.UpdateAsync(BrandEntity);
 			//await ModelService.UpdateAsync(ModelEntity);
-			await GarageService.UpdateAsync(GarageEntity);
-			await VehicleGroupService.UpdateAsync(VehicleGroupEntity);
+			//await GarageService.UpdateAsync(GarageEntity);
+			//await VehicleGroupService.UpdateAsync(VehicleGroupEntity);
 			//await VehicleImageService.UpdateAsync(VehicleImageEntity);
 			await service.UpdateAsync(entity);
 
@@ -256,7 +255,7 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API Route to delete
-		[Route("api/vehicles")]
+		[Route("api/vehicles/{id:int}")]
 		[HttpDelete]
 		public async Task<ActionResult> DeleteVehiclesAPI(int id)
 		{

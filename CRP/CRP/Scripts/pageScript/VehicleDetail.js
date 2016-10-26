@@ -84,7 +84,8 @@ $(document).on('click', "#agreed-delete", function () {
         url: `/api/vehicles/${id}`,
         async: true,
         success: function (data) {
-            alert("ok");
+            //alert("ok");
+            window.location.pathname = "/management/vehicleManagement";
         },
         eror: function (data) {
             alert("fail");
@@ -98,15 +99,16 @@ $(document).on('click', "#save-btn", function () {
     model.GarageID = $('#garageID').val();
     model.VehicleGroupID = $('#groupID').val();
     model.BrandID = $('#brandID').val();
-    model.ModelID = $('#modelID').val();
+    model.ModelID = '41';
     //model.Model.Name = ModelName;
     model.LicenseNumber = $('#licenseNumber').val();
     model.Engine = $('#engine').val();
     model.FuelType = $('#fuelFilter').val();
     model.TransmissionType = '1';
     model.Star = '4.1';
-    model.Color = $('#colorFilter').val();
+    model.Color = $('input[name=group]:checked').val();
     model.Year = $('#year').val();
+    model.Description = null;
 
     $.ajax({
         type: "PATCH",
@@ -121,22 +123,10 @@ $(document).on('click', "#save-btn", function () {
         }
     });
 });
-$(function () {
 
-    $('#brandID').change(function () {
-        populateSelect();
-    });
+//$("#brandID").change(function () {
+//    var model = '@Html.Raw(Json.Encode(Model.VehicleDetailInfoModel))';
+//    if($(this).val() == model.lstModel.BrandID)
 
-});
-function populateSelect() {
-    brand = $('#brandID').val();
-    $('#vehicleModel').html('');
-    
-    
-    if (brand == '1') {
-        cars.forEach(function (t) {
-            $('#vehicleModel').append('<option>' + t + '</option>');
-        });
-    }
-
-}
+        
+//})
