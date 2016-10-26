@@ -34,7 +34,12 @@ namespace CRP.Areas.Provider.Controllers
 		{
             var service = this.Service<IVehicleGroupService>();
             var vehicleService = this.Service<IVehicleService>();
-            VehicleGroupViewModel viewModel = this.Mapper.Map<VehicleGroupViewModel> (service.Get(id));
+            var vehicleGroup = service.Get(id);
+            if(vehicleGroup == null)
+            {
+                return View("~/Areas/Provider/Views/VehicleGroupManagement/VehicleGroupDetail.cshtml");
+            }
+            VehicleGroupViewModel viewModel = this.Mapper.Map<VehicleGroupViewModel> (vehicleGroup);
             var providerID = User.Identity.GetUserId();
 
             viewModel.listVehicle = vehicleService.Get()
@@ -79,7 +84,7 @@ namespace CRP.Areas.Provider.Controllers
             return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
 		}
 
-        // Add a car to this group
+        // Add group of a vehicle
         [Authorize(Roles = "Provider")]
         [Route("api/vehicleGroup/updateVehicle/{vehicleID:int}/{groupID:int}")]
         [HttpPatch]
@@ -135,7 +140,7 @@ namespace CRP.Areas.Provider.Controllers
                 q.ID,
                 q.Name,
                 q.LicenseNumber,
-                q.Color,
+                (from kvp in Models.Constants.COLOR where kvp.Key == q.Color select kvp.Value).ToList().FirstOrDefault(),
                 q.Star
             });
             return Json(new { data = result }, JsonRequestBehavior.AllowGet);

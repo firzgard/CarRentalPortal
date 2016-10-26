@@ -341,11 +341,15 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/garage/status/${id}`,
                                 type: "PATCH",
                                 success: function (data) {
-                                    alert(data.message);
-                                    location.href = "/management/garageManagement";
+                                    $('.modal').modal('hide');
+                                    if(data.result) {
+                                        table.ajax.reload();
+                                    } else {
+                                        alert('fail');
+                                    }
                                 },
                                 eror: function (data) {
-                                    alert("fail");
+                                    alert("error");
                                 }
                             });
                         }
@@ -357,18 +361,43 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/deleteGarage/${id}`,
                                 type: "DELETE",
                                 success: function (data) {
-                                    alert(data.message);
-                                    location.href = "/management/garageManagement";
+                                    $('.modal').modal('hide');
+                                    if(data.result) {
+                                        if(table != '') {
+                                            table.ajax.reload();
+                                        } else {
+                                            window.location.pathname = "/management/garageManagement";
+                                        }
+                                        
+                                    } else {
+                                        alert(data.message);
+                                    }
                                 },
                                 eror: function (data) {
-                                    alert("fail");
+                                    alert("error");
                                 }
                             });
                         }
                     }
                 } break;
-                case 'vehicle':{} break;
+                case 'vehicle':{
+                    if(action === "delete") {
+                        for(var i=0; i< items.length; i++) {
+                            var id = items[i].id;
+                            $.ajax({
+                                url: `/api/vehicles/${id}`,
+                                type: "DELETE",
+                                success: function (data) {
+                                    $('.modal').modal('hide');
+                                    table.ajax.reload();
+                                },
+                                eror: function (data) {
+                                    alert("error");
+                                }
+                            });
+                        }
+                    }
+                } break;
             }
         });
     }
-    
