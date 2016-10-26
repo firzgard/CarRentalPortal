@@ -49,4 +49,32 @@ namespace CRP.Models.ViewModels
         public String providerUtil { get; set; }
         public Boolean status { get; set; }
     }
+
+    public class ProviderReportViewModel
+    {
+        public string ID { get; set; }
+        public String ProviderName { get; set; }
+        public double money { get; set; }
+        public int booking { get; set; }
+        public int car { get; set; }
+        public String providerUtil { get; set; }
+        public List<CommentModel> comment { get; set; }
+    }
+
+    public class CommentModel
+    {
+        public String UserName { get; set; }
+        public String Comment { get; set; }
+        public decimal star { get; set; }
+    }
+    public class ReportMoneyViewModel
+    {
+        public YearMonthModel Time { get; set; }
+        public double Money { get; set; }
+    }
+    public class YearMonthModel
+    {
+        public int Year { get; set; }
+        public int Month { get; set; }
+    }
 }
