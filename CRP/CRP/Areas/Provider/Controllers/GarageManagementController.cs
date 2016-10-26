@@ -39,18 +39,20 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API Route to get list of garage
+        [Authorize(Roles = "Provider")]
 		[Route("api/garages")]
 		[HttpGet]
 		public JsonResult GetGarageListAPI()
 		{
-			String customerID = User.Identity.GetUserId();
+			string providerID = User.Identity.GetUserId();
 			var service = this.Service<IGarageService>();
-			var list = service.GetGarageList(customerID);
+			var list = service.Get(q => q.OwnerID == providerID).ToList();
 			var result = list.Select(q => new IConvertible[] {
 				q.ID,
 				q.Name,
 				q.Address,
 				q.Location.Name,
+                q.Vehicles.Count,
 				q.Star,
 				q.IsActive,
 			});
@@ -148,19 +150,39 @@ namespace CRP.Areas.Provider.Controllers
         public async Task<JsonResult> DeleteVehicleGroupAPI(int id)
         {
             var service = this.Service<IGarageService>();
-            var entity = await service.GetAsync(id);
-            var vehicleService = this.Service<IVehicleService>();
-            if (vehicleService.SearchWithGarage(id) != null)
+            var garageWTService = this.Service<IGarageWorkingTimeService>();
+            var bookingService = this.Service<IBookingReceiptService>();
+
+            var garageEntity = await service.GetAsync(id);
+            if(garageEntity != null)
             {
-                return Json(new { result = false, message = "Còn Xe trong garage, vui lòng, di chuyển xe qua garage khác! Delete Failed!" });
+                if (garageEntity.Vehicles.Count > 0)
+                {
+                    return Json(new { result = false, message = "Còn Xe trong garage, vui lòng, di chuyển xe qua garage khác trước khi xóa!" });
+                }
+                else
+                {
+                    var bookings = bookingService.Get(q => q.GarageID == id);
+                    var garageWTEntity = garageWTService.Get(q => q.GarageID == id);
+
+                    foreach(var item in bookings)
+                    {
+                        item.GarageID = null;
+                        bookingService.UpdateAsync(item);
+                    }
+
+                    foreach(var item in garageWTEntity)
+                    {
+                        garageWTService.DeleteAsync(item);
+                    }
+                    await service.DeleteAsync(garageEntity);
+                    return Json(new { result = true, message = "Done!" });
+                }
             } else
             {
-                if (entity != null)
-                {
-                    return Json(new { result = true, message = "Xóa thành công" });
-                }
+                return Json(new { result = false, message = "Null" });
             }
-            return Json(new { result = false, message = "Delete failed!" });
+            
         }
 
         [Route("api/garage/status/{id:int}")]
