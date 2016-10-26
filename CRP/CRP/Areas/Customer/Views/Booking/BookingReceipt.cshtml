@@ -1,98 +1,125 @@
-﻿@model CRP.Models.Entities.BookingReceipt
+﻿@using CRP.Models
+@model CRP.Models.Entities.BookingReceipt
 @{
-    ViewBag.Title = "Log in";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Log in";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<div class="margin-signup padding-signup animated fadeInDown">
-    <div class="backgroundStyle" style="margin-left:40px;
-                                        margin-right:40px;
-                                        padding-left:40px;
-                                       ">
-        <div>
-            <h1 class="logo-name text-center">CRP</h1>
-        </div>
-        <h2 class="text-center" style="color:white"><i>Cám ơn vì đã sử dụng dịch vụ của chúng tôi!</i></h2>
-        <div class="row textConfig" style="color:white">
-            <div class="col-xs-6">
-                <div class="row">
-                    <label class="col-xs-6">Tên xe:</label>
-                    <p class="col-xs-6">@Model.VehicleName @Model.Model.Name</p>
-                </div>
-                <div class="row">
-                    <label class="col-xs-6">Biển số xe:</label>
-                    <p class="col-xs-6">@Model.LicenseNumber</p>
-                </div>
-                <div class="row">
-                    <label class="col-xs-6">Màu sắc:</label>
-                    <p class="col-xs-6">@Model.Color</p>
-                </div>
-                <div class="hr-line-dashed"></div>
-                <div class="row">
-                    <label class="col-xs-6">Garage:</label>
-                    <p class="col-xs-6">@Model.Garage.Name</p>
-                </div>
-                <div class="row">
-                    <label class="col-xs-6">Số điện thoại:</label>
-                    <p class="col-xs-6">@Model.GaragePhone</p>
-                </div>
-                <div class="row">
-                    <label class="col-xs-6">Email:</label>
-                    <p class="col-xs-6">@Model.AspNetUser11.Email</p>
-                </div>
-                <div class="row">
-                    <label class="col-xs-6">Địa chỉ:</label>
-                    <p class="col-xs-6">@Model.GarageAddress</p>
-                </div>
-            </div>
-            <div class="col-xs-6">
-                <div class="row">
-                    <label class="col-xs-6">Thời gian bắt đầu:</label>
-                    <p class="col-xs-6">@Model.StartTime</p>
-                </div>
-                <div class="row">
-                    <label class="col-xs-6">Thời gian kết thúc:</label>
-                    <p class="col-xs-6">@Model.EndTime</p>
-                </div>
-                <div class="row">
-                    <label class="col-xs-6">Thời lượng thuê:</label>
-                    <p class="col-xs-6">8 days</p>
-                </div>
-                <div class="row">
-                    <h3 class="col-xs-6">Phí đặt xe:</h3>
-                    <h3 class="col-xs-6">@Model.BookingFee vnd</h3>
-                </div>
-                <div class="row">
-                    <h3 class="col-xs-6">Phí thuê xe:</h3>
-                    <h3 class="col-xs-6">@Model.RentalPrice vnd</h3>
-                </div>
-            </div>
-        </div>
-        <div class="hr-line-dashed"></div>
-        <a href="" style="color:#00b300"><center><h3>&#8592; Trở lại home page</h3></center></a>
-        <p class="m-t text-center" style="color:white"> <small>Contact us at carrentalportal@gmail.com</small> </p>
-    </div>
+
+<div class="wrapper-content">
+	<div class="row">
+		<div class="col-md-12 text-center" style="color:white;font-size: 3em;font-weight:bold;text-shadow: 1px 1px 10px black;margin: 1em;">Bạn đã đặt xe thành công!</div>
+
+		<div class="col-md-offset-1 col-md-7 animated fadeInLeft">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h2>Thông tin xe và cửa hàng</h2>
+				</div>
+				<div class="ibox-content">
+					<div class="row" style="display: flex; height: 100%;">
+						<div class="col-md-3">
+							<div style="background: #fff url(@Model.Vehicle.VehicleImages.ToList()[0].URL) no-repeat; background-size: contain; height: 100%;"></div>
+						</div>
+
+						<div class="col-md-9">
+							<div class="section-header"><b>Thông tin xe:</b> @Model.Vehicle.Name</div>
+							<div class="row">
+								<div class="col-xs-5 col-xs-offset-1">
+									<p><b>Năm sản xuất: </b>@Model.Vehicle.Year</p>
+									<p><b>Số ghế: </b>@Model.VehicleModel.NumOfSeat</p>
+									<p><b>Số cửa: </b>@Model.VehicleModel.NumOfDoor</p>
+								</div>
+								<div class="col-xs-6">
+									@if (Model.FuelType != null)
+									{<p><b>Nhiên liệu: </b>@Constants.FUEL_TYPE[(int)Model.FuelType]</p>}
+									<p><b>Hộp số: </b>@Constants.TRANSMISSION_TYPE[Model.TransmissionType]</p>
+									@if (Model.TransmissionDetail != null)
+									{<p><b>Chi tiết hộp số: </b>@Model.TransmissionDetail</p>}
+									@if (Model.Engine != null)
+									{<p><b>Động cơ: </b>@Model.Engine</p>}
+								</div>
+							</div>
+							<hr>
+							<div class="section-header"><b>Thông tin cửa hàng:</b> @Model.GarageName</div>
+							<div class="row">
+								<div class="col-xs-5 col-xs-offset-1">
+									<p><b>Điện thoại:</b> +@(Model.GaragePhone)</p>
+									
+								</div>
+								<div class="col-xs-6">
+									<p><b>Email:</b> @Model.GarageEmail</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-11 col-xs-offset-1">
+									<p><b>Địa chỉ:</b> @Model.GarageAddress</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-3 animated fadeInRight">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h2>Thông tin đặt xe</h2>
+				</div>
+				<div class="ibox-content">
+					<div class="section-header"><b>Thời gian đặt xe:</b></div>
+					<div class="row">
+						<div class="col-xs-11 col-xs-offset-1">
+							<p><b>Từ:</b> @Model.StartTime.ToString()</p>
+							
+						</div>
+						<div class="col-xs-11 col-xs-offset-1">
+							<div><b>Đến:</b> @Model.EndTime.ToString()</div>
+						</div>
+					</div>
+					<hr>
+					<div class="row" style="font-size: 1.2em;">
+						<label class="col-md-7">Phí thuê xe</label>
+						<div class="col-md-5 text-right">@(((int)Model.RentalPrice).ToString("#,##0"))₫</div>
+					</div>
+					<div class="row">
+						<span class="col-md-7">Đặt cọc</span>
+						<div class="col-md-5 text-right">@(((int)Model.Deposit).ToString("#,##0"))₫</div>
+					</div>
+					<hr>
+					<div class="row" style="font-size: 1.2em;">
+						<label class="col-md-7">Phí dịch vụ</label>
+						<div class="col-md-5 text-right">@(((int)Model.BookingFee).ToString("#,##0"))₫</div>
+					</div>
+					<hr>
+					<div class="row" style="font-size: 1.4em;">
+						<label class="col-md-7">Tổng cộng</label>
+						<div class="col-md-5 text-right">@(((int)Model.RentalPrice + Model.BookingFee).ToString("#,##0"))₫</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-12 text-center" style="color:white;font-weight:bold;text-shadow: 1px 1px 10px black;margin: 2em 0 5em;">
+			<div style="font-size: 1.5em;">Chúc bạn có một chuyến đi vui vẻ.</div>
+			<div style="font-size: 1.3em;">Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</div>
+			<button class="btn btn-primary"><i class="fa fa-toggle-left"></i> Quay trở về Homepage</button>
+		</div>
+	</div>
 </div>
 
-
-
-<!--
-  <script>
-        $(document).ready(function(){
-            $('.i-checks').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
-            });
-        });
-</script>  
--->
-
-
-
 @section PageStyle {
-    @Styles.Render("~/Content/pageStyle/login.css")
-}
+	<style type="text/css">
+		body{
+			background-attachment: fixed;
+			background-image: url('/Content/img/backgrounds/1.jpg');
+			background-position: right top;
+			background-size: cover;
+			background-repeat: no-repeat;
+		}
 
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
+		.section-header {
+			font-size: 1.4em;
+			margin-bottom: 0.7em;
+		}
+	</style>
 }

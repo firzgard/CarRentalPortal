@@ -16,11 +16,6 @@ namespace CRP.Areas.Provider.Controllers
 {
 	public class VehicleManagementController : BaseController
 	{
-		//VehicleService Service = new VehicleService();
-		//ModelService serviceModel = new ModelService();
-		//BrandService serviceBrand = new BrandService();
-		//GarageService serviceGara = new GarageService();
-		//BookingReceiptService serviceBook = new BookingReceiptService();
 
 		// Route to vehicleManagement page
 		[Authorize(Roles = "Provider")]
@@ -28,6 +23,7 @@ namespace CRP.Areas.Provider.Controllers
 		public ViewResult VehicleManagement()
 		{
             var service = this.Service<IGarageService>();
+            var groupService = this.Service<IVehicleGroupService>();
             FilterByGarageView garageView = new FilterByGarageView();
             var providerID = User.Identity.GetUserId();
             garageView.listGarage = service.Get()
@@ -38,11 +34,53 @@ namespace CRP.Areas.Provider.Controllers
                 Value = q.ID.ToString(),
                 Selected = true,
             });
+
             return View("~/Areas/Provider/Views/VehicleManagement/VehicleManagement.cshtml", garageView);
 		}
 
-		// Route to vehicle's detailed info page
-		[Authorize(Roles = "Provider")]
+        // Load listOtherGarage
+        [Authorize(Roles = "Provider")]
+        [Route("api/listOtherGarage/{garageID:int}")]
+        [HttpGet]
+        public JsonResult LoadOtherGarage(int garageID)
+        {
+            var service = this.Service<IGarageService>();
+            FilterByGarageView garageView = new FilterByGarageView();
+            var providerID = User.Identity.GetUserId();
+            garageView.listGarage = service.Get()
+                .Where(q => q.OwnerID == providerID && q.IsActive && q.ID != garageID)
+                .Select(q => new SelectListItem() {
+                    Text = q.Name,
+                    Value = q.ID.ToString(),
+                    Selected = true,
+                });
+
+            return Json(new { list = garageView.listGarage }, JsonRequestBehavior.AllowGet);
+        }
+
+        [Authorize(Roles = "Provider")]
+        [Route("api/listGroup")]
+        [HttpGet]
+        public JsonResult LoadGroupList()
+        {
+            var service = this.Service<IVehicleGroupService>();
+            // just use it to return a list not for keeping data purpose
+            FilterByGarageView garageView = new FilterByGarageView();
+            var providerID = User.Identity.GetUserId();
+            garageView.listGarage = service.Get()
+                .Where(q => q.OwnerID == providerID)
+                .Select(q => new SelectListItem()
+                {
+                    Text = q.Name + " ["+ (q.IsActive ? "đang hoạt động": "ngưng hoạt động") +"]",
+                    Value = q.ID.ToString(),
+                    Selected = true,
+                });
+
+            return Json(new { list = garageView.listGarage }, JsonRequestBehavior.AllowGet);
+        }
+
+        // Route to vehicle's detailed info page
+        [Authorize(Roles = "Provider")]
 		[Route("management/vehicleManagement/{id:int}")]
 		public ViewResult VehihicleDetail(int id)
 		{
@@ -217,8 +255,8 @@ namespace CRP.Areas.Provider.Controllers
 			return new HttpStatusCodeResult(200, "Updated successfully.");
 		}
 
-		// API Route to delete 1 or multiple vehicles
-		[Route("api/vehicles")]
+		// API Route to delete
+		[Route("api/vehicles/{id:int}")]
 		[HttpDelete]
 		public async Task<ActionResult> DeleteVehiclesAPI(int id)
 		{

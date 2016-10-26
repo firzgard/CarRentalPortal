@@ -9,6 +9,9 @@ namespace CRP.Models
 {
 	public class Constants
 	{
+		public const string TEST_MERCHANT_ID = "47990";//"36680";
+		public const string TEST_MERCHANT_PASS = "2c91870ef1fc9e506d46c46fe61d3b08";//"matkhauketnoi"
+
 		public const double BOOKING_FEE_PERCENTAGE = 0.05;
 
 		// 10 mins

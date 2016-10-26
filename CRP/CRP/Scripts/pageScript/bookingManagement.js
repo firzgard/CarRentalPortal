@@ -2,6 +2,7 @@
 	{ name: 'ID', data: 'ID', visible: false, orderable: false, searchable: false }
 	, { name: 'CustomerName', title: 'Tên khách hàng', data: 'CustomerName' }
 	, { name: 'CustomertEmail', data: 'CustomertEmail', visible: false, orderable: false, searchable: false }
+    , { name: 'CustomerPhone', data: 'CustomerPhone', visible: false, orderable: false, searchable: false }
 	, { name: 'VehicleID', data: 'VehicleID', visible: false, orderable: false, searchable: false }
 	, { name: 'VehicleName', title: 'Tên xe', data: 'VehicleName' }
 	, { name: 'LicenseNumber', title: 'Biển số', data: 'LicenseNumber' }
@@ -47,7 +48,7 @@ $(document).ready( function () {
     }
 
     table = $(bookings).DataTable({
-        dom: "tipr"
+        dom: "lftipr"
 		, serverSide: true
 		, ajax: {
 		    url: queryApiUrl
@@ -77,7 +78,7 @@ $(document).ready( function () {
         columns: bookingTableColumns,
         columnDefs: [
             {
-                targets: 4,
+                targets: 5,
                 render: function (data, type, row) {
                     if (row.VehicleID != null) {
                         return `<a href="/management/vehicleManagement/${row.VehicleID}">${data}</a>`;
@@ -134,7 +135,7 @@ $(document).ready( function () {
 			    targets: -1
 				, render: function (data, type, row) {
 				    var info = `<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#detailBooking"
-                        data-customer-name="${row.CustomerName}" data-customer-email="${row.CustomertEmail}"
+                        data-customer-name="${row.CustomerName}" data-customer-email="${row.CustomertEmail}" data-customer-phone="${row.CustomerPhone}"
                         data-vehicle-name="${row.VehicleName}" data-license-number="${row.LicenseNumber}"
                         data-rental-price="${row.RentalPrice}" data-start-time="${row.StartTime}" data-end-time="${row.EndTime}"
                         data-star="${row.Star}" data-comment="${row.Comment}" ><i class ="fa fa-info-circle"></i><span> Chi tiết</span></a>`;
@@ -191,6 +192,7 @@ $(document).ready( function () {
         let button = $(event.relatedTarget),
             customerName = button.data('customer-name'),
             customerEmail = button.data('customer-email'),
+            customerPhone = button.data('customer-phone'),
             vehicleName = button.data('vehicle-name'),
             licenseNumber = button.data('license-number'),
             rentalPrice = button.data('rental-price'),
@@ -201,6 +203,7 @@ $(document).ready( function () {
 
         $('#customerName').text(customerName);
         $('#customerEmail').text(customerEmail);
+        $('#customerPhone').text(customerPhone);
         $('#vehicleName').text(vehicleName);
         $('#licenseNumber').text(licenseNumber);
         $('#rentalPrice').text(rentalPrice);

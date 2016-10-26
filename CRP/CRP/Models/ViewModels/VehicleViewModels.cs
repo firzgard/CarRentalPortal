@@ -173,5 +173,5 @@ namespace CRP.Models.ViewModels
 	{
 		public int garageID { get; set; }
 		public IEnumerable<SelectListItem> listGarage { get; set; }
-	}
+    }
 }

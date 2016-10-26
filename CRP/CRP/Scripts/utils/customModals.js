@@ -367,7 +367,24 @@ function renderSelectorOptions(type, selectedID, html = ''){
                         }
                     }
                 } break;
-                case 'vehicle':{} break;
+                case 'vehicle':{
+                    if(action === "delete") {
+                        for(var i=0; i< items.length; i++) {
+                            var id = items[i].id;
+                            $.ajax({
+                                url: `/api/vehicles/${id}`,
+                                type: "DELETE",
+                                success: function (data) {
+                                    $('.modal').modal('hide');
+                                    table.ajax.reload();
+                                },
+                                eror: function (data) {
+                                    alert("error");
+                                }
+                            });
+                        }
+                    }
+                } break;
             }
         });
     }

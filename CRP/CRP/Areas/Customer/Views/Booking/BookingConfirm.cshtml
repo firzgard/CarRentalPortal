@@ -1,250 +1,248 @@
-﻿@model CRP.Models.Entities.BookingReceipt
+﻿@using CRP.Models
+@model CRP.Models.ViewModels.BookingConfirmViewModel
 @{
 	ViewBag.Title = "Booking Confirm";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<form id = "bookingForm" action="@Url.RouteUrl("BookVehicle", new { controller = "Booking" })" method="post">
+@Html.AntiForgeryToken()
+@Html.HiddenFor(model => model.Receipt.ID)
+@Html.HiddenFor(model => model.NganLuong.OrderCode)
+@Html.HiddenFor(model => model.Action)
+
 <div class="wrapper-content">
-	<div class="row">
+	<div class="row" style="display: flex;">
 		<div class="col-md-offset-1 col-md-7 animated fadeInLeft">
+			<div class="ibox" style="height: calc(100% - 25px)">
+				<div class="ibox-title">
+					<h2>Thông tin xe và cửa hàng</h2>
+				</div>
+				<div class="ibox-content" style="height: calc(100% - 65px)">
+					<div class="row" style="display: flex; height: 100%;">
+						<div class="col-md-3">
+							<div style="background: #fff url(@Model.Receipt.Vehicle.VehicleImages.ToList()[0].URL) no-repeat; background-size: contain; height: 100%;"></div>
+
+							<button id="changeBtn" class="btn btn-primary" style="position: absolute; bottom: 0;"><i class="fa fa-toggle-left"></i> Thay đổi</button>
+						</div>
+
+						<div class="col-md-9">
+							<div class="section-header"><b>Thông tin xe:</b> @Model.Receipt.Vehicle.Name</div>
+							<div class="row">
+								<div class="col-xs-5 col-xs-offset-1">
+									<p><b>Năm sản xuất: </b>@Model.Receipt.Vehicle.Year</p>
+									<p><b>Số ghế: </b>@Model.Receipt.VehicleModel.NumOfSeat</p>
+									<p><b>Số cửa: </b>@Model.Receipt.VehicleModel.NumOfDoor</p>
+								</div>
+								<div class="col-xs-6">
+									@if (Model.Receipt.FuelType != null)
+									{<p><b>Nhiên liệu: </b>@Constants.FUEL_TYPE[(int)Model.Receipt.FuelType]</p>}
+									<p><b>Hộp số: </b>@Constants.TRANSMISSION_TYPE[Model.Receipt.TransmissionType]</p>
+									@if (Model.Receipt.TransmissionDetail != null)
+									{<p><b>Chi tiết hộp số: </b>@Model.Receipt.TransmissionDetail</p>}
+									@if (Model.Receipt.Engine != null)
+									{<p><b>Động cơ: </b>@Model.Receipt.Engine</p>}
+								</div>
+							</div>
+							<hr>
+							<div class="section-header"><b>Thông tin cửa hàng:</b> @Model.Receipt.GarageName</div>
+							<div class="row">
+								<div class="col-xs-5 col-xs-offset-1">
+									<p><b>Điện thoại:</b> +@(Model.Receipt.GaragePhone)</p>
+									
+								</div>
+								<div class="col-xs-6">
+									<p><b>Email:</b> @Model.Receipt.GarageEmail</p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-11 col-xs-offset-1">
+									<p><b>Địa chỉ:</b> @Model.Receipt.GarageAddress</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-3 animated fadeInRight">
 			<div class="ibox">
 				<div class="ibox-title">
 					<h2>Thông tin đặt xe</h2>
 				</div>
 				<div class="ibox-content">
-					<div class="table-responsive">
-						<table class="table shoping-cart-table">
-							<tbody>
-								<tr>
-									<td width="100">
-										<div class="cart-product-imitation">
-										</div>
-									</td>
-									<td class="desc">
-										<dl class="m-b-none" style="text-align: center;">
-											<dt>Thông tin xe</dt>
-											<div class="ibox-content text-center">
-												<span class="small">
-													<h6>Dòng xe : @Model.VehicleModel.VehicleBrand.Name @Model.VehicleModel.Name</h6>
-													<h7>Màu sắc: @Model.Color</h7>
-												</span>
-											</div>
-										</dl>
-										<dl class="small m-b-none" style="text-align: center;">
-											<dt>Nhà cung cấp: @Model.AspNetUser1.UserName</dt>
-											<div class="ibox-content text-center">
-												@Model.Garage.Name
-												<h6><i class="fa fa-phone"></i> @Model.GaragePhone</h6>
-												<span class="small">
-													<h6><i class="fa fa-envelope-o"></i> provider@mgail.com</h6>
-													<span class="small"><h6><i class="fa fa-location-arrow"></i> @Model.GarageAddress</h6></span>
-												</span>
-											</div>
-										</dl>
-
-									</td>
-									<td class="desc" style="width: 40%;  border: 1px solid black; border-radius: 5px;">
-										<table class="table shoping-cart-table">
-											<tr>
-												<td><h5>Bắt đầu:</h5></td>
-												<td>@Model.StartTime</td>
-												<td><h5>Đến</h5></td>
-												<td>@Model.EndTime</td>
-											</tr>
-											<tr>
-												<td> </td>
-											</tr>
-											<tr>
-												<td> <h5>Khoảng thời gian sẽ thuê:</h5></td>
-												<td></td>
-												<td></td>
-												<td>
-</td>
-											</tr>
-											<tr>
-												<td> </td>
-											</tr>
-											<tr>
-												<td>
-													<h5>Tổng tiền:</h5>
-												</td>
-												<td></td>
-												<td></td>
-												<td>
-													<h2 class="font-bold">
-														@Model.RentalPrice vnd
-													</h2>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<div class="m-t-sm">
-														<button class="btn btn-info " type="button"><i class="fa fa-paste"></i> Thay đổi booking</button>
-													</div>
-												</td>
-											</tr>
-										</table>
-									</td>
-
-
-								</tr>
-							</tbody>
-						</table>
+					<div class="section-header"><b>Thời gian đặt xe:</b></div>
+					<div class="row">
+						<div class="col-xs-11 col-xs-offset-1">
+							<p><b>Từ:</b> @Model.Receipt.StartTime.ToString()</p>
+							
+						</div>
+						<div class="col-xs-11 col-xs-offset-1">
+							<div><b>Đến:</b> @Model.Receipt.EndTime.ToString()</div>
+						</div>
 					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-3 animated fadeInRight">
-			<div class="ibox">
-				<div class="ibox-title">
-					<h2>Chi phí</h2>
-				</div>
-				<div class="ibox-content">
+					<hr>
 					<div class="row" style="font-size: 1.2em;">
 						<label class="col-md-7">Phí thuê xe</label>
-						<div class="col-md-5 text-right">@Model.RentalPrice</div>
+						<div class="col-md-5 text-right">@(((int)Model.Receipt.RentalPrice).ToString("#,##0"))₫</div>
 					</div>
 					<div class="row">
 						<span class="col-md-7">Đặt cọc</span>
-						<div class="col-md-5 text-right">@Model.Deposit</div>
+						<div class="col-md-5 text-right">@(((int)Model.Receipt.Deposit).ToString("#,##0"))₫</div>
 					</div>
 					<hr>
 					<div class="row" style="font-size: 1.2em;">
 						<label class="col-md-7">Phí dịch vụ</label>
-						<div class="col-md-5 text-right">@Model.BookingFee</div>
+						<div class="col-md-5 text-right">@(((int)Model.Receipt.BookingFee).ToString("#,##0"))₫</div>
 					</div>
-					<div class="m-t-sm">
-						<div class="btn-group">
-							<a href="payment" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Pay for Booking Fee</a>
-							<a href="#" class="btn btn-white btn-sm"> Hủy bỏ</a>
-						</div>
+					<hr>
+					<div class="row" style="font-size: 1.4em;">
+						<label class="col-md-7">Tổng cộng</label>
+						<div class="col-md-5 text-right">@(((int)Model.Receipt.RentalPrice + Model.Receipt.BookingFee).ToString("#,##0"))₫</div>
 					</div>
+					<hr>
+					<small>* Bạn chỉ phải thanh toán trước phí dịch vụ</small>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
 
-<div class="wrapper-content">
 	<div class="row">
-		<div class="col-md-offset-1 col-md-7">
+		<div class="col-md-offset-1 col-md-10 animated fadeInUp">
 			<div class="ibox">
 				<div class="ibox-title">
-
-					<h3>Thông tin đặt xe</h3>
+					<h2>Phương thức thanh toán</h2>
 				</div>
 				<div class="ibox-content">
-					<div class="table-responsive">
-						<table class="table shoping-cart-table">
-							<tbody>
-								<tr>
-									<td width="100">
-										<div class="cart-product-imitation">
-										</div>
-									</td>
-									<td class="desc">
-										<dl class="m-b-none" style="text-align: center;">
-											<dt>Thông tin xe</dt>
-											<div class="ibox-content text-center">
-												<span class="small">
-													<h6>Dòng xe : @Model.VehicleModel.VehicleBrand.Name @Model.VehicleModel.Name</h6>
-													<h7>Màu sắc: @Model.Color</h7>
-												</span>
-											</div>
-										</dl>
-										<dl class="small m-b-none" style="text-align: center;">
-											<dt>Nhà cung cấp: @Model.AspNetUser1.UserName</dt>
-											<div class="ibox-content text-center">
-												@Model.Garage.Name
-												<h6><i class="fa fa-phone"></i> @Model.GaragePhone</h6>
-												<span class="small">
-													<h6><i class="fa fa-envelope-o"></i> provider@mgail.com</h6>
-													<span class="small"><h6><i class="fa fa-location-arrow"></i> @Model.GarageAddress</h6></span>
-												</span>
-											</div>
-										</dl>
-
-									</td>
-									<td class="desc" style="width: 40%;  border: 1px solid black; border-radius: 5px;">
-										<table class="table shoping-cart-table">
-											<tr>
-												<td><h5>Bắt đầu:</h5></td>
-												<td>@Model.StartTime</td>
-												<td><h5>Đến</h5></td>
-												<td>@Model.EndTime</td>
-											</tr>
-											<tr>
-												<td> </td>
-											</tr>
-											<tr>
-												<td> <h5>Khoảng thời gian sẽ thuê:</h5></td>
-												<td></td>
-												<td></td>
-												<td>
-</td>
-											</tr>
-											<tr>
-												<td> </td>
-											</tr>
-											<tr>
-												<td>
-													<h5>Tổng tiền:</h5>
-												</td>
-												<td></td>
-												<td></td>
-												<td>
-													<h2 class="font-bold">
-														@Model.RentalPrice vnd
-													</h2>
-												</td>
-											</tr>
-											<tr>
-												<td>
-													<div class="m-t-sm">
-														<button class="btn btn-info " type="button"><i class="fa fa-paste"></i> Thay đổi booking</button>
-													</div>
-												</td>
-											</tr>
-										</table>
-									</td>
-
-
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-3  animated fadeInRight" style="height:100%">
-			<div class="ibox">
-				<div class="ibox-title">
-					<h5>Phí đặt xe</h5>
-				</div>
-				<div class="ibox-content">
-					<span>
-						Tổng cộng
-					</span>
-					<h2 class="font-bold">
-						@Model.BookingFee
-					</h2>
-
-					<hr />
-					<span class="text-muted small">
-						Sau khi thanh toán, vui lòng liên hệ trực tiếp với provider để nhận xe! Chân thành cảm ơn đã sử dụng dịch vụ của chúng tôi!
-					</span>
-					<div class="m-t-sm">
-						<div class="btn-group">
-							<a href="payment" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Pay for Booking Fee</a>
-							<a href="#" class="btn btn-white btn-sm"> Hủy bỏ</a>
+					<div class="row">
+						<div class="col-md-4">
+							<label>@Html.RadioButtonFor(m => m.NganLuong.PaymentMethod, "ATM_ONLINE", new { @checked = "checked" }) Thanh toán online bằng thẻ ngân hàng nội địa</label>
+							<label>@Html.RadioButtonFor(m => m.NganLuong.PaymentMethod, "VISA") Thanh toán bằng thẻ tín dụng / ghi nợ</label>
+							<label>@Html.RadioButtonFor(m => m.NganLuong.PaymentMethod, "NL") Thanh toán bằng Ví điện tử NgânLượng</label>
+						</div>
+						<div class="col-md-8">
+							<div id="ATM_ONLINE_Detail" class="payment-type-detail active">
+								<p><span style="color:#ff5a00;font-weight:bold;text-decoration:underline;">Lưu ý</span>: Bạn cần đăng ký Internet-Banking hoặc dịch vụ thanh toán trực tuyến tại ngân hàng trước khi thực hiện.</p>
+								<label for="bankVCB" class="bank-radio">
+									<i class="VCB" title="Ngân hàng TMCP Ngoại Thương Việt Nam"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "VCB", new { id="bankVCB", @checked = "checked" })
+								</label>
+								<label for="bankDAB" class="bank-radio">
+									<i class="DAB" title="Ngân hàng TMCP Ngoại Thương Việt Nam"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "DAB", new { id = "bankDAB" })
+								</label>
+								<label for="bankTCB" class="bank-radio">
+									<i class="TCB" title="Ngân hàng TMCP Ngoại Thương Việt Nam"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "TCB", new { id = "bankTCB" })
+								</label>
+								<label for="bankMB" class="bank-radio">
+									<i class="MB" title="Ngân hàng Quân Đội"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "MB", new { id = "bankMB" })
+								</label>
+								<label for="bankSHB" class="bank-radio">
+									<i class="SHB" title="Ngân hàng Sài Gòn - Hà Nội"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "SHB", new { id = "bankSHB" })
+								</label>
+								<label for="bankVIB" class="bank-radio">
+									<i class="VIB" title="Ngân hàng Quốc tế"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "VIB", new { id = "bankVIB" })
+								</label>
+								<label for="bankICB" class="bank-radio">
+									<i class="ICB" title="Ngân hàng Công Thương Việt Nam"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "ICB", new { id = "bankICB" })
+								</label>
+								<label for="bankEXB" class="bank-radio">
+									<i class="EXB" title="Ngân hàng Xuất Nhập Khẩu"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "EXB", new { id = "bankEXB" })
+								</label>
+								<label for="bankACB" class="bank-radio">
+									<i class="ACB" title="Ngân hàng Á Châu"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "ACB", new { id = "bankACB" })
+								</label>
+								<label for="bankHDB" class="bank-radio">
+									<i class="HDB" title="Ngân hàng Phát triển Nhà TPHCM"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "HDB", new { id = "bankHDB" })
+								</label>
+								<label for="bankMSB" class="bank-radio">
+									<i class="MSB" title="Ngân hàng Hàng Hải"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "MSB", new { id = "bankMSB" })
+								</label>
+								<label for="bankNVB" class="bank-radio">
+									<i class="NVB" title="Ngân hàng Nam Việt"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "NVB", new { id = "bankNVB" })
+								</label>
+								<label for="bankVAB" class="bank-radio">
+									<i class="VAB" title="Ngân hàng Việt Á"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "VAB", new { id = "bankVAB" })
+								</label>
+								<label for="bankVPB" class="bank-radio">
+									<i class="VPB" title="Ngân Hàng Việt Nam Thịnh Vượng"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "VPB", new { id = "bankVPB" })
+								</label>
+								<label for="bankSCB" class="bank-radio">
+									<i class="SCB" title="Ngân hàng Sài Gòn Thương tín"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "SCB", new { id = "bankSCB" })
+								</label>
+								<label for="bankOJB" class="bank-radio">
+									<i class="OJB" title="Ngân hàng Đại Dương"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "OJB", new { id = "bankOJB" })
+								</label>
+								<label for="bankPGB" class="bank-radio">
+									<i class="PGB" title="Ngân hàng Xăng dầu Petrolimex"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "PGB", new { id = "bankPGB" })
+								</label>
+								<label for="bankGPB" class="bank-radio">
+									<i class="GPB" title="Ngân hàng TMCP Dầu khí Toàn Cầu"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "GPB", new { id = "bankGPB" })
+								</label>
+								<label for="bankAGB" class="bank-radio">
+									<i class="AGB" title="Ngân hàng Nông nghiệp &amp; Phát triển nông thôn"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "AGB", new { id = "bankAGB" })
+								</label>
+								<label for="bankSGB" class="bank-radio">
+									<i class="SGB" title="Ngân hàng Sài Gòn Công Thương"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "SGB", new { id = "bankSGB" })
+								</label>
+								<label for="bankNAB" class="bank-radio">
+									<i class="NAB" title="Ngân hàng Nam Á"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "NAB", new { id = "bankNAB" })
+								</label>
+								<label for="bankBAB" class="bank-radio">
+									<i class="BAB" title="Ngân hàng Bắc Á"></i>
+									@Html.RadioButtonFor(m => m.NganLuong.BankCode, "BAB", new { id = "bankBAB" })
+								</label>
+							</div>
+							<div id="VISA_Detail" class="payment-type-detail">
+								<span class="pull-right">
+									<i class="VISA" style="display: inline-block;"></i>
+									<i class="MASTE" style="display: inline-block;"></i>
+									<i class="JCB" style="display: inline-block;"></i>
+								</span>
+								<span style="font-size: 1.2em;">Thanh toán bằng thẻ tín dụng / ghi nợ quốc tế</span>
+							</div>
+							<div id="NL_Detail" class="payment-type-detail">
+								<p style="font-size: 1.2em;">Miễn phí phí giao dịch. Đăng ký ví NgânLượng.vn miễn phí <a href="https://www.nganluong.vn/?portal=nganluong&amp;page=user_register" target="_blank">tại đây</a></p>
+							</div>
+						</div>
+						<div class="col-md-12 text-right">
+							<div class="btn-group">
+								<button id="payBtn" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Thanh toán</button>
+								<button id="deleteBtn" class="btn btn-default">Hủy đơn hàng</button>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+
 	</div>
 </div>
+</form>
 
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/BookingConfirm")
+				   .Include("~/Content/NganLuong/NganLuong.css"));
+}
 @section Styles {
 	@Styles.Render("~/Styles/BookingConfirm")
 }
@@ -253,7 +251,7 @@
 }
 
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingConfirm")
-	.Include("~/Scripts/pageScript/bookingConfirm.js"));
+				  .Include("~/Scripts/pageScript/bookingConfirm.js"));
 }
 @section Scripts {
 	@Scripts.Render("~/Scripts/BookingConfirm")
