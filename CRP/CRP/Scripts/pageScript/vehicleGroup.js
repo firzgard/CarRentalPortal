@@ -154,6 +154,12 @@ $(document).ready(function () {
         language: viDatatables,
         columnDefs: [
             {
+                targets: 1,
+                render: function (data, type, row) {
+                    return `<a href="/management/vehicleManagement/${row[0]}">${data}</a>`;
+                }
+            },
+            {
                 targets: -2
 				, render: function (data, type, row) {
 				    if (data) {

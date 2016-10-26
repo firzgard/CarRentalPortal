@@ -16,6 +16,7 @@ using System.Web.Mvc;
 using API_NganLuong;
 using CRP.Models.Entities.Repositories;
 using Microsoft.AspNet.Identity.Owin;
+using UrlHelper = Microsoft.AspNetCore.Mvc.Routing.UrlHelper;
 
 namespace CRP.Areas.Customer.Controllers
 {
@@ -116,8 +117,7 @@ namespace CRP.Areas.Customer.Controllers
 			// Add callback
 			checkPendingBookingTimer.Elapsed += delegate { CheckPendingBooking(newBooking.ID); };
 			checkPendingBookingTimer.Start();
-
-			//return View("~/Areas/Customer/Views/Booking/BookingConfirm.cshtml", entity);
+			
 			return JavaScript("window.location = '/bookingConfirm/" + newBooking.ID + "'");
 		}
 
@@ -134,59 +134,59 @@ namespace CRP.Areas.Customer.Controllers
 
 		// Route to bookingConfirm page (Page for confirming booking details before paying)
 		[Authorize(Roles = "Customer")]
-		[System.Web.Http.HttpPost]
+		[System.Web.Http.HttpGet]
 		[System.Web.Mvc.Route("bookingConfirm/{bookingID}", Name = "BookingConfirm")]
 		public System.Web.Mvc.ActionResult BookingConfirm(int bookingID)
 		{
 			var userID = User.Identity.GetUserId();
 			var bookingReceipt = this.Service<IBookingReceiptService>()
-					.Get(br => br.ID == bookingID && br.CustomerID == userID).FirstOrDefault();
+					.Get(br => br.IsPending == true && br.CustomerID == userID && br.ID == bookingID).FirstOrDefault();
 
 			if (bookingReceipt == null)
 				return new HttpStatusCodeResult(403, "Access denied.");
 
-			return View("~/Areas/Customer/Views/Booking/BookingConfirm.cshtml", bookingReceipt);
+			var bookingConfirmViewModel = new BookingConfirmViewModel {Receipt = bookingReceipt, NganLuong = new NganLuongBookingModel()};
+			bookingConfirmViewModel.NganLuong.OrderCode = bookingReceipt.ID.ToString();
+
+			return View("~/Areas/Customer/Views/Booking/BookingConfirm.cshtml", bookingConfirmViewModel);
 		}
 
-		////cho nay nen return json, de xu ly
-		//private void deleteBooking(int bookingID)
-		//{
-		//	TimeSpan span = new TimeSpan(0, 0, 5, 0);
-		//	Thread.Sleep(span);
-		//	if (DeleteBookingThread == true)
-		//	{
-		//		Thread.ResetAbort();
-		//	} 
-		//	else
-		//	{
-		//		var service = this.Service<IBookingReceiptService>();
-		//		var entity = service.Get(bookingID);
-		//		//neu ispending van bang true thi xoa booking do
-		//		Boolean isDelete = entity.IsPending;
-		//		if (isDelete)
-		//		{
-		//			service.Delete(entity);
-		//		}
-		//		else
-		//		{
-		//			Thread.ResetAbort();
-		//		}
-		//	} 
-		//}
-
-		// Route for paying with nganluong)
+		// Route for paying with nganluong
 		[Authorize(Roles = "Customer")]
 		[System.Web.Http.HttpPost]
-		[Microsoft.AspNetCore.Mvc.Route("bookingConfirm")]
-		public System.Web.Mvc.ActionResult BookVehicle(NganLuongBookingModel BookingModel)
+		[ValidateAntiForgeryToken]
+		[System.Web.Mvc.Route("bookingConfirm", Name = "BookVehicle")]
+		public System.Web.Mvc.ActionResult BookVehicle(BookingConfirmViewModel bookingModel)
 		{
-			var info = new RequestInfoTemplate
+			var bookingService = this.Service<IBookingReceiptService>();
+			var BookingReceipt = bookingService.Get(bookingModel.Receipt.ID);
+
+			// Act based on the received action's name
+			switch (bookingModel.Action)
 			{
-				bank_code = BookingModel.BankCode,
-				Order_code = BookingModel.OrderCode,
+				case "delete":
+					bookingService.Delete(BookingReceipt);
+					return RedirectToAction("Index", "Home");
+				case "change":
+					var vehicleID = BookingReceipt.VehicleID;
+					bookingService.Delete(BookingReceipt);
+					return RedirectToAction("VehicleInfo", "Home", new {id = vehicleID});
+				case "pay":
+					break;
+				default:
+					return new HttpStatusCodeResult(400, "Bad request");
+			}
+
+			// Only "pay" action left to handle
+			// Now validate nganluong params before redirect to nganluong
+
+			var info = new RequestInfoTestTemplate()
+			{
+				bank_code = bookingModel.NganLuong.BankCode,
+				Order_code = bookingModel.NganLuong.OrderCode,
 				order_description = "Test booking",
-				return_url = "http://localhost/65358/bookingReceipt",
-				cancel_url = "http://localhost/65358"
+				return_url = "http://localhost:65358/bookingReceipt",
+				cancel_url = "http://localhost:65358/bookingReceipt?canceledBookingID=" + bookingModel.Receipt.ID
 			};
 
 			var user = HttpContext.GetOwinContext()
@@ -197,21 +197,77 @@ namespace CRP.Areas.Customer.Controllers
 			info.Buyer_email = user.Email;
 			info.Buyer_mobile = user.PhoneNumber;
 
-			var objNLChecout = new APICheckoutV3();
-			var result = objNLChecout.GetUrlCheckout(info, BookingModel.PaymentMethod);
+			var objNLCheckout = new APICheckoutV3();
+			var result = objNLCheckout.GetUrlCheckout(info, bookingModel.NganLuong.PaymentMethod);
 
 			if (result.Error_code == "00")
 			{
-				return JavaScript("window.location = '" + result.Checkout_url + "'");
+				return Redirect(result.Checkout_url);
 			}
 
 			return new HttpStatusCodeResult(400, "Invalid request");
 		}
 
-		// Route to bookingReceipt page (Redirect from NganLuong/BaoKim after customer has payed)
-		//[System.Web.Mvc.Route("bookingReceipt")]
-		//public async Task<ViewResult> BookingReceipt()
-		//{
+		//Route to bookingReceipt page(Redirect from NganLuong/BaoKim after customer has payed)
+		[Authorize(Roles = "Customer")]
+		[System.Web.Mvc.Route("bookingReceipt", Name = "BookingReceipt")]
+		public System.Web.Mvc.ActionResult BookingReceipt(string error_code, string token, int? canceledBookingID = null)
+		{
+			var userID = User.Identity.GetUserId();
+			var bookingService = this.Service<IBookingReceiptService>();
+			
+			// If the customer cancel the booking, delete it and redirect him to homepage
+			if (canceledBookingID != null)
+			{
+				var bookingReceipt = bookingService.Get(br => br.CustomerID == userID
+													&& br.ID == canceledBookingID
+													&& br.IsPending == true).FirstOrDefault();
+
+				if (bookingReceipt == null)
+					return new HttpStatusCodeResult(400, "Invalid request");
+
+				bookingService.Delete(bookingReceipt);
+				return RedirectToAction("Index", "Home");
+			}
+			
+			// If the transaction went smoothy, check the returned info + MD5 token
+			var info = new RequestCheckOrderTestTemplate();
+			info.Token = token;
+			var objNLCheckout = new APICheckoutV3();
+			var result = objNLCheckout.GetTransactionDetail(info);
+
+			if (result.errorCode == "00")
+			{
+				// Try to get the bookingReceiptID
+				try
+				{
+					var bookingID = int.Parse(result.order_code);
+
+					var bookingReceipt = bookingService.Get(br => br.CustomerID == userID
+													&& br.ID == bookingID
+													&& br.IsPending == true).FirstOrDefault();
+
+					if (bookingReceipt == null)
+						return new HttpStatusCodeResult(400, "Invalid request");
+					
+					bookingReceipt.IsPending = false;
+					bookingService.Update(bookingReceipt);
+
+					// Send alert email
+					SystemService sysService = new SystemService();
+					sysService.SendMailBooking(bookingReceipt.AspNetUser.Email, bookingReceipt);
+					sysService.SendMailBooking(bookingReceipt.AspNetUser1.Email, bookingReceipt);
+
+					return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", bookingReceipt);
+				}
+				catch (FormatException e)
+				{
+					return new HttpStatusCodeResult(400, "Invalid request");
+				}
+			}
+
+			return new HttpStatusCodeResult(400, "Invalid request");
+
 			//SystemService sysService = new SystemService();
 			//lastBooking = 1;
 			//var service = this.Service<IBookingReceiptService>();
@@ -222,24 +278,23 @@ namespace CRP.Areas.Customer.Controllers
 			////neu thanh toan thanh cong
 			//if (paySuccess)
 			//{
-			//    entity.IsPending = false;
-			//    service.Update(entity);
-			//   //tra ve model cua entity booking moi nhat
+			//	entity.IsPending = false;
+			//	service.Update(entity);
+			//	//tra ve model cua entity booking moi nhat
 
-			//} else
+			//}
+			//else
 			//{
-			//    service.Delete(entity);
-			//    //stop stread sau 5p kiem tra
-			//    DeleteBookingThread = true;
-			//    ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
+			//	service.Delete(entity);
+			//	//stop stread sau 5p kiem tra
+			//	DeleteBookingThread = true;
+			//	ViewBag.ErrorForPayment = "Thanh toan khong thanh cong!";
 			//}
 
 			//send mail bao cho Provider va Customer
 			//sysService.SendMailBooking("tamntse61384@fpt.edu.vn", entity);
 			//sysService.SendMailBooking(entity.AspNetUser11.Email, entity);
-
-			//return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", entity);
-		//}
+		}
 
 
 		// Route to bookingHistory page

@@ -7,6 +7,7 @@ using System.Text;
 using System.IO;
 using System.Net;
 using System.Xml;
+using CRP.Models;
 
 
 namespace API_NganLuong
@@ -599,17 +600,26 @@ namespace API_NganLuong
 	}
 	#endregion
 
-	public class RequestInfoTemplate : RequestInfo
+	public class RequestInfoTestTemplate : RequestInfo
 	{
-		public RequestInfoTemplate()
+		public RequestInfoTestTemplate()
 		{
-			Merchant_id = "47990";
-			Merchant_password = "2c91870ef1fc9e506d46c46fe61d3b08";
-			Receiver_email = "megafirzen@gmai.com";
+			Merchant_id = Constants.TEST_MERCHANT_ID;
+			Merchant_password = Constants.TEST_MERCHANT_PASS;
+			Receiver_email = "megafirzen@gmail.com";
 			cur_code = "vnd";
 			Total_amount = "2000";
 			fee_shipping = "0";
 			Discount_amount = "0";
+		}
+	}
+
+	public class RequestCheckOrderTestTemplate : RequestCheckOrder
+	{
+		public RequestCheckOrderTestTemplate()
+		{
+			Merchant_id = Constants.TEST_MERCHANT_ID;
+			Merchant_password = Constants.TEST_MERCHANT_PASS;
 		}
 	}
 }

@@ -105,6 +105,13 @@ body{
 	height: 1000px;
 }
 
+.modal-body label {
+	margin-top: 1em;
+}
+.modal-body label:first-child{
+	margin-top: 0;
+}
+
 /* =========================================================== */
 /* Booking sections */
 

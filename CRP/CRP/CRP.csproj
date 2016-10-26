@@ -192,6 +192,7 @@
     </Reference>
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=4.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.4.0.0\lib\net46\System.Diagnostics.DiagnosticSource.dll</HintPath>
       <Private>True</Private>
@@ -1508,6 +1509,7 @@
     <Content Include="Content\jsTree\themes\default\throbber.gif" />
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\metisMenu.min.css" />
+    <Content Include="Content\NganLuong\NganLuong.css" />
     <Content Include="Content\NoUiSlider\nouislider.css" />
     <Content Include="Content\NoUiSlider\nouislider.min.css" />
     <Content Include="Content\NoUiSlider\nouislider.pips.css" />
