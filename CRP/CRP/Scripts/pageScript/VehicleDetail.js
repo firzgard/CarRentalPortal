@@ -3,6 +3,9 @@
     $('.btn-edit').on('click', function () {
         $('#edit-car').modal('show');
     });
+    $('#delete-btn').on('click', function () {
+        $('#delete-car').modal('show');
+    });
 
     $('#change-color').on('click', function () {
         $('#panel-color').show();
@@ -73,6 +76,20 @@
         }
 
     }
+});
+$(document).on('click', "#agreed-delete", function () {
+    let id = $('#vehicleID').val();
+    $.ajax({
+        type: "DELETE",
+        url: `/api/vehicles/${id}`,
+        async: true,
+        success: function (data) {
+            alert("ok");
+        },
+        eror: function (data) {
+            alert("fail");
+        }
+    });
 });
 $(document).on('click', "#save-btn", function () {
     let model = {};

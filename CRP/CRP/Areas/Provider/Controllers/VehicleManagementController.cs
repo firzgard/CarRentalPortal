@@ -256,7 +256,7 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API Route to delete
-		[Route("api/vehicles/{id:int}")]
+		[Route("api/vehicles")]
 		[HttpDelete]
 		public async Task<ActionResult> DeleteVehiclesAPI(int id)
 		{

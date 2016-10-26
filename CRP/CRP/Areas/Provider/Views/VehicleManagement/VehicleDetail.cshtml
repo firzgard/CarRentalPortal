@@ -280,8 +280,9 @@
                             <hr>
                             <div class="row">
                                 <div class="text-center">
-                                    <a id="edit-btn" class="btn btn-danger btn-lg" style="margin:20px">Chỉnh sửa</a>
-                                    <a id="save-btn" class="btn btn-primary btn-lg">Lưu</a>
+                                    <a id="delete-btn" class="btn btn-danger btn-lg" style="margin:20px">Xóa</a>
+                                    <a id="edit-btn" class="btn btn-info btn-lg" style="margin:20px">Chỉnh sửa</a>
+                                    <a id="save-btn" class="btn btn-success btn-lg">Lưu</a>
                                 </div>
                             </div>
 
@@ -291,7 +292,23 @@
 
                 </div>
             </div>
-       
+       <div id="delete-car" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#4CAF50">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white">Xóa xe @Html.DisplayFor(q => q.Name)</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <p> Bạn có chắc muốn xóa xe này ?</p>
+            </div>
+            <div class="modal-footer">
+                <button id="agreed-delete" type="button" class="btn btn-primary">Đồng ý</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
 
         <div class="footer text-center" style="position: initial;">
             <div>
@@ -299,7 +316,7 @@
             </div>
         </div>
 
-<div id="edit-car" class="modal fade" role="dialog">
+@*<div id="edit-car" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg" style="width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
@@ -314,7 +331,8 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
+
     @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleDetail")
                                                           .Include("~/Content/awesome-bootstrap-checkbox.css",
                                                               "~/Content/chosen.css",
