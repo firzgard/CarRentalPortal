@@ -30,6 +30,19 @@
                                         @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control", @id = "name" })
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Year</label>
+                                        </div>
+                                        <div class="justRead col-md-8">
+                                            <p>@this.Model.Year</p>
+                                        </div>
+                                        <div class="editFiel col-md-8" style="display:none">
+                                            @Html.TextBoxFor(q => q.Year, new { @type = "number", @class = "form-control", @id = "year", @max = Constants.MAX_YEAR, @min = Constants.MIN_YEAR })
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -72,9 +85,9 @@
                                             <p>@this.Model.BrandName @this.Model.ModelName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select id="modelFilter" class="form-control">
-                                                @*@Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })*@
-                                                @foreach (VehicleBrand brand in this.Model.BrandList)
+                                            @*<select id="modelFilter" class="form-control">*@
+                                                @Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })
+                                                @*@foreach (VehicleBrand brand in this.Model.BrandList)
                                                 {
                                                     <optgroup id="brandID"  value="@(brand.ID)" label="@(brand.Name)">
                                                         @foreach (VehicleModel entry in brand.VehicleModels)
@@ -82,22 +95,22 @@
                                                         <option id="modelID" data-brand="@brand.ID" value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
                                                         }
                                                     </optgroup>
-                                                }
-                                            </select>
+                                                }*@
+                                            @*</select>*@
                                         </div>
                                     </div>
                                 </div>
-
+                                    @*$('asd).data('brand')*@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4 text-right">
-                                            <label>Year</label>
+                                            <label>Model</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@this.Model.Year</p>
+                                            <p>@this.Model.ModelName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                                @Html.TextBoxFor(q => q.Year, new { @type = "number", @class = "form-control", @id = "year", @max = Constants.MAX_YEAR, @min = Constants.MIN_YEAR})
+                                               @Html.DropDownListFor(q => q.ModelID, this.Model.listModel, new { @class = "form-control", @id = "modelID"})
                                         </div>
                                     </div>
                                 </div>
@@ -179,7 +192,7 @@
                                                         <div class="checkbox checkbox-inline checkbox-primary">
                                                         <input value="@entry.Key" id="transmission@(entry.Value)" type="checkbox">
                                                         <label for="transmission@(entry.Value)">@entry.Value</label>
-                                                    </div>
+                                                        </div>
                                                     }
                                                     else
                                                     {
@@ -214,32 +227,6 @@
                                                     }
                                                 </div>
                                             </div>
-                                            @*<div class="row m-l">
-                                                <span id="car-color"><i class="fa fa-lg fa-car"></i></span> <span id="color-name">@this.Model.ColorName</span>
-                                                <a class="editFiel btn btn-sm btn-default m-l-xs" id="change-color" style="display:none">Change</a>
-
-                                                <div id="panel-color" class="panel panel-primary m-r m-t">
-                                                    <div class="panel-heading">
-                                                        Choose a color
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <a title="Beige" class="btn btn-lg btn-color" style="background-color: beige"></a>
-                                                        <a title="Black" class="btn btn-lg btn-color" style="background-color: black"></a>
-                                                        <a title="Blue" class="btn btn-lg btn-color" style="background-color: blue"></a>
-                                                        <a title="Brown" class="btn btn-lg btn-color" style="background-color: brown"></a>
-                                                        <a title="Gold" class="btn btn-lg btn-color" style="background-color: Gold"></a>
-                                                        <a title="Green" class="btn btn-lg btn-color" style="background-color: Green"></a>
-                                                        <a title="Orange" class="btn btn-lg btn-color" style="background-color: Orange"></a>
-                                                        <a title="Purple" class="btn btn-lg btn-color" style="background-color: Purple"></a>
-                                                        <a title="Red" class="btn btn-lg btn-color" style="background-color: Red"></a>
-                                                        <a title="Silver" class="btn btn-lg btn-color" style="background-color: Silver"></a>
-                                                        <a title="White" class="btn btn-lg btn-color" style="background-color: White"></a>
-                                                        <a title="Yellow" class="btn btn-lg btn-color" style="background-color: Yellow"></a>
-                                                        <br />
-                                                        <a id="close-color-panel" class="btn btn-sm btn-primary">close</a>
-                                                    </div>
-                                                </div>
-                                            </div>*@
                                         </div>
                                     </div>
                                 </div>
@@ -308,7 +295,7 @@
 
         <div class="footer text-center" style="position: initial;">
             <div>
-                <strong>Copyright</strong> Example Company &copy; 2014-2015
+                <strong>Copyright</strong> CRP &copy; 2016-2017
             </div>
         </div>
 

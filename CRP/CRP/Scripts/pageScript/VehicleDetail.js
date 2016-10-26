@@ -38,7 +38,7 @@
         $('#img-div').show();
         $('#my-awesome-dropzone').hide();
     });
-
+    $('')
     Dropzone.options.myAwesomeDropzone = {
 
         autoProcessQueue: false,
@@ -104,3 +104,22 @@ $(document).on('click', "#save-btn", function () {
         }
     });
 });
+$(function () {
+
+    $('#brandID').change(function () {
+        populateSelect();
+    });
+
+});
+function populateSelect() {
+    brand = $('#brandID').val();
+    $('#vehicleModel').html('');
+    
+    
+    if (brand == '1') {
+        cars.forEach(function (t) {
+            $('#vehicleModel').append('<option>' + t + '</option>');
+        });
+    }
+
+}

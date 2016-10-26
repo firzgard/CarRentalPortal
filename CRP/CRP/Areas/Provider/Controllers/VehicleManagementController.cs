@@ -71,43 +71,43 @@ namespace CRP.Areas.Provider.Controllers
                      Value = q.ID.ToString(),
                      Selected = true,
                  });
-            vehiIn.BrandList = brandService.Get(
-                b => b.ID != 1 // Exclude unlisted brand
-            ).OrderBy(b => b.Name).ToList();
+            //vehiIn.BrandList = brandService.Get(
+            //    b => b.ID != 1 // Exclude unlisted brand
+            //).OrderBy(b => b.Name).ToList();
 
             // Reorder each brand's models by name
             // Only get brand w/ model w/ registered vehicles
-            vehiIn.BrandList = vehiIn.BrandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
-            {
-                b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
-                {
-                    if (m.Vehicles.Any())
-                        newModelList.Add(m);
-                    return newModelList;
-                });
+            //vehiIn.BrandList = vehiIn.BrandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
+            //{
+            //    b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
+            //    {
+            //        if (m.Vehicles.Any())
+            //            newModelList.Add(m);
+            //        return newModelList;
+            //    });
 
-                if (b.VehicleModels.Any())
-                {
-                    b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
-                    newBrandList.Add(b);
-                }
+            //    if (b.VehicleModels.Any())
+            //    {
+            //        b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
+            //        newBrandList.Add(b);
+            //    }
 
-                return newBrandList;
-            });
-            //vehiIn.listBrand = brandService.Get()
-            //     .Select(q => new SelectListItem()
-            //     {
-            //         Text = q.Name,
-            //         Value = q.ID.ToString(),
-            //         Selected = true,
-            //     });
-            //vehiIn.listModel = modelService.Get()
-            //     .Select(q => new SelectListItem()
-            //     {
-            //         Text = q.Name,
-            //         Value = q.ID.ToString(),
-            //         Selected = true,
-            //     });
+            //    return newBrandList;
+            //});
+            vehiIn.listBrand = brandService.Get()
+                 .Select(q => new SelectListItem()
+                 {
+                     Text = q.Name,
+                     Value = q.ID.ToString(),
+                     Selected = true,
+                 });
+            vehiIn.listModel = modelService.Get()
+                 .Select(q => new SelectListItem()
+                 {
+                     Text = q.Name,
+                     Value = q.ID.ToString(),
+                     Selected = true,
+                 });
             return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehiIn);
 		}
 
