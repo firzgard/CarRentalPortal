@@ -34,7 +34,12 @@ namespace CRP.Areas.Provider.Controllers
 		{
             var service = this.Service<IVehicleGroupService>();
             var vehicleService = this.Service<IVehicleService>();
-            VehicleGroupViewModel viewModel = this.Mapper.Map<VehicleGroupViewModel> (service.Get(id));
+            var vehicleGroup = service.Get(id);
+            if(vehicleGroup == null)
+            {
+                return View("~/Areas/Provider/Views/VehicleGroupManagement/VehicleGroupDetail.cshtml");
+            }
+            VehicleGroupViewModel viewModel = this.Mapper.Map<VehicleGroupViewModel> (vehicleGroup);
             var providerID = User.Identity.GetUserId();
 
             viewModel.listVehicle = vehicleService.Get()

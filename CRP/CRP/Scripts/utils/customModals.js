@@ -341,11 +341,15 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/garage/status/${id}`,
                                 type: "PATCH",
                                 success: function (data) {
-                                    alert(data.message);
-                                    location.href = "/management/garageManagement";
+                                    $('.modal').modal('hide');
+                                    if(data.result) {
+                                        table.ajax.reload();
+                                    } else {
+                                        alert('fail');
+                                    }
                                 },
                                 eror: function (data) {
-                                    alert("fail");
+                                    alert("error");
                                 }
                             });
                         }
@@ -357,11 +361,20 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/deleteGarage/${id}`,
                                 type: "DELETE",
                                 success: function (data) {
-                                    alert(data.message);
-                                    location.href = "/management/garageManagement";
+                                    $('.modal').modal('hide');
+                                    if(data.result) {
+                                        if(table != '') {
+                                            table.ajax.reload();
+                                        } else {
+                                            window.location.pathname = "/management/garageManagement";
+                                        }
+                                        
+                                    } else {
+                                        alert(data.message);
+                                    }
                                 },
                                 eror: function (data) {
-                                    alert("fail");
+                                    alert("error");
                                 }
                             });
                         }
@@ -388,4 +401,3 @@ function renderSelectorOptions(type, selectedID, html = ''){
             }
         });
     }
-    

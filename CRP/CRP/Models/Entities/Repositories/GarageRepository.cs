@@ -16,19 +16,4 @@ namespace CRP.Models.Entities.Repositories
         {
         }
     }
-
-
-
-
-    //   public class GarageRepository
-    //{
-    //	CRPEntities _dataContext = new CRPEntities();
-
-
-    //       public List<Garage> findByUser(AspNetUser userID)
-    //       {
-    //           var query = (from r in _dataContext.Garages where r.AspNetUser == userID select r).ToList();
-    //           return query;
-    //       }
-    //   }
 }
