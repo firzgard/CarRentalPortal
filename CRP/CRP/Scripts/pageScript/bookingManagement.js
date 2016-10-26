@@ -2,6 +2,7 @@
 	{ name: 'ID', data: 'ID', visible: false, orderable: false, searchable: false }
 	, { name: 'CustomerName', title: 'Tên khách hàng', data: 'CustomerName' }
 	, { name: 'CustomertEmail', data: 'CustomertEmail', visible: false, orderable: false, searchable: false }
+    , { name: 'CustomerPhone', data: 'CustomerPhone', visible: false, orderable: false, searchable: false }
 	, { name: 'VehicleID', data: 'VehicleID', visible: false, orderable: false, searchable: false }
 	, { name: 'VehicleName', title: 'Tên xe', data: 'VehicleName' }
 	, { name: 'LicenseNumber', title: 'Biển số', data: 'LicenseNumber' }
@@ -27,10 +28,12 @@ const viDatatables = {
         last: "Trang cuối",
     },
     zeroRecords: "Không tìm thấy dữ liệu",
-    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    info: "Đang hiển thị _START_ đến _END_ trên tổng cộng _TOTAL_ dòng",
     infoEmpty: "không có dữ liệu",
     infoFiltered: "(được lọc ra từ _MAX_ dòng)"
 }
+
+let table = null;
 
 $(document).ready( function () {
     let garageID = null;
@@ -44,8 +47,8 @@ $(document).ready( function () {
         garageID = null;
     }
 
-    let table = $(bookings).DataTable({
-        dom: "ltipr"
+    table = $(bookings).DataTable({
+        dom: "lftipr"
 		, serverSide: true
 		, ajax: {
 		    url: queryApiUrl
@@ -74,6 +77,15 @@ $(document).ready( function () {
         //"iDisplayLength": 10,
         columns: bookingTableColumns,
         columnDefs: [
+            {
+                targets: 5,
+                render: function (data, type, row) {
+                    if (row.VehicleID != null) {
+                        return `<a href="/management/vehicleManagement/${row.VehicleID}">${data}</a>`;
+                    }
+                    return data;
+                }
+            },
 			{
 			    targets: -7
 				, render: function (data, type, row) {
@@ -87,6 +99,7 @@ $(document).ready( function () {
                 targets: -2
 				, render: function (data, type, row) {
 				    var timeReceipt = "";
+				    var canceled = "";
 				    var status = "";
 				    if (row.IsInThePast) {
 				        timeReceipt = `<div class="status-label" >
@@ -98,40 +111,38 @@ $(document).ready( function () {
 						</div>`;
 				    }
 				    if (row.IsCanceled) {
-				        status = `<div class="status-label" >
+				        canceled = `<div class="status-label" >
 							<p class ="label label-lg label-danger">Đã hủy</p>
 						</div>`;
-				    } else {
-				        if (row.IsSelfBooking) {
-				            status = `<div class="status-label" >
-							<p class ="label label-lg label-info">Tự đặt</p>
-						</div>`;
-				        } else {
-				            status = `<div class="status-label" >
-							<p class ="label label-lg label-primary">Thành công</p>
-						</div>`;
-				        }
 				    }
-				    return timeReceipt +" "+ status;
+
+				    if (row.IsSelfBooking) {
+				        status = `<div class="status-label" >
+						<p class ="label label-lg label-info">Tự đặt</p>
+					</div>`;
+				    }
+				    if(!row.IsCanceled && !row.IsSelfBooking)
+				    {
+				        status = `<div class="status-label" >
+						<p class ="label label-lg label-primary">Thành công</p>
+					</div>`;
+				    }
+				    
+				    return timeReceipt + " " + status + " " + canceled;
 				}
             },
 			{
 			    targets: -1
 				, render: function (data, type, row) {
-				    var action = `<div class="btn-group" >
-						<button data-toggle="dropdown" class="btn btn-info btn-block dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Thao tác <i class="caret"></i>
-						</button>
-						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#customModal">Chi tiết</a></li>
-                            ${row.IsSelfBooking && !row.IsInThePast? `<li><a href="#" data-toggle="modal" data-target="#customModal">Hủy tự đặt</a></li>`: ''}
-							
-						</ul>
-					</div>`;
-				    var info = '<a class="btn btn-success btn-sm"><i class="fa fa-info-circle"></i><span> Chi tiết</span></a>';
+				    var info = `<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#detailBooking"
+                        data-customer-name="${row.CustomerName}" data-customer-email="${row.CustomertEmail}" data-customer-phone="${row.CustomerPhone}"
+                        data-vehicle-name="${row.VehicleName}" data-license-number="${row.LicenseNumber}"
+                        data-rental-price="${row.RentalPrice}" data-start-time="${row.StartTime}" data-end-time="${row.EndTime}"
+                        data-star="${row.Star}" data-comment="${row.Comment}" ><i class ="fa fa-info-circle"></i><span> Chi tiết</span></a>`;
 				    var del = '';
-				    if (row.IsSelfBooking && !row.IsInThePast) {
-				        del = '<a class="btn btn-danger btn-sm"><i class="fa fa-trash"></i><span> Hủy</span></a>';
+				    if (row.IsSelfBooking && !row.IsInThePast && !row.IsCanceled) {
+				        del = `<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#cancelBooking" data-id="${row.ID}"
+                            data-vehicle-name="${row.VehicleName}" data-start-time="${row.StartTime}" data-end-time="${row.EndTime}" ><i class="fa fa-trash"></i><span> Hủy</span></a>`;
 				    }
 				    return info +" "+ del;
 				}
@@ -175,5 +186,62 @@ $(document).ready( function () {
             isInThePast = null;
         }
         table.ajax.reload();
+    });
+
+    $('#detailBooking').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget),
+            customerName = button.data('customer-name'),
+            customerEmail = button.data('customer-email'),
+            customerPhone = button.data('customer-phone'),
+            vehicleName = button.data('vehicle-name'),
+            licenseNumber = button.data('license-number'),
+            rentalPrice = button.data('rental-price'),
+            startTime = button.data('start-time'),
+	        endTime = button.data('end-time'),
+            star = button.data('star'),
+            comment = button.data('comment');
+
+        $('#customerName').text(customerName);
+        $('#customerEmail').text(customerEmail);
+        $('#customerPhone').text(customerPhone);
+        $('#vehicleName').text(vehicleName);
+        $('#licenseNumber').text(licenseNumber);
+        $('#rentalPrice').text(rentalPrice);
+        $('#startTime').text(startTime);
+        $('#endTime').text(endTime);
+        if (star != null) {
+            $('#rating').html(renderStarRating(star));
+        } else {
+            $('#rating').html('');
+        }
+        $('#comment').text(comment);
+    });
+
+    $('#cancelBooking').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget),
+            id = button.data('id'),
+	        name = button.data('vehicle-name'),
+            startTime = button.data('start-time'),
+	        endTime = button.data('end-time');
+        $('#br-id').val(id);
+        $('#vehicle-name').text(name);
+        $('#start-time').text(startTime);
+        $('#end-time').text(endTime);
+    });
+
+    $('#btnCancelBooking').on('click', function () {
+        var bookingReceiptID = $('#br-id').val();
+
+        $.ajax({
+            url: `/api/vehicles/bookings/${bookingReceiptID}`,
+            type: 'DELETE',
+            success: function (data) {
+                $('.modal').modal('hide');
+                table.ajax.reload();
+            },
+            error: function (e) {
+                alert('error');
+            }
+        });
     });
 });

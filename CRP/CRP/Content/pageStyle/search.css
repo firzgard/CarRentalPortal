@@ -25,7 +25,7 @@ body {
 	margin-bottom: 2em;
 }
 #headerFilters .input-group-addon {
-	background-color: #1ab394;
+	background-color: #4CAF50;
 	border-color: #8FEFD8;
 	color: white;
 }
@@ -204,6 +204,7 @@ body {
 .vehicle-img {
 	animation-duration: 0.5s;
 	background-position: center;
+    background-repeat: no-repeat;
 	background-size: cover;
 	padding-top: 75%;
 	position: relative;

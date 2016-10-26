@@ -1,75 +1,3 @@
-const mockupGarages = [
-	{id: 1, name: 'Garage Black'},
-	{id: 2, name: 'Garage White'},
-	{id: 3, name: 'Garage Red'},
-	{id: 4, name: 'Garage Blue'},
-	{id: 5, name: 'Garage Green'}
-], mockupGroups = [
-	{id: 1, name: 'Group Alpha'},
-	{id: 2, name: 'Group Beta'},
-	{id: 3, name: 'Group Gamma'},
-	{id: 4, name: 'Group Delta'},
-	{id: 5, name: 'Group Epsilon'}
-], mockupModelTree = [
-	{
-		id: 1,
-		name: 'Audi',
-		models: [
-			{ id: 1, name: 'A1' },
-			{ id: 2, name: 'A6' },
-			{ id: 3, name: 'A7' },
-			{ id: 4, name: 'A8' }
-		]
-	},
-	{
-		id: 2,
-		name: 'BMW',
-		models: [
-			{ id: 13, name: 'X3' },
-			{ id: 14, name: 'X5' },
-			{ id: 15, name: 'X6' }
-		]
-	},
-	{
-		id: 1,
-		name: 'Ford',
-		models: [
-			{ id: 17, name: 'Fiesta Mk5' },
-			{ id: 18, name: 'Fiesta Mk6' },
-			{ id: 19, name: 'Focus Mk2' },
-			{ id: 20, name: 'Focus Mk3' },
-		]
-	}
-], mockupFuelTypes = [
-	{ "id": 1, "name": "Amonia" },
-	{ "id": 2, "name": "Bioalcohol" },
-	{ "id": 3, "name": "Biodiesel" },
-	{ "id": 4, "name": "Biogas" },
-	{ "id": 5, "name": "Compressed Natural Gas" },
-	{ "id": 6, "name": "Diesel" },
-	{ "id": 7, "name": "Electric" },
-	{ "id": 8, "name": "Flexible" },
-	{ "id": 9, "name": "Hybrid Electric" },
-	{ "id": 10, "name": "Hydrogen" },
-	{ "id": 11, "name": "Liquefied Natural Gas" },
-	{ "id": 12, "name": "Liquefied Petronleum Gas" },
-	{ "id": 13, "name": "Petrol" },
-	{ "id": 14, "name": "Plug-in Hybrid Electric" },
-	{ "id": 15, "name": "Stream Wood Gas" }
-], mockupColor = [
-	"beige",
-	"black",
-	"blue",
-	"brown",
-	"green",
-	"orange",
-	"purple",
-	"red",
-	"silver",
-	"white",
-	"yellow",
-]
-
 function renderSelectorOptions(type, selectedID, html = ''){
     // Ajax data
     switch(type){
@@ -343,9 +271,36 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 url: `/api/vehicleGroups/${id}`,
                                 type: "DELETE",
                                 success: function (data) {
+                                    $('.modal').modal('hide');
+                                    if(data.result) {
+                                        table.ajax.reload();
+                                    } else {
+                                        alert(data.message);
+                                    }
+                                },
+                                eror: function (data) {
+                                    alert("error");
+                                }
+                            });
+                        }
+                    }
+                } break;
+                case 'vehicleGroupDetail':{
+                    if (action === "deactivate" || action === "reactivate") {
+                        for(var i=0; i< items.length; i++) {
+                            var id = items[i].id;
+                            $.ajax({
+                                url: `/api/vehicleGroups/status/${id}`,
+                                type: "PATCH",
+                                success: function (data) {
                                     if(data.result) {
                                         $('.modal').modal('hide');
-                                        table.ajax.reload();
+                                        if($('#isActive').val() === 'True') {
+                                            $('#isActive').val('False');
+                                        } else {
+                                            $('#isActive').val('True');
+                                        }
+                                        renderActivation();
                                     } else {
                                         alert("fail");
                                     }
@@ -356,7 +311,28 @@ function renderSelectorOptions(type, selectedID, html = ''){
                             });
                         }
                     }
+                    if (action === "delete") {
+                        for(var i=0; i< items.length; i++) {
+                            var id = items[i].id;
+                            $.ajax({
+                                url: `/api/vehicleGroups/${id}`,
+                                type: "DELETE",
+                                success: function (data) {
+                                    if(data.result) {
+                                        window.location.pathname = "/management/vehicleGroupManagement";
+                                    } else {
+                                        $('.modal').modal('hide');
+                                        alert(data.message);
+                                    }
+                                },
+                                eror: function (data) {
+                                    alert("error");
+                                }
+                            });
+                        }
+                    }
                 } break;
+
                 case 'garage':{
                     if (action === "deactivate" || action === "reactivate") {
                         for(var i=0; i< items.length; i++) {
@@ -391,7 +367,24 @@ function renderSelectorOptions(type, selectedID, html = ''){
                         }
                     }
                 } break;
-                case 'vehicle':{} break;
+                case 'vehicle':{
+                    if(action === "delete") {
+                        for(var i=0; i< items.length; i++) {
+                            var id = items[i].id;
+                            $.ajax({
+                                url: `/api/vehicles/${id}`,
+                                type: "DELETE",
+                                success: function (data) {
+                                    $('.modal').modal('hide');
+                                    table.ajax.reload();
+                                },
+                                eror: function (data) {
+                                    alert("error");
+                                }
+                            });
+                        }
+                    }
+                } break;
             }
         });
     }

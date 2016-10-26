@@ -1,15 +1,147 @@
+body{
+	position: relative;
+}
+
 .custom-page-wrapper {
 	background-color: white;
 }
 
+/* =========================================================== */
+/* Navbar */
+
+#infoNavBar {
+	background-color: #484848;
+	border-bottom: 0 !important;
+	opacity: 1;
+	transition-duration: 0.5s;
+}
+#infoNavBar .active > a, #infoNavBar .active > a:hover, #infoNavBar .active > a:focus{
+	background-color: #484848;
+}
+
+.hidden-info-nav {
+	opacity: 0!important;
+	z-index: -50;
+}
+
+/* =========================================================== */
+/* Image sections */
+
 #vehiclePrimaryImage {
-	background-position: top center;
+	background-position: center center;
 	background-size: 100% auto;
 	background-repeat: no-repeat;
+	cursor: pointer;
 	height: 70vh;
+	min-height: 500px;
 	width: 100%;
 }
 
+#vehicleCarousel {
+	background-color: hsla(0, 0%, 0%, .9);
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	position: fixed;
+	transition-duration: 0.5s;
+	z-index: -1;
+	opacity: 0;
+}
+#vehicleCarousel.active {
+	opacity: 1;
+	z-index: 10000;
+}
+
+#carouselDisplay {
+	animation-duration: 0.5s;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	position: absolute;
+	top: 15%;
+	left: 15%;
+	height: 70%;
+	width: 70%;
+}
+
+.carousel-control.left, .carousel-control.right {
+	background-image: none;
+	transition-duration: 0.5s
+}
+
+#vehicleCarousel .fa-times{
+	cursor: pointer;
+	font-size: 3em;
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	transition-duration: .5s;
+	z-index: 10;
+}
+#vehicleCarousel .fa-times:hover {
+	color: #CCC
+}
+
+/* =========================================================== */
+/* Info sections */
+
+#vehicleHeaderInfo {
+	background-color: #1ab394;
+	color: white;
+	padding: 0 2em 1em;
+	position: absolute;
+	overflow: auto;
+	top: -50px;
+}
+#vehicleHeaderInfo .fa{
+	color: yellow;
+}
+
 .info-section{
-	min-height: 500px;
+}
+
+#calenderSection{
+	height: 1000px;
+}
+
+.modal-body label {
+	margin-top: 1em;
+}
+.modal-body label:first-child{
+	margin-top: 0;
+}
+
+/* =========================================================== */
+/* Booking sections */
+
+#bookingSection{
+	font-size: 1.1em;
+	background-color: white;
+	border: 1px solid #CCCCCC;
+	padding: 0 1em;
+	position: relative;
+	display: table;
+	top: -50px;
+	width: 23em;
+	z-index: 2030;
+}
+#bookingSection hr{
+	margin: 10px 0;
+}
+
+#rentalTypePrice{
+	background-color: #1ab394;
+	color: white;
+	display: flex;
+    justify-content:center;
+    flex-direction:column;
+	font-size: 2em;
+	margin: 0 -0.5em;
+	height: 50px;
+	margin-bottom: 1em;
+}
+
+.form-control[readonly] {
+	background-color: white;
 }

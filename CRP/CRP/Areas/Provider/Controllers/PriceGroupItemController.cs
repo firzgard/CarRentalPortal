@@ -22,6 +22,7 @@ namespace CRP.Areas.Provider.Controllers
                 .Select(q => new IConvertible[] {
                 q.MaxTime,
                 q.Price,
+                q.MaxDistance
             });
             return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
         }

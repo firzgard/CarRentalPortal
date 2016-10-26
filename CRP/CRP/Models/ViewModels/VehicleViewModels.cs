@@ -66,7 +66,14 @@ namespace CRP.Models.ViewModels
 
 		public VehicleManagementItemJsonModel(Vehicle vehicle) : base(vehicle)
 		{
-			VehicleGroupName = vehicle.VehicleGroup.Name;
+            if(vehicle.VehicleGroup != null)
+            {
+                VehicleGroupName = vehicle.VehicleGroup.Name;
+            } else
+            {
+                VehicleGroupName = null;
+            }
+			
 		}
 	}
 
@@ -158,5 +165,5 @@ namespace CRP.Models.ViewModels
 	{
 		public int garageID { get; set; }
 		public IEnumerable<SelectListItem> listGarage { get; set; }
-	}
+    }
 }

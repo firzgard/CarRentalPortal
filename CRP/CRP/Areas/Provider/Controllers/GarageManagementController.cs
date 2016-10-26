@@ -57,9 +57,30 @@ namespace CRP.Areas.Provider.Controllers
 			return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
 		}
 
-		// API Route to create single new garage
-		// garageViewModel
-		[Route("api/garages")]
+        // update garage of a vehicle
+        [Authorize(Roles = "Provider")]
+        [Route("api/garage/updateVehicle/{vehicleID:int}/{garageID:int}")]
+        [HttpPatch]
+        public async Task<JsonResult> UpdateVehicleInGroup(int vehicleID, int garageID)
+        {
+            if (!this.ModelState.IsValid)
+            {
+                return Json(new { result = false, message = "Invalid!" });
+            }
+            var service = this.Service<IVehicleService>();
+            var vehicle = service.Get(vehicleID);
+            if (garageID != 0)
+            {
+                vehicle.GarageID = garageID;
+            }
+
+            await service.UpdateAsync(vehicle);
+            return Json(new { result = true, message = "Update done!" });
+        }
+
+        // API Route to create single new garage
+        // garageViewModel
+        [Route("api/garages")]
 		[HttpPost]
 		public async Task<ActionResult> CreateGarageAPI(Garage model)
 		{
@@ -152,10 +173,10 @@ namespace CRP.Areas.Provider.Controllers
             {
                 entity.IsActive = !entity.IsActive;
                 await service.UpdateAsync(entity);
-                return Json(new { result = true, message = "Change status success!" });
+                return Json(new { result = true, message = "Đã thay đổi thành công!" });
             }
 
-            return Json(new { result = false, message = "Change status failed!" });
+            return Json(new { result = false, message = "Có lỗi xảy ra!" });
         }
 
         [Route("management/GarageManagement/create")]
