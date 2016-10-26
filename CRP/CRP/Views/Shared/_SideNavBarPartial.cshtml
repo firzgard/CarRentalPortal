@@ -60,6 +60,14 @@
 					<span class="nav-label">Lịch sử đặt xe</span>
 				</a>
 			</li>
+				if (!User.IsInRole("Provider")) {
+				<li>
+					<a href="@Url.RouteUrl("BecomeProvider")">
+						<i class="fa fa-th-large"></i>
+						<span class="nav-label">Trở thành nhà cung cấp</span>
+					</a>
+				</li>
+				}
 			}
 		</ul>
 	</div>

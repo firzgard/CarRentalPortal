@@ -327,7 +327,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DashBoardController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserManagementController.cs" />
-    <Compile Include="Areas\Customer\Controllers\BecomeroviderController.cs" />
+    <Compile Include="Areas\Customer\Controllers\BecomeProviderController.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BookingManagementController.cs" />
@@ -456,6 +456,7 @@
     <Compile Include="Models\ViewModels\GarageViewModels.cs" />
     <Compile Include="Models\ViewModels\BookingReceiptViewModels.cs" />
     <Compile Include="Models\ViewModels\HomeViewModels.cs" />
+    <Compile Include="Models\ViewModels\NganLuongViewModels.cs" />
     <Compile Include="Models\ViewModels\PriceGroupItemViewModels.cs" />
     <Compile Include="Models\ViewModels\PriceGroupViewModels.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
@@ -467,6 +468,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Customer\Views\BecomeProvider\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\BecomeProvider\Success.cshtml" />
     <Content Include="Content\animate.css" />
     <Content Include="Content\animate.min.css" />
     <Content Include="Content\awesome-bootstrap-checkbox.css" />
@@ -1713,8 +1716,6 @@
     <Content Include="Areas\Provider\Views\VehicleManagement\VehicleManagement.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingConfirm.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingReceipt.cshtml" />
-    <Content Include="Areas\Customer\Views\Becomerovider\Index.cshtml" />
-    <Content Include="Areas\Customer\Views\Becomerovider\Info.cshtml" />
     <Content Include="Areas\Admin\Views\DashBoard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\UserManagement\UserManagement.cshtml" />
     <Content Include="Areas\Provider\Views\DashBoard\Index.cshtml" />
@@ -1747,6 +1748,7 @@
     <Content Include="Scripts\NoUISlider\nouislider.js" />
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
+    <Content Include="Scripts\pageScript\becomeProvider.js" />
     <Content Include="Scripts\pageScript\bookingConfirm.js" />
     <Content Include="Scripts\pageScript\BookingHistory.js" />
     <Content Include="Scripts\pageScript\bookingManagement.js" />
@@ -1887,6 +1889,7 @@
     <Content Include="Views\Shared\_HeaderBarPartial.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\VehicleInfo.cshtml" />
+    <Content Include="Views\Shared\_NganLuongPaymentPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1897,7 +1900,6 @@
     <Folder Include="Areas\Provider\Models\" />
     <Folder Include="Areas\Provider\Views\Bookings\" />
     <Folder Include="Areas\Provider\Views\PriceGroup\" />
-    <Folder Include="Models\JsonModels\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\System\" />
   </ItemGroup>

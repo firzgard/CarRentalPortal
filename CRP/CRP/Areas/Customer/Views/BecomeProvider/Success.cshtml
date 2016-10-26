@@ -1,0 +1,23 @@
+﻿@using System.Globalization
+@using System.Threading.Tasks
+@model CRP.Models.Entities.AspNetUser
+@{
+    ViewBag.Title = "Information of Provider";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div class="margin-signup padding-signup backgroundStyle">
+        <div>
+        </div>
+        <h3 style="color:white">Cám ơn bạn đã sử dụng dịch vụ của chúng tôi!</h3>
+        <h4 style="color:white">Xin vui lòng đăng nhập lại để hoàn tất việc thanh toán!</h4>
+            <div>
+                <label>Quyền quản lý của bạn kéo dài đến ngày @Model.IsProviderUntil.Value.ToString("yyyy/MM/dd")</label>
+                <a href="logOut" class="btn btn-primary block full-width m-b" style="color:white">Đăng nhập lại</a>
+            </div>
+    </div>
+</div>
+
+@section PageStyle {
+    
+}
