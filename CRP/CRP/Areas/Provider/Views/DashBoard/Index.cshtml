@@ -1,222 +1,161 @@
-﻿
+﻿@using CRP.Models.ViewModels
+@model ProviderReportViewModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
-<div class="tabs-container">
-    <ul class="nav nav-tabs">
-        <li class="active"><a data-toggle="tab" href="#tab-1"> Garage 1</a></li>
-        <li class=""><a data-toggle="tab" href="#tab-2">Garage 2</a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-content">
-            <div id="tab-1" class="tab-pane active">
-                <div class="wrapper wrapper-content">
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <span class="label label-success pull-right">Trong tháng này</span>
-                                    <h5>Doanh thu</h5>
-                                </div>
-                                <div class="ibox-content">
-                                    <h1 class="no-margins">40 886,200 vnd</h1>
-                                    <div class="stat-percent font-bold text-success">98% <i class="fa fa-bolt"></i></div>
-                                    <small>Total income</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <span class="label label-info pull-right">Trong tháng này</span>
-                                    <h5>Lượt booking</h5>
-                                </div>
-                                <div class="ibox-content">
-                                    <h1 class="no-margins">30</h1>
-                                    <div class="stat-percent font-bold text-info">20% <i class="fa fa-level-up"></i></div>
-                                    <small>Lượt</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <span class="label label-primary pull-right">Hiện có</span>
-                                    <h5>Số lượng xe</h5>
-                                </div>
-                                <div class="ibox-content">
-                                    <h1 class="no-margins">14</h1>
-                                    <div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i></div>
-                                    <small>Xe</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <span class="label label-danger pull-right">Chú ý</span>
-                                    <h5>Là provider đến ngày</h5>
-                                </div>
-                                <div class="ibox-content">
-                                    <h1 class="no-margins">12-2-2016</h1>
-                                </div>
-                            </div>
-                        </div>
+<div class="wrapper wrapper-content">
+    <h2>Thông tin về nhà cung cấp @Model.ProviderName</h2>
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-success pull-right">Cho tới hiện tại</span>
+                    <h5>Doanh thu</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">@Model.money VND</h1>
+                    <small>Total income</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-info pull-right">Cho tới hiện tại</span>
+                    <h5>Booking</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">@Model.booking</h1>
+                    <small>Lượt</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-primary pull-right">Đang có</span>
+                    <h5>Xe</h5>
+                </div>
+                <div class="ibox-content">
+                    <h1 class="no-margins">@Model.car</h1>
+                    <div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i></div>
+                    <small>Xe</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <span class="label label-danger pull-right">Chú ý</span>
+                    <h5>Là provider đến</h5>
+                </div>
+                <div class="ibox-content">
+                    <h2 class="no-margins">@Model.providerUtil</h2>
+                    <small>Gia hạn để tiếp tục sử dụng!</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins" style="margin-bottom:50px;">
+                <div class="ibox-title">
+                    <h5>Bảng thống kê số liệu về doanh thu và booking trong năm nay</h5>
+                    <div class="pull-right">
                     </div>
+                </div>
+                <div class="ibox-content">
                     <div class="row">
                         <div class="col-lg-12">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <h5>Bảng thống kê doanh thu, lượt booking trong năm nay</h5>
-                                    <div class="pull-right">
-                                    </div>
-                                </div>
-                                <div class="ibox-content">
-                                    <div class="row">
-                                        <div class="col-lg-9">
-                                            <div class="flot-chart">
-                                                <div class="flot-chart-content" id="flot-dashboard-chart" style="padding: 0px; position: relative;">
-                                                    <canvas class="flot-base" width="1022" height="250" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 818px; height: 200px;"></canvas>
-                                                    <div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);">
-                                                        <div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">
-
-                                                        </div>
-                                                        <div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">
-
-                                                        </div>
-                                                        <div class="flot-y-axis flot-y2-axis yAxis y2Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">
-
-                                                        </div>
-                                                    </div>
-                                                    <canvas class="flot-overlay" width="1022" height="250" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 818px; height: 200px;"></canvas>
-                                                    <div class="legend">
-                                                        <div style="position: absolute; width: 107px; height: 30px; top: 13px; left: 36px; opacity: 0.85; background-color: rgb(255, 255, 255);"> </div>
-                                                        <table style="position:absolute;top:13px;left:36px;font-size:smaller;color:#545454">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="legendColorBox">
-                                                                        <div style="border:1px solid #000000;padding:1px">
-                                                                            <div style="width:4px;height:0;border:5px solid #1ab394;overflow:hidden"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="legendLabel">Doanh thu</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="legendColorBox">
-                                                                        <div style="border:1px solid #000000;padding:1px">
-                                                                            <div style="width:4px;height:0;border:5px solid #1C84C6;overflow:hidden"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td class="legendLabel">Lượt Booking</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <div class="flot-chart">
+                                <div class="flot-chart-content" id="aa" style="padding: 0px; position: relative;">
+                                    <canvas class="flot-base" width="1022" height="250" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 818px; height: 200px;"></canvas>
+                                    <div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);">
+                                        <div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">
                                         </div>
-                                        <div class="col-lg-3">
-                                            <ul class="stat-list">
-                                                <li>
-                                                    <h2 class="no-margins">2,346</h2>
-                                                    <small>Total orders in period</small>
-                                                    <div class="stat-percent">48% <i class="fa fa-level-up text-navy"></i></div>
-                                                    <div class="progress progress-mini">
-                                                        <div style="width: 48%;" class="progress-bar"></div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <h2 class="no-margins ">4,422</h2>
-                                                    <small>Oádsadn last month</small>
-                                                    <div class="stat-percent">60% <i class="fa fa-level-down text-navy"></i></div>
-                                                    <div class="progress progress-mini">
-                                                        <div style="width: 60%;" class="progress-bar"></div>
-                                                    </div>
-                                                </li>
-                                                <li>
-                                                    <h2 class="no-margins ">9,180</h2>
-                                                    <small>Monthly income from orders</small>
-                                                    <div class="stat-percent">22% <i class="fa fa-bolt text-navy"></i></div>
-                                                    <div class="progress progress-mini">
-                                                        <div style="width: 22%;" class="progress-bar"></div>
-                                                    </div>
-                                                </li>
-                                            </ul>
+                                        <div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">
+                                        </div>
+                                        <div class="flot-y-axis flot-y2-axis yAxis y2Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">
                                         </div>
                                     </div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="ibox float-e-margins">
-                                <div class="ibox-title">
-                                    <h5>Nhận xét và đánh giá</h5>
-                                    <div class="ibox-tools">
-                                        <a class="collapse-link">
-                                            <i class="fa fa-chevron-up"></i>
-                                        </a>
-                                        <a class="close-link">
-                                            <i class="fa fa-times"></i>
-                                        </a>
-                                        <span class="label label-info pull-right">Mới nhất</span>
-                                    </div>
-                                </div>
-                                <div class="ibox-content">
-                                    <div class="feed-activity-list">
-
-                                        <div class="feed-element">
-                                            <div>
-                                                <small class="pull-right text-navy">1m ago</small>
-                                                <strong>Monica Smith</strong>
-                                                <div>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum</div>
-                                                <small class="text-muted">Today 5:60 pm - 12.06.2014</small>
-                                            </div>
-                                        </div>
-
-                                        <div class="feed-element">
-                                            <div>
-                                                <small class="pull-right">2m ago</small>
-                                                <strong>Jogn Angel</strong>
-                                                <div>There are many variations of passages of Lorem Ipsum available</div>
-                                                <small class="text-muted">Today 2:23 pm - 11.06.2014</small>
-                                            </div>
-                                        </div>
-
-                                        <div class="feed-element">
-                                            <div>
-                                                <small class="pull-right">5m ago</small>
-                                                <strong>Jesica Ocean</strong>
-                                                <div>Contrary to popular belief, Lorem Ipsum</div>
-                                                <small class="text-muted">Today 1:00 pm - 08.06.2014</small>
-                                            </div>
-                                        </div>
-                                        <div class="feed-element">
-                                            <div>
-                                                <small class="pull-right">5m ago</small>
-                                                <strong>Gary Smith</strong>
-                                                <div>200 Latin words, combined with a handful</div>
-                                                <small class="text-muted">Yesterday 8:48 pm - 10.06.2014</small>
-                                            </div>
-                                        </div>
-
+                                    <canvas class="flot-overlay" width="1022" height="250" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 818px; height: 200px;"></canvas>
+                                    <div class="legend">
+                                        <div style="position: absolute; width: 107px; height: 30px; top: 13px; left: 36px; opacity: 0.85; background-color: rgb(255, 255, 255);"> </div>
+                                        <table style="position:absolute;top:13px;left:36px;font-size:smaller;color:#545454">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="legendColorBox">
+                                                        <div style="border:1px solid #000000;padding:1px">
+                                                            <div style="width:4px;height:0;border:5px solid #1ab394;overflow:hidden"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Doanh thu</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="legendColorBox">
+                                                        <div style="border:1px solid #000000;padding:1px">
+                                                            <div style="width:4px;height:0;border:5px solid #1C84C6;overflow:hidden"></div>
+                                                        </div>
+                                                    </td>
+                                                    <td class="legendLabel">Lượt Booking</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                   
                     </div>
                 </div>
             </div>
-            <div id="tab-2" class="tab-pane active">
-                <h2>Garage 2</h2>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>Nhận xét và đánh giá của khách hàng</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                        <span class="label label-success pull-right">Mới nhất</span>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <div class="feed-activity-list">
+                        @{
+                            foreach (CommentModel item2 in Model.comment)
+                            {
+                                <div class="feed-element" style="border-bottom: 1px solid black">
+                                    <div>
+                                        <small class="pull-right text-navy">1m ago</small>
+                                        <strong>@item2.UserName</strong>
+                                        <div>@item2.Comment</div>
+                                        @{ for (int i = 0; i < item2.star; i++)
+                                            {
+                                                <i class="fa fa-star"></i>
+                                            }
+                                        }
+                                       
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
             </div>
         </div>
- </div>
+
+    </div>
 </div>
         @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/GarageList")
                                             .Include("~/Content/awesome-bootstrap-checkbox.css",

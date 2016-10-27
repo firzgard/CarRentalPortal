@@ -32,7 +32,7 @@ let table = null;
 $(document).ready(() =>{
 	// Render table
 	table = $('#garages').DataTable({
-        dom: "ltipr",
+        dom: "lftipr",
         ajax: {
             url: "/api/vehicleGroups",
             type: "GET",

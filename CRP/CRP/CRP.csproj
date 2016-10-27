@@ -390,6 +390,7 @@
     <Compile Include="Models\Entities\PriceGroupItem.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\Repositories\GarageWorkingTimeRepository.cs" />
     <Compile Include="Models\Entities\Repositories\RoleRepository.cs" />
     <Compile Include="Models\Entities\Repositories\UserRepository.cs" />
     <Compile Include="Models\Entities\Repositories\VehicleImageRepository.cs" />
@@ -397,6 +398,7 @@
     <Compile Include="Models\Entities\Repositories\CategoryRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupItemRepository.cs" />
     <Compile Include="Models\Entities\Repositories\PriceGroupRepository.cs" />
+    <Compile Include="Models\Entities\Services\GarageWorkingTimeService.cs" />
     <Compile Include="Models\Entities\Services\PriceGroupItemService.cs" />
     <Compile Include="Models\Entities\Services\PriceGroupService.cs" />
     <Compile Include="Models\Entities\Services\RoleService.cs" />
