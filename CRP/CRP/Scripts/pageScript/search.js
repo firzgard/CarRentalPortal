@@ -51,9 +51,9 @@ function renderSearchResultItem(searchResult){
 			</div>
 			<div class="vehicle-info row">
 				<div class="col-xs-9">
-				<div style="font-size:0.88em;">&nbsp;${searchResult.GarageName} · ${renderStarRating(searchResult.GarageRating, '#1ab394', false)}</div>
+				<div style="font-size:0.88em;">&nbsp;${searchResult.GarageName} · ${renderStarRating(searchResult.GarageRating, '#4CAF50', false)}</div>
 					<a href="${VEHICLE_INFO_URL}/${searchResult.ID}" class="vehicle-name" target="_blank">${searchResult.Name} <b>(${searchResult.Year})</b></a>
-					<div class="center-flex">${renderStarRating(searchResult.Star, '#1ab394')} · ${searchResult.NumOfComment} đánh giá</div>
+					<div class="center-flex">${renderStarRating(searchResult.Star, '#4CAF50')} · ${searchResult.NumOfComment} đánh giá</div>
 				</div>
 				<div class="col-xs-3 text-right vehicle-seat center-flex">${searchResult.NumOfSeat}<img src="/Content/img/icons/person.png"/></div>	
 				<div class="col-xs-12">
@@ -177,7 +177,6 @@ function renderPriceSlider(data){
 
 function renderSearcher(){
 	//console.log(searchConditions);
-	window.scrollTo(0, null);
 	jQueryNodes.searchResultGrid.addClass('hidden');
 	jQueryNodes.paginator.addClass('hidden');
 	jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
@@ -507,7 +506,7 @@ $(document).ready(() => {
 
 	const starOptionFormat = (data) => {
 		if(!data.id) return data.text;
-		return $(`<span>${data.id}.0 ${renderStarRating(data.id, '#1ab394', false)} trở lên</span>`);
+		return $(`<span>${data.id}.0 ${renderStarRating(data.id, '#4CAF50', false)} trở lên</span>`);
 	}
 
 	// Vehicle rating filter slider

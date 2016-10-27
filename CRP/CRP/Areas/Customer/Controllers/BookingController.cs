@@ -368,26 +368,6 @@ namespace CRP.Areas.Customer.Controllers
 			}
 			return Json(jsonBookings, JsonRequestBehavior.AllowGet);
 		}
-
-		// API route for getting booking calendar of this vehicle
-		// Only get bookingReceipt of the next 30 days from this moment
-		[Route("api/bookings/calendar/{vehicleID:int}")]
-		[HttpGet]
-		public JsonResult GetBookingCalendarAPI(int vehicleID)
-		{
-			checkisPending(6);
-			List<BookingReceipt> booking = _service.findByVehicle(vehicleID);
-			List<VehicleCalendarModel> jsonBookings = new List<VehicleCalendarModel>();
-			foreach (BookingReceipt p in booking)
-			{
-				VehicleCalendarModel jsonBooking = new VehicleCalendarModel();
-				jsonBooking.ID = p.ID;
-				jsonBooking.StartTime = p.StartTime;
-				jsonBooking.EndTime = p.EndTime;
-				jsonBookings.Add(jsonBooking);
-			}
-			return Json(jsonBookings, JsonRequestBehavior.AllowGet);
-		}
 		*/
 
 		[System.Web.Mvc.Route("api/booking/status/{id:int}")]
