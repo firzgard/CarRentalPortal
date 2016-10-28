@@ -24,6 +24,8 @@ namespace CRP.Models
         [DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
         //them field urlAvatar
+        [Display(Name = "Url")]
+        public string Url { get; set; }
     }
 
     public class ManageLoginsViewModel
