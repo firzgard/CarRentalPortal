@@ -82,17 +82,21 @@ namespace CRP.Areas.Provider.Controllers
         // Route to vehicle's detailed info page
         [Authorize(Roles = "Provider")]
 		[Route("management/vehicleManagement/{id:int}")]
-		public ViewResult VehihicleDetail(int id)
-		{
-			var service = this.Service<IVehicleService>();
+		public ActionResult VehihicleDetail(int id)
+        {
+            var providerID = User.Identity.GetUserId();
+            var service = this.Service<IVehicleService>();
             var garageService = this.Service<IGarageService>();
             var groupService = this.Service<IVehicleGroupService>();
             var brandService = this.Service<IBrandService>();
             var modelService = this.Service<IModelService>();
-            Vehicle vehicle = service.Get(id);
+            Vehicle vehicle = service.Get(v => v.ID == id && v.Garage.OwnerID == providerID).FirstOrDefault();
+            if (vehicle == null)
+            {
+                return new HttpStatusCodeResult(403, "Error");
+            }
             VehicleDetailInfoModel vehiIn = new VehicleDetailInfoModel(vehicle);
             //FilterByGarageView garageView = new FilterByGarageView();
-            var providerID = User.Identity.GetUserId();
             vehiIn.listGarage = garageService.Get()
                 .Where(q => q.OwnerID == providerID)
                 .Select(q => new SelectListItem()
