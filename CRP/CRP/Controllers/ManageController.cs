@@ -9,15 +9,17 @@ using Microsoft.Owin.Security;
 using CRP.Models;
 using CRP.Models.Entities.Services;
 using CRP.Models.Entities;
+using CloudinaryDotNet.Actions;
+using CloudinaryDotNet;
+using Autofac.Core;
 
 namespace CRP.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : BaseController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private UserService _userService = new UserService();
         private String Error = "";
         public ManageController()
         {
@@ -65,9 +67,10 @@ namespace CRP.Controllers
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
-
+            var _userService = this.Service<IUserReceiptService>();
             var userId = User.Identity.GetUserId();
             ApplicationUser user = await UserManager.FindByIdAsync(userId);
+            AspNetUser userEntity = await _userService.GetAsync(userId);
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
@@ -77,6 +80,7 @@ namespace CRP.Controllers
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId),
                 Name = user.UserName,
                 Email = await UserManager.GetEmailAsync(userId),
+                Url = userEntity.AvatarURL,
             };
             ViewBag.Error = Error;
             return View(model);
@@ -87,16 +91,20 @@ namespace CRP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(IndexViewModel model)
         {
+            var _userService = this.Service<IUserReceiptService>();
             var userId = User.Identity.GetUserId();
             if (ModelState.IsValid)
             {
                 ApplicationUser user = await UserManager.FindByIdAsync(userId);
+                AspNetUser userEntity = await _userService.GetAsync(userId);
                 user.UserName = model.Name;
                 user.Email = model.Email;
                 user.PhoneNumber = model.PhoneNumber;
                 var result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
+                    userEntity.AvatarURL = model.Url;
+                    _userService.Update(userEntity);
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return RedirectToAction("Index", "Manage");
                 }
@@ -345,6 +353,38 @@ namespace CRP.Controllers
             return new AccountController.ChallengeResult(provider, Url.Action("LinkLoginCallback", "Manage"), User.Identity.GetUserId());
         }
 
+        [HttpPost]
+        [Route("Management/Image/Upload")]
+        public String UploadImage()
+        {
+            String url = "";
+            String userName = User.Identity.Name;
+            String userID = User.Identity.GetUserId();
+            CloudinaryDotNet.Account account =
+            new CloudinaryDotNet.Account("ahihicompany",
+                                 "445384272838294",
+                                 "h4SCiNi8zOKfewxEi2LqNt3IjrQ"
+                                    );
+            CloudinaryDotNet.Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(account);
+            //dinh dang image     
+            var pic = System.Web.HttpContext.Current.Request.Files["image"];
+            int width = Int32.Parse(Request.Form["width"]);
+            int height = Int32.Parse(Request.Form["height"]);
+            if (pic != null)
+            {
+                CloudinaryDotNet.Actions.ImageUploadParams uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams()
+                {
+                    //File = new CloudinaryDotNet.Actions.FileDescription(@"c:\mypicture.jpg"),
+                    //PublicId = "sample_remote_file"
+                    File = new FileDescription(pic.FileName,pic.InputStream),
+                    Tags = "Anh cua" + userName,
+                };
+                CloudinaryDotNet.Actions.ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
+                url = uploadResult.Uri.ToString();
+                return url;
+            }
+            return url;
+        }
         //
         // GET: /Manage/LinkLoginCallback
         public async Task<ActionResult> LinkLoginCallback()
