@@ -5,6 +5,7 @@ using System.Security.AccessControl;
 using System.Security.Cryptography.Xml;
 using System.Web.Mvc;
 using CRP.Models.Entities;
+using System.Web;
 
 namespace CRP.Models.ViewModels
 {
@@ -113,7 +114,14 @@ namespace CRP.Models.ViewModels
         { }
         public VehicleDetailInfoModel(Vehicle vehicle)
 		{
-			this.ID = vehicle.ID;
+            try
+            {
+                this.ID = vehicle.ID;
+            }
+			catch (Exception e)
+            {
+                throw new HttpException(404, "Page not exist");
+            }
 			this.LicenseNumber = vehicle.LicenseNumber;
 			this.Name = vehicle.Name;
 			this.ModelID = vehicle.ModelID;

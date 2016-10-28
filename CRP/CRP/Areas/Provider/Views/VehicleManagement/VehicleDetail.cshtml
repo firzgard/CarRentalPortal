@@ -130,7 +130,7 @@
                                             <p>@this.Model.Year</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            @Html.TextBoxFor(q => q.Year, new { @type = "number", @class = "form-control", @id = "year", @max = Constants.MAX_YEAR, @min = Constants.MIN_YEAR })
+                                            @Html.TextBoxFor(q => q.Year, new { @type = "number", @class = "form-control", @id = "year", @max = Constants.MAX_YEAR, @min = Constants.MIN_YEAR})
                                         </div>
                                     </div>
                                 </div>
@@ -250,7 +250,7 @@
                                 </div>
                                 
                                 <div id="img-div" class="col-md-6">
-                                    <div class="editFiel" style="display:none">
+                                    <div>
                                         <div class="row">
                                             <div class="col-md-4 text-right">
                                                 <label>Hình</label>
@@ -279,7 +279,7 @@
                                                         <span class="icon-next"></span>
                                                     </a>
                                                 </div>
-                                                <a id="edit-img" class="btn btn-warning">Edit image</a>
+                                                <a id="edit-img" class="btn btn-warning editFiel" style="display:none">Edit image</a>
                                             </div>
                                         </div>
                                     </div>
