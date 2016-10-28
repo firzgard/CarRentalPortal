@@ -104,7 +104,7 @@ $(document).on('click', "#save-btn", function () {
     model.LicenseNumber = $('#licenseNumber').val();
     model.Engine = $('#engine').val();
     model.FuelType = $('#fuelFilter').val();
-    model.TransmissionType = '1';
+    model.TransmissionType = $('input[name=TransName]:checked').val();
     model.Star = '4.1';
     model.Color = $('input[name=group]:checked').val();
     model.Year = $('#year').val();
@@ -123,7 +123,19 @@ $(document).on('click', "#save-btn", function () {
         }
     });
 });
-
+$(function () {
+    $("#year").keydown(function () {
+        // Save old value.
+        $(this).data("old", $(this).val());
+    });
+    $("#year").keyup(function () {
+        // Check correct, else revert back to old value.
+        if (parseInt($(this).val()) <= 2016 && parseInt($(this).val()) >= 1988)
+            ;
+        else
+            $(this).val($(this).data("old"));
+    });
+});
 //$("#brandID").change(function () {
 //    var model = '@Html.Raw(Json.Encode(Model.VehicleDetailInfoModel))';
 //    if($(this).val() == model.lstModel.BrandID)
