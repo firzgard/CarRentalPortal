@@ -331,7 +331,7 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\Controllers\DashBoardController.cs" />
     <Compile Include="Areas\Admin\Controllers\UserManagementController.cs" />
-    <Compile Include="Areas\Customer\Controllers\BecomeroviderController.cs" />
+    <Compile Include="Areas\Customer\Controllers\BecomeProviderController.cs" />
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BookingManagementController.cs" />
@@ -462,6 +462,7 @@
     <Compile Include="Models\ViewModels\GarageViewModels.cs" />
     <Compile Include="Models\ViewModels\BookingReceiptViewModels.cs" />
     <Compile Include="Models\ViewModels\HomeViewModels.cs" />
+    <Compile Include="Models\ViewModels\NganLuongViewModels.cs" />
     <Compile Include="Models\ViewModels\PriceGroupItemViewModels.cs" />
     <Compile Include="Models\ViewModels\PriceGroupViewModels.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
@@ -473,6 +474,8 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Areas\Customer\Views\BecomeProvider\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\BecomeProvider\Success.cshtml" />
     <Content Include="Content\animate.css" />
     <Content Include="Content\animate.min.css" />
     <Content Include="Content\awesome-bootstrap-checkbox.css" />
@@ -635,6 +638,9 @@
     <Content Include="Content\DateRangePicker\daterangepicker.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
+    <Content Include="Content\FullCalendar\fullcalendar.css" />
+    <Content Include="Content\FullCalendar\fullcalendar.min.css" />
+    <Content Include="Content\FullCalendar\fullcalendar.print.css" />
     <Content Include="Content\img\a1.jpg" />
     <Content Include="Content\img\a2.jpg" />
     <Content Include="Content\img\a3.jpg" />
@@ -1685,6 +1691,68 @@
     <Content Include="Scripts\flot\jquery.flot.symbol.js" />
     <Content Include="Scripts\flot\jquery.flot.time.js" />
     <Content Include="Scripts\flot\jquery.flot.tooltip.min.js" />
+    <Content Include="Scripts\FullCalendar\fullcalendar.js" />
+    <Content Include="Scripts\FullCalendar\fullcalendar.min.js" />
+    <Content Include="Scripts\FullCalendar\locale-all.js" />
+    <Content Include="Scripts\FullCalendar\locale\ar-ma.js" />
+    <Content Include="Scripts\FullCalendar\locale\ar-sa.js" />
+    <Content Include="Scripts\FullCalendar\locale\ar-tn.js" />
+    <Content Include="Scripts\FullCalendar\locale\ar.js" />
+    <Content Include="Scripts\FullCalendar\locale\bg.js" />
+    <Content Include="Scripts\FullCalendar\locale\ca.js" />
+    <Content Include="Scripts\FullCalendar\locale\cs.js" />
+    <Content Include="Scripts\FullCalendar\locale\da.js" />
+    <Content Include="Scripts\FullCalendar\locale\de-at.js" />
+    <Content Include="Scripts\FullCalendar\locale\de.js" />
+    <Content Include="Scripts\FullCalendar\locale\el.js" />
+    <Content Include="Scripts\FullCalendar\locale\en-au.js" />
+    <Content Include="Scripts\FullCalendar\locale\en-ca.js" />
+    <Content Include="Scripts\FullCalendar\locale\en-gb.js" />
+    <Content Include="Scripts\FullCalendar\locale\en-ie.js" />
+    <Content Include="Scripts\FullCalendar\locale\en-nz.js" />
+    <Content Include="Scripts\FullCalendar\locale\es-do.js" />
+    <Content Include="Scripts\FullCalendar\locale\es.js" />
+    <Content Include="Scripts\FullCalendar\locale\eu.js" />
+    <Content Include="Scripts\FullCalendar\locale\fa.js" />
+    <Content Include="Scripts\FullCalendar\locale\fi.js" />
+    <Content Include="Scripts\FullCalendar\locale\fr-ca.js" />
+    <Content Include="Scripts\FullCalendar\locale\fr-ch.js" />
+    <Content Include="Scripts\FullCalendar\locale\fr.js" />
+    <Content Include="Scripts\FullCalendar\locale\gl.js" />
+    <Content Include="Scripts\FullCalendar\locale\he.js" />
+    <Content Include="Scripts\FullCalendar\locale\hi.js" />
+    <Content Include="Scripts\FullCalendar\locale\hr.js" />
+    <Content Include="Scripts\FullCalendar\locale\hu.js" />
+    <Content Include="Scripts\FullCalendar\locale\id.js" />
+    <Content Include="Scripts\FullCalendar\locale\is.js" />
+    <Content Include="Scripts\FullCalendar\locale\it.js" />
+    <Content Include="Scripts\FullCalendar\locale\ja.js" />
+    <Content Include="Scripts\FullCalendar\locale\ko.js" />
+    <Content Include="Scripts\FullCalendar\locale\lb.js" />
+    <Content Include="Scripts\FullCalendar\locale\lt.js" />
+    <Content Include="Scripts\FullCalendar\locale\lv.js" />
+    <Content Include="Scripts\FullCalendar\locale\mk.js" />
+    <Content Include="Scripts\FullCalendar\locale\ms-my.js" />
+    <Content Include="Scripts\FullCalendar\locale\ms.js" />
+    <Content Include="Scripts\FullCalendar\locale\nb.js" />
+    <Content Include="Scripts\FullCalendar\locale\nl.js" />
+    <Content Include="Scripts\FullCalendar\locale\nn.js" />
+    <Content Include="Scripts\FullCalendar\locale\pl.js" />
+    <Content Include="Scripts\FullCalendar\locale\pt-br.js" />
+    <Content Include="Scripts\FullCalendar\locale\pt.js" />
+    <Content Include="Scripts\FullCalendar\locale\ro.js" />
+    <Content Include="Scripts\FullCalendar\locale\ru.js" />
+    <Content Include="Scripts\FullCalendar\locale\sk.js" />
+    <Content Include="Scripts\FullCalendar\locale\sl.js" />
+    <Content Include="Scripts\FullCalendar\locale\sr-cyrl.js" />
+    <Content Include="Scripts\FullCalendar\locale\sr.js" />
+    <Content Include="Scripts\FullCalendar\locale\sv.js" />
+    <Content Include="Scripts\FullCalendar\locale\th.js" />
+    <Content Include="Scripts\FullCalendar\locale\tr.js" />
+    <Content Include="Scripts\FullCalendar\locale\uk.js" />
+    <Content Include="Scripts\FullCalendar\locale\vi.js" />
+    <Content Include="Scripts\FullCalendar\locale\zh-cn.js" />
+    <Content Include="Scripts\FullCalendar\locale\zh-tw.js" />
     <Content Include="Scripts\inspinia.js" />
     <Content Include="Scripts\jasny-bootstrap.js" />
     <Content Include="Scripts\jasny-bootstrap.min.js" />
@@ -1720,8 +1788,6 @@
     <Content Include="Areas\Provider\Views\VehicleManagement\VehicleManagement.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingConfirm.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingReceipt.cshtml" />
-    <Content Include="Areas\Customer\Views\Becomerovider\Index.cshtml" />
-    <Content Include="Areas\Customer\Views\Becomerovider\Info.cshtml" />
     <Content Include="Areas\Admin\Views\DashBoard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\UserManagement\UserManagement.cshtml" />
     <Content Include="Areas\Provider\Views\DashBoard\Index.cshtml" />
@@ -1754,6 +1820,7 @@
     <Content Include="Scripts\NoUISlider\nouislider.js" />
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
+    <Content Include="Scripts\pageScript\becomeProvider.js" />
     <Content Include="Scripts\pageScript\bookingConfirm.js" />
     <Content Include="Scripts\pageScript\BookingHistory.js" />
     <Content Include="Scripts\pageScript\Personal.js" />
@@ -1895,6 +1962,7 @@
     <Content Include="Views\Shared\_HeaderBarPartial.cshtml" />
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\VehicleInfo.cshtml" />
+    <Content Include="Views\Shared\_NganLuongPaymentPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1905,7 +1973,6 @@
     <Folder Include="Areas\Provider\Models\" />
     <Folder Include="Areas\Provider\Views\Bookings\" />
     <Folder Include="Areas\Provider\Views\PriceGroup\" />
-    <Folder Include="Models\JsonModels\" />
     <Folder Include="Views\Base\" />
     <Folder Include="Views\System\" />
   </ItemGroup>

@@ -1,7 +1,7 @@
 $(document).ready(function(){
 	// Render star ratings
-	$('.rating').each(function(){ $(this).html(renderStarRating($(this).data('rating'), '#1ab394')); })
-	$('.rating-no-badge').each(function(){ $(this).html(renderStarRating($(this).data('rating'), '#1ab394', false)); })
+	$('.rating').each(function(){ $(this).html(renderStarRating($(this).data('rating'), '#388E3C')); })
+	$('.rating-no-badge').each(function(){ $(this).html(renderStarRating($(this).data('rating'), '#388E3C', false)); })
 
 	// Stick the bookingSection upon scrolling past it.
 	new Waypoint.Sticky({
@@ -92,7 +92,7 @@ $(document).ready(function(){
 		$vehicleCarousel = $('#vehicleCarousel'),
 		$carouselDisplay = $('#carouselDisplay');
 
-	const changeImg = () =>{
+	const changeImg = () => {
 		$carouselDisplay.addClass('animated fadeOut')
 		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
 			$carouselDisplay.removeClass('animated fadeOut')
@@ -137,6 +137,105 @@ $(document).ready(function(){
 	// Tooltip for booking section
 	$("[data-toggle='tooltip']").tooltip();
 
+
+	// =============================================
+	// Calendar
+
+	// Background events generated using garage's open/close time + 
+	let workingEvents = {
+		events: [
+			{
+				id: 4
+				, title: 'Giờ có thể đặt'
+				, start: soonestPossibleBookingStartTimeFromNow.clone()
+				, end: latestPossibleBookingStartTimeFromNow.clone()
+			},
+			{
+				id: 5
+				, allDay: true
+				, title: 'Giờ có thể đặt'
+				, start: soonestPossibleBookingStartTimeFromNow.clone().set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+				, end: latestPossibleBookingStartTimeFromNow.clone().set({ hour: 24, minute: 0, second: 0, millisecond: 0 })
+			}
+		]
+		, overlap: true
+		, rendering: "inverse-background"
+	};
+
+	for (time of WORK_TIMES) {
+		let weekDay = moment().day(time.DayOfWeek).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }),
+			openTime = weekDay.clone().add(time.OpenTimeInMinute, 'minutes'),
+			closeTime = weekDay.clone().add(time.CloseTimeInMinute, 'minutes');
+
+		do {
+			if (closeTime.isAfter(soonestPossibleBookingStartTimeFromNow)) {
+				workingEvents.events.push({
+					id: 2
+					, title: 'Giờ làm việc'
+					, start: openTime.isAfter(soonestPossibleBookingStartTimeFromNow)
+							? openTime.clone()
+							: soonestPossibleBookingStartTimeFromNow.clone()
+					, end: closeTime.isBefore(latestPossibleBookingStartTimeFromNow)
+							? closeTime.clone()
+							: latestPossibleBookingStartTimeFromNow.clone()
+				});
+				workingEvents.events.push({
+					id: 3
+					, title: 'Giờ làm việc'
+					, allDay: true
+					, start: openTime.isAfter(soonestPossibleBookingStartTimeFromNow)
+							? openTime.clone()
+							: soonestPossibleBookingStartTimeFromNow.clone()
+					, end: closeTime.isBefore(latestPossibleBookingStartTimeFromNow)
+							? closeTime.clone()
+							: latestPossibleBookingStartTimeFromNow.clone()
+				});
+			}
+
+			openTime.add(1, 'weeks');
+			closeTime.add(1, 'weeks');
+		} while(openTime.isBefore(latestPossibleBookingStartTimeFromNow))
+	}
+
+	// Events from other bookings
+	let bookingEvents = {
+		backgroundColor: '#388E3C'
+		, borderColor: '#2B6D2D'
+	};
+
+	$.ajax({
+		url: CALENDAR_FETCHING_URL,
+		dataType: 'json'
+	})
+	.done((data) => {
+		// Trim the events' start/end time to be between soonestPossibleBookingStartTimeFromNow and latestPossibleBookingStartTimeFromNow
+		bookingEvents.events = data.map(val => {
+			if(moment(val.start).isBefore(soonestPossibleBookingStartTimeFromNow))
+				val.start = soonestPossibleBookingStartTimeFromNow.clone();
+
+			if(moment(val.end).isAfter(latestPossibleBookingStartTimeFromNow))
+				val.end = latestPossibleBookingStartTimeFromNow.clone();
+
+			return val;
+		});
+
+		$('#calendar').fullCalendar({
+			eventSources: [ bookingEvents, workingEvents ]
+			, allDaySlot: false
+			, defaultView: 'month'
+			, header: { center: 'month,agendaWeek' }
+			, timezone: 'local'
+			, views: {
+				agendaWeek: {}
+				, month: {}
+			}
+		})
+	})
+	.fail(() => {
+		console.log("error");
+	})
+
+	// ==============================================
 	// Render the booking section info
 	let $rentalType = $('#rentalType'),
 		$rentalTypePrice = $('#rentalTypePrice')

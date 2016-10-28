@@ -600,7 +600,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
   min-width: 120px;
 }
 .btn-primary.btn-outline {
-  color: #1ab394;
+  color: white;
 }
 .btn-success.btn-outline {
   color: #1c84c6;
@@ -8248,7 +8248,7 @@ body.md-skin {
 /* ============================================================================== */
 /* Custom */
 body{
-  background-color: #4CAF50;
+  background-color: #388E3C;
   font-family: Circular,"Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
@@ -8259,11 +8259,11 @@ body{
   color: white;
 }
 .navbar-default .nav > li > a:hover, .navbar-default .nav > li > a:focus {
-  background-color: #388E3C;
+  background-color: #2B6D2D;
 }
 
 .nav > li > a:hover, .nav > li > a:focus {
-  background-color: #388E3C;
+  background-color: #2B6D2D;
 }
 
 hr {
@@ -8294,13 +8294,18 @@ hr {
   border-color: #388E3C;
 }
 
+.btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled]:active, .btn-primary.active[disabled], fieldset[disabled] .btn-primary, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary:active, fieldset[disabled] .btn-primary.active {
+  background-color: #53AD51;
+  border-color: #53AD51;
+}
+
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
   background-color: #388E3C;
   border-color: #388E3C;
 }
 
 .green-bg {
-  background-color: #4CAF50;
+  background-color: #388E3C;
   color: white;
 }
 .green-bg a {
@@ -8420,4 +8425,46 @@ hr {
 /* NoUISlider */
 .noUi-connect {
   background-color: #4CAF50;
+}
+
+/* FullCalendar */
+.fc-bgevent {
+  background: #000000;
+  opacity: 0.20;
+}
+.fc-content {
+  display: none;
+}
+.fc-state-active {
+  background-color: #4CAF50;
+}
+
+.fc-unthemed .fc-today {
+  background: transparent;
+}
+
+.fc-color-explain {
+  margin-top: 0.5em;
+}
+
+.fc-color {
+  border: 1px solid #CCCCCC;
+  margin: 0 1em 0 1em;
+  padding: 0.5em 1.5em;
+}
+
+.fc-color.unbookable {
+  background-color: #999999;
+}
+
+.fc-color.booked {
+  background-color: #4CAF50;
+}
+
+.fc-color.nonworking {
+  background-color: #CCCCCC;
+}
+
+.fc-color.available {
+  background-color: #fff;
 }

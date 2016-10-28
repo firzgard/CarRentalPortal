@@ -30,6 +30,7 @@ namespace CRP.Models.Entities
         public string Email { get; set; }
         public string Phone1 { get; set; }
         public string Phone2 { get; set; }
+        public int NumOfComment { get; set; }
         public decimal Star { get; set; }
         public string Description { get; set; }
         public string Policy { get; set; }

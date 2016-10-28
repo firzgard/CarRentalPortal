@@ -34,6 +34,7 @@ namespace CRP.Models.Entities
         public string Engine { get; set; }
         public int Color { get; set; }
         public string Description { get; set; }
+        public int NumOfComment { get; set; }
         public decimal Star { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
