@@ -111,6 +111,7 @@
           <Property Name="Email" Type="varchar" MaxLength="256" Nullable="false" />
           <Property Name="Phone1" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Phone2" Type="varchar" MaxLength="50" />
+          <Property Name="NumOfComment" Type="int" Nullable="false" />
           <Property Name="Star" Type="decimal" Precision="2" Scale="1" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
           <Property Name="Policy" Type="nvarchar" MaxLength="1000" />
@@ -188,6 +189,7 @@
           <Property Name="Engine" Type="nvarchar" MaxLength="200" />
           <Property Name="Color" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="NumOfComment" Type="int" Nullable="false" />
           <Property Name="Star" Type="decimal" Precision="2" Scale="1" Nullable="false" />
         </EntityType>
         <EntityType Name="VehicleBrand">
@@ -843,6 +845,7 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="Phone1" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Phone2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NumOfComment" Type="Int32" Nullable="false" />
           <Property Name="Star" Type="Decimal" Nullable="false" Precision="2" Scale="1" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Policy" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
@@ -924,6 +927,7 @@
           <Property Name="Engine" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Color" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="NumOfComment" Type="Int32" Nullable="false" />
           <Property Name="Star" Type="Decimal" Nullable="false" Precision="2" Scale="1" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="Vehicle" ToRole="BookingReceipt" />
           <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_Car_Store" FromRole="Vehicle" ToRole="Garage" />
@@ -1319,6 +1323,7 @@
                 <ScalarProperty Name="Policy" ColumnName="Policy" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="NumOfComment" ColumnName="NumOfComment" />
                 <ScalarProperty Name="Phone2" ColumnName="Phone2" />
                 <ScalarProperty Name="Phone1" ColumnName="Phone1" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -1383,6 +1388,7 @@
             <EntityTypeMapping TypeName="CRPDBModel.Vehicle">
               <MappingFragment StoreEntitySet="Vehicle">
                 <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="NumOfComment" ColumnName="NumOfComment" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Color" ColumnName="Color" />
                 <ScalarProperty Name="Engine" ColumnName="Engine" />

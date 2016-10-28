@@ -30,18 +30,19 @@ namespace CRP.Models.ViewModels
 		}
 	}
 
-	// Model to populate the vehicle info page
-	public class VehicleInfoPageViewModel
-	{
-		public Vehicle Vehicle { get; set; }
-		public int NumOfComment { get; set; }
+	//// Model to populate the vehicle info page
+	//public class VehicleInfoPageViewModel
+	//{
+	//	public Vehicle Vehicle { get; set; }
+	//	public int NumOfComment { get; set; }
 
-		public VehicleInfoPageViewModel(Vehicle vehicle)
-		{
-			Vehicle = vehicle;
-			NumOfComment = vehicle.BookingReceipts.Count(br => br.Comment != null);
-		}
-	}
+	//	public VehicleInfoPageViewModel(Vehicle vehicle)
+	//	{
+	//		Vehicle = vehicle;
+	//		//
+	//		//
+	//	}
+	//}
 
 	// Model to map the search request
 	// Use as input for route ~/api/vehicles/search/ of HomeController
@@ -113,7 +114,7 @@ namespace CRP.Models.ViewModels
 			GarageName = vehicle.Garage.Name;
 			GarageRating = vehicle.Garage.Star;
 			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
-			NumOfComment = vehicle.BookingReceipts.Count(br => br.Comment != null);
+			NumOfComment = vehicle.NumOfComment;
 
 			string tmpString = null;
 			Constants.TRANSMISSION_TYPE.TryGetValue(vehicle.TransmissionType, out tmpString);
