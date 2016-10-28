@@ -245,7 +245,7 @@ $(document).ready(() => {
     var data2 = [[gd(2012, 1), 5], [gd(2012, 2), 6], [gd(2012, 3), 7], [gd(2012, 4), 12],
                 [gd(2012, 5), 44], [gd(2012, 6), 3], [gd(2012, 7), 3], [gd(2012, 8), 4],
                 [gd(2012, 9), 5], [gd(2012, 10), 6], [gd(2012, 11), 12], [gd(2012, 12), 4]];
-
+    
     var data3 = [
         [gd(2012, 1), 800], [gd(2012, 2), 500], [gd(2012, 3), 600], [gd(2012, 4), 700],
         [gd(2012, 5), 500], [gd(2012, 6), 456], [gd(2012, 7), 800], [gd(2012, 8), 589],
@@ -256,6 +256,15 @@ $(document).ready(() => {
                 [gd(2012, 5, 5), 44], [gd(2012, 6, 6), 3], [gd(2012, 7, 7), 3], [gd(2012, 8, 8), 4],
                 [gd(2012, 9, 9), 5], [gd(2012, 10, 10), 6], [gd(2012, 11, 11), 12], [gd(2012, 12, 12), 4]];
     }
+    $.ajax({
+        url: `/api/getProviderData1`,
+        type: "GET",
+        success: onDataReceived,
+        eror: function (data) {
+            alert("fail");
+        }
+    });
+
     //get data booking
     //$.ajax({
     //    type: "GET",
@@ -353,13 +362,4 @@ $(document).ready(() => {
     var previousPoint = null, previousLabel = null;
 
     $.plot($("#aa"), dataset, options);
-
-    $.ajax({
-        url: `/api/getProviderData1`,
-        type: "GET",
-        success: onDataReceived,
-        eror: function (data) {
-            alert("fail");
-        }
-    });
 });
