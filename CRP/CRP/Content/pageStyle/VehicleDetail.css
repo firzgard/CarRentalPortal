@@ -42,11 +42,20 @@
 	transition-duration: 0.5s;
 }
 
-.color-selector input[type="checkbox"]:checked + label::after {
+.color-selector input[type="radio"]:checked + label::after {
 	color: #fff;
 	content: "\f00c";
 	font-family: "FontAwesome";
 }
-.color-selector input#colorWhite[type="checkbox"]:checked + label::after {
+.color-selector input#colorWhite[type="radio"]:checked + label::after {
 	color: #000;
+}
+.brand-option {
+	font-weight: bold;
+}
+.model-option {
+	padding-left: 1em;
+}
+.select2-container--default .select2-results__option[aria-disabled=true] {
+    display: none;
 }

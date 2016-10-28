@@ -77,4 +77,20 @@ namespace CRP.Models.ViewModels
         public int Year { get; set; }
         public int Month { get; set; }
     }
+    public class ReportBookingInYear
+    {
+        public int month1 { get; set; }
+        public int month2 { get; set; }
+        public int month3 { get; set; }
+        public int month4 { get; set; }
+        public int month5 { get; set; }
+        public int month6 { get; set; }
+        public int month7 { get; set; }
+        public int month8 { get; set; }
+        public int month9 { get; set; }
+        public int month10 { get; set; }
+        public int month11 { get; set; }
+        public int month12 { get; set; }
+
+    }
 }
