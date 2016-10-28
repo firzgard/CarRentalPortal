@@ -20,15 +20,33 @@
                         <div class="ibox-content">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="col-md-4 text-right">
-                                        <label>Name</label>
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Tên</label>
+                                        </div>
+                                        <div class="justRead col-md-8">
+                                            <p>@this.Model.Name</p>
+                                        </div>
+                                        <div class="editFiel col-md-8 m-b" style="display:none">
+                                            @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control", @id = "name", @maxlength = "100" })
+                                        </div>
                                     </div>
-                                    <div class="justRead col-md-8">
-                                        <p>@this.Model.Name</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-4 text-right">
+                                            <label>Biển số xe</label>
+                                        </div>
+                                        <div class="justRead col-md-8">
+                                            <p>@this.Model.LicenseNumber</p>
+                                        </div>
+                                        <div class="editFiel col-md-8" style="display:none">
+                                            <div class="m-b">
+                                                @Html.TextBoxFor(q => q.LicenseNumber, new { @type = "text", @class = "form-control", @id = "licenseNumber", @maxlength = "50" })
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="editFiel col-md-8 m-b" style="display:none">
-                                        @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control" })
-                                    </div>
+                                    
                                 </div>
                             </div>
                             <div class="row">
@@ -69,14 +87,25 @@
                                             <label>Hãng xe</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@this.Model.BrandName</p>
+                                            <p>@this.Model.BrandName @this.Model.ModelName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            @Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })
+                                            @*<select id="modelFilter" class="form-control">*@
+                                                @Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })
+                                                @*@foreach (VehicleBrand brand in this.Model.BrandList)
+                                                {
+                                                    <optgroup id="brandID"  value="@(brand.ID)" label="@(brand.Name)">
+                                                        @foreach (VehicleModel entry in brand.VehicleModels)
+                                                        {
+                                                        <option id="modelID" data-brand="@brand.ID" value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
+                                                        }
+                                                    </optgroup>
+                                                }*@
+                                            @*</select>*@
                                         </div>
                                     </div>
                                 </div>
-
+                                    @*$('asd).data('brand')*@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4 text-right">
@@ -86,11 +115,7 @@
                                             <p>@this.Model.ModelName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <select id="ModelName" class="form-control m-b">
-                                                @*@Html.DropDownListFor(q=>q.ModelID, this.Model.listModel, new { @class = "form-control", @id = "brandID" })*@
-                                                <option>CRV-2015</option>
-                                                <option selected>@this.Model.ModelName</option>
-                                            </select>
+                                               @Html.DropDownListFor(q => q.ModelID, this.Model.listModel, new { @class = "form-control", @id = "modelID"})
                                         </div>
                                     </div>
                                 </div>
@@ -99,15 +124,13 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4 text-right">
-                                            <label>Biển số xe</label>
+                                            <label>Năm</label>
                                         </div>
                                         <div class="justRead col-md-8">
-                                            <p>@this.Model.LicenseNumber</p>
+                                            <p>@this.Model.Year</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            <div id="LicenseNumber" class="m-b">
-                                                @Html.TextBoxFor(q => q.LicenseNumber, new { @type = "text", @class = "form-control"}) 
-                                            </div>
+                                            @Html.TextBoxFor(q => q.Year, new { @type = "number", @class = "form-control", @id = "year", @max = Constants.MAX_YEAR, @min = Constants.MIN_YEAR})
                                         </div>
                                     </div>
                                 </div>
@@ -121,8 +144,8 @@
                                             <p>@this.Model.Engine</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            <div id="Engine">
-                                                @Html.TextBoxFor(q => q.Engine, new { @type = "text", @class = "form-control" })
+                                            <div>
+                                                @Html.TextBoxFor(q => q.Engine, new { @type = "text", @class = "form-control", @id = "engine" })
                                             </div>
                                         </div>
                                     </div>
@@ -138,12 +161,18 @@
                                             <p>@this.Model.FuelTypeName</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            <select id="FuelType" class="form-control">
-                                                <option value="1">Xăng</option>
-                                                <option value="2">Dầu Diesel</option>
-                                                <option value="3">Điện</option>
-                                                <option value="4">Điện lai</option>
-                                                <option value="5">Điện lai sạc điện</option>
+                                            <select id="fuelFilter" class="form-control">
+                                                @foreach (KeyValuePair<int, string> entry in Constants.FUEL_TYPE)
+                                                {
+                                                    if (@entry.Value != Model.FuelTypeName)
+                                                    {
+                                                        <option value="@entry.Key">@entry.Value</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@entry.Key" selected>@entry.Value</option>
+                                                    }
+                                                }
                                             </select>
                                         </div>
                                     </div>
@@ -154,13 +183,33 @@
                                         <div class="col-md-4 text-right">
                                             <label>Hộp số</label>
                                         </div>
-                                        <div class="justRead col-md-8 m-b">
+                                        <div class="justRead col-md-8">
                                             <p>@this.Model.TransmissionTypeName</p>
                                         </div>
-                                        <div class="editFiel col-md-8 m-b" style="display:none">
-                                            <div id="TranmissionTypeName" class="form-control">
-                                                <div class="col-md-6"><input type="radio" value="1" name="trans"> Số tự động</div>
-                                                <div class="col-md-6"><input type="radio" value="2" name="trans"> Số sàn</div>
+                                        <div class="editFiel col-md-8" style="display:none">
+                                            <div id="tranmissionType" class="form-control">
+                                                <div class="form-group row">
+                                                    
+                                                        @foreach (KeyValuePair<int, string> entry in Constants.TRANSMISSION_TYPE)
+                                                        {
+                                                            if (@entry.Value != Model.TransmissionTypeName)
+                                                            {
+                                                                <div class="radio radio-primary col-xs-6 text-center" style="margin: 0 0 3px 0">
+                                                                    <input value="@entry.Key" id="transmission@(entry.Value)" name="TransName" type="radio">
+                                                                    <label for="transmission@(entry.Value)" name="TransName">@entry.Value</label>
+                                                                </div>
+                                                            }
+                                                            else
+                                                            {
+                                                                <div class="radio radio-primary col-xs-6 text-center" style="margin: 0 0 3px 0">
+                                                                    <input value="@entry.Key" id="transmission@(entry.Value)" name="TransName" type="radio" checked>
+                                                                    <label for="transmission@(entry.Value)" name="TransName">@entry.Value</label>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    
+                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -168,86 +217,73 @@
                                 </div>
                                 <div class="row">
                                 <div class="col-md-6">
-                                    <div class="row">
+                                    <div class="row editFiel" style="display:none"> 
                                         <div class="col-md-4 text-right">
                                             <label>Màu</label>
                                         </div>
-                                        <span class="justRead">@this.Model.ColorName</span>
+                                        <label style="background-color: @this.Model.ColorName"></label>
                                         <div class="col-md-8 m-b" style="height: 200px;">
                                             <div class="form-group row" id="colorFilter">
    
-                                                <div class="editFiel col-xs-12" style="display:none">
+                                                <div class="col-xs-12">
                                                     @for (int i = 1; i < Constants.COLOR.Count(); i++)
                                                     {
-                                                        <div class="color-selector">
-                                                            <input id="color@(Constants.COLOR[i])" value="@i" type="checkbox">
-                                                            <label for="color@(Constants.COLOR[i])" style="background-color: @Constants.COLOR[i];"></label>
-                                                        </div>
+                                                        if (i == this.Model.ColorID)
+                                                        {
+                                                            <div id="colorFilter" class="color-selector">
+                                                                <input id="color@(Constants.COLOR[i])" name="group" value="@i" type="radio" checked>
+                                                                <label for="color@(Constants.COLOR[i])" name="group" style="background-color: @Constants.COLOR[i];"></label>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div id="colorFilter" class="color-selector">
+                                                                <input id="color@(Constants.COLOR[i])" name="group" value="@i" type="radio">
+                                                                <label for="color@(Constants.COLOR[i])" name="group" style="background-color: @Constants.COLOR[i];"></label>
+                                                            </div>
+                                                        }
                                                     }
                                                 </div>
                                             </div>
-                                            @*<div class="row m-l">
-                                                <span id="car-color"><i class="fa fa-lg fa-car"></i></span> <span id="color-name">@this.Model.ColorName</span>
-                                                <a class="editFiel btn btn-sm btn-default m-l-xs" id="change-color" style="display:none">Change</a>
-
-                                                <div id="panel-color" class="panel panel-primary m-r m-t">
-                                                    <div class="panel-heading">
-                                                        Choose a color
-                                                    </div>
-                                                    <div class="panel-body">
-                                                        <a title="Beige" class="btn btn-lg btn-color" style="background-color: beige"></a>
-                                                        <a title="Black" class="btn btn-lg btn-color" style="background-color: black"></a>
-                                                        <a title="Blue" class="btn btn-lg btn-color" style="background-color: blue"></a>
-                                                        <a title="Brown" class="btn btn-lg btn-color" style="background-color: brown"></a>
-                                                        <a title="Gold" class="btn btn-lg btn-color" style="background-color: Gold"></a>
-                                                        <a title="Green" class="btn btn-lg btn-color" style="background-color: Green"></a>
-                                                        <a title="Orange" class="btn btn-lg btn-color" style="background-color: Orange"></a>
-                                                        <a title="Purple" class="btn btn-lg btn-color" style="background-color: Purple"></a>
-                                                        <a title="Red" class="btn btn-lg btn-color" style="background-color: Red"></a>
-                                                        <a title="Silver" class="btn btn-lg btn-color" style="background-color: Silver"></a>
-                                                        <a title="White" class="btn btn-lg btn-color" style="background-color: White"></a>
-                                                        <a title="Yellow" class="btn btn-lg btn-color" style="background-color: Yellow"></a>
-                                                        <br />
-                                                        <a id="close-color-panel" class="btn btn-sm btn-primary">close</a>
-                                                    </div>
-                                                </div>
-                                            </div>*@
                                         </div>
                                     </div>
                                 </div>
                                 
                                 <div id="img-div" class="col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-4 text-right">
-                                            <label>Hình</label>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="carousel slide m-b" id="carousel1">
-                                                <div class="carousel-inner">
-                                                    <div class="item active">
-                                                        <img alt="image" class="img-responsive" src="@this.Model.ImageUrls[0]">
-                                                    </div>
-                                                    @foreach (string entry in Model.ImageUrls)
-                                                    {
-                                                        if (Model.ImageUrls.IndexOf(entry) != 0)
-                                                        {
-                                                            <div class="item">
-                                                                <img alt="image" class="img-responsive" src="@entry">
-                                                            </div>
-                                                        }
-                                                    }
-                                                    
-                                                </div>
-                                                <a data-slide="prev" href="#carousel1" class="left carousel-control">
-                                                    <span class="icon-prev"></span>
-                                                </a>
-                                                <a data-slide="next" href="#carousel1" class="right carousel-control">
-                                                    <span class="icon-next"></span>
-                                                </a>
+                                    <div>
+                                        <div class="row">
+                                            <div class="col-md-4 text-right">
+                                                <label>Hình</label>
                                             </div>
-                                            <a id="edit-img" class="editFiel btn btn-warning" style="display:none">Edit image</a>
+                                            <div class="col-md-8">
+                                                <div class="carousel slide m-b" id="carousel1">
+                                                    <div class="carousel-inner">
+                                                        <div class="item active">
+                                                            <img alt="image" class="img-responsive" src="@this.Model.ImageUrls[0]">
+                                                        </div>
+                                                        @foreach (string entry in Model.ImageUrls)
+                                                        {
+                                                            if (Model.ImageUrls.IndexOf(entry) != 0)
+                                                            {
+                                                                <div class="item">
+                                                                    <img alt="image" class="img-responsive" src="@entry">
+                                                                </div>
+                                                            }
+                                                        }
+
+                                                    </div>
+                                                    <a data-slide="prev" href="#carousel1" class="left carousel-control">
+                                                        <span class="icon-prev"></span>
+                                                    </a>
+                                                    <a data-slide="next" href="#carousel1" class="right carousel-control">
+                                                        <span class="icon-next"></span>
+                                                    </a>
+                                                </div>
+                                                <a id="edit-img" class="btn btn-warning editFiel" style="display:none">Edit image</a>
+                                            </div>
                                         </div>
                                     </div>
+                                    
                                 </div>
 
                                 <div class="col-md-6">
@@ -261,14 +297,16 @@
                                     </form>
                                 </div>
                             </div>
-                            </div>
-                            <hr>
                             <div class="row">
                                 <div class="text-center">
-                                    <a id="edit-btn" class="btn btn-danger btn-lg" style="margin:20px">Chỉnh sửa</a>
-                                    <a id="save-btn" class="btn btn-primary btn-lg">Lưu</a>
+                                    <a id="delete-btn" class="btn btn-danger" style="margin:20px">Xóa</a>
+                                    <a id="edit-btn" class="btn btn-info" style="margin:20px">Chỉnh sửa</a>
+                                    <a id="save-btn" class="btn btn-success">Lưu</a>
                                 </div>
                             </div>
+                            </div>
+                            <hr>
+                            
 
                         </div>
 
@@ -276,15 +314,31 @@
 
                 </div>
             </div>
-       
+       <div id="delete-car" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color:#4CAF50">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" style="color:white">Xóa xe @Html.DisplayFor(q => q.Name)</h4>
+            </div>
+            <div class="modal-body form-horizontal">
+                <p> Bạn có chắc muốn xóa xe này ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button id="agreed-delete" type="button" class="btn btn-primary">Đồng ý</button> 
+            </div>
+        </div>
+    </div>
+</div>
 
         <div class="footer text-center" style="position: initial;">
             <div>
-                <strong>Copyright</strong> Example Company &copy; 2014-2015
+                <strong>Copyright</strong> CRP &copy; 2016-2017
             </div>
         </div>
 
-<div id="edit-car" class="modal fade" role="dialog">
+@*<div id="edit-car" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg" style="width: 80%;">
         <div class="modal-content">
             <div class="modal-header">
@@ -299,13 +353,15 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
+
     @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleDetail")
                                                           .Include("~/Content/awesome-bootstrap-checkbox.css",
                                                               "~/Content/chosen.css",
                                                               "~/Scripts/dropzone/dropzone.css",
                                                               "~/Scripts/dropzone/basic.css",
-                                                              "~/Content/pageStyle/VehicleDetail.css"));
+                                                              "~/Content/pageStyle/VehicleDetail.css",
+                                                              "~/Content/select2/select2.css"));
     }
     @section Styles {
         @Styles.Render("~/Styles/VehicleDetail")
@@ -314,6 +370,7 @@
                                         .Include("~/Scripts/chosen.jquery.js",
                                            "~/Scripts/bootstrap.min.js",
                                            "~/Scripts/dropzone/dropzone.js",
+                                           "~/Scripts/select2/select2.full.js",
                                            "~/Scripts/pageScript/VehicleDetail.js"));
     }
     @section Scripts {
