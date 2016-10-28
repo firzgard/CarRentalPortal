@@ -16,6 +16,7 @@ using System.Web.Mvc;
 using API_NganLuong;
 using CRP.Models.Entities.Repositories;
 using Microsoft.AspNet.Identity.Owin;
+using Constants = CRP.Models.Constants;
 using UrlHelper = Microsoft.AspNetCore.Mvc.Routing.UrlHelper;
 
 namespace CRP.Areas.Customer.Controllers
@@ -74,9 +75,64 @@ namespace CRP.Areas.Customer.Controllers
 				endTime = model.StartTime.AddHours(model.RentalType.Value);
 			}
 
-			if (!vehicleService.CheckVehicleAvailability(model.VehicleID.Value, model.StartTime, endTime))
-				return new HttpStatusCodeResult(403, "Cannot book this vehicle in this period");
+			// Check if startTime is after SoonestPossibleBookingStartTimeFromNow
+			if (model.StartTime < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Thời gian nhận xe phải sau thời gian hiện tại ít nhất "
+					+ Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR + " tiếng."
+				}, JsonRequestBehavior.AllowGet);
 
+			// Check if startTime is before LatestPossibleBookingStartTimeFromNow
+			if (model.StartTime > DateTime.Now.AddDays(Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Dịch vụ của chúng tôi hiện tại chỉ nhận đặt xe trong vòng "
+						+ Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY
+						+ " ngày kể từ thời gian hiện tại."
+				}, JsonRequestBehavior.AllowGet);
+			
+			// Check StartTime/EndTime to be within garage's OpenTime ~ CloseTime
+			// Compare by convert time to the number of minute from 00:00
+			// Max margin of error: 60 secs vs CloseTime (Because we do not validate to second)
+
+			// Booking StartTime
+			var startTimeDoW = (int)model.StartTime.DayOfWeek;
+			var startTimeInMinute = model.StartTime.Minute + model.StartTime.Hour * 60;
+			if (!vehicle.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == startTimeDoW
+														&& startTimeInMinute >= gwt.OpenTimeInMinute
+														&& startTimeInMinute <= gwt.CloseTimeInMinute))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Thời gian nhận xe không nằm trong thời gian hoạt động của cửa hàng."
+				}, JsonRequestBehavior.AllowGet);
+
+			// Booking EndTime
+			var endTimeDoW = (int)endTime.DayOfWeek;
+			var endTimeInMunute = endTime.Minute + endTime.Hour * 60;
+			if(!vehicle.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == endTimeDoW
+												&& endTimeInMunute >= gwt.OpenTimeInMinute
+												&& endTimeInMunute <= gwt.CloseTimeInMinute))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Thời gian trả xe không nằm trong thời gian hoạt động của cửa hàng."
+				}, JsonRequestBehavior.AllowGet);
+
+			// Check if this vehicle has any other bookings in the timespan of this booking
+			if(vehicle.BookingReceipts.Any(br => !br.IsCanceled && (
+								(model.StartTime > br.StartTime && model.StartTime < br.EndTime)
+							 || (endTime > br.StartTime && endTime < br.EndTime)
+							 || (model.StartTime <= br.StartTime && endTime >= br.EndTime)
+						)))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Đã có người đặt xe này trong thời gian bạn đã chọn."
+				}, JsonRequestBehavior.AllowGet);
 
 			// All validation passed. Create new receipt with isPending = true
 			var bookingService = this.Service<IBookingReceiptService>();

@@ -8289,6 +8289,11 @@ hr {
   border-color: #4CAF50;
 }
 
+.btn-primary.btn-outline {
+  color: #2B6D2D;
+  background-color: white;
+}
+
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:hover, .btn-primary.active:focus {
   background-color: #388E3C;
   border-color: #388E3C;
@@ -8428,13 +8433,24 @@ hr {
 }
 
 /* FullCalendar */
-.fc-bgevent {
-  background: #000000;
-  opacity: 0.20;
+.fc-day-number {
+  color: #2B2B2B;
+  font-size: 1.5em;
+  font-weight: bold;
 }
+
+.fc-bgevent {
+  opacity: 1;
+}
+
+.fc-day-top.fc-other-month {
+  opacity: .5;
+}
+
 .fc-content {
   display: none;
 }
+
 .fc-state-active {
   background-color: #4CAF50;
 }
@@ -8444,17 +8460,19 @@ hr {
 }
 
 .fc-color-explain {
-  margin-top: 0.5em;
+  display: inline-block;
+  margin-top: 1.2em;
+  width: 15em;
 }
 
 .fc-color {
-  border: 1px solid #CCCCCC;
+  border: 2px solid #CCCCCC;
   margin: 0 1em 0 1em;
   padding: 0.5em 1.5em;
 }
 
 .fc-color.unbookable {
-  background-color: #999999;
+  background-color: #7F7F7F;
 }
 
 .fc-color.booked {

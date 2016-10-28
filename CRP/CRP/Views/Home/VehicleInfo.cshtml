@@ -40,12 +40,16 @@
 
 	<div class="col-md-offset-2 col-md-5">
 		<div class="row">
-			<div id="vehicleHeaderInfo">
-				<h1 class="col-md-12 section-header"><b>@Model.Name (@Model.Year)</b></h1>
-				<div class="col-md-12"><span class="rating-no-badge" data-rating="@Model.Star"></span> · @Model.NumOfComment đánh giá</div>
+			<div id="vehicleHeaderInfo" class="col-md-12">
+				<h1 class="section-header"><b>@Model.Name (@Model.Year)</b></h1>
+				@if(Model.NumOfComment > 0){
+					<div><span class="rating-no-badge" data-rating="@Model.Star"></span> · @Model.NumOfComment đánh giá</div>
+				}
 			</div>
 			<div style="font-size:1.1em;margin-top: 4em; margin-left: 3em;">
-				<p>Cửa hàng @Model.Garage.Name · <span class="rating-no-badge" data-rating="@Model.Garage.Star"></span></p>
+				<p>Cửa hàng @Model.Garage.Name @if(Model.Garage.NumOfComment > 0){
+					<span>· </span><span class="rating-no-badge" data-rating="@Model.Garage.Star"></span>
+				}</p>
 				<p><i class="fa fa-map-marker"></i> @Model.Garage.Location.Name</p>
 			</div>
 		</div>
@@ -100,18 +104,31 @@
 		</div>
 		<hr style="position: relative;width: 150vw;left: -500px;" />
 		<div id="reviewSection" class="info-section row">
-			<h2 class="col-md-12 section-header"><b>@(Model.NumOfComment) đánh giá</b> · <span class="rating" data-rating="@Model.Star"></span></h2>
-			<div class="col-md-12"><hr /></div>
-			<p>Comment section here</p>
+			@if(Model.NumOfComment > 0) {
+				<h2 class="col-md-12 section-header"><b>@(Model.NumOfComment) đánh giá</b> · <span class="rating" data-rating="@Model.Star"></span></h2>
+				<div class="col-md-12"><hr /></div>
+				<div class="col-md-12">
+					<div id="commentContainer"></div>
+					<div class="text-center" id="commentPaginator"></div>
+				</div>
+			} else {
+				<h2 class="col-md-12 section-header"><b>Đánh giá</b></h2>
+				<h3 class="col-md-12">Xe này vẫn chưa có đánh giá.</h3>
+				<div class="col-md-12">Nếu bạn chọn thuê xe này, sẽ thật tuyệt nếu bạn có thể bỏ chút thời gian để đánh giá về lựa chọn của bạn. Nó sẽ giúp ít rất nhiều cho những người dùng khác về sau.</div>
+			}
 		</div>
 		<hr style="position: relative;width: 150vw;left: -500px;" />
 		<div id="garageSection" class="info-section row">
 			<h2 class="col-md-12 section-header"><b>Cửa hàng</b></h2>
 			<div class="col-md-12"><hr></div>
-			<h3 class="col-md-12">@Model.Garage.Name</h3>
-			<div class="col-md-12">
-				<h3 class="rating col-md-3" data-rating="@Model.Garage.Star"></h3>
-				<div class="col-md-9">
+			<h3 class="col-md-12">@Model.Garage.Name @if(Model.Garage.NumOfComment > 0){
+				<span>· </span><span class="rating" data-rating="@Model.Garage.Star"></span>
+			}</h3>
+			<div class="col-md-12">@Model.Garage.Description</div>
+			<div class="col-md-12"><hr></div>
+			<label class="col-md-3">Thông tin liên lạc</label>
+			<div class="col-md-9">
+				<div class="col-md-12">
 					<p>Địa chỉ: @(Model.Garage.Address), @(Model.Garage.Location.Name)</p>
 					<p>
 						Liên lạc: <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#infoModal">
@@ -120,8 +137,6 @@
 					</p>
 				</div>
 			</div>
-			<div class="col-md-12"><hr /></div>
-			<div class="col-md-12">@Model.Garage.Description</div>
 			<div class="col-md-12"><hr /></div>
 			<label class="col-md-3">Thời gian làm việc</label>
 			<div class="col-md-9">
@@ -132,7 +147,7 @@
 					<p><b>Thứ 5</b></p>
 					<p><b>Thứ 6</b></p>
 					<p><b>Thứ 7</b></p>
-					<p><b>Chủ nhât</b></p>
+					<p><b>Chủ nhật</b></p>
 				</div>
 				<div class="col-xs-8">
 					<p>@if(Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 1)){
@@ -198,10 +213,14 @@
 		<div id="calendarSection" class="info-section row" style="margin-bottom: 300px;">
 			<h2 class="col-md-12 section-header"><b>Lịch đặt xe</b></h2>
 			<div class="col-md-12 text-right">
-				<p class="fc-color-explain"><span>Có thể đặt</span><span class="fc-color available"></span></p>
-				<p class="fc-color-explain"><span>Đã được đặt</span><span class="fc-color booked"></span></p>
-				<p class="fc-color-explain"><span>Không thể đặt</span><span class="fc-color unbookable"></span></p>
-				<p class="fc-color-explain"><span>Không làm việc / Một phần trong ngày không thể đặt</span><span class="fc-color nonworking"></span></p>
+				<p>
+					<span class="fc-color-explain"><span>Có thể đặt</span><span class="fc-color available"></span></span>
+					<span class="fc-color-explain"><span>Có đặt trước</span><span class="fc-color booked"></span></span>
+				</p>
+				<p>
+					<span class="fc-color-explain"><span>Không thể đặt</span><span class="fc-color unbookable"></span></span>
+					<span class="fc-color-explain"><span>Không làm việc</span><span class="fc-color nonworking"></span></span>
+				</p>
 			</div>
 			<div class="col-md-12"><hr /></div>
 			<div class="col-md-12">
@@ -313,12 +332,15 @@
 @section Scripts {
 	<script type="text/javascript">
 		const BOOKING_HANDLER_URL = '@Url.RouteUrl("TryBookingAPI", new { controller = "Booking" })',
-			CALENDAR_FETCHING_URL = '@Url.RouteUrl("GetBookingCalendarAPI", new { controller = "Home", vehicleID = @Model.ID.ToString() })';
+			COMMENT_FETCHING_URL = '@Url.RouteUrl("GetCommentAPI", new { controller = "Home", vehicleID = @Model.ID })',
+			CALENDAR_FETCHING_URL = '@Url.RouteUrl("GetBookingCalendarAPI", new { controller = "Home", vehicleID = @Model.ID })';
 		const BOOKING_FEE_PERCENTAGE = @Constants.BOOKING_FEE_PERCENTAGE,
 			SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR,
 			SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR,
 			LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = @Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY,
-			VEHICLE_ID  = "@Model.ID",
+			VEHICLE_ID = "@Model.ID",
+			NUM_OF_COMMENT = @Model.NumOfComment,
+			NUM_OF_COMMENT_PER_PAGE = @Constants.NUM_OF_COMMENT_PER_PAGE,
 			PHONE1 = "@Model.Garage.Phone1",
 			PHONE2 = "@Model.Garage.Phone2",
 			EMAIL = "@Model.Garage.Email",

@@ -118,6 +118,38 @@ body{
 
 /* =========================================================== */
 /* Booking sections */
+.comment-item {
+	float: left;
+	position: relative;
+	margin-bottom: 2em;
+	width: 100%;
+}
+
+.comment-user {
+	color: #7F7F7F;
+	float: left;
+	position: relative;
+	text-align: center;
+	width: 30%;
+}
+.comment-user .img-circle {
+	width: 80px;
+}
+.comment-user .fa-user-circle {
+	color: #388E3C;
+	font-size: 80px;
+}
+
+.comment-content {
+	float: left;
+	position: relative;
+	min-height: 10em;
+	border-bottom: 1px solid #CCC;
+	width: 67%;
+}
+
+/* =========================================================== */
+/* Booking sections */
 
 #bookingSection{
 	font-size: 1.1em;

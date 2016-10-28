@@ -1553,6 +1553,8 @@
     <Content Include="Content\select2\select2.css" />
     <Content Include="Content\select2\select2.min.css" />
     <Content Include="Content\style.css" />
+    <Content Include="Content\toastr.css" />
+    <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -1786,6 +1788,8 @@
     <Content Include="Areas\Admin\Views\DashBoard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\UserManagement\UserManagement.cshtml" />
     <Content Include="Areas\Provider\Views\DashBoard\Index.cshtml" />
+    <Content Include="Content\toastr.scss" />
+    <Content Include="Content\toastr.less" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1883,6 +1887,8 @@
     <Content Include="Scripts\select2\select2.full.min.js" />
     <Content Include="Scripts\select2\select2.js" />
     <Content Include="Scripts\select2\select2.min.js" />
+    <Content Include="Scripts\toastr.js" />
+    <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\twbsPagination\jquery.twbsPagination.js" />
     <Content Include="Scripts\twbsPagination\jquery.twbsPagination.min.js" />
     <Content Include="Scripts\utils\customModals.js" />

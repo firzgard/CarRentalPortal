@@ -135,23 +135,47 @@ namespace CRP.Controllers
 					.Where(br => !br.IsCanceled && br.EndTime >= DateTime.Now)
 					.Select(br => new
 						{
-							id = 0
-							, title = "Đặt trước"
-							, start = br.StartTime.ToUniversalTime().ToString("o")
+							start = br.StartTime.ToUniversalTime().ToString("o")
 							, end = br.EndTime.ToUniversalTime().ToString("o")
 						});
 
-			//List<BookingReceipt> booking = _service.findByVehicle(vehicleID);
-			//List<VehicleCalendarModel> jsonBookings = new List<VehicleCalendarModel>();
-			//foreach (BookingReceipt p in booking)
-			//{
-			//	VehicleCalendarModel jsonBooking = new VehicleCalendarModel();
-			//	jsonBooking.ID = p.ID;
-			//	jsonBooking.StartTime = p.StartTime;
-			//	jsonBooking.EndTime = p.EndTime;
-			//	jsonBookings.Add(jsonBooking);
-			//}
 			return Json(bookings, JsonRequestBehavior.AllowGet);
+		}
+
+		// API route for getting comments of a vehicle
+		// Order by endTime - desc
+		// Pagination needed
+		[Route("api/bookings/comments/{vehicleID:int}", Name = "GetCommentAPI")]
+		[HttpGet]
+		public async Task<ActionResult> GetCommentAPI(int? vehicleID, int page = 1)
+		{
+			if (vehicleID == null)
+				return new HttpStatusCodeResult(400, "Bad request");
+
+			var vehicleService = this.Service<IVehicleService>();
+			var vehicle = await vehicleService.GetAsync(vehicleID.Value);
+
+			if (vehicle == null)
+				return new HttpStatusCodeResult(404, "Vehicle not found");
+			
+			var comments = vehicle.BookingReceipts
+					// Get only the ones with comment
+					.Where(br => br.Comment != null)
+					// Sort
+					.OrderByDescending(br => br.EndTime)
+					// Paginate
+					.Skip((page - 1) * Constants.NUM_OF_COMMENT_PER_PAGE)
+					.Take(Constants.NUM_OF_COMMENT_PER_PAGE)
+					// Parse into json model
+					.Select(br => new
+					{
+						customer = br.AspNetUser.UserName
+						, avatarURL = br.AspNetUser.AvatarURL
+						, comment = br.Comment
+						, star = br.Star
+					});
+
+			return Json(comments, JsonRequestBehavior.AllowGet);
 		}
 	}
 }
