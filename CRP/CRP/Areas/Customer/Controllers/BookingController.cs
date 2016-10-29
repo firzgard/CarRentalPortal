@@ -68,7 +68,7 @@ namespace CRP.Areas.Customer.Controllers
 			else
 			{
 				// Check if priceGroupItem exists
-				priceGroupItem = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.FirstOrDefault(r => r.MaxTime != model.RentalType.Value);
+				priceGroupItem = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.FirstOrDefault(r => r.MaxTime == model.RentalType.Value);
 				if (priceGroupItem == null)
 					return new HttpStatusCodeResult(400, "No valid rental period specified.");
 
@@ -154,11 +154,15 @@ namespace CRP.Areas.Customer.Controllers
 
 			if (model.RentalType.Value == 0)
 			{
-				newBooking.RentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice * model.NumOfDay.Value;
+				newBooking.RentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice*model.NumOfDay.Value;
+				newBooking.Distance = vehicle.VehicleGroup.PriceGroup.MaxDistancePerDay != null
+					? vehicle.VehicleGroup.PriceGroup.MaxDistancePerDay*model.NumOfDay.Value
+					: null;
 			}
 			else
 			{
 				newBooking.RentalPrice = priceGroupItem.Price;
+				newBooking.Distance = priceGroupItem.MaxDistance;
 			}
 
 			newBooking.Deposit = newBooking.RentalPrice * (double)vehicle.VehicleGroup.PriceGroup.DepositPercentage;
@@ -214,12 +218,21 @@ namespace CRP.Areas.Customer.Controllers
 		[System.Web.Mvc.Route("bookingConfirm", Name = "BookVehicle")]
 		public System.Web.Mvc.ActionResult BookVehicle(BookingConfirmViewModel bookingModel, NganLuongPaymentModel nganLuongPayment)
 		{
+			var user = HttpContext.GetOwinContext()
+					.GetUserManager<ApplicationUserManager>()
+					.FindById(HttpContext.User.Identity.GetUserId());
+
 			// Check if the request contains all valid params
 			if (bookingModel?.Action == null || bookingModel.Receipt?.ID == null || nganLuongPayment == null)
 				return new HttpStatusCodeResult(400, "Invalid request");
 
 			var bookingService = this.Service<IBookingReceiptService>();
-			var bookingReceipt = bookingService.Get(bookingModel.Receipt.ID);
+			var bookingReceipt = bookingService.Get(br => br.ID == bookingModel.Receipt.ID
+														&& br.CustomerID == user.Id
+														&& br.IsPending).FirstOrDefault();
+
+			if (bookingReceipt == null)
+				return new HttpStatusCodeResult(400, "Invalid request");
 
 			// Act based on the received action's name
 			switch (bookingModel.Action)
@@ -239,10 +252,6 @@ namespace CRP.Areas.Customer.Controllers
 
 			// Only "pay" action left to handle
 			// Now validate nganluong params before redirect to nganluong
-
-			var user = HttpContext.GetOwinContext()
-					.GetUserManager<ApplicationUserManager>()
-					.FindById(HttpContext.User.Identity.GetUserId());
 
 			var info = new RequestInfoTestTemplate
 			{

@@ -313,10 +313,13 @@ $(document).ready(function(){
 		$servicePrice = $('#servicePrice'),
 		$totalPrice = $('#totalPrice'),
 		$depositPrice = $('#depositPrice'),
-		$numOfDay = $('#numOfDay');
+		$numOfDay = $('#numOfDay'),
+		$distance = $('#distance');
 
 	let rentalTypeValue
 		, rentalUnitPrice
+		, rentalUnitDistance
+		, distanceValue
 		, rentalPriceValue
 		, servicePriceValue
 		, numOfDayValue = Number.parseInt($numOfDay.val());
@@ -333,14 +336,24 @@ $(document).ready(function(){
 		rentalUnitPrice = $rentalType.find('option:selected').data('price');
 		$rentalTypePrice.html(`${rentalUnitPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫/${rentalTypeValue == 0 ? 'ngày' : `${rentalTypeValue} giờ`}`);
 
+		// Rental Price
 		rentalPriceValue = rentalTypeValue == 0 ? rentalUnitPrice * numOfDayValue : rentalUnitPrice
 		$rentalPrice.html(`${rentalPriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
+		// Service Price
 		servicePriceValue = Number.parseInt(rentalPriceValue * BOOKING_FEE_PERCENTAGE);
 		$servicePrice.html(`${servicePriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
+		// Total Price
 		$totalPrice.html(`${(rentalPriceValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
+		// Deposit
 		$depositPrice.html(`${Number.parseInt(rentalPriceValue * DEPOSIT_PERCENTAGE).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
+		// Distance
+		rentalUnitDistance = $rentalType.find('option:selected').data('distance') || NaN;
+		distanceValue = rentalTypeValue == 0 ? rentalUnitDistance * numOfDayValue : rentalUnitDistance
+		$distance.html(Number.isNaN(distanceValue) ? 'Không giới hạn' : `${distanceValue} km`)
 	}
 	renderBookingInfo();
 
@@ -356,14 +369,23 @@ $(document).ready(function(){
 
 		numOfDayValue = Number.parseInt($numOfDay.val());
 
+		// Rental Price
 		rentalPriceValue = rentalTypeValue == '0' ? rentalUnitPrice * numOfDayValue : rentalUnitPrice
 		$rentalPrice.html(`${rentalPriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
+		// Service Price
 		servicePriceValue = Number.parseInt(rentalPriceValue * BOOKING_FEE_PERCENTAGE);
 		$servicePrice.html(`${servicePriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
+		// Total Price
 		$totalPrice.html(`${(rentalPriceValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
+		// Deposit
 		$depositPrice.html(`${Number.parseInt(rentalPriceValue * DEPOSIT_PERCENTAGE).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
+		// Distance
+		distanceValue = rentalTypeValue == 0 ? rentalUnitDistance * numOfDayValue : rentalUnitDistance
+		$distance.html(Number.isNaN(distanceValue) ? 'Không giới hạn' : `${distanceValue} km`)
 	})
 
 	// Booking button

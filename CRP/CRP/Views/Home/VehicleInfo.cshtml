@@ -90,7 +90,7 @@
 					<p>
 						<span>Phụ thu cho mỗi km phát sinh: </span>
 						<b>
-							@(Model.VehicleGroup.PriceGroup.MaxRentalPeriod != null
+							@(Model.VehicleGroup.PriceGroup.ExtraChargePerKm != null
 								 ? ((int)Model.VehicleGroup.PriceGroup.ExtraChargePerKm).ToString("#,##0") + "₫/km"
 								 : "Không tính phí")
 						</b>
@@ -236,13 +236,13 @@
 					<label class="col-xs-12">Gói thời gian thuê</label>
 					<div class="col-xs-12">
 						<select id="rentalType" class="form-control" style="width: 100%;">
-							<option value="0" data-max-distance="@Model.VehicleGroup.PriceGroup.MaxDistancePerDay"
+							<option value="0" data-distance="@Model.VehicleGroup.PriceGroup.MaxDistancePerDay"
 									data-price="@Model.VehicleGroup.PriceGroup.PerDayPrice" selected>
 								Thuê theo ngày
 							</option>
 							@foreach (PriceGroupItem entry in Model.VehicleGroup.PriceGroup.PriceGroupItems)
 							{
-								<option value="@entry.MaxTime" data-max-distance="@entry.MaxDistance" data-price="@entry.Price">Thuê @entry.MaxTime giờ</option>
+								<option value="@entry.MaxTime" data-distance="@entry.MaxDistance" data-price="@entry.Price">Thuê @entry.MaxTime giờ</option>
 							}
 						</select>
 					</div>
@@ -274,14 +274,19 @@
 					<p class="col-xs-6">Tổng chi phí <span data-toggle="tooltip" title="Gồm phí thuê xe và phí dịch vụ." class="badge">?</span></p>
 					<b><p class="col-xs-6 text-right" id="totalPrice"></p></b>
 				</div>
-				<div class="form-group row" style="margin-bottom: 2em;">
+				<div class="form-group row">
 					<p class="col-xs-6">Đặt cọc <span data-toggle="tooltip" title="Phần tiền phải đặt cọc khi bạn kí hợp đồng với chủ xe." class="badge">?</span></p>
 					<p class="col-xs-6 text-right" id="depositPrice"></p>
 				</div>
+				<hr />
+				<div class="form-group row" style="margin-bottom: 2em;">
+					<label class="col-xs-6">Quãng đường <span data-toggle="tooltip" title="Nếu quãng đường đi thực của bạn vượt quá quãng đường quy định theo gói, bạn sẽ phải trả thêm phụ phí quãng đường phát sinh. Chi tiết giá cho mỗi km phát sinh vui lòng xem ở mục điều khoản cơ bản." class="badge">?</span></label>
+					<p class="col-xs-6 text-right" id="distance"></p>
+				</div>
 				@if (!User.IsInRole("Customer"))
-			{
+				{
 					<div class="text-center" style="color: red;"><small><b>Bạn cần đăng nhập để có thể đặt xe</b></small></div>
-			}
+				}
 				<button class="btn btn-primary btn-block" id="bookingBtn" @(User.IsInRole("Customer") ? "" : "disabled")><b>Đặt xe</b></button>
 				<div class="text-center" style="margin-bottom: 1.5em;"><small>Bạn chỉ phải trả trước phí dịch vụ</small></div>
 			</div>

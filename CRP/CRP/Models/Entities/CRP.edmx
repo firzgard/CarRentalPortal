@@ -69,6 +69,7 @@
           <Property Name="RentalPrice" Type="float" Nullable="false" />
           <Property Name="Deposit" Type="float" Nullable="false" />
           <Property Name="BookingFee" Type="float" Nullable="false" />
+          <Property Name="Distance" Type="int" />
           <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
           <Property Name="Comment" Type="nvarchar" MaxLength="200" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
@@ -797,6 +798,7 @@
           <Property Name="RentalPrice" Type="Double" Nullable="false" />
           <Property Name="Deposit" Type="Double" Nullable="false" />
           <Property Name="BookingFee" Type="Double" Nullable="false" />
+          <Property Name="Distance" Type="Int32" />
           <Property Name="Star" Type="Decimal" Precision="2" Scale="1" />
           <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
@@ -1298,6 +1300,7 @@
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
+                <ScalarProperty Name="Distance" ColumnName="Distance" />
                 <ScalarProperty Name="BookingFee" ColumnName="BookingFee" />
                 <ScalarProperty Name="Deposit" ColumnName="Deposit" />
                 <ScalarProperty Name="RentalPrice" ColumnName="RentalPrice" />
