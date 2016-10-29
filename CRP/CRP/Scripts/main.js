@@ -3,6 +3,8 @@
 	// http://api.jquery.com/jquery.ajax/
 	jQuery.ajaxSettings.traditional = true;
 
+	moment.locale('vi');
+
 	toastr.options = {
 		closeButton: false
 		, debug: false

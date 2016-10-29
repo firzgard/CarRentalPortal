@@ -8320,6 +8320,13 @@ hr {
   color:  white;
 }
 
+.bg-success {
+  background-color: #4CAF50;
+}
+.bg-danger {
+  background-color: #ed5565;
+}
+
 .fa-beige {
   color: beige;
 }
