@@ -70,7 +70,7 @@
           <Property Name="Deposit" Type="float" Nullable="false" />
           <Property Name="BookingFee" Type="float" Nullable="false" />
           <Property Name="Distance" Type="int" />
-          <Property Name="Star" Type="decimal" Precision="2" Scale="1" />
+          <Property Name="Star" Type="int" />
           <Property Name="Comment" Type="nvarchar" MaxLength="200" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" Nullable="false" />
@@ -799,7 +799,7 @@
           <Property Name="Deposit" Type="Double" Nullable="false" />
           <Property Name="BookingFee" Type="Double" Nullable="false" />
           <Property Name="Distance" Type="Int32" />
-          <Property Name="Star" Type="Decimal" Precision="2" Scale="1" />
+          <Property Name="Star" Type="Int32" />
           <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />

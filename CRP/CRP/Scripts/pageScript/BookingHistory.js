@@ -34,32 +34,54 @@ $(document).ready(() => {
 			}
 		}
 		, columnDefs: [
-			 {
-				 // Render start time
-				 targets: 3,
-				 render: (data) => {
-					 return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
-				 }
-
-			 },
-
+			{
+				// Render vehicleName's link
+				targets: 1,
+				render: (data, type, row) => {
+					if (type === 'display' && row.VehicleID) {
+						return `<a href="/vehicleInfo/${row.VehicleID}">${data}</a>`;
+					}
+					return data;
+				}
+			},
+			{
+				// Render start time
+				targets: 3,
+				render: (data, type) => {
+					if (type === 'display') {
+						return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
+					}
+					return data;
+				}
+			},
 			{
 				// Render end time
 				targets: 4,
-				render: (data) => {
-					return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
+				render: (data, type) => {
+					if (type === 'display') {
+						return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
+					}
+					return data;
 				}
 				
 			},
-
 			{
 				// Render status label
 				targets: 5,
-				render: (data, type) => {
+				render: (data, type, row) => {
 					if (type === 'display') {
-						return `<div class="status-label" >
-							<p class ="label label-${data ? 'danger' : 'primary'}">${data ? 'Đã hủy': 'Đang thuê'}</p>
-						</div>`;
+						let labelNode;
+
+						if(row.IsCanceled){
+							labelNode = '<div class ="label label-danger">Đã hủy</div>';
+						} else if (moment(row.StartTime).isAfter(moment())) {
+							labelNode = '<div class ="label label-info" >Đã đặt</div>'
+						} else if (moment(row.StartTime).isBefore(moment()) && moment(row.EndTime).isAfter(moment())) {
+							labelNode = '<div class ="label label-primary" >Đang thuê</div>';
+						} else {
+							labelNode = '<div class ="label label-success" >Đã kết thúc</div>';
+						}
+						return `<div class="status-label" >${labelNode}</div>`;
 					}
 					return data;
 				}
@@ -69,12 +91,18 @@ $(document).ready(() => {
 				targets: 6,
 				render: (data, type, row) => {
 					return `<div class="btn-group" >
-						<button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Hành động <i class="caret"></i>
+						<button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" aria-expanded="false">
+							<i class="fa fa-gear"></i> Thao tác <i class="caret"></i>
 						</button>
 						<ul class ="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="detail" data-id="${row[0]}" >Chi tiết</a></li>
-							${row[4] ? '' : `<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="cancle" data-id="${row[0]}">Hủy đặt xe</a></li>`
+							<li><a href="#" data-toggle="modal" data-target="#modal" data-action="detail" data-id="${row.ID}" >Chi tiết</a></li>
+							${(moment(row.StartTime).isBefore(moment()) || row.IsCanceled) && !row.HasStar
+								? `<li><a href="#" data-toggle="modal" data-target="#modal" data-action="comment" data-id="${row.ID}">Đánh giá</a></li>`
+								: ''
+							}
+							${moment(row.EndTime).isBefore(moment()) || row.IsCanceled
+								? ''
+								: `<li><a href="#" data-toggle="modal" data-target="#modal" data-action="cancel" data-id="${row.ID}">Hủy đặt xe</a></li>`
 							}
 						</ul>
 					</div>`;
@@ -93,131 +121,192 @@ $(document).ready(() => {
 	});
 
 	// Render confirmation modal for actions
-	$('#mdModal').on('show.bs.modal', function (event) {
+	$('#modal').on('show.bs.modal', function (event) {
 		let button = $(event.relatedTarget),
 			action = button.data('action'),
 			id = button.data('id'),
-			VehicleName = button.data('name'),
-			starTime = button.data('starttime'),
-			star = button.data('star'),
-			endTime = button.data('endtime'),
-			RentalPrice = button.data('rentalprice'),
-			BookingFee = button.data('bookingfee'),
-			GarageName = button.data('garage'),
-			GarageAddress = button.data('garageadd'),
-			Color = button.data('color'),
-			Model = button.data('model');
+			data = table.row((i, row) => {
+				return row.ID == id;
+			}).data();
+
 		switch (action) {
 			case 'detail': {
-				$(this).find('.modal-content').html(`<div class="row" style="text-align:center; margin-top:10px">
-											<h3 style="font-size:200%;">Chi tiết đặt xe ${VehicleName}</h3>
-											  <div class="col-sm-6 b-r" style="float: left">
-												<div class ="form-group"><label>Tổng tiền thuê</label><p>${RentalPrice}</p></div>
-												<div class ="form-group"><label>Phí thuê xe</label><p>${BookingFee}</p></div>
-												<div class ="form-group"><label>Xếp hạng</label><p>${renderStarRating(star)}</p></div>
-												<div class ="form-group"><label>Thời gian bắt đầu</label><p>${Date(starTime).toString()}</p></div>
-												<div class ="form-group"><label>Thời gian kết thúc</label><p>${Date(endTime).toString()}</p></div>
-											  </div>
-											  <div class ="col-sm-6" style="float: right">
-											   <div class ="form-group"><label>Tên xe</label><p>${VehicleName}</p></div>
-											   <div class ="form-group"><label>Model</label><p>${Model}</p></div>
-											   <div class ="form-group"><label>Màu sắc</label><p>${Color}</p></div>
-											   <div class ="form-group"><label>Thuộc garage</label><p>${GarageName}</p></div>
-											   <div class ="form-group"><label>Địa chỉ garage</label><p>${GarageAddress}</p></div>
-											  </div>
-											   <button type="button" class ="btn btn-success" data-dismiss="modal">Đóng</button>
-												<label></label>	<br/>`);
+				$(this).html(`<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header green-bg">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h2 class="modal-title">
+								<span style="border-bottom:1px solid #ccc;">
+									Chi tiết đặt xe ${data.VehicleName}
+								</span>
+							</h2>
+							<h3 style="margin-bottom:0;">
+								<span>${moment(data.StartTime).local().format('DD/MM/YYYY HH:mm')} <i class="fa fa-arrow-right"></i> ${moment(data.EndTime).local().format('DD/MM/YYYY HH:mm')}</span>
+							</h3>
+						</div>
+						<div class="modal-body">
+							<div class="section-header"><b>Chi tiết đơn đặt xe:</b></div>
+							<div class="row">
+								<div class="col-xs-5 col-xs-offset-1">
+									<p><b>Phí thuê xe: </b>${data.RentalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫</p>
+									<p><b>Phí dịch vụ: </b>${data.BookingFee.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫</p>
+								</div>
+								<div class="col-xs-6">
+									<p><b>Đặt cọc: </b>${data.Deposit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫</p>
+									<p><b>Quãng đường: </b>${data.Distance ? data.Distance + ' km' : 'Không giới hạn'}</p>
+								</div>
+							</div>
+							<hr>
+							<div class="section-header"><b>Thông tin xe:</b> ${data.VehicleName}</div>
+							<div class="row">
+								<div class="col-xs-5 col-xs-offset-1">
+									<p><b>Năm sản xuất: </b>${data.Year}</p>
+									<p><b>Số ghế: </b>${data.NumOfSeat}</p>
+									<p><b>Số cửa: </b>${data.NumOfDoor}</p>
+								</div>
+								<div class="col-xs-6">
+									<p><b>Màu sắc: </b><i class="fa fa-circle" style="color: ${data.Color};"></i></p>
+									${data.FuelType
+										? `<p><b>Nhiên liệu: </b>${data.FuelType}</p>`
+										: ''
+									}
+									<p><b>Hộp số: </b>${data.TransmissionType}</p>
+									${data.TransmissionDetail
+										? `<p><b>Chi tiết hộp số: </b>${data.TransmissionDetail}</p>`
+										: ''
+									}
+									${data.Engine
+										? `<p><b>Động cơ: </b>${data.Engine}</p>`
+										: ''
+									}
+								</div>
+							</div>
+							<hr>
+							<div class="section-header"><b>Thông tin cửa hàng:</b> ${data.GarageName}</div>
+							<div class="row">
+								<div class="col-xs-5 col-xs-offset-1">
+									<p><b>Điện thoại:</b> <a href="tel:${data.GaragePhone}">+${data.GaragePhone}</a></p>
+									
+								</div>
+								<div class="col-xs-6">
+									<p><b>Email:</b> <a href="mailto:${data.GarageEmail}">${data.GarageEmail}</a></p>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-11 col-xs-offset-1">
+									<p><b>Địa chỉ:</b> ${data.GarageAddress}</p>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal">Đóng</button>
+						</div>
+					</div>
+				</div>`);
 			}
 			break;
 			case 'comment': {
-				$(this).find('.modal-content').html(`<div class="row" style="text-align:center; margin-top:30px">
-											<h3 style="font-size:200%;">Nhận xét và đánh giá ${VehicleName}</h3>
-								  
-											<div class="col-sm-12" style="text-align: center">
-												<label>Comment</label>
-												<input type="text" class="form-control" id="comment">
-												<input type="hidden" class ="form-control" value="${id}" id="id" />
-												<label>Rate</label>
-											 <div class ="stars stars-example-bootstrap">
-												  <div class ="br-wrapper br-theme-bootstrap-stars">
-													<select id="star" name="star" autocomplete="off">
-														<option value="1">1</option>
-														<option value="2">2</option>
-														<option value="3">3</option>
-														<option value="4">4</option>
-														<option value="5">5</option>
-														</select>
-												   </div>
-											</div>
-											  </div>
-											   <label></label>	<br/>
-											  <button type="button" class ="btn btn-default" data-dismiss="modal">Đóng</button>
-											  <button type="button" class ="btn btn-success btn-yeah">Gửi</button>
-												<label></label>	<br/>`);
-				$(function () {
-					$('#star').barrating({
-						theme: 'fontawesome-stars'
+				$(this).html(`<div class="modal-dialog modal-lg" role="document">
+					<div class="modal-content">
+						<div class="modal-header green-bg">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h2 class="modal-title">Đánh giá xe ${data.VehicleName}</h2>
+						</div>
+						<form id="commentForm" action="#">
+							<div class="modal-body">
+								<div class ="stars stars-example-bootstrap">
+									<select id="star" autocomplete="off">
+										<option value=""></option>
+										<option value="1">1</option>
+										<option value="2">2</option>
+										<option value="3">3</option>
+										<option value="4">4</option>
+										<option value="5">5</option>
+									</select>
+								   <div class="form-group">
+										<label for="comment">Đánh giá:</label>
+										<textarea class="form-control" rows="5" id="comment" maxlength="200" minlength="20" required></textarea>
+									</div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+								<input type="submit" value="Gửi" class="btn btn-primary">
+							</div>
+						</form>
+					</div>
+				</div>`);
+
+				$('#star').barrating({
+					deselectable: true,
+					hoverState: false,
+					theme: 'fontawesome-stars',
+				});
+
+				$('#commentForm').validate({
+					submitHandler: form => {
+						$.ajax({
+							url: CommentUrl,
+							type: 'PATCH',
+							contentType: 'application/json; charset=utf-8',
+							data: JSON.stringify({comment: {
+								ID: data.ID,
+								Star: Number.parseInt($(form).find('#star').val()) || 0,
+								Comment: $(form).find('#comment').val()
+							}}),
+						})
+						.done(() => {
+							toastr.success("Gởi đánh giá thành công.")
+						})
+						.fail(() => {
+							toastr.error("Có lỗi xảy ra. Phiền bạn thử lại sau.")
+						})
+						.always(() => {
+							$('#modal').modal('hide');
+							table.ajax.reload();
+						});
+					}
+				});
+
+			}
+			break;
+			case 'cancel': {
+				$(this).html(`<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header red-bg">
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							<h2 class="modal-title">Hủy đặt xe ${data.VehicleName}</h2>
+						</div>
+						<div class="modal-body">
+							<div class ="stars stars-example-bootstrap">
+								<span>Bạn đang chuẩn bị hủy đặt xe <b>${data.VehicleName}</b>. Bạn có chắc chắn?</span>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+							<button type="button" class="btn btn-danger" id="cancelBookingBtn">Hủy</button>
+						</div>
+					</div>
+				</div>`);
+
+				$('#cancelBookingBtn').click((evt) => {
+					$.ajax({
+						url: CancelUrl + '/' + id,
+						type: 'DELETE'
+					})
+					.done(() => {
+						toastr.success("Hủy đặt xe thành công.")
+					})
+					.fail(() => {
+						toastr.error("Có lỗi xảy ra. Phiền bạn thử lại sau.")
+					})
+					.always(() => {
+						$('#modal').modal('hide');
+						table.ajax.reload();
 					});
 				});
-			   
-				}
-			break;
-			case 'cancle': {
-				$(this).find('.modal-content').html(`<div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				<span aria-hidden="true">&times;</span>
-			</button>
-			<h2 class="modal-title">
-				${action === 'delete' ? 'Deletion' : (action === 'deactivate' ? 'Deactivation' : 'Activation')} Confirmation
-			</h2>
-			</div>
-			<div class="modal-body">
-			Có phải bạn muốn <b>${action}</b> booking này?</b>. Bạn chắc chứ?
-			</div>
-			<div class="modal-footer">
-			<button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
-			<button type="button" class="btn btn-danger btn-yes">Đúng</button>
-			</div>`);
 			}
 			break;   
-			}
-			$(document).on('click', '.btn-yes', function (event) {
-			$.ajax({
-				url: `/api/booking/status/${id}`,
-				type: "DELETE",
-				success: function (data) {
-					alert(data.message);
-					location.href = "/management/bookingHistory";
-				},
-				eror: function (data) {
-					alert(data.message);
-					location.href = "/management/bookingHistory";
-				}
-				});
-			});
-			
-			$(document).on('click', '.btn-yeah', function (event) {
-				$("#error").html("");
-				var id = $('#id').val();
-				var comment = $('#comment').val();
-				var star = $('#star').val();
-				$.ajax({
-					url: '/api/CommentBooking',
-					data: {
-						id: id,
-						comment: comment,
-						star: star,
-					},
-					error: function (data) {
-						alert(data.message);
-						location.href = "/management/bookingHistory";
-					},
-					success: function (data) {
-						alert(data.message);
-						location.href = "/management/bookingHistory";
-					},
-					type: 'POST'
-				});
-			});
+		}
 	});
 });

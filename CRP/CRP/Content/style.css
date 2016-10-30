@@ -8278,6 +8278,11 @@ hr {
   border-bottom: 0!important;
 }
 
+.page-heading {
+  padding-top: 0.5em;
+  padding-left: 2em;
+}
+
 .ibox-title {
   background-color: #4CAF50;
   border-top-color: #388E3C;
@@ -8359,6 +8364,16 @@ hr {
 }
 .fa-yellow {
   color: yellow;
+}
+
+.status-label {
+  text-align: center;
+}
+
+.status-label .label {
+  display: inline-block;
+  font-size: 1em;
+  padding: 0.5em 1em;
 }
 
 .center-flex {

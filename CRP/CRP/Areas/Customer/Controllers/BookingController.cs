@@ -357,78 +357,71 @@ namespace CRP.Areas.Customer.Controllers
 			return Json(receiptList, JsonRequestBehavior.AllowGet);
 		}
 
-		// API route to get receipt detail
-		[System.Web.Mvc.Route("api/bookings/bookingHistory/{id:int}")]
-		[System.Web.Mvc.HttpGet]
-		public JsonResult getBookingReceiptAPI(int id)
+		// API route for canceling a booking
+		[System.Web.Mvc.Route("api/bookings/{id:int}")]
+		[System.Web.Mvc.HttpDelete]
+		public async Task<System.Web.Mvc.ActionResult> CancelBookingAPI(int id)
 		{
-			String customerID = User.Identity.GetUserId();
 			var service = this.Service<IBookingReceiptService>();
-			var list = service.Get(id);
-			return Json(new { aaData = list }, JsonRequestBehavior.AllowGet);
+			var booking = await service.GetAsync(id);
+
+			if (booking == null)
+				return new HttpStatusCodeResult(400, "Invalid request");
+
+			if (booking.CustomerID != User.Identity.GetUserId())
+				return new HttpStatusCodeResult(403, "No access");
+
+			if(booking.IsCanceled)
+				return new HttpStatusCodeResult(400, "Invalid request");
+
+			booking.IsCanceled = true;
+			await service.UpdateAsync(booking);
+
+			return new HttpStatusCodeResult(200, "OK");
 		}
 
-		//[System.Web.Mvc.Route("api/booking/status/{id:int}")]
-		//[System.Web.Mvc.HttpDelete]
-		//public async Task<JsonResult> ChangeStatus(int id)
-		//{
-		//	var service = this.Service<IBookingReceiptService>();
-		//	var entity = await service.GetAsync(id);
-		//	if (entity != null)
-		//	{
-		//		entity.IsCanceled = !entity.IsCanceled;
-		//		await service.UpdateAsync(entity);
-		//		return Json(new { result = true, message = "Change status success!" });
-		//	}
+		// API route for sending comment/rating for a booking
+		[System.Web.Mvc.Route("api/bookings")]
+		[System.Web.Mvc.HttpPatch]
+		public async Task<System.Web.Mvc.ActionResult> RateBookingAPI(BookingCommentModel comment)
+		{
+			// Validate the comment model
+			if(comment?.ID ==null || comment.Comment == null
+					|| comment.Comment.Length < BookingCommentModel.MIN_COMMENT_LENGTH
+					|| comment.Comment.Length > BookingCommentModel.MAX_COMMENT_LENGTH
+					|| comment.Star < BookingCommentModel.MIN_RATING
+					|| comment.Star > BookingCommentModel.MAX_RATING)
+				return new HttpStatusCodeResult(400, "Bad request");
 
-		//	return Json(new { result = false, message = "Change status failed!" });
-		//}
+			var service = this.Service<IBookingReceiptService>();
+			var booking = await service.GetAsync(comment.ID);
 
-		//// API route for sending comment/rating for a booking
-		//[System.Web.Mvc.Route("api/bookings/{id:int}")]
-		//[System.Web.Mvc.HttpPatch]
-		//public System.Web.Mvc.ActionResult RateBookingAPI([FromBody] BookingCommentModel commentModel)
-		//{
-		//	var customerID = User.Identity.GetUserId();
+			if (booking.CustomerID != User.Identity.GetUserId())
+				return new HttpStatusCodeResult(403, "Access denied.");
 
-		//	var service = this.Service<IBookingReceiptService>();
-		//	var status = service.RateBooking(customerID, commentModel);
+			// Only allow commenting after the rental has started or been canceled
+			if (DateTime.Now < booking.StartTime && !booking.IsCanceled)
+				return new HttpStatusCodeResult(400, "This booking has yet to complete.");
 
-		//	switch (status)
-		//	{
-		//		case 0:
-		//			return new HttpStatusCodeResult(200, "Booking rated successfully.");
-		//		case 1:
-		//			return new HttpNotFoundResult();
-		//		case 2:
-		//			return new HttpStatusCodeResult(403, "This booking has not been completed.");
-		//		case 3:
-		//			return new HttpStatusCodeResult(403, "This booking has already been commented.");
-		//	}
-		//	return new HttpStatusCodeResult(500, "Internal server error.");
-		//}
+			if (booking.Star.HasValue)
+				return new HttpStatusCodeResult(400, "This booking has already been rated");
 
-		//[System.Web.Mvc.Route("api/CommentBooking")]
-		//[System.Web.Mvc.HttpPost]
-		//public async Task<JsonResult> EditPC()
-		//{
-		//	SystemService sysService = new SystemService();
-		//	int id = int.Parse(Request.Params["id"]);
-		//	String comment = Request.Params["comment"];
-		//	decimal star = decimal.Parse(Request.Params["star"]);
-		//	var service = this.Service<IBookingReceiptService>();
-		//	var entity = await service.GetAsync(id);
-		//	if (entity != null)
-		//	{
-		//		entity.Comment = comment;
-		//		entity.Star = star;
-		//		await service.UpdateAsync(entity);
-		//		//update ratng cho garage va vihicle tuong ung
-		//		sysService.UpdateRatingGarage(entity.GarageID.GetValueOrDefault());
-		//		sysService.UpdateRatingVehicle(entity.VehicleID.GetValueOrDefault());
-		//		return Json(new { result = true, message = "Change status success!" });
-		//	}
-		//	return Json(new { result = false, message = "Change status failed!" });
-		//}
+			booking.Comment = comment.Comment;
+			booking.Star = comment.Star;
+
+			// Update vehicle's rating if it still exist
+			if (booking.VehicleID.HasValue)
+				booking.Vehicle.Star = (booking.Vehicle.Star*booking.Vehicle.NumOfComment + comment.Star)
+										/ ++booking.Vehicle.NumOfComment;
+
+			// Update garage's rating if it still exist
+			if (booking.GarageID.HasValue)
+				booking.Garage.Star = (booking.Garage.Star * booking.Garage.NumOfComment + comment.Star)
+										/ ++booking.Garage.NumOfComment;
+
+			await service.UpdateAsync(booking);
+
+			return new HttpStatusCodeResult(200, "OK");
+		}
 	}
 }

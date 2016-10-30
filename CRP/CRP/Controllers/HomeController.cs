@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -173,7 +174,7 @@ namespace CRP.Controllers
 					{
 						customer = br.AspNetUser.UserName
 						, avatarURL = br.AspNetUser.AvatarURL
-						, comment = br.Comment
+						, comment = Regex.Replace(br.Comment, @"\r\n?|\n", "<br>")
 						, star = br.Star
 					});
 

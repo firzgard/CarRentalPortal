@@ -42,78 +42,68 @@ namespace CRP.Models.ViewModels
 		public class BookingHistoryDataTablesRecordModel
 		{
 			public int ID { get; set; }
-			public string VehicleName { get; set; }
-			public string GarageName { get; set; }
+			public double RentalPrice { get; set; }
+			public double Deposit { get; set; }
+			public double BookingFee { get; set; }
+			public int? Distance { get; set; }
+			public bool HasStar { get; set; }
 			public string StartTime { get; set; }
 			public string EndTime { get; set; }
 			public bool IsCanceled { get; set; }
+			public string GarageName { get; set; }
+			public string GarageAddress { get; set; }
+			public string GaragePhone { get; set; }
+			public string GarageEmail { get; set; }
+			public int? VehicleID { get; set; }
+			public string VehicleName { get; set; }
+			public int Year { get; set; }
+			public int NumOfSeat { get; set; }
+			public int NumOfDoor { get; set; }
+			public string TransmissionType { get; set; }
+			public string TransmissionDetail { get; set; }
+			public string FuelType { get; set; }
+			public string Engine { get; set; }
+			public string Color { get; set; }
 
 			public BookingHistoryDataTablesRecordModel(BookingReceipt br)
 			{
 				ID = br.ID;
-				VehicleName = br.VehicleName;
-				GarageName = br.GarageName;
-				StartTime = br.StartTime.ToUniversalTime().ToString("o"); ;
+				RentalPrice = br.RentalPrice;
+				Deposit = br.Deposit;
+				BookingFee = br.BookingFee;
+				Distance = br.Distance;
+				HasStar = br.Star.HasValue;
+				StartTime = br.StartTime.ToUniversalTime().ToString("o");
 				EndTime = br.EndTime.ToUniversalTime().ToString("o");
 				IsCanceled = br.IsCanceled;
+				GarageName = br.GarageName;
+				GarageAddress = br.GarageAddress;
+				GaragePhone = br.GaragePhone;
+				GarageEmail = br.GarageEmail;
+				VehicleID = br.VehicleID;
+				VehicleName = br.VehicleName;
+				Year = br.Year;
+				NumOfSeat = br.VehicleModel.NumOfSeat;
+				NumOfDoor = br.VehicleModel.NumOfDoor;
+				TransmissionType = Constants.TRANSMISSION_TYPE[br.TransmissionType];
+				TransmissionDetail = br.TransmissionDetail;
+				FuelType = br.FuelType == null ? null : Constants.FUEL_TYPE[br.FuelType.Value];
+				Engine = Engine;
+				Color = Constants.COLOR[br.Color];
 			}
-		}
-	}
-
-	// Booking receipt Json model
-	public class BookingHistoryReceiptJsonModel
-	{
-		public int ID { get; set; }
-		public double RentalPrice { get; set; }
-		public double Deposit { get; set; }
-		public double BookingFee { get; set; }
-		public int? Distance { get; set; }
-		public decimal? Star { get; set; }
-		public string Comment { get; set; }
-		public string StartTime { get; set; }
-		public string EndTime { get; set; }
-		public string GarageName { get; set; }
-		public string GarageAddress { get; set; }
-		public string GaragePhone { get; set; }
-		public string GarageEmail { get; set; }
-		public string VehicleName { get; set; }
-		public int Year { get; set; }
-		public string TransmissionType { get; set; }
-		public string TransmissionDetail { get; set; }
-		public string FuelType { get; set; }
-		public string Engine { get; set; }
-		public string Color { get; set; }
-
-		public BookingHistoryReceiptJsonModel(BookingReceipt br)
-		{
-			ID = br.ID;
-			RentalPrice = br.RentalPrice;
-			Deposit = br.Deposit;
-			BookingFee = br.BookingFee;
-			Distance = br.Distance;
-			Star = br.Star;
-			Comment = br.Comment;
-			StartTime = br.StartTime.ToUniversalTime().ToString("o");
-			EndTime = br.EndTime.ToUniversalTime().ToString("o");
-			GarageName = br.GarageName;
-			GarageAddress = br.GarageAddress;
-			GaragePhone = br.GaragePhone;
-			GarageEmail = br.GarageEmail;
-			VehicleName = br.VehicleName;
-			Year = br.Year;
-			TransmissionType = Constants.TRANSMISSION_TYPE[br.TransmissionType];
-			TransmissionDetail = br.TransmissionDetail;
-			FuelType = br.FuelType == null ? null : Constants.FUEL_TYPE[br.FuelType.Value];
-			Engine = Engine;
-			Color = Constants.COLOR[br.Color];
 		}
 	}
 
 	public class BookingCommentModel
 	{
 		public int ID { get; set; }
-		public decimal Star { get; set; }
+		public int Star { get; set; }
 		public string Comment { get; set; }
+
+		public static readonly int MAX_RATING = 5;
+		public static readonly int MIN_RATING = 0;
+		public static readonly int MAX_COMMENT_LENGTH = 200;
+		public static readonly int MIN_COMMENT_LENGTH = 20;
 	}
 
 	public class BookingsRecordJsonModel
