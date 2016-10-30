@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using CRP.Models;
@@ -18,44 +19,6 @@ namespace CRP.Controllers
 			var locationService = this.Service<ILocationService>();
 			return View(locationService.Get().OrderBy(l => l.Name).ToList());
 		}
-
-		//[Route("testNganLuong", Name = "TestNganLuong")]
-		//public ActionResult TestNganLuong()
-		//{
-		//	string payment_method = Request.Form["option_payment"];
-		//	string str_bankcode = Request.Form["bankcode"];
-
-
-		//	RequestInfo info = new RequestInfo();
-		//	info.Merchant_id = "47990";
-		//	info.Merchant_password = "2c91870ef1fc9e506d46c46fe61d3b08";
-		//	info.Receiver_email = "megafirzen@gmai.com";
-
-		//	info.cur_code = "vnd";
-		//	info.bank_code = str_bankcode;
-
-		//	info.Order_code = "Test code";
-		//	info.Total_amount = "2000";
-		//	info.fee_shipping = "0";
-		//	info.Discount_amount = "0";
-		//	info.order_description = "Test";
-		//	info.return_url = "http://localhost/3000";
-		//	info.cancel_url = "http://localhost/3001";
-
-		//	info.Buyer_fullname = buyer_fullname.Value;
-		//	info.Buyer_email = buyer_email.Value;
-		//	info.Buyer_mobile = buyer_mobile.Value;
-
-		//	APICheckoutV3 objNLChecout = new APICheckoutV3();
-		//	ResponseInfo result = objNLChecout.GetUrlCheckout(info, payment_method);
-
-		//	if (result.Error_code == "00")
-		//	{
-		//		return Redirect(result.Checkout_url);
-		//	}
-
-		//	return new HttpStatusCodeResult(400, "Invalid request");
-		//}
 
 		// Route to vehicle search results
 		[Route("search", Name = "SearchPage")]
@@ -117,7 +80,7 @@ namespace CRP.Controllers
 		{
 			var vehicle = this.Service<IVehicleService>().Get(id);
 
-			return View(new VehicleInfoPageViewModel(vehicle));
+			return View(vehicle);
 		}
 
 		// API Route for guest/customer to search vehicle for booking
@@ -151,6 +114,68 @@ namespace CRP.Controllers
 			var service = this.Service<IVehicleService>();
 			var searchResult = service.SearchVehicle(searchConditions);
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
+		}
+		
+		// API route for getting booking calendar of a vehicle
+		// Only get bookingReceipt of the next 30 days from this moment
+		[Route("api/bookings/calendar/{vehicleID:int}", Name = "GetBookingCalendarAPI")]
+		[HttpGet]
+		public async Task<ActionResult> GetBookingCalendarAPI(int? vehicleID)
+		{
+			if(vehicleID == null)
+				return new HttpStatusCodeResult(400, "Bad request");
+
+			var vehicleService = this.Service<IVehicleService>();
+			var vehicle = await vehicleService.GetAsync(vehicleID.Value);
+
+			if(vehicle == null)
+				return new HttpStatusCodeResult(404, "Vehicle not found");
+
+			var bookings = vehicle.BookingReceipts
+					.Where(br => !br.IsCanceled && br.EndTime >= DateTime.Now)
+					.Select(br => new
+						{
+							start = br.StartTime.ToUniversalTime().ToString("o")
+							, end = br.EndTime.ToUniversalTime().ToString("o")
+						});
+
+			return Json(bookings, JsonRequestBehavior.AllowGet);
+		}
+
+		// API route for getting comments of a vehicle
+		// Order by endTime - desc
+		// Pagination needed
+		[Route("api/bookings/comments/{vehicleID:int}", Name = "GetCommentAPI")]
+		[HttpGet]
+		public async Task<ActionResult> GetCommentAPI(int? vehicleID, int page = 1)
+		{
+			if (vehicleID == null)
+				return new HttpStatusCodeResult(400, "Bad request");
+
+			var vehicleService = this.Service<IVehicleService>();
+			var vehicle = await vehicleService.GetAsync(vehicleID.Value);
+
+			if (vehicle == null)
+				return new HttpStatusCodeResult(404, "Vehicle not found");
+			
+			var comments = vehicle.BookingReceipts
+					// Get only the ones with comment
+					.Where(br => br.Comment != null)
+					// Sort
+					.OrderByDescending(br => br.EndTime)
+					// Paginate
+					.Skip((page - 1) * Constants.NUM_OF_COMMENT_PER_PAGE)
+					.Take(Constants.NUM_OF_COMMENT_PER_PAGE)
+					// Parse into json model
+					.Select(br => new
+					{
+						customer = br.AspNetUser.UserName
+						, avatarURL = br.AspNetUser.AvatarURL
+						, comment = br.Comment
+						, star = br.Star
+					});
+
+			return Json(comments, JsonRequestBehavior.AllowGet);
 		}
 	}
 }

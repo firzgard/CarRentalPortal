@@ -19,13 +19,17 @@ body{
 	background-color: #484848;
 }
 
+#infoNavBar .active {
+	border-bottom-color: #4CAF50;
+}
+
 .hidden-info-nav {
 	opacity: 0!important;
 	z-index: -50;
 }
 
 /* =========================================================== */
-/* Image sections */
+/* Image section */
 
 #vehiclePrimaryImage {
 	background-position: center center;
@@ -87,7 +91,7 @@ body{
 /* Info sections */
 
 #vehicleHeaderInfo {
-	background-color: #1ab394;
+	background-color: #388E3C;
 	color: white;
 	padding: 0 2em 1em;
 	position: absolute;
@@ -114,12 +118,42 @@ body{
 
 /* =========================================================== */
 /* Booking sections */
+.comment-item {
+	float: left;
+	position: relative;
+	margin-bottom: 2em;
+	width: 100%;
+}
+
+.comment-user {
+	color: #7F7F7F;
+	float: left;
+	position: relative;
+	text-align: center;
+	width: 30%;
+}
+.comment-user .img-circle {
+	width: 80px;
+}
+.comment-user .fa-user-circle {
+	color: #388E3C;
+	font-size: 80px;
+}
+
+.comment-content {
+	float: left;
+	position: relative;
+	min-height: 10em;
+	border-bottom: 1px solid #CCC;
+	width: 67%;
+}
+
+/* =========================================================== */
+/* Booking sections */
 
 #bookingSection{
 	font-size: 1.1em;
 	background-color: white;
-	border: 1px solid #CCCCCC;
-	padding: 0 1em;
 	position: relative;
 	display: table;
 	top: -50px;
@@ -131,15 +165,13 @@ body{
 }
 
 #rentalTypePrice{
-	background-color: #1ab394;
+	background-color: #388E3C;
 	color: white;
 	display: flex;
     justify-content:center;
     flex-direction:column;
 	font-size: 2em;
-	margin: 0 -0.5em;
 	height: 50px;
-	margin-bottom: 1em;
 }
 
 .form-control[readonly] {

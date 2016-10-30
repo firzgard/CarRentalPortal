@@ -240,21 +240,42 @@ $(document).ready(() => {
     });
 
 
+    var data4 = [];
 
-
-   var data2 = [
-              [gd(2012, 1, 1), 5], [gd(2012, 2, 1), 6], [gd(2012, 3, 2), 7], [gd(2012, 4, 4), 12],
-              [gd(2012, 5, 5), 44], [gd(2012, 6, 6), 3], [gd(2012, 7, 7), 3], [gd(2012, 8, 8), 4],
-              [gd(2012, 9, 9), 5], [gd(2012, 10, 10), 6], [gd(2012, 11, 11), 12], [gd(2012, 12, 12), 4]
-    ];
-
+    var data2 = [[gd(2012, 1), 5], [gd(2012, 2), 6], [gd(2012, 3), 7], [gd(2012, 4), 12],
+                [gd(2012, 5), 44], [gd(2012, 6), 3], [gd(2012, 7), 3], [gd(2012, 8), 4],
+                [gd(2012, 9), 5], [gd(2012, 10), 6], [gd(2012, 11), 12], [gd(2012, 12), 4]];
+    
     var data3 = [
-        [gd(2012, 1, 1), 800], [gd(2012, 2, 1), 500], [gd(2012, 3, 2), 600], [gd(2012, 4, 4), 700],
-        [gd(2012, 5, 5), 500], [gd(2012, 6, 6), 456], [gd(2012, 7, 7), 800], [gd(2012, 8, 8), 589],
-        [gd(2012, 9, 9), 467], [gd(2012, 10, 10), 876], [gd(2012, 11, 11), 0], [gd(2012, 12, 12), 0]
+        [gd(2012, 1), 800], [gd(2012, 2), 500], [gd(2012, 3), 600], [gd(2012, 4), 700],
+        [gd(2012, 5), 500], [gd(2012, 6), 456], [gd(2012, 7), 800], [gd(2012, 8), 589],
+        [gd(2012, 9), 467], [gd(2012, 10), 876], [gd(2012, 11), 0], [gd(2012, 12), 0]
     ];
+    function onDataReceived(series) {
+        data4 = [[gd(2012, 1, 1), 5], [gd(2012, 2, 1), 6], [gd(2012, 3, 2), 7], [gd(2012, 4, 4), 12],
+                [gd(2012, 5, 5), 44], [gd(2012, 6, 6), 3], [gd(2012, 7, 7), 3], [gd(2012, 8, 8), 4],
+                [gd(2012, 9, 9), 5], [gd(2012, 10, 10), 6], [gd(2012, 11, 11), 12], [gd(2012, 12, 12), 4]];
+    }
+    $.ajax({
+        url: `/api/getProviderData1`,
+        type: "GET",
+        success: onDataReceived,
+        eror: function (data) {
+            alert("fail");
+        }
+    });
 
-
+    //get data booking
+    //$.ajax({
+    //    type: "GET",
+    //    url: '@Url.Action("GetTestData")',
+    //    error: function () {
+    //        alert("An error occurred.");
+    //    },
+    //    success: function (data) {
+    //        data3 = [data]
+    //    }
+    //});
     var dataset = [
         {
             label: "Doanh thu",
@@ -334,12 +355,11 @@ $(document).ready(() => {
         }
     };
 
-    function gd(year, month, day) {
-        return new Date(year, month - 1, day).getTime();
+    function gd(year, month) {
+        return new Date(year, month).getTime();
     }
 
     var previousPoint = null, previousLabel = null;
 
-    $.plot($("#flot-dashboard-chart"), dataset, options);
-
+    $.plot($("#aa"), dataset, options);
 });

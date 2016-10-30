@@ -15,20 +15,12 @@ namespace CRP.Models.ViewModels
 		public int? NumOfDay { get; set; }
 	}
 
-	// Input model for BookVehicle in BookingController
-	public class NganLuongBookingModel
-	{
-		public string PaymentMethod { get; set; }
-		public string BankCode { get; set; }
-		public string OrderCode { get; set; }
-	}
-
 	// ViewModel for BookingConfirm
 	public class BookingConfirmViewModel
 	{
 		public string Action { get; set; }
 		public BookingReceipt Receipt { get; set; }
-		public NganLuongBookingModel NganLuong { get; set; }
+		public NganLuongPaymentModel NganLuong { get; set; }
 	}
 
 	public class BookingReceiptViewModel

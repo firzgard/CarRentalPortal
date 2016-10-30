@@ -10,7 +10,6 @@ namespace CRP.Models.Entities.Services
 	{
 		SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions);
 		VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions);
-		bool CheckVehicleAvailability(int vehicleId, DateTime startTime, DateTime endTime);
 
 	}
 
@@ -231,57 +230,6 @@ namespace CRP.Models.Entities.Services
 					.Take(filterConditions.RecordPerPage);
 
 			return new VehicleDataTablesJsonModel(results.ToList(), filterConditions.Draw, recordsTotal, filteredRecords);
-		}
-
-		// Check to see if the vehicle is available
-		public bool CheckVehicleAvailability(int vehicleId, DateTime startTime, DateTime endTime)
-		{
-			// Check if startTime is after SoonestPossibleBookingStartTimeFromNow
-			// Check if startTime is before LatestPossibleBookingStartTimeFromNow
-			// Check if endTime is after SoonestPossibleBookingEndTimeFromNow
-			if (startTime < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR)
-					|| startTime > DateTime.Now.AddDays(Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY)
-					|| endTime < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR))
-				return false;
-
-			var vehicle = this.repository.Get(v => v.ID == vehicleId);
-
-			if (vehicle.Any())
-			{
-				// Check StartTime/EndTime to be within garage's OpenTime ~ CloseTime
-				// Compare by convert time to the number of minute from 00:00
-				// Max margin of error: 60 secs vs CloseTime (Because we do not validate to second)
-
-				// Booking StartTime
-				var startTimeDoW = (int) startTime.DayOfWeek;
-				var startTimeInMinute = startTime.Minute + startTime.Hour*60;
-				vehicle = vehicle.Where(v =>
-					v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == startTimeDoW
-								  && startTimeInMinute >= gwt.OpenTimeInMinute
-								  && startTimeInMinute <= gwt.CloseTimeInMinute));
-
-				// Booking EndTime
-				var endTimeDoW = (int) endTime.DayOfWeek;
-				var endTimeInMunute = endTime.Minute + endTime.Hour * 60;
-				vehicle = vehicle.Where(v =>
-					v.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == endTimeDoW
-								  && endTimeInMunute >= gwt.OpenTimeInMinute
-								  && endTimeInMunute <= gwt.CloseTimeInMinute));
-
-				if (vehicle.Any())
-				{
-					// Check if this vehicle has any other bookings in the timespan of this booking
-					vehicle = vehicle.Where(v =>
-						!v.BookingReceipts.Any(br => !br.IsCanceled
-								&& (
-										(startTime > br.StartTime && startTime < br.EndTime)
-									 || (endTime > br.StartTime && endTime < br.EndTime)
-									 || (startTime <= br.StartTime && endTime >= br.EndTime)
-								)));
-				}
-			}
-
-			return vehicle.Any();
 		}
 	}
 }
