@@ -84,7 +84,7 @@ namespace CRP.Areas.Provider.Controllers
             return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
 		}
 
-        // Add group of a vehicle
+        // Add vehicleGroup of a vehicle
         [Authorize(Roles = "Provider")]
         [Route("api/vehicleGroup/updateVehicle/{vehicleID:int}/{groupID:int}")]
         [HttpPatch]
@@ -140,6 +140,7 @@ namespace CRP.Areas.Provider.Controllers
                 q.ID,
                 q.Name,
                 q.LicenseNumber,
+                q.VehicleModel.NumOfSeat,
                 (from kvp in Models.Constants.COLOR where kvp.Key == q.Color select kvp.Value).ToList().FirstOrDefault(),
                 q.Star
             });

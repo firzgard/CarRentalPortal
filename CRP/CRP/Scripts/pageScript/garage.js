@@ -1,12 +1,11 @@
 const vehicleTableColumns = [
-	{ name: 'ID', data: 'ID', visible: false, orderable: false, searchable: false }
-	, { name: 'Name', title: 'Tên', data: 'Name' }
-	, { name: 'LicenseNumber', title: 'Biển số', data: 'LicenseNumber' }
-	, { name: 'VehicleGroupName', title: 'Nhóm', data: 'VehicleGroupName' }
-	, { name: 'Year', title: 'Năm', data: 'Year' }
-	, { name: 'NumOfSeat', title: 'Số chỗ', data: 'NumOfSeat' }
-	, { name: 'Star', title: "Đánh giá", data: 'Star', width: '6.5em' }
-	, { name: 'Action', title: "Action", orderable: false, searchable: false }
+	{ name: 'ID', visible: false, orderable: false, searchable: false }
+	, { name: 'Name', title: 'Tên' }
+    , { name: 'LicenseNumber', title: 'Biển số' }
+    , { name: 'NumOfSeat', title: 'Số chỗ' }
+	, { name: 'Color', title: 'Màu' }
+	, { name: 'Star', title: "Đánh giá", width: '6.5em' }
+	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false, width: '20em' }
 ]
 
 const bookingTableColumns = [
@@ -38,42 +37,34 @@ const viDatatables = {
         last: "Trang cuối",
     },
     zeroRecords: "Không tìm thấy dữ liệu",
-    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    info: "Đang hiển thị _START_ đến _END_ trên tổng cộng _TOTAL_ dòng",
     infoEmpty: "không có dữ liệu",
     infoFiltered: "(được lọc ra từ _MAX_ dòng)"
 }
 
-$(document).ready(function () {
+let table = null;
+
+$(document).on('click', '#btnEditGarage', function () {
+    $('.display-control').css('display', 'none');
+    $('.edit-control').css('display', 'inherit');
+});
+
+$(document).on('click', '#cancelChange', function () {
+    $('.display-control').css('display', 'inherit');
     $('.edit-control').css('display', 'none');
-    $('#edit-btn').on('click', function () {
+    renderActivation();
+});
+
+$(document).ready(function () {
+    $('#locationID').select2({
+        width: '100%',
+    });
+
+    $('#btnEditGarage').on('click', function () {
         $('.edit-control').css('display', 'inherit');
         $('.display-control').css('display', 'none');
     });
-	// Render re/deactivate button
-	let isActivateInput = $('#isActive');
-	function renderActivationBtn(){
-		let btn = $('#activationBtn')
-		if(isActivateInput.val() == 'true'){
-			btn.attr('data-action', 'deactivateGarage');
-			btn.html('Đóng cửa Garage');
-			btn.removeClass('btn-success');
-			btn.addClass('btn-warning');
-		} else {
-			btn.attr('data-action', 'reactivateGarage');
-			btn.html('Mở cửa Garage');
-			btn.removeClass('btn-warning');
-			btn.addClass('btn-success');
-		}
-	}
-	renderActivationBtn();
-	// Bind the change event of isActive input with rerendering the btn
-	isActivateInput.on('change', renderActivationBtn);
-
-	// Intialize location selector
-	$('#locationID').chosen({
-		width: "100%",
-		no_results_text: "No result!"
-	});
+    renderActivation();
 
 	// Render star-rating
 	let starRatingDiv = $('#starRating'),
@@ -83,41 +74,19 @@ $(document).ready(function () {
 	// ============================================
 	// Vehicle table
 
-	// set toogling dropdown event for filter dropdown buttons
-	$('#multiFilter .filter-toggle').click(function(event){
-		let dropdownContainer = $(this).parent();
-
-		if(dropdownContainer.hasClass('open')){
-			$('#multiFilter .filter-toggle').parent().removeClass('open');
-		} else {
-			$('#multiFilter .filter-toggle').parent().removeClass('open');
-			dropdownContainer.addClass('open');
-		}
-	});
-
 	let garageID = parseInt($('#garageID').val());
+
+	renderWorkingTime(garageID, false);
+	renderWorkingTime(garageID, true);
+
 	// Load vehicles belonging to this garage
-	let table = $(vehicles).DataTable({
-	    dom: 'lrtip'
-		, serverSide: true
-		, ajax: {
-		    url: queryApiUrl
-			, data: (rawData) => {
-			    console.log(rawData);
-			    return {
-			        Draw: rawData.draw,
-			        GarageID: garageID
-					, RecordPerPage: rawData.length
-					, Page: rawData.start / rawData.length + 1
-					, OrderBy: vehicleTableColumns[rawData.order[0].column].data
-					, IsDescendingOrder: rawData.order[0].dir == 'desc'
-			    };
-			}
-		},
+	table = $(vehicles).DataTable({
+	    dom: 'lftipr',
+	    ajax: {
+	        url: `/api/vehicleInGarage/${garageID}`,
+	        type: 'GET',
+	    },
         language: viDatatables,
-	    retrieve: true,
-	    scrollCollapse: true,
-	    processing: true,
 	    select: {
 	        selector: 'td:not(:last-child)',
 	        style: 'multi+shift'
@@ -125,33 +94,30 @@ $(document).ready(function () {
 	    //"iDisplayLength": 10,
 	    columns: vehicleTableColumns,
 	    columnDefs: [
-			{
-			    targets: -2
+            {
+                targets: 1,
+                render: function (data, type, row) {
+                    return `<a href="/management/vehicleManagement/${row[0]}">${data}</a>`;
+                }
+            },
+            {
+                targets: -2
 				, render: function (data, type, row) {
-				    return renderStarRating(data);
+				    if (data) {
+				        return renderStarRating(data);
+				    }
+				    return '-';
 				}
-			},
+            },
 			{
-			    targets: -1
-				, render: function (data, type, row) {
-				    var action = `<div class="btn-group" >
-						<button data-toggle="dropdown" class="btn btn-info btn-block dropdown-toggle" aria-expanded="false">
-							<i class="fa fa-gear"></i> Actions <i class="caret"></i>
-						</button>
-						<ul class="dropdown-menu">
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGarage" data-vehicle-id="${row.id}" >Change Garage</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="changeGroup" data-vehicle-id="${row.id}" >Change Group</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="deleteVehicle" data-vehicle-id="${row.id}" data-vehicle-name="${row.name}" >Delete Vehicle</a></li>
-							<li><a href="#" data-toggle="modal" data-target="#customModal" data-action="duplicateVehicle" data-vehicle-id="${row.id}" >Duplicate Vehicle</a></li>
-							<li><a href="./../car/car.html" target="_blank">Edit Vehicle</a></li>
-						</ul>
-					</div>`;
-				    var edit = '<a class="btn btn-edit btn-primary btn-sm">Edit</a>'
-				    var del = '<a class="btn btn-edit btn-danger btn-sm">Delete</a>'
-				    return action;
+				// Render action button
+				targets: -1,
+				render: (data, type, row) => {
+				    var changeGarage = `<a data-toggle="modal" data-target="#changeGarage" data-vehicle-id="${row[0]}" class="btn btn-primary"><i class="fa fa-tag"></i> Đổi garage</a>`;
+					return changeGarage;
 				}
 			}
-	    ]
+		],
 	});
 
 	let isCanceled = false;
@@ -250,6 +216,111 @@ $(document).ready(function () {
 	    ]
 	});
 
+	$('#listAdd').on('click', function () {
+	    $.ajax({
+	        url: `/api/vehicleListGarage/${garageID}`,
+	        type: "GET",
+	        success: function (data) {
+	            var options = "";
+	            $.each(data.list, function (k, v) {
+	                options += "<option value='" + v.Value + "'>" + v.Text + "</option>";
+	            });
+	            $("#drpVehicle").html(options);
+	            $('#drpVehicle').select2({
+	                width: '100%',
+	            });
+	        },
+	        error: function () {
+	            alert("error");
+	        }
+	    });
+	});
+
+	$('#btnAddVehicle').on('click', function () {
+	    var vehicleID = $('#drpVehicle').val();
+
+	    $.ajax({
+	        url: `/api/garage/updateVehicle/${vehicleID}/${garageID}`,
+	        type: 'PATCH',
+	        success: function (data) {
+	            if (data.result) {
+	                $('.modal').modal('hide');
+	                table.ajax.reload();
+	            } else {
+	                alert("failed!");
+	            }
+	        },
+	        error: function (e) {
+	            alert("error");
+	        }
+	    });
+	});
+
+	$('#changeGarage').on('show.bs.modal', function (event) {
+	    let button = $(event.relatedTarget),
+	        id = button.data('vehicle-id');
+	    $('#v-id').val(id);
+
+	    $.ajax({
+	        url: `/api/listOtherGarage/${garageID}`,
+	        type: "GET",
+	        success: function (data) {
+	            var options = "";
+	            $.each(data.list, function (k, v) {
+	                options += "<option value='" + v.Value + "'>" + v.Text + "</option>";
+	            });
+	            $("#drpGarage").html(options);
+	            $('#drpGarage').select2({
+	                width: '100%',
+	            });
+	        },
+	        error: function () {
+	            alert("error");
+	        }
+	    });
+	});
+
+	$('#btnChangeGarage').on('click', function () {
+
+	    var vehicleID = $('#v-id').val();
+	    var oGarageID = $('#drpGarage').val();
+
+	    $.ajax({
+	        url: `/api/garage/updateVehicle/${vehicleID}/${oGarageID}`,
+	        type: 'PATCH',
+	        success: function (data) {
+	            if (data.result) {
+	                $('.modal').modal('hide');
+	                table.ajax.reload();
+	            } else {
+	                alert("failed!");
+	            }
+	        },
+	        error: function (e) {
+	            alert("error");
+	        }
+	    });
+	});
+
+	$('#customModal').on('show.bs.modal', function (event) {
+	    let button = $(event.relatedTarget),
+			action = button.data('action');
+
+	    switch (action) {
+	        case 'deactivateGarage': {
+	            renderConfirmModal('', 'garage', 'deactivate', this, [{ id: garageID, name: $('#garageNameD').val() }]);
+	        }
+	            break;
+	        case 'reactivateGarage': {
+	            renderConfirmModal('', 'garage', 'reactivate', this, [{ id: garageID, name: $('#garageNameD').val() }]);
+	        }
+	            break;
+	        case 'deleteGarage': {
+	            renderConfirmModal('', 'garage', 'delete', this, [{ id: garageID, name: $('#garageNameD').val() }]);
+	        }
+	    }
+	});
+
 	$('#isCanceled, #isSelfBooking, input[name="bookingTime"]').on('change', function () {
 	    if ($('#isCanceled').is(':checked')) {
 	        isCanceled = true;
@@ -272,82 +343,219 @@ $(document).ready(function () {
 	    tableBooking.ajax.reload();
 	});
 
-	// Custom modal's content renders dynamically
-	$('#customModal').on('show.bs.modal', function(event) {
-		let button = $(event.relatedTarget),
-			action = button.data('action');
+	$('#saveChange').on('click', function () {
+	    let workTable = [];
 
-		switch(action){
-			case 'changeGarage':{
-				renderSelectorModal('garage', this, [ button.data('vehicle-id') ]);
-			}
-			break;case 'changeGarageMulti':{
-				let vehicles = [],
-					data = table.rows({ selected: true }).data();
-					
-				for(let i = 0; i < data.length; i++){
-					vehicles.push(data[i].id);
-				}
+	    for (var i = 0; i < 7; i++) {
+	        if (!$(`.work-start:eq(${i})`).val() && $(`.work-end:eq(${i})`).val()) {
+	            alert('chua nhap thoi gian mo cua');
+	        }
+	        if ($(`.work-start:eq(${i})`).val() && !$(`.work-end:eq(${i})`).val()) {
+	            alert('chua nhap thoi gian dong cua');
+	        }
+	        if ($(`.work-start:eq(${i})`).val() && $(`.work-end:eq(${i})`).val()) {
+	            var item = {};
+	            item.DayOfWeek = i;
+	            item.OpenTimeInMinute = $(`.work-start:eq(${i})`).val();
+	            item.CloseTimeInMinute = $(`.work-end:eq(${i})`).val();
+                workTable.push(item);
+	        }
+	    }
 
-				renderSelectorModal('garage', this, vehicles);
-			}
-			break;case 'changeGroup':{
-				renderSelectorModal('group', this, [ button.data('vehicle-id') ]);
-			}
-			break;case 'changeGroupMulti':{
-				let vehicles = [],
-					data = table.rows({ selected: true }).data();
-					
-				for(let i = 0; i < data.length; i++){
-					vehicles.push(data[i].id);
-				}
+	    let model = {};
+	    model.ID = garageID;
+	    model.Name = null;
+	    model.LocationID = null;
+	    model.Address = null;
+	    model.Email = null;
+	    model.Phone1 = null;
+	    model.Phone2 = null;
+	    model.Description = null;
+	    model.Policy = null;
+	    model.GarageWorkingTimes = workTable;
 
-				renderSelectorModal('group', this, vehicles);
-			}
-			break;case 'duplicateVehicle':{
-				// Ajax to get the prototype vehicle's info using id: button.data('vehicle-id')
-				let protoVehicle = {
-					name: 'Audi A8ZR',
-					modelID: 4,
-					year: 2015,
-					garageID: 1,
-					groupID: 1,
-					transmissionType: 1,
-					transmissionDetail: '8-speed ZF 8HP tiptronic automatic',
-					engine: '4.2 V8 TDI',
-					fuel: 6,
-					color: 'black',
-					description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloribus, qui, temporibus. Eius, id iusto repellat fugiat. Quo adipisci sint natus magni facilis tempore, possimus, pariatur perferendis consequatur eum quas rerum.'
-				}
+	    if (!$('#garageName').val()) {
+	        alert("Vui long nhap ten garage");
+	    } else if (!$('#garageName').val().length > 100) {
+	        alert("chieu dai chuoi vuot qua gioi han");
+	    } else {
+	        model.Name = $('#garageName').val();
+	    }
 
-				renderCreateVehicleModal(this, protoVehicle);
-			}
-			break;case 'createVehicle':{
-				renderCreateVehicleModal(this, { });
-			}
-			break;case 'deleteVehicle':{
-				renderConfirmModal('vehicle', 'delete', this, [{ id: button.data('vehicle-id'), name: button.data('vehicle-name') }]);
-			}
-			break;case 'deleteVehicleMulti':{
-				let vehicles = [],
-					data = table.rows({ selected: true }).data();
+	    model.LocationID = $('#locationID').val();
 
-				for(let i = 0; i < data.length; i++){
-					vehicles.push({ id: data[i].id, name: data[i].name });
-				}
+	    if (!$('#gAddress').val()) {
+	        alert("vui long nhap dia chi");
+	    } else {
+	        model.Address = $('#gAddress').val();
+	    }
 
-				renderConfirmModal('vehicle', 'delete', this, vehicles);
-			}
-			break;case 'deactivateGarage':{
-				renderConfirmModal('garage', 'deactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
-			}
-			break;case 'reactivateGarage':{
-				renderConfirmModal('garage', 'reactivate', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
-			}
-			break;case 'deleteGarage':{
-				renderConfirmModal('garage', 'delete', this, [{ id: $('#garageID').val(), name: $('#garageName').val() }]);
-			}
-			break;
-		}
+	    if (!$('#gEmail').val()) {
+	        alert("Vui long nhap email");
+	    } else {
+	        model.Email = $('#gEmail').val();
+	    }
+
+	    if (!$('#gPhone1').val()) {
+	        alert("Vui long nhap so dien thoai");
+	    } else {
+	        model.Phone1 = $('#gPhone1').val();
+	    }
+
+	    if ($('#gPhone2').val()) {
+	        model.Phone2 = $('#gPhone2').val();
+	    }
+
+	    if ($('#gDescription').val()) {
+	        model.Description = $('#gDescription').val();
+	    }
+
+	    if ($('#gPolicy').val()) {
+	        model.Policy = $('#gPolicy').val();
+	    }
+
+	    $.ajax({
+	        url: `/api/garages`,
+	        type: 'PATCH',
+	        data: JSON.stringify(model),
+	        contentType: "application/json",
+	        dataType: "json",
+	        success: function (data) {
+	            if (data.result) {
+	                window.location.pathname = `management/garageManagement/${garageID}`;
+	            } else {
+	                alert(data.message);
+	            }
+	        },
+	        error: function () {
+	            alert('error');
+	        }
+	    });
+        
 	});
 });
+
+function renderActivation() {
+    let isActivateInput = ($('#isActive').val() === 'True');
+    let btn = $('#activationBtn');
+    let name = $('#displayGarageName');
+    let dName = $('#garageNameD').val();
+    if (isActivateInput == true) {
+        name.removeClass('bg-danger');
+        name.addClass('bg-success');
+        name.html(`
+                <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
+                    <span>${dName}</span>
+                    <label class ="label label-primary label-lg">đang hoạt động</label>
+                </div>
+                <div class ="col-md-2 pull-right m-t m-r-lg">
+                    <a id="btnEditGarage" class ="btn btn-success"><i class ="fa fa-pencil-square-o"></i><span> Chỉnh sửa thông tin</span></a>
+                </div>`);
+        btn.attr('data-action', 'deactivateGarage');
+        btn.html('Ngừng hoạt động');
+        btn.removeClass('btn-success');
+        btn.addClass('btn-warning');
+    } else {
+        name.removeClass('bg-success');
+        name.addClass('bg-danger');
+        name.html(`
+                <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
+                    <span>${dName}</span>
+                    <label class ="label label-danger label-lg">ngưng hoạt động</label>
+                </div>
+                <div class ="col-md-2 pull-right m-t m-r-lg">
+                    <a id="btnEditGarage" class ="btn btn-success"><i class ="fa fa-pencil-square-o"></i><span> Chỉnh sửa thông tin</span></a>
+                </div>`);
+        btn.attr('data-action', 'reactivateGarage');
+        btn.html('Tái kích hoạt');
+        btn.removeClass('btn-warning');
+        btn.addClass('btn-success');
+    }
+}
+
+function renderWorkingTime(id, isEditable) {
+    $.ajax({
+        url: `/api/workingTime/${id}`,
+        type: 'GET',
+        success: function (data) {
+            let workingTimeTable = '';
+            for (var i = 0; i < 7; i++) {
+                workingTimeTable += workDay(searchArray(i, data.list), isEditable);
+            }
+            if(isEditable) {
+                $('#working-time-edit').html(workingTimeTable)
+            } else {
+                $('#working-time').html(workingTimeTable);
+            }
+            
+        },
+        error: function(e) {
+            alert("error");
+        }
+    });
+}
+
+function searchArray(value, array) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i][0] === value) {
+            return array[i];
+        }
+    }
+    return [value,'',''];
+}
+
+function workDay(workArray, isEditable) {
+
+    let textDOW = '';
+    if (workArray[0] === 0) {
+        textDOW = 'Thứ hai';
+    } else if (workArray[0] === 1) {
+        textDOW = 'Thứ ba';
+    } else if (workArray[0] === 2) {
+        textDOW = 'Thứ tư';
+    } else if (workArray[0] === 3) {
+        textDOW = 'Thứ năm';
+    } else if (workArray[0] === 4) {
+        textDOW = 'Thứ sáu';
+    } else if (workArray[0] === 5) {
+        textDOW = 'Thứ bảy';
+    } else if (workArray[0] === 6) {
+        textDOW = 'Chủ nhật';
+    }
+    if (workArray[1] != '' && workArray[2] != '') {
+        if (isEditable) {
+            return `
+                <div class="input-group">
+                    <div class="input-group-addon gray-bg">${textDOW}</div>
+                    <div class="input-group-addon">Từ</div>
+                    <input type="text" data-mask="99:99" value="${workArray[1]}" class ="work-start form-control">
+                    <div class="input-group-addon">Đến</div>
+                    <input type="text" data-mask="99:99" value="${workArray[2]}" class ="work-end form-control">
+                </div>`;
+        } else {
+            return `
+                <div class="input-group">
+                    <div class="input-group-addon gray-bg">${textDOW}</div>
+                    <div class ="input-group-addon">Từ</div>
+                    <div class ="input-group-addon">${workArray[1]}</div>
+                    <div class ="input-group-addon">Đến</div>
+                    <div class ="input-group-addon">${workArray[2]}</div>
+                </div>`;
+        }
+    } else {
+        if (isEditable) {
+            return `<div class="input-group">
+                        <div class="input-group-addon gray-bg">${textDOW}</div>
+                        <div class="input-group-addon">Từ</div>
+                        <input type="text" data-mask="99:99" value="" class ="work-start form-control">
+                        <div class="input-group-addon">Đến</div>
+                        <input type="text" data-mask="99:99" value="" class ="work-end form-control">
+                    </div>`;
+        } else {
+            return `<div class="input-group">
+                <div class ="input-group-addon gray-bg">${textDOW}</div>
+                <div class ="input-group-addon">Nghỉ</div>
+            </div>`;
+        }
+    }
+}

@@ -226,7 +226,7 @@ function renderSelectorOptions(type, selectedID, html = ''){
                 Bạn có chắc chắn ${action === 'delete' ? 'xóa'
                             : (action === 'deactivate' ? 'hủy kích hoạt'
                             : (action === 'reactivate' ? 'kích hoạt lại'
-                            : ''))} ${type === 'vehicle group' ? 'nhóm giá'
+                            : ''))} ${type === 'vehicle group' || type === 'vehicleGroupDetail' ? 'nhóm giá'
                                     : (type === 'garage' ? 'garage'
                                     : (type === 'vehicle' ? 'xe'
                                     : '')) } này?
@@ -343,7 +343,16 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 success: function (data) {
                                     $('.modal').modal('hide');
                                     if(data.result) {
-                                        table.ajax.reload();
+                                        if(table != '') {
+                                            table.ajax.reload();
+                                        } else {
+                                            if($('#isActive').val() === 'True') {
+                                                $('#isActive').val('False');
+                                            } else {
+                                                $('#isActive').val('True');
+                                            }
+                                            renderActivation();
+                                        }
                                     } else {
                                         alert('fail');
                                     }

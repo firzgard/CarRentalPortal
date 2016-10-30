@@ -2,6 +2,7 @@ const vehicleTableColumns = [
 	{ name: 'ID', visible: false, orderable: false, searchable: false }
 	, { name: 'Name', title: 'Tên' }
     , { name: 'LicenseNumber', title: 'Biển số' }
+    , { name: 'NumOfSeat', title: 'Số chỗ' }
 	, { name: 'Color', title: 'Màu' }
 	, { name: 'Star', title: "Đánh giá", width: '6.5em' }
 	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false, width: '20em' }

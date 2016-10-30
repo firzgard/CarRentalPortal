@@ -1,16 +1,31 @@
-#starRating {
-	font-size: 2em;
-}
 
 #workingTime .input-group-addon:first-of-type  {
 	font-weight: bold;
 	width: 8em;
 }
 
-.display-control {
-    margin: 15px 0px;
-    font-size: 16px;
-}
 .first-row {
     margin-top: 50px;
+}
+
+#starRating {
+	font-size: 2em;
+}
+
+.edit-control {
+    display: none;
+}
+
+.label {
+    font-style: italic !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+}
+
+.ibox-title {
+    padding: 0 15px !important;
+}
+
+.ibox-title .label {
+    float: none !important;
 }
