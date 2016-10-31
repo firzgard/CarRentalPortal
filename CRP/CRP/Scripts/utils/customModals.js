@@ -78,6 +78,17 @@ function renderSelectorModal(type, modalNode, vehicles){
 
 function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, groupID, transmissionType, transmissionDetail, engine, fuel, color, description } = {}){
 	// Ajax data here
+	let garageList, groupList;
+
+	$.ajax({
+		url: '/api/listGroup'
+	})
+	.done(function() {
+		console.log("success");
+	})
+	.fail(function() {
+		console.log("error");
+	})
 	let jqModalNode = $(modalNode)
 
 	jqModalNode.html(`<div class="modal-dialog modal-lg" role="document">
@@ -163,6 +174,8 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 			</div>
 		</div>
 	</div>`);
+
+	$('#newGarage').select2()
 
 	// jqModalNode.find('.chosen-select').chosen({
 	// 	width: "100%",
