@@ -1508,6 +1508,16 @@
     <Content Include="Content\img\zender_logo.png" />
     <Content Include="Content\jasny-bootstrap.css" />
     <Content Include="Content\jasny-bootstrap.min.css" />
+    <Content Include="Content\jquery-bar-rating\bars-1to10.css" />
+    <Content Include="Content\jquery-bar-rating\bars-horizontal.css" />
+    <Content Include="Content\jquery-bar-rating\bars-movie.css" />
+    <Content Include="Content\jquery-bar-rating\bars-pill.css" />
+    <Content Include="Content\jquery-bar-rating\bars-reversed.css" />
+    <Content Include="Content\jquery-bar-rating\bars-square.css" />
+    <Content Include="Content\jquery-bar-rating\bootstrap-stars.css" />
+    <Content Include="Content\jquery-bar-rating\css-stars.css" />
+    <Content Include="Content\jquery-bar-rating\fontawesome-stars-o.css" />
+    <Content Include="Content\jquery-bar-rating\fontawesome-stars.css" />
     <Content Include="Content\jsTree\docs.css" />
     <Content Include="Content\jsTree\themes\default-dark\32px.png" />
     <Content Include="Content\jsTree\themes\default-dark\40px.png" />
@@ -1528,6 +1538,7 @@
     <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
     <Content Include="Content\pageStyle\becomeProvider.css" />
     <Content Include="Content\pageStyle\bookingConfirm.css" />
+    <Content Include="Content\pageStyle\bookingHistory.css" />
     <Content Include="Content\pageStyle\garage.css" />
     <Content Include="Content\pageStyle\garageList.css" />
     <Content Include="Content\pageStyle\home.css" />
@@ -1802,10 +1813,10 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
-    <Content Include="Scripts\jquery.barrating.min.js" />
+    <Content Include="Scripts\jquery-bar-rating\jquery.barrating.min.js" />
     <Content Include="Scripts\jquery.slimscroll.js" />
     <Content Include="Scripts\jquery.slimscroll.min.js" />
-    <Content Include="Scripts\jquery.barrating.min.js.map" />
+    <Content Include="Scripts\jquery-bar-rating\jquery.barrating.min.js.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
@@ -1826,7 +1837,7 @@
     <Content Include="Scripts\pace.min.js" />
     <Content Include="Scripts\pageScript\becomeProvider.js" />
     <Content Include="Scripts\pageScript\bookingConfirm.js" />
-    <Content Include="Scripts\pageScript\BookingHistory.js" />
+    <Content Include="Scripts\pageScript\bookingHistory.js" />
     <Content Include="Scripts\pageScript\Personal.js" />
     <Content Include="Scripts\pageScript\bookingManagement.js" />
     <Content Include="Scripts\pageScript\garage.js" />

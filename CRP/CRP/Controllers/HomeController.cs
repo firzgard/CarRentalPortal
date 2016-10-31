@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -17,7 +18,8 @@ namespace CRP.Controllers
 		public ActionResult Index()
 		{
 			var locationService = this.Service<ILocationService>();
-			return View(locationService.Get().OrderBy(l => l.Name).ToList());
+			// Only get location w/ garage
+			return View(locationService.Get(l => l.Garages.Count > 0).OrderBy(l => l.Name).ToList());
 		}
 
 		// Route to vehicle search results
@@ -53,7 +55,8 @@ namespace CRP.Controllers
 			var categoryList = categoryService.Get().OrderBy(c => c.Name).ToList();
 
 			var locationService = this.Service<ILocationService>();
-			var locationList = locationService.Get().OrderBy(l => l.Name).ToList();
+			// Only get location w/ garage
+			var locationList = locationService.Get(l => l.Garages.Count > 0).OrderBy(l => l.Name).ToList();
 
 			var priceGroupService = this.Service<IPriceGroupService>();
 			var maxPerDayPrice = priceGroupService.Get().Max(pg => pg.PerDayPrice);
@@ -171,7 +174,7 @@ namespace CRP.Controllers
 					{
 						customer = br.AspNetUser.UserName
 						, avatarURL = br.AspNetUser.AvatarURL
-						, comment = br.Comment
+						, comment = Regex.Replace(br.Comment, @"\r\n?|\n", "<br>")
 						, star = br.Star
 					});
 
