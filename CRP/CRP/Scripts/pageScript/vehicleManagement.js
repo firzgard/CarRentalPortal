@@ -6,7 +6,7 @@ const vehicleTableColumns = [
 	, { name: 'Year', title: 'Năm', data: 'Year' }
 	, { name: 'NumOfSeat', title: 'Số chỗ', data: 'NumOfSeat' }
 	, { name: 'Star', title: "Đánh giá", data: 'Star', width: '6.5em' }
-	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false }
+	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false, width: '18em' }
 ]
 
 const viDatatables = {

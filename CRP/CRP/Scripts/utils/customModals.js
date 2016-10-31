@@ -93,30 +93,44 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 
 	jqModalNode.html(`<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header green-bg">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
 				</button>
-				<h2 class="modal-title">New Vehicle</h2>
+				<h2 class="modal-title">Tạo xe mới</h2>
 			</div>
 			<div class="modal-body">
 				<div class="row">
-					<div class="col-sm-6 form-group">
-						<label>Tên xe*</label>
-						<input type="text" placeholder="Vehicle's name" value="${name || ''}" id="newName" class="form-control" required>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Tên xe*</label>
+							<input type="text" placeholder="Tên xe" value="${name || ''}" id="newName" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Hãng xe*</label>
+							<select id="newBrand" data-placeholder="Vui lòng chọn hãng xe..." class="input-group" required></select>
+						</div>
+						<div class="form-group">
+							<label>Năm sản xuất*</label>
+							<input id="newYear" type="number" placeholder="Năm sản xuất" value="${year || ''}" class="form-control" required>
+						</div>
+						<div class="form-group">
+						</div>
+						<div class="form-group">
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<label>Biển số xe*</label>
+							<input type="text" placeholder="Biển số xe" id="newLicense" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Dòng xe*</label>
+							<select id="newModel" data-placeholder="Vui lòng chọn dòng xe..." class="input-group" required></select>
+						</div>
 					</div>
 					<div class="col-sm-6 form-group">
-						<label>Biển số xe*</label>
-						<input type="text" placeholder="Biển số xe" id="newLicense" class="form-control" required>
-					</div>
-					<div class="col-sm-6 form-group">
-						<label>Vehicle's model*</label>
-						<select id="newModel" data-placeholder="Vui lòng chọn dòng xe..." class="input-group" required>
-						</select>
-					</div>
-					<div class="col-sm-6 form-group">
-						<label>Năm sản xuất*</label>
-						<input id="newYear" type="number" placeholder="Năm sản xuất" value="${year || ''}" class="form-control" required>
+							
 					</div>
 					<div class="col-sm-6 form-group">
 						<label>Garage*</label>
@@ -131,11 +145,11 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 					<div class="col-sm-6 form-group">
 						<label>Loại hộp số*</label>
 						<div class="btn-group btn-group-justified" data-toggle="buttons" >
-							<label class="btn btn-success ${(transmissionType && (transmissionType == 1) && 'active') || ''}">
-								<input type="radio" value="1" autocomplete="off" ${(transmissionType && (transmissionType == 1) && 'checked') || ''} >Automatic
+							<label class="btn btn-primary ${(transmissionType && (transmissionType == 1) && 'active') || ''}">
+								<input type="radio" value="1" autocomplete="off" ${(transmissionType && (transmissionType == 1) && 'checked') || ''} >Số tự động
 							</label>
-							<label class="btn btn-info ${(transmissionType && (transmissionType == 2) && 'active') || ''}">
-								<input type="radio" value="2" autocomplete="off" ${(transmissionType && (transmissionType == 2) && 'checked') || ''} >Manual
+							<label class="btn btn-primary ${(transmissionType && (transmissionType == 2) && 'active') || ''}">
+								<input type="radio" value="2" autocomplete="off" ${(transmissionType && (transmissionType == 2) && 'checked') || ''} >Số sàng
 							</label>
 						</div>
 					</div>
@@ -145,7 +159,7 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 					</div>
 					<div class="col-sm-6 form-group">
 						<label>Động cơ</label>
-						<input type="text" placeholder="Động cơ" value="${engine || ''}" class="form-control">
+						<input type="text" placeholder="Chi tiết về động cơ xe" value="${engine || ''}" class="form-control">
 					</div>
 					<div class="col-sm-6 form-group">
 						<label>Loại nhiên liệu</label>
@@ -175,12 +189,9 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 		</div>
 	</div>`);
 
-	$('#newGarage').select2()
-
-	// jqModalNode.find('.chosen-select').chosen({
-	// 	width: "100%",
-	// 	no_results_text: "No result!"
-	// });
+	$('#newGarage').select2({
+		width: "100%"
+	})
 
 	// let imageDropzone = $("#imageDropzone").dropzone({
 	// 	url: '#'
@@ -244,7 +255,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
 			</div>
 		</div>
 	</div>`;
-	
+
     $(document).one('click', '#btn-yes', function(event) {
         switch(type) {
             case 'vehicle group':{
