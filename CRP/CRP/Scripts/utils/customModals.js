@@ -226,7 +226,7 @@ function renderSelectorOptions(type, selectedID, html = ''){
                 Bạn có chắc chắn ${action === 'delete' ? 'xóa'
                             : (action === 'deactivate' ? 'hủy kích hoạt'
                             : (action === 'reactivate' ? 'kích hoạt lại'
-                            : ''))} ${type === 'vehicle group' ? 'nhóm giá'
+                            : ''))} ${type === 'vehicle group' || type === 'vehicleGroupDetail' ? 'nhóm giá'
                                     : (type === 'garage' ? 'garage'
                                     : (type === 'vehicle' ? 'xe'
                                     : '')) } này?
@@ -255,11 +255,11 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                         $('.modal').modal('hide');
                                         table.ajax.reload();
                                     } else {
-                                        alert("fail");
+                                        toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
                                     }
                                 },
                                 eror: function (data) {
-                                    alert("error");
+                                    toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                                 }
                             });
                         }
@@ -275,11 +275,11 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                     if(data.result) {
                                         table.ajax.reload();
                                     } else {
-                                        alert(data.message);
+                                        toastr.error(data.message);
                                     }
                                 },
-                                eror: function (data) {
-                                    alert("error");
+                                eror: function (e) {
+                                    toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                                 }
                             });
                         }
@@ -302,11 +302,11 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                         }
                                         renderActivation();
                                     } else {
-                                        alert("fail");
+                                        toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
                                     }
                                 },
-                                eror: function (data) {
-                                    alert("error");
+                                eror: function (e) {
+                                    toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                                 }
                             });
                         }
@@ -322,11 +322,11 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                         window.location.pathname = "/management/vehicleGroupManagement";
                                     } else {
                                         $('.modal').modal('hide');
-                                        alert(data.message);
+                                        toastr.error(data.message);
                                     }
                                 },
                                 eror: function (data) {
-                                    alert("error");
+                                    toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                                 }
                             });
                         }
@@ -343,13 +343,22 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                 success: function (data) {
                                     $('.modal').modal('hide');
                                     if(data.result) {
-                                        table.ajax.reload();
+                                        if(table != '') {
+                                            table.ajax.reload();
+                                        } else {
+                                            if($('#isActive').val() === 'True') {
+                                                $('#isActive').val('False');
+                                            } else {
+                                                $('#isActive').val('True');
+                                            }
+                                            renderActivation();
+                                        }
                                     } else {
-                                        alert('fail');
+                                        toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
                                     }
                                 },
                                 eror: function (data) {
-                                    alert("error");
+                                    toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                                 }
                             });
                         }
@@ -370,11 +379,11 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                         }
                                         
                                     } else {
-                                        alert(data.message);
+                                        toastr.error(data.message);
                                     }
                                 },
                                 eror: function (data) {
-                                    alert("error");
+                                    toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                                 }
                             });
                         }
@@ -392,7 +401,7 @@ function renderSelectorOptions(type, selectedID, html = ''){
                                     table.ajax.reload();
                                 },
                                 eror: function (data) {
-                                    alert("error");
+                                    toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                                 }
                             });
                         }
