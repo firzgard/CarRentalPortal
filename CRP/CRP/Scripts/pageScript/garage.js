@@ -232,7 +232,7 @@ $(document).ready(function () {
 	            });
 	        },
 	        error: function () {
-	            alert("error");
+	            toastr.error("Đã có lỗi xảy ra. Phiền bạn thử lại sau");
 	        }
 	    });
 	});
@@ -248,11 +248,11 @@ $(document).ready(function () {
 	                $('.modal').modal('hide');
 	                table.ajax.reload();
 	            } else {
-	                alert("failed!");
+	                toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
 	            }
 	        },
 	        error: function (e) {
-	            alert("error");
+	            toastr.error("Đã có lỗi xảy ra. Phiền bạn thử lại sau");
 	        }
 	    });
 	});
@@ -276,7 +276,7 @@ $(document).ready(function () {
 	            });
 	        },
 	        error: function () {
-	            alert("error");
+	            toastr.error("Đã có lỗi xảy ra. Phiền bạn thử lại sau");
 	        }
 	    });
 	});
@@ -294,11 +294,11 @@ $(document).ready(function () {
 	                $('.modal').modal('hide');
 	                table.ajax.reload();
 	            } else {
-	                alert("failed!");
+	                toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
 	            }
 	        },
 	        error: function (e) {
-	            alert("error");
+	            toastr.error("Đã có lỗi xảy ra. Phiền bạn thử lại sau");
 	        }
 	    });
 	});
@@ -349,11 +349,11 @@ $(document).ready(function () {
 
 	    for (var i = 0; i < 7; i++) {
 	        if (!$(`.work-start:eq(${i})`).val() && $(`.work-end:eq(${i})`).val()) {
-	            alert('chua nhap thoi gian mo cua');
+	            toastr.error("Vui lòng nhập thời gian mở cửa");
 	            return false;
 	        }
 	        if ($(`.work-start:eq(${i})`).val() && !$(`.work-end:eq(${i})`).val()) {
-	            alert('chua nhap thoi gian dong cua');
+	            toastr.error("Vui lòng nhập thời gian đóng cửa");
 	            return false;
 	        }
 	        if ($(`.work-start:eq(${i})`).val() && $(`.work-end:eq(${i})`).val()) {
@@ -362,11 +362,11 @@ $(document).ready(function () {
 	            var startTimeInMinute = parseInt(startStr[0]) * 60 + parseInt(startStr[1]);
 	            var endTimeinMinute = parseInt(endStr[0]) * 60 + parseInt(endStr[1]);
 	            if (startTimeInMinute > endTimeinMinute) {
-	                alert("thoi gian mo cua khong duoc sau thoi gian dong cua");
+	                toastr.error("Xin lỗi, thời gian đóng cửa không được sớm hơn thời gian mở cửa");
 	                return false;
 	            }
 	            if (startTimeInMinute > 1440 || endTimeinMinute > 1440) {
-	                alert("gia tri thoi gian khong hop le");
+	                toastr.error("Xin lỗi, giá trị thời gian không hợp lệ");
 	                return false;
 	            }
 	            var item = {};
@@ -390,10 +390,10 @@ $(document).ready(function () {
 	    model.GarageWorkingTimes = workTable;
 
 	    if (!$('#garageName').val()) {
-	        alert("Vui long nhap ten garage");
+	        toastr.error("Vui lòng nhập tên garage");
 	        return false;
 	    } else if (!$('#garageName').val().length > 100) {
-	        alert("vuot qua do dai quy dinh");
+	        toastr.error("Xin lỗi. Tên của garage vượt quá độ dài quy định");
 	        return false;
 	    } else {
 	        model.Name = $('#garageName').val();
@@ -402,30 +402,30 @@ $(document).ready(function () {
 	    model.LocationID = $('#locationID').val();
 
 	    if (!$('#gAddress').val()) {
-	        alert("vui long nhap dia chi");
+	        toastr.error("Vui lòng nhập địa chỉ");
 	        return false;
 	    } else if ($('#gAddress').val().length > 200) {
-	        alert("vuot qua do dai quy dinh");
+	        toastr.error("Xin lỗi. Địa chỉ Vượt quá độ dài quy định");
 	        return false;
 		} else {
 	        model.Address = $('#gAddress').val();
 	    }
 
 	    if (!$('#gEmail').val()) {
-	        alert("Vui long nhap email");
+	        toastr.error("Vui lòng nhập email");
 	        return false;
 	    } else if (!validateEmail($('#gEmail').val())) {
-	        alert("email khong hop le");
+	        toastr.error("Email không hợp lệ");
 	        return false;
         } else {
 	        model.Email = $('#gEmail').val();
 	    }
 
 	    if (!$('#gPhone1').val()) {
-	        alert("Vui long nhap so dien thoai");
+	        toastr.error("Vui lòng nhập số điện thoại");
 	        return false;
 	    } else if (!validatePhone($('#gPhone1').val())) {
-	        alert("so dien thoai khong hop le");
+	        toastr.error("Số điện thoại không hợp lệ");
 	        return false;
 		} else {
 	        model.Phone1 = $('#gPhone1').val();
@@ -433,7 +433,7 @@ $(document).ready(function () {
 
 	    if ($('#gPhone2').val()) {
 	        if (!validatePhone($('#gPhone2').val())) {
-	            alert("so dien thoai khong hop le");
+	            toastr.error("Số điện thoại không hợp lệ");
 	            return false;
 	        } else {
 	            model.Phone2 = $('#gPhone2').val();
@@ -442,7 +442,7 @@ $(document).ready(function () {
 
 	    if ($('#gDescription').val()) {
 	        if ($('#gDescription').val().length > 1000) {
-	            alert("qua do dai quy dinh");
+	            toastr.error("Vượt quá độ dài quy định");
 	            return false;
 	        }
 	        model.Description = $('#gDescription').val();
@@ -462,11 +462,11 @@ $(document).ready(function () {
 	            if (data.result) {
 	                window.location.pathname = `management/garageManagement/${garageID}`;
 	            } else {
-	                alert(data.message);
+	                toastr.error(data.message);
 	            }
 	        },
 	        error: function () {
-	            alert('error');
+	            toastr.error('Đã có lỗi xảy ra. Phiền bạn thử lại sau');
 	        }
 	    });
         
@@ -552,7 +552,7 @@ function renderWorkingTime(id, isEditable) {
 
         },
         error: function(e) {
-            alert("error");
+            toastr.error("Đã có lỗi xả ra. Phiền bạn thử lại sau");
         }
     });
 }
