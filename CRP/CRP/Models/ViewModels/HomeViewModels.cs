@@ -97,6 +97,7 @@ namespace CRP.Models.ViewModels
 	{
 		public string Location { get; set; }
 		public string GarageName { get; set; }
+		public int GarageNumOfComment { get; set; }
 		public decimal GarageRating { get; set; }
 		public string TransmissionTypeName { get; set; }
 		public string FuelTypeName { get; set; }
@@ -112,6 +113,7 @@ namespace CRP.Models.ViewModels
 		{
 			Location = vehicle.Garage.Location.Name;
 			GarageName = vehicle.Garage.Name;
+			GarageNumOfComment = vehicle.Garage.NumOfComment;
 			GarageRating = vehicle.Garage.Star;
 			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
 			NumOfComment = vehicle.NumOfComment;

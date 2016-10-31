@@ -1,4 +1,6 @@
-﻿@using CRP.Models
+﻿@using System.Text.RegularExpressions
+@using System.Threading.Tasks
+@using CRP.Models
 @using CRP.Models.Entities
 
 @model CRP.Models.Entities.Vehicle
@@ -40,19 +42,32 @@
 
 	<div class="col-md-offset-2 col-md-5">
 		<div class="row">
-			<div id="vehicleHeaderInfo">
-				<h1 class="col-md-12 section-header"><b>@Model.Name (@Model.Year)</b></h1>
-				<div class="col-md-12"><span class="rating-no-badge" data-rating="@Model.Star"></span> · @Model.NumOfComment đánh giá</div>
+			<div id="vehicleHeaderInfo" class="col-md-12">
+				<h1 class="section-header"><b>@Model.Name (@Model.Year)</b></h1>
+				@if (Model.NumOfComment > 0)
+				{
+					<div><span class="rating-no-badge" data-rating="@Model.Star"></span> · @Model.NumOfComment đánh giá</div>
+				}
 			</div>
 			<div style="font-size:1.1em;margin-top: 4em; margin-left: 3em;">
-				<p>Cửa hàng @Model.Garage.Name · <span class="rating-no-badge" data-rating="@Model.Garage.Star"></span></p>
+				<p>
+					Cửa hàng @Model.Garage.Name @if (Model.Garage.NumOfComment > 0)
+					{
+						<span>· </span><span class="rating-no-badge" data-rating="@Model.Garage.Star"></span>
+					}
+				</p>
 				<p><i class="fa fa-map-marker"></i> @Model.Garage.Location.Name</p>
 			</div>
 		</div>
 		<hr style="position: relative;width: 150vw;left: -500px;" />
 		<div id="vehicleSection" class="info-section row">
 			<h2 class="col-md-12 section-header"><b>Thông tin xe</b></h2>
-			<div class="col-md-12">@Model.Description</div>
+			@if (Model.Description != null)
+			{
+				<div class="col-md-12">
+					@Regex.Replace(Model.Description, @"\r\n?|\n", "<br>")
+				</div>
+			}
 			<div class="col-md-12"><hr /></div>
 			<label class="col-md-3">Chi tiết</label>
 			<div class="col-md-9">
@@ -86,7 +101,7 @@
 					<p>
 						<span>Phụ thu cho mỗi km phát sinh: </span>
 						<b>
-							@(Model.VehicleGroup.PriceGroup.MaxRentalPeriod != null
+							@(Model.VehicleGroup.PriceGroup.ExtraChargePerKm != null
 								 ? ((int)Model.VehicleGroup.PriceGroup.ExtraChargePerKm).ToString("#,##0") + "₫/km"
 								 : "Không tính phí")
 						</b>
@@ -94,24 +109,49 @@
 					<p>Thời gian nhận xe và trả xe phải nằm trong thời gian làm việc của cửa hàng. Vui lòng tham khảo thời gian làm việc của cửa hàng bên dưới.</p>
 				</div>
 			</div>
-			<div class="col-md-12"><hr /></div>
-			<label class="col-md-12">Điều khoản khác</label>
-			<div class="col-md-12">@Model.Garage.Policy</div>
+			@if (Model.Garage.Policy != null)
+			{
+				<div class="col-md-12"><hr /></div>
+				<label class="col-md-12">Điều khoản khác</label>
+				<div class="col-md-12">@Regex.Replace(Model.Garage.Policy, @"\r\n?|\n", "<br>")</div>
+			}
 		</div>
 		<hr style="position: relative;width: 150vw;left: -500px;" />
 		<div id="reviewSection" class="info-section row">
-			<h2 class="col-md-12 section-header"><b>@(Model.NumOfComment) đánh giá</b> · <span class="rating" data-rating="@Model.Star"></span></h2>
-			<div class="col-md-12"><hr /></div>
-			<p>Comment section here</p>
+			@if (Model.NumOfComment > 0)
+			{
+				<h2 class="col-md-12 section-header"><b>@(Model.NumOfComment) đánh giá</b> · <span class="rating" data-rating="@Model.Star"></span></h2>
+				<div class="col-md-12"><hr /></div>
+				<div class="col-md-12">
+					<div id="commentContainer"></div>
+					<div class="text-center" id="commentPaginator"></div>
+				</div>
+			}
+			else
+			{
+				<h2 class="col-md-12 section-header"><b>Đánh giá</b></h2>
+				<h3 class="col-md-12">Xe này vẫn chưa có đánh giá.</h3>
+				<div class="col-md-12">Nếu bạn chọn thuê xe này, sẽ thật tuyệt nếu bạn có thể bỏ chút thời gian để đánh giá về lựa chọn của bạn. Nó sẽ giúp ít rất nhiều cho những người dùng khác về sau.</div>
+			}
 		</div>
 		<hr style="position: relative;width: 150vw;left: -500px;" />
 		<div id="garageSection" class="info-section row">
 			<h2 class="col-md-12 section-header"><b>Cửa hàng</b></h2>
 			<div class="col-md-12"><hr></div>
-			<h3 class="col-md-12">@Model.Garage.Name</h3>
-			<div class="col-md-12">
-				<h3 class="rating col-md-3" data-rating="@Model.Garage.Star"></h3>
-				<div class="col-md-9">
+			<h3 class="col-md-12">
+				@Model.Garage.Name @if (Model.Garage.NumOfComment > 0)
+				                   {
+					                   <span>· </span><span class="rating" data-rating="@Model.Garage.Star"></span>
+				                   }
+			</h3>
+			@if (Model.Garage.Description != null)
+			{
+				<div class="col-md-12">@Regex.Replace(Model.Garage.Description, @"\r\n?|\n", "<br>")</div>
+			}
+			<div class="col-md-12"><hr></div>
+			<label class="col-md-3">Thông tin liên lạc</label>
+			<div class="col-md-9">
+				<div class="col-md-12">
 					<p>Địa chỉ: @(Model.Garage.Address), @(Model.Garage.Location.Name)</p>
 					<p>
 						Liên lạc: <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#infoModal">
@@ -120,8 +160,6 @@
 					</p>
 				</div>
 			</div>
-			<div class="col-md-12"><hr /></div>
-			<div class="col-md-12">@Model.Garage.Description</div>
 			<div class="col-md-12"><hr /></div>
 			<label class="col-md-3">Thời gian làm việc</label>
 			<div class="col-md-9">
@@ -132,142 +170,186 @@
 					<p><b>Thứ 5</b></p>
 					<p><b>Thứ 6</b></p>
 					<p><b>Thứ 7</b></p>
-					<p><b>Chủ nhât</b></p>
+					<p><b>Chủ nhật</b></p>
 				</div>
 				<div class="col-xs-8">
-					<p>@if(Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 1)){
+					<p>
+						@if (Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 1))
+					{
 						var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 1).First();
 						var openTime = workingTime.OpenTimeInMinute;
 						var closeTime = workingTime.CloseTimeInMinute;
 						@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
-					} else {
-						@:<b>Không làm việc</b> 
-					}</p>
-					<p>@if(Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 2)){
-						var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 2).First();
-						var openTime = workingTime.OpenTimeInMinute;
-						var closeTime = workingTime.CloseTimeInMinute;
-						@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
-					} else {
-						@:<b>Không làm việc</b> 
-					}</p>
-					<p>@if(Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 3)){
-						var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 3).First();
-						var openTime = workingTime.OpenTimeInMinute;
-						var closeTime = workingTime.CloseTimeInMinute;
-						@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
-					} else {
-						@:<b>Không làm việc</b> 
-					}</p>
-					<p>@if(Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 4)){
-						var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 4).First();
-						var openTime = workingTime.OpenTimeInMinute;
-						var closeTime = workingTime.CloseTimeInMinute;
-						@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
-					} else {
-						@:<b>Không làm việc</b> 
-					}</p>
-					<p>@if(Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 5)){
-						var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 5).First();
-						var openTime = workingTime.OpenTimeInMinute;
-						var closeTime = workingTime.CloseTimeInMinute;
-						@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
-					} else {
-						@:<b>Không làm việc</b> 
-					}</p>
-					<p>@if(Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 6)){
-						var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 6).First();
-						var openTime = workingTime.OpenTimeInMinute;
-						var closeTime = workingTime.CloseTimeInMinute;
-						@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
-					} else {
-						@:<b>Không làm việc</b> 
-					}</p>
-					<p>@if(Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 0)){
-						var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 0).First();
-						var openTime = workingTime.OpenTimeInMinute;
-						var closeTime = workingTime.CloseTimeInMinute;
-						@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
-					} else {
-						@:<b>Không làm việc</b> 
-					}</p>
-				</div>
-			</div>
-		</div>
-		<hr style="position: relative;width: 150vw;left: -500px;" />
-		<div id="calendarSection" class="info-section row" style="margin-bottom: 300px;">
-			<h2 class="col-md-12 section-header"><b>Lịch đặt xe</b></h2>
-			<div class="col-md-12 text-right">
-				<p class="fc-color-explain"><span>Có thể đặt</span><span class="fc-color available"></span></p>
-				<p class="fc-color-explain"><span>Đã được đặt</span><span class="fc-color booked"></span></p>
-				<p class="fc-color-explain"><span>Không thể đặt</span><span class="fc-color unbookable"></span></p>
-				<p class="fc-color-explain"><span>Không làm việc / Một phần trong ngày không thể đặt</span><span class="fc-color nonworking"></span></p>
-			</div>
-			<div class="col-md-12"><hr /></div>
-			<div class="col-md-12">
-				<div id='calendar'></div>
-			</div>
-		</div>
-	</div>
-	<div class="col-md-3">
-		<div id="bookingSection">
-			<div class="text-center" id="rentalTypePrice"></div>
-			<div style="padding: 1em 1em 0;border: 1px solid #CCCCCC;border-top: 0;">
-				<div class="form-group row">
-					<label class="col-xs-12">Gói thời gian thuê</label>
-					<div class="col-xs-12">
-						<select id="rentalType" class="form-control" style="width: 100%;">
-							<option value="0" data-max-distance="@Model.VehicleGroup.PriceGroup.MaxDistancePerDay"
-									data-price="@Model.VehicleGroup.PriceGroup.PerDayPrice" selected>
-								Thuê theo ngày
-							</option>
-							@foreach (PriceGroupItem entry in Model.VehicleGroup.PriceGroup.PriceGroupItems)
-							{
-								<option value="@entry.MaxTime" data-max-distance="@entry.MaxDistance" data-price="@entry.Price">Thuê @entry.MaxTime giờ</option>
-							}
-						</select>
-					</div>
-				</div>
-				<div class="form-group row">
-					<label class="col-xs-7">Số ngày thuê</label>
-					<div class="col-xs-5">
-						<input id="numOfDay" type="number" step="1" min="1" max="@Model.VehicleGroup.PriceGroup.MaxRentalPeriod" value="1" class="form-control" style="width: 100%; text-align: right;" />
-					</div>
-				</div>
-				<div class="form-group row">
-					<label class="col-xs-12">Thời gian nhận xe</label>
-					<div class="col-xs-12">
-						<input type="text" id="startTimePicker" class="form-control" readonly />
-					</div>
-				</div>
-				<hr />
-				<div class="form-group row" style="margin-bottom: 0;">
-					<label class="col-xs-6">Phí thuê xe <span data-toggle="tooltip" title="Tổng phí mà bạn phải trả cho chủ xe." class="badge">?</span></label>
-					<p class="col-xs-6 text-right" id="rentalPrice"></p>
-				</div>
-				<hr />
-				<div class="form-group row" style="margin-bottom: 0;">
-					<label class="col-xs-6">Phí dịch vụ <span data-toggle="tooltip" title="Phí này giúp chúng tôi duy trì hoạt động. Phí sẽ được dùng để trả cho nhà cung cấp xe trong trường hợp bạn hủy đặt xe." class="badge">?</span></label>
-					<p class="col-xs-6 text-right" id="servicePrice"></p>
-				</div>
-				<hr />
-				<div class="form-group row" style="font-size: 1.3em;font-weight: bold;margin-bottom: 0;">
-					<p class="col-xs-6">Tổng chi phí <span data-toggle="tooltip" title="Gồm phí thuê xe và phí dịch vụ." class="badge">?</span></p>
-					<b><p class="col-xs-6 text-right" id="totalPrice"></p></b>
-				</div>
-				<div class="form-group row" style="margin-bottom: 2em;">
-					<p class="col-xs-6">Đặt cọc <span data-toggle="tooltip" title="Phần tiền phải đặt cọc khi bạn kí hợp đồng với chủ xe." class="badge">?</span></p>
-					<p class="col-xs-6 text-right" id="depositPrice"></p>
-				</div>
-				@if (!User.IsInRole("Customer"))
+					}
+					else
+					{
+						@:<b>Không làm việc</b>
+					}
+				</p>
+				<p>
+					@if (Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 2))
+				{
+					var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 2).First();
+					var openTime = workingTime.OpenTimeInMinute;
+					var closeTime = workingTime.CloseTimeInMinute;
+					@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
+					}
+				else
+				{
+					@:<b>Không làm việc</b>
+					}
+			</p>
+			<p>
+				@if (Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 3))
 			{
-					<div class="text-center" style="color: red;"><small><b>Bạn cần đăng nhập để có thể đặt xe</b></small></div>
-			}
-				<button class="btn btn-primary btn-block" id="bookingBtn" @(User.IsInRole("Customer") ? "" : "disabled")><b>Đặt xe</b></button>
-				<div class="text-center" style="margin-bottom: 1.5em;"><small>Bạn chỉ phải trả trước phí dịch vụ</small></div>
+				var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 3).First();
+				var openTime = workingTime.OpenTimeInMinute;
+				var closeTime = workingTime.CloseTimeInMinute;
+				@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
+					}
+			else
+			{
+				@:<b>Không làm việc</b>
+					}
+		</p>
+		<p>
+			@if (Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 4))
+		{
+			var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 4).First();
+			var openTime = workingTime.OpenTimeInMinute;
+			var closeTime = workingTime.CloseTimeInMinute;
+			@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
+					}
+		else
+		{
+			@:<b>Không làm việc</b>
+					}
+	</p>
+	<p>
+		@if (Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 5))
+	{
+		var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 5).First();
+		var openTime = workingTime.OpenTimeInMinute;
+		var closeTime = workingTime.CloseTimeInMinute;
+		@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
+					}
+	else
+	{
+		@:<b>Không làm việc</b>
+					}
+</p>
+<p>
+	@if (Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 6))
+{
+	var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 6).First();
+	var openTime = workingTime.OpenTimeInMinute;
+	var closeTime = workingTime.CloseTimeInMinute;
+	@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
+					}
+else
+{
+	@:<b>Không làm việc</b>
+					}
+</p>
+<p>
+	@if (Model.Garage.GarageWorkingTimes.Any(t => t.DayOfWeek == 0))
+{
+	var workingTime = Model.Garage.GarageWorkingTimes.Where(t => t.DayOfWeek == 0).First();
+	var openTime = workingTime.OpenTimeInMinute;
+	var closeTime = workingTime.CloseTimeInMinute;
+	@: @((openTime / 60).ToString("D2")):@((openTime % 60).ToString("D2")) đến @((closeTime / 60).ToString("D2")):@((closeTime % 60).ToString("D2"))
+					}
+else
+{
+	@:<b>Không làm việc</b>
+					}
+</p>
+</div>
+</div>
+</div>
+<hr style="position: relative;width: 150vw;left: -500px;" />
+<div id="calendarSection" class="info-section row" style="margin-bottom: 300px;">
+	<h2 class="col-md-12 section-header"><b>Lịch đặt xe</b></h2>
+	<div class="col-md-12 text-right">
+		<p>
+			<span class="fc-color-explain"><span>Có thể đặt</span><span class="fc-color available"></span></span>
+			<span class="fc-color-explain"><span>Có đặt trước</span><span class="fc-color booked"></span></span>
+		</p>
+		<p>
+			<span class="fc-color-explain"><span>Không thể đặt</span><span class="fc-color unbookable"></span></span>
+			<span class="fc-color-explain"><span>Không làm việc</span><span class="fc-color nonworking"></span></span>
+		</p>
+	</div>
+	<div class="col-md-12"><hr /></div>
+	<div class="col-md-12">
+		<div id='calendar'></div>
+	</div>
+</div>
+</div>
+<div class="col-md-3">
+	<div id="bookingSection">
+		<div class="text-center" id="rentalTypePrice"></div>
+		<div style="padding: 1em 1em 0;border: 1px solid #CCCCCC;border-top: 0;">
+			<div class="form-group row">
+				<label class="col-xs-12">Gói thời gian thuê</label>
+				<div class="col-xs-12">
+					<select id="rentalType" class="form-control" style="width: 100%;">
+						<option value="0" data-distance="@Model.VehicleGroup.PriceGroup.MaxDistancePerDay"
+								data-price="@Model.VehicleGroup.PriceGroup.PerDayPrice" selected>
+							Thuê theo ngày
+						</option>
+						@foreach (PriceGroupItem entry in Model.VehicleGroup.PriceGroup.PriceGroupItems)
+						{
+							<option value="@entry.MaxTime" data-distance="@entry.MaxDistance" data-price="@entry.Price">Thuê @entry.MaxTime giờ</option>
+						}
+					</select>
+				</div>
 			</div>
+			<div class="form-group row">
+				<label class="col-xs-7">Số ngày thuê</label>
+				<div class="col-xs-5">
+					<input id="numOfDay" type="number" step="1" min="1" max="@Model.VehicleGroup.PriceGroup.MaxRentalPeriod" value="1" class="form-control" style="width: 100%; text-align: right;" />
+				</div>
+			</div>
+			<div class="form-group row">
+				<label class="col-xs-12">Thời gian nhận xe</label>
+				<div class="col-xs-12">
+					<input type="text" id="startTimePicker" class="form-control" readonly />
+				</div>
+			</div>
+			<hr />
+			<div class="form-group row" style="margin-bottom: 0;">
+				<label class="col-xs-6">Phí thuê xe <span data-toggle="tooltip" title="Tổng phí mà bạn phải trả cho chủ xe." class="badge">?</span></label>
+				<p class="col-xs-6 text-right" id="rentalPrice"></p>
+			</div>
+			<hr />
+			<div class="form-group row" style="margin-bottom: 0;">
+				<label class="col-xs-6">Phí dịch vụ <span data-toggle="tooltip" title="Phí này giúp chúng tôi duy trì hoạt động. Phí sẽ được dùng để trả cho nhà cung cấp xe trong trường hợp bạn hủy đặt xe." class="badge">?</span></label>
+				<p class="col-xs-6 text-right" id="servicePrice"></p>
+			</div>
+			<hr />
+			<div class="form-group row" style="font-size: 1.3em;font-weight: bold;margin-bottom: 0;">
+				<p class="col-xs-6">Tổng chi phí <span data-toggle="tooltip" title="Gồm phí thuê xe và phí dịch vụ." class="badge">?</span></p>
+				<b><p class="col-xs-6 text-right" id="totalPrice"></p></b>
+			</div>
+			<div class="form-group row">
+				<p class="col-xs-6">Đặt cọc <span data-toggle="tooltip" title="Phần tiền phải đặt cọc khi bạn kí hợp đồng với chủ xe." class="badge">?</span></p>
+				<p class="col-xs-6 text-right" id="depositPrice"></p>
+			</div>
+			<hr />
+			<div class="form-group row" style="margin-bottom: 2em;">
+				<label class="col-xs-6">Quãng đường <span data-toggle="tooltip" title="Nếu quãng đường đi thực của bạn vượt quá quãng đường quy định theo gói, bạn sẽ phải trả thêm phụ phí quãng đường phát sinh. Chi tiết giá cho mỗi km phát sinh vui lòng xem ở mục điều khoản cơ bản." class="badge">?</span></label>
+				<p class="col-xs-6 text-right" id="distance"></p>
+			</div>
+			@if (!User.IsInRole("Customer"))
+			{
+				<div class="text-center" style="color: red;"><small><b>Bạn cần đăng nhập để có thể đặt xe</b></small></div>
+			}
+			<button class="btn btn-primary btn-block" id="bookingBtn" @(User.IsInRole("Customer") ? "" : "disabled")><b>Đặt xe</b></button>
+			<div class="text-center" style="margin-bottom: 1.5em;"><small>Bạn chỉ phải trả trước phí dịch vụ</small></div>
 		</div>
 	</div>
+</div>
 </div>
 
 <div class="modal fade bs-example-modal" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel">
@@ -286,10 +368,10 @@
 </div>
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleInfo")
-		.Include("~/Content/awesome-bootstrap-checkbox.css",
-			  "~/Content/bootstrap-datetimepicker/bootstrap-datetimepicker.css",
-			  "~/Content/FullCalendar/fullcalendar.css",
-			  "~/Content/select2/select2.css"));
+					  .Include("~/Content/awesome-bootstrap-checkbox.css",
+							"~/Content/bootstrap-datetimepicker/bootstrap-datetimepicker.css",
+							"~/Content/FullCalendar/fullcalendar.css",
+							"~/Content/select2/select2.css"));
 }
 @section Styles {
 	@Styles.Render("~/Styles/VehicleInfo")
@@ -299,26 +381,29 @@
 }
 
 @{BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleInfo")
-	.Include(
-		  "~/Scripts/moment.js",
-		  "~/Scripts/bootstrap-datetimepicker/bootstrap-datetimepicker.js",
-		  "~/Scripts/FullCalendar/fullcalendar.js",
-		  "~/Scripts/FullCalendar/locale/vi.js",
-		  "~/Scripts/twbsPagination/jquery.twbsPagination.js",
-		  "~/Scripts/waypoints/jquery.waypoints.js",
-		  "~/Scripts/waypoints/sticky.js",
-		  "~/Scripts/utils/generateUIElements.js",
-		  "~/Scripts/pageScript/vehicleInfo.js"));
+					.Include(
+						  "~/Scripts/moment.js",
+						  "~/Scripts/bootstrap-datetimepicker/bootstrap-datetimepicker.js",
+						  "~/Scripts/FullCalendar/fullcalendar.js",
+						  "~/Scripts/FullCalendar/locale/vi.js",
+						  "~/Scripts/twbsPagination/jquery.twbsPagination.js",
+						  "~/Scripts/waypoints/jquery.waypoints.js",
+						  "~/Scripts/waypoints/sticky.js",
+						  "~/Scripts/utils/generateUIElements.js",
+						  "~/Scripts/pageScript/vehicleInfo.js"));
 }
 @section Scripts {
 	<script type="text/javascript">
 		const BOOKING_HANDLER_URL = '@Url.RouteUrl("TryBookingAPI", new { controller = "Booking" })',
-			CALENDAR_FETCHING_URL = '@Url.RouteUrl("GetBookingCalendarAPI", new { controller = "Home", vehicleID = @Model.ID.ToString() })';
+			COMMENT_FETCHING_URL = '@Url.RouteUrl("GetCommentAPI", new { controller = "Home", vehicleID = @Model.ID })',
+			CALENDAR_FETCHING_URL = '@Url.RouteUrl("GetBookingCalendarAPI", new { controller = "Home", vehicleID = @Model.ID })';
 		const BOOKING_FEE_PERCENTAGE = @Constants.BOOKING_FEE_PERCENTAGE,
 			SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR,
 			SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = @Constants.SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR,
 			LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = @Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY,
-			VEHICLE_ID  = "@Model.ID",
+			VEHICLE_ID = "@Model.ID",
+			NUM_OF_COMMENT = @Model.NumOfComment,
+			NUM_OF_COMMENT_PER_PAGE = @Constants.NUM_OF_COMMENT_PER_PAGE,
 			PHONE1 = "@Model.Garage.Phone1",
 			PHONE2 = "@Model.Garage.Phone2",
 			EMAIL = "@Model.Garage.Email",

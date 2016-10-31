@@ -5,6 +5,7 @@ using System.Security.AccessControl;
 using System.Security.Cryptography.Xml;
 using System.Web.Mvc;
 using CRP.Models.Entities;
+using System.Web;
 
 namespace CRP.Models.ViewModels
 {
@@ -107,12 +108,20 @@ namespace CRP.Models.ViewModels
         public IEnumerable<SelectListItem> listGroup { get; set; }
         public IEnumerable<SelectListItem> listBrand { get; set; }
         public IEnumerable<SelectListItem> listModel { get; set; }
+        //public List<VehicleBrand> BrandList { get; set; }
 
         public VehicleDetailInfoModel()
         { }
         public VehicleDetailInfoModel(Vehicle vehicle)
 		{
-			this.ID = vehicle.ID;
+            try
+            {
+                this.ID = vehicle.ID;
+            }
+			catch (Exception e)
+            {
+                throw new HttpException(404, "Page not exist");
+            }
 			this.LicenseNumber = vehicle.LicenseNumber;
 			this.Name = vehicle.Name;
 			this.ModelID = vehicle.ModelID;
@@ -122,7 +131,14 @@ namespace CRP.Models.ViewModels
 			this.GarageID = vehicle.GarageID;
 			this.GarageName = vehicle.Garage.Name;
 			this.VehicleGroupID = vehicle.VehicleGroupID;
-			this.VehicleGroupName = vehicle.VehicleGroup.Name;
+            if(VehicleGroupID != null)
+            {
+                this.VehicleGroupName = vehicle.VehicleGroup.Name;
+            }
+			else
+            {
+                this.VehicleGroupName = null;
+            }
             this.Engine = vehicle.Engine;
 
 			this.TransmissionTypeID = vehicle.TransmissionType;
