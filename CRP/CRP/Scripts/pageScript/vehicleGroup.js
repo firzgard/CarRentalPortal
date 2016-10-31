@@ -2,8 +2,9 @@ const vehicleTableColumns = [
 	{ name: 'ID', visible: false, orderable: false, searchable: false }
 	, { name: 'Name', title: 'Tên' }
     , { name: 'LicenseNumber', title: 'Biển số' }
+    , { name: 'GarageName', title: 'Garage' }
+    , { name: 'Year', title: 'Năm' }
     , { name: 'NumOfSeat', title: 'Số chỗ' }
-	, { name: 'Color', title: 'Màu' }
 	, { name: 'Star', title: "Đánh giá", width: '6.5em' }
 	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false, width: '20em' }
 ]
@@ -507,8 +508,8 @@ function renderActivation() {
     let name = $('#displayGroupName');
     let dName = $('#groupNameD').val();
     if (isActivateInput == true) {
-        name.removeClass('bg-danger');
-        name.addClass('bg-success');
+        name.removeClass('inactive-bg');
+        name.addClass('active-bg');
         name.html(`
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
@@ -522,8 +523,8 @@ function renderActivation() {
         btn.removeClass('btn-success');
         btn.addClass('btn-warning');
     } else {
-        name.removeClass('bg-success');
-        name.addClass('bg-danger');
+        name.removeClass('active-bg');
+        name.addClass('inactive-bg');
         name.html(`
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>

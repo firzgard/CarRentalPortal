@@ -140,8 +140,10 @@ namespace CRP.Areas.Provider.Controllers
                 q.ID,
                 q.Name,
                 q.LicenseNumber,
+                q.Garage.Name,
+                q.Year,
                 q.VehicleModel.NumOfSeat,
-                (from kvp in Models.Constants.COLOR where kvp.Key == q.Color select kvp.Value).ToList().FirstOrDefault(),
+                //(from kvp in Models.Constants.COLOR where kvp.Key == q.Color select kvp.Value).ToList().FirstOrDefault(),
                 q.Star
             });
             return Json(new { data = result }, JsonRequestBehavior.AllowGet);

@@ -8,11 +8,11 @@ using System.Web;
 
 namespace CRP.Models.Entities.Services
 {
-    public interface IUserReceiptService : IService<AspNetUser>
+    public interface IUserService : IService<AspNetUser>
     {
 
     }
-    public class UserService : BaseService<AspNetUser>, IUserReceiptService
+    public class UserService : BaseService<AspNetUser>, IUserService
 	{
         public UserService(IUnitOfWork unitOfWork, IUserRepository repository) : base(unitOfWork, repository)
         {

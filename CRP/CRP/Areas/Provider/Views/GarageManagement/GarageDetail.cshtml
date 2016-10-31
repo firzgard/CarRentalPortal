@@ -17,11 +17,11 @@
             
             <div class="ibox-title">
                 <div class="edit-control row">
-                    <div class="col-md-2 text-center m-t">
-                        <label>Tên Garage</label>
-                    </div>
-                    <div class="col-md-6">
-                        @Html.TextBoxFor(q => q.Name, new { @id = "garageName", @class = "form-control input-lg", @style = "color: #000;", required = true })
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-building-o" style="font-size: 2em;color: #000;"></i></span>
+                            @Html.TextBoxFor(q => q.Name, new { @id = "garageName", @class = "form-control input-lg", @placeholder = "Tên garage", @style = "color: #000;", required = true })
+                        </div>
                     </div>
                 </div>
                 <div id="displayGarageName" class="display-control row">
@@ -30,156 +30,170 @@
             </div>
 
             <div class="ibox-content">
-                <div class="edit-control row form-group">
-                    <div class="col-md-7">
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Địa điểm</label>
+                <div class="edit-control form-group">
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Địa điểm</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @Html.DropDownListFor(q => q.LocationID, this.Model.listLocation, new { @class = "form-control", @id="locationID" })
+                                </div>
                             </div>
-                            <div class="col-md-8 text-left">
-                                @Html.DropDownListFor(q => q.LocationID, this.Model.listLocation, new { @class = "form-control", @id="locationID" })
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Địa chỉ</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @Html.TextBoxFor(q => q.Address, new { @class = "form-control", @id="gAddress" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Địa chỉ</label>
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @Html.TextBoxFor(q => q.Email, new { @type = "email", @class = "form-control", @id="gEmail" })
+                                </div>
                             </div>
-                            <div class="col-md-8 text-left">
-                                @Html.TextBoxFor(q => q.Address, new { @class = "form-control", @id="gAddress" })
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Số điện thoại (mặc định)</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @Html.TextBoxFor(q => q.Phone1, new { @class = "form-control", @id="gPhone1" })
+                                </div>
                             </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Email</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @Html.TextBoxFor(q => q.Email, new { @type = "email", @class = "form-control", @id="gEmail" })
-                            </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Số điện thoại (mặc định)</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @Html.TextBoxFor(q => q.Phone1, new { @class = "form-control", @id="gPhone1" })
-                            </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Số điện thoại (bổ sung)</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @Html.TextBoxFor(q => q.Phone2, new { @class = "form-control", @id="gPhone2" })
-                            </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Mô tả</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @Html.TextAreaFor(q => q.Description, new { @class = "form-control", @id="gDescription" })
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Số điện thoại (bổ sung)</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @Html.TextBoxFor(q => q.Phone2, new { @class = "form-control", @id="gPhone2" })
+                                </div>
                             </div>
                         </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Điều khoản</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @Html.TextAreaFor(q => q.Policy, new { @class = "form-control", @id="gPolicy" })
+                        <div class="col-md-5">
+                            <div class="form-group" id="workingTime">
+                                <h2>Thời gian mở cửa</h2>
+                                <div id="working-time-edit">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-5">
-                        <div class="form-group" id="workingTime">
-                            <h2>Thời gian mở cửa</h2>
-                            <div id="working-time-edit">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row m-b text-center">
+                                    <h3>Mô tả</h3>
+                                <div class="col-md-12 text-left">
+                                    @Html.TextAreaFor(q => q.Description, new { @class = "form-control", @id = "gDescription", @rows="10" })
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row m-b text-center">
+                                    <h3>Điều khoản</h3>
+                                <div class="col-md-12 text-left">
+                                    @Html.TextAreaFor(q => q.Policy, new { @class = "form-control", @id = "gPolicy", @rows="10" })
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="display-control row form-group">
-                    <div class="col-md-7">
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Địa điểm</label>
+                    <div class="row">
+                        <div class="col-md-7">
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Địa điểm</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @Model.Location.Name
+                                </div>
                             </div>
-                            <div class="col-md-8 text-left">
-                                @Model.Location.Name
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Địa chỉ</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @Model.Address
+                                </div>
                             </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Địa chỉ</label>
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Email</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @Model.Email
+                                </div>
                             </div>
-                            <div class="col-md-8 text-left">
-                                @Model.Address
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Số điện thoại (mặc định)</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @Model.Phone1
+                                </div>
                             </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Email</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @Model.Email
-                            </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Số điện thoại (mặc định)</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @Model.Phone1
-                            </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Số điện thoại (bố sung)</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @if (Model.Phone2 != null)
+                            <div class="row m-b text-center">
+                                <div class="col-md-4 text-right">
+                                    <label>Số điện thoại (bố sung)</label>
+                                </div>
+                                <div class="col-md-8 text-left">
+                                    @if (Model.Phone2 != null)
                                 {
-                                    @Model.Phone2
+                                        @Model.Phone2
                                 } else
                                 {
-                                    <text>chưa có</text>
+                                        <text>chưa có</text>
                                 }
 
+                                </div>
                             </div>
                         </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Mô tả</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @if (Model.Description != null)
-                                {
-                                    @Model.Description
-                                } else
-                                {
-                                    <text>chưa có</text>
-                                }
-                            </div>
-                        </div>
-                        <div class="row m-b text-center">
-                            <div class="col-md-4 text-right">
-                                <label>Điều khoản</label>
-                            </div>
-                            <div class="col-md-8 text-left">
-                                @if (Model.Policy != null)
-                                {
-                                    @Model.Policy
-                                } else
-                                {
-                                    <text>chưa có</text>
-}
-
+                        <div class="col-md-5">
+                            <div class="form-group" id="workingTime">
+                                <h2>Thời gian mở cửa</h2>
+                                <div id="working-time">
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-5">
-                        <div class="form-group" id="workingTime">
-                            <h2>Thời gian mở cửa</h2>
-                            <div id="working-time">
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row m-b text-center">
+                                <div class="col-md-2 text-right">
+                                    <label>Mô tả</label>
+                                </div>
+                                <div class="col-md-9 text-left">
+                                    @if (Model.Description != null)
+                                    {
+                                        @Model.Description
+                                    }
+                                    else
+                                    {
+                                        <text>chưa có</text>
+                                    }
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row m-b text-center">
+                                <div class="col-md-2 text-right">
+                                    <label>Điều khoản</label>
+                                </div>
+                                <div class="col-md-9 text-left">
+                                    @if (Model.Policy != null)
+                                    {
+                                        @Model.Policy
+                                    }
+                                    else
+                                    {
+                                        <text>chưa có</text>
+                                    }
+
+                                </div>
                             </div>
                         </div>
                     </div>

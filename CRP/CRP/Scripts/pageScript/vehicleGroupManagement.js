@@ -1,9 +1,9 @@
 const vehicleGroupTableColumns = [
 			{ name: 'ID', visible: false },
 			{ name: 'Name', title: 'Tên nhóm', width: '20%' },
-			{ name: 'Maxrent', title: 'Kỳ hạn thuê tối đa</br>(có tài xế)', width: '20%', defaultContent: "-" },
-			{ name: 'Deposit', title: 'Đặt cọc</br>(có tài xế)', width: '10%' },
-            { name: 'PerDayPrice', title: 'Giá theo ngày</br>(có tài xế)', width: '15%' },
+			{ name: 'Maxrent', title: 'Kỳ hạn thuê tối đa', width: '20%', defaultContent: "-" },
+			{ name: 'Deposit', title: 'Đặt cọc', width: '10%' },
+            { name: 'PerDayPrice', title: 'Giá theo ngày', width: '15%' },
 			{ name: 'NumOfCar', title: 'Số lượng xe', width: '10%' },
 			{ name: 'Status', title: 'Trạng thái', width: '15%' },
 			{

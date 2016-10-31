@@ -2,10 +2,11 @@ const vehicleTableColumns = [
 	{ name: 'ID', visible: false, orderable: false, searchable: false }
 	, { name: 'Name', title: 'Tên' }
     , { name: 'LicenseNumber', title: 'Biển số' }
+    , { name: 'VehicleGroupName', title: 'Nhóm', defaultContent: '-chưa có nhóm-' }
+    , { name: 'Year', title: 'Năm' }
     , { name: 'NumOfSeat', title: 'Số chỗ' }
-	, { name: 'Color', title: 'Màu' }
 	, { name: 'Star', title: "Đánh giá", width: '6.5em' }
-	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false, width: '20em' }
+	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false, width: '6em' }
 ]
 
 const bookingTableColumns = [
@@ -349,15 +350,29 @@ $(document).ready(function () {
 	    for (var i = 0; i < 7; i++) {
 	        if (!$(`.work-start:eq(${i})`).val() && $(`.work-end:eq(${i})`).val()) {
 	            alert('chua nhap thoi gian mo cua');
+	            return false;
 	        }
 	        if ($(`.work-start:eq(${i})`).val() && !$(`.work-end:eq(${i})`).val()) {
 	            alert('chua nhap thoi gian dong cua');
+	            return false;
 	        }
 	        if ($(`.work-start:eq(${i})`).val() && $(`.work-end:eq(${i})`).val()) {
+	            var startStr = $(`.work-start:eq(${i})`).val().split(":");
+	            var endStr = $(`.work-end:eq(${i})`).val().split(":");
+	            var startTimeInMinute = parseInt(startStr[0]) * 60 + parseInt(startStr[1]);
+	            var endTimeinMinute = parseInt(endStr[0]) * 60 + parseInt(endStr[1]);
+	            if (startTimeInMinute > endTimeinMinute) {
+	                alert("thoi gian mo cua khong duoc sau thoi gian dong cua");
+	                return false;
+	            }
+	            if (startTimeInMinute > 1440 || endTimeinMinute > 1440) {
+	                alert("gia tri thoi gian khong hop le");
+	                return false;
+	            }
 	            var item = {};
 	            item.DayOfWeek = i;
-	            item.OpenTimeInMinute = $(`.work-start:eq(${i})`).val();
-	            item.CloseTimeInMinute = $(`.work-end:eq(${i})`).val();
+	            item.OpenTimeInMinute = startTimeInMinute;
+	            item.CloseTimeInMinute = endTimeinMinute;
                 workTable.push(item);
 	        }
 	    }
@@ -376,8 +391,10 @@ $(document).ready(function () {
 
 	    if (!$('#garageName').val()) {
 	        alert("Vui long nhap ten garage");
+	        return false;
 	    } else if (!$('#garageName').val().length > 100) {
-	        alert("chieu dai chuoi vuot qua gioi han");
+	        alert("vuot qua do dai quy dinh");
+	        return false;
 	    } else {
 	        model.Name = $('#garageName').val();
 	    }
@@ -386,27 +403,48 @@ $(document).ready(function () {
 
 	    if (!$('#gAddress').val()) {
 	        alert("vui long nhap dia chi");
-	    } else {
+	        return false;
+	    } else if ($('#gAddress').val().length > 200) {
+	        alert("vuot qua do dai quy dinh");
+	        return false;
+		} else {
 	        model.Address = $('#gAddress').val();
 	    }
 
 	    if (!$('#gEmail').val()) {
 	        alert("Vui long nhap email");
-	    } else {
+	        return false;
+	    } else if (!validateEmail($('#gEmail').val())) {
+	        alert("email khong hop le");
+	        return false;
+        } else {
 	        model.Email = $('#gEmail').val();
 	    }
 
 	    if (!$('#gPhone1').val()) {
 	        alert("Vui long nhap so dien thoai");
-	    } else {
+	        return false;
+	    } else if (!validatePhone($('#gPhone1').val())) {
+	        alert("so dien thoai khong hop le");
+	        return false;
+		} else {
 	        model.Phone1 = $('#gPhone1').val();
 	    }
 
 	    if ($('#gPhone2').val()) {
-	        model.Phone2 = $('#gPhone2').val();
+	        if (!validatePhone($('#gPhone2').val())) {
+	            alert("so dien thoai khong hop le");
+	            return false;
+	        } else {
+	            model.Phone2 = $('#gPhone2').val();
+	        }
 	    }
 
 	    if ($('#gDescription').val()) {
+	        if ($('#gDescription').val().length > 1000) {
+	            alert("qua do dai quy dinh");
+	            return false;
+	        }
 	        model.Description = $('#gDescription').val();
 	    }
 
@@ -441,8 +479,8 @@ function renderActivation() {
     let name = $('#displayGarageName');
     let dName = $('#garageNameD').val();
     if (isActivateInput == true) {
-        name.removeClass('bg-danger');
-        name.addClass('bg-success');
+        name.removeClass('inactive-bg');
+        name.addClass('active-bg');
         name.html(`
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
@@ -456,8 +494,8 @@ function renderActivation() {
         btn.removeClass('btn-success');
         btn.addClass('btn-warning');
     } else {
-        name.removeClass('bg-success');
-        name.addClass('bg-danger');
+        name.removeClass('active-bg');
+        name.addClass('inactive-bg');
         name.html(`
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
@@ -487,7 +525,31 @@ function renderWorkingTime(id, isEditable) {
             } else {
                 $('#working-time').html(workingTimeTable);
             }
-            
+
+            // disable textbox while check Nghi
+            for (let i = 0; i < 7; i++) {
+                if ($(`#chk${i}`).is(':checked')) {
+                    $(`.work-start:eq(${i})`).prop('disabled', true);
+                    $(`.work-end:eq(${i})`).prop('disabled', true);
+                } else {
+                    $(`.work-start:eq(${i})`).prop('disabled', false);
+                    $(`.work-end:eq(${i})`).prop('disabled', false);
+                }
+                $(`#chk${i}`).change(function () {
+                    if ($(this).is(':checked')) {
+                        $(`.work-start:eq(${i})`).val("");
+                        $(`.work-end:eq(${i})`).val("");
+                        $(`.work-start:eq(${i})`).prop('disabled', true);
+                        $(`.work-end:eq(${i})`).prop('disabled', true);
+                    } else {
+                        $(`.work-start:eq(${i})`).prop('disabled', false);
+                        $(`.work-end:eq(${i})`).prop('disabled', false);
+                        $(`.work-start:eq(${i})`).val("08:00");
+                        $(`.work-end:eq(${i})`).val("17:00");
+                    }
+                });
+            }
+
         },
         error: function(e) {
             alert("error");
@@ -523,23 +585,32 @@ function workDay(workArray, isEditable) {
         textDOW = 'Chủ nhật';
     }
     if (workArray[1] != '' && workArray[2] != '') {
+        var startTime = "";
+        var endTime = "";
+
+        startTime = (Math.floor(workArray[1] / 60) >= 10 ? "" + Math.floor(workArray[1] / 60) : "0" + Math.floor(workArray[1] / 60))
+            + ":" + ((workArray[1] % 60) >= 10 ? "" + (workArray[1] % 60) : "0" + (workArray[1] % 60));
+        endTime = (Math.floor(workArray[2] / 60) >= 10 ? "" + Math.floor(workArray[2] / 60) : "0" + Math.floor(workArray[2] / 60))
+            + ":" + ((workArray[2] % 60) >= 10 ? "" + (workArray[2] % 60) : "0" + (workArray[2] % 60));
+
         if (isEditable) {
             return `
                 <div class="input-group">
                     <div class="input-group-addon gray-bg">${textDOW}</div>
                     <div class="input-group-addon">Từ</div>
-                    <input type="text" data-mask="99:99" value="${workArray[1]}" class ="work-start form-control">
+                    <input type="text" data-mask="99:99" value="${startTime}" class ="work-start form-control">
                     <div class="input-group-addon">Đến</div>
-                    <input type="text" data-mask="99:99" value="${workArray[2]}" class ="work-end form-control">
+                    <input type="text" data-mask="99:99" value="${endTime}" class ="work-end form-control">
+                    <div class ="input-group-addon checkbox"><input type="checkbox" id="chk${workArray[0]}"/><label for="chk${workArray[0]}" style="margin-left: 12px;">Nghỉ</label></div>
                 </div>`;
         } else {
             return `
                 <div class="input-group">
                     <div class="input-group-addon gray-bg">${textDOW}</div>
                     <div class ="input-group-addon">Từ</div>
-                    <div class ="input-group-addon">${workArray[1]}</div>
+                    <div class ="input-group-addon">${startTime}</div>
                     <div class ="input-group-addon">Đến</div>
-                    <div class ="input-group-addon">${workArray[2]}</div>
+                    <div class ="input-group-addon">${endTime}</div>
                 </div>`;
         }
     } else {
@@ -550,11 +621,12 @@ function workDay(workArray, isEditable) {
                         <input type="text" data-mask="99:99" value="" class ="work-start form-control">
                         <div class="input-group-addon">Đến</div>
                         <input type="text" data-mask="99:99" value="" class ="work-end form-control">
+                        <div class ="input-group-addon checkbox"><input type="checkbox" id="chk${workArray[0]}" checked/><label for="chk${workArray[0]}" style="margin-left: 12px;">Nghỉ</label></div>
                     </div>`;
         } else {
             return `<div class="input-group">
                 <div class ="input-group-addon gray-bg">${textDOW}</div>
-                <div class ="input-group-addon">Nghỉ</div>
+                <div class ="input-group-addon" style="padding: 0 93px; background-color:#FFCDD2">Nghỉ</div>
             </div>`;
         }
     }
