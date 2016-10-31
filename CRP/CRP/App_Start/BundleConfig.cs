@@ -11,7 +11,9 @@ namespace CRP
 			bundles.Add(new ScriptBundle("~/bundles/js").Include(
 					"~/Scripts/jquery-{version}.js",
 					"~/Scripts/bootstrap.js",
+					"~/Scripts/moment-with-locales.js",
 					"~/Scripts/respond.js",
+					"~/Scripts/toastr.js",
 					"~/Scripts/jquery.slimscroll.js",
 					"~/Scripts/metisMenu.js",
 					"~/Scripts/inspinia.js",
@@ -19,9 +21,10 @@ namespace CRP
 					"~/Scripts/main.js"));
 
 			bundles.Add(new StyleBundle("~/bundles/css").Include(
+					"~/Content/animate.css",
 					"~/Content/bootstrap.css",
 					"~/Content/font-awesome.css",
-					"~/Content/animate.css"));
+					"~/Content/toastr.css"));
 
 			bundles.Add(new StyleBundle("~/bundles/siteCss").Include(
 					"~/Content/style.css"));

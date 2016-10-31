@@ -20,7 +20,8 @@ namespace CRP.Models.Entities
         public double RentalPrice { get; set; }
         public double Deposit { get; set; }
         public double BookingFee { get; set; }
-        public Nullable<decimal> Star { get; set; }
+        public Nullable<int> Distance { get; set; }
+        public Nullable<int> Star { get; set; }
         public string Comment { get; set; }
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }

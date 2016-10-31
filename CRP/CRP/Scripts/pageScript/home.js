@@ -15,6 +15,7 @@ $(document).ready(function(){
 		minDate: now.clone().add(SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes'),
 		maxDate: now.clone().add(LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY, 'days').add(1, 'minutes'),
 		format: 'YYYY/MM/DD HH:mm',
+		locale: 'vi',
 		ignoreReadonly: true,
 	})
 	.on('dp.hide', (data)=>{
@@ -29,6 +30,7 @@ $(document).ready(function(){
 		defaultDate: now.clone().add(2, 'days'),
 		minDate: now.clone().add(SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR, 'hours').subtract(1, 'minutes'),
 		format: 'YYYY/MM/DD HH:mm',
+		locale: 'vi',
 		ignoreReadonly: true,
 	})
 	.on('dp.hide', (data)=>{

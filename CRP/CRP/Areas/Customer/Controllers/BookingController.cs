@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,14 +17,15 @@ using System.Web.Mvc;
 using API_NganLuong;
 using CRP.Models.Entities.Repositories;
 using Microsoft.AspNet.Identity.Owin;
+using Constants = CRP.Models.Constants;
 using UrlHelper = Microsoft.AspNetCore.Mvc.Routing.UrlHelper;
 
 namespace CRP.Areas.Customer.Controllers
 {
+	[Authorize(Roles = "Customer")]
 	public class BookingController : BaseController
 	{
 		// API route to create a booking if possible
-		[Authorize(Roles = "Customer")]
 		[System.Web.Mvc.Route("api/bookings", Name = "TryBookingAPI")]
 		[System.Web.Mvc.HttpPost]
 		public System.Web.Mvc.ActionResult TryBookingAPI(BookingCreatingModel model)
@@ -67,16 +69,71 @@ namespace CRP.Areas.Customer.Controllers
 			else
 			{
 				// Check if priceGroupItem exists
-				priceGroupItem = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.FirstOrDefault(r => r.MaxTime != model.RentalType.Value);
+				priceGroupItem = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.FirstOrDefault(r => r.MaxTime == model.RentalType.Value);
 				if (priceGroupItem == null)
 					return new HttpStatusCodeResult(400, "No valid rental period specified.");
 
 				endTime = model.StartTime.AddHours(model.RentalType.Value);
 			}
 
-			if (!vehicleService.CheckVehicleAvailability(model.VehicleID.Value, model.StartTime, endTime))
-				return new HttpStatusCodeResult(403, "Cannot book this vehicle in this period");
+			// Check if startTime is after SoonestPossibleBookingStartTimeFromNow
+			if (model.StartTime < DateTime.Now.AddHours(Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Thời gian nhận xe phải sau thời gian hiện tại ít nhất "
+					+ Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR + " tiếng."
+				}, JsonRequestBehavior.AllowGet);
 
+			// Check if startTime is before LatestPossibleBookingStartTimeFromNow
+			if (model.StartTime > DateTime.Now.AddDays(Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Dịch vụ của chúng tôi hiện tại chỉ nhận đặt xe trong vòng "
+						+ Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY
+						+ " ngày kể từ thời gian hiện tại."
+				}, JsonRequestBehavior.AllowGet);
+			
+			// Check StartTime/EndTime to be within garage's OpenTime ~ CloseTime
+			// Compare by convert time to the number of minute from 00:00
+			// Max margin of error: 60 secs vs CloseTime (Because we do not validate to second)
+
+			// Booking StartTime
+			var startTimeDoW = (int)model.StartTime.DayOfWeek;
+			var startTimeInMinute = model.StartTime.Minute + model.StartTime.Hour * 60;
+			if (!vehicle.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == startTimeDoW
+														&& startTimeInMinute >= gwt.OpenTimeInMinute
+														&& startTimeInMinute <= gwt.CloseTimeInMinute))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Thời gian nhận xe không nằm trong thời gian hoạt động của cửa hàng."
+				}, JsonRequestBehavior.AllowGet);
+
+			// Booking EndTime
+			var endTimeDoW = (int)endTime.DayOfWeek;
+			var endTimeInMunute = endTime.Minute + endTime.Hour * 60;
+			if(!vehicle.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == endTimeDoW
+												&& endTimeInMunute >= gwt.OpenTimeInMinute
+												&& endTimeInMunute <= gwt.CloseTimeInMinute))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Thời gian trả xe không nằm trong thời gian hoạt động của cửa hàng."
+				}, JsonRequestBehavior.AllowGet);
+
+			// Check if this vehicle has any other bookings in the timespan of this booking
+			if(vehicle.BookingReceipts.Any(br => !br.IsCanceled && (
+								(model.StartTime > br.StartTime && model.StartTime < br.EndTime)
+							 || (endTime > br.StartTime && endTime < br.EndTime)
+							 || (model.StartTime <= br.StartTime && endTime >= br.EndTime)
+						)))
+				return Json(new
+				{
+					errorCode = 403,
+					message = "Đã có người đặt xe này trong thời gian bạn đã chọn."
+				}, JsonRequestBehavior.AllowGet);
 
 			// All validation passed. Create new receipt with isPending = true
 			var bookingService = this.Service<IBookingReceiptService>();
@@ -98,11 +155,15 @@ namespace CRP.Areas.Customer.Controllers
 
 			if (model.RentalType.Value == 0)
 			{
-				newBooking.RentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice * model.NumOfDay.Value;
+				newBooking.RentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice*model.NumOfDay.Value;
+				newBooking.Distance = vehicle.VehicleGroup.PriceGroup.MaxDistancePerDay != null
+					? vehicle.VehicleGroup.PriceGroup.MaxDistancePerDay*model.NumOfDay.Value
+					: null;
 			}
 			else
 			{
 				newBooking.RentalPrice = priceGroupItem.Price;
+				newBooking.Distance = priceGroupItem.MaxDistance;
 			}
 
 			newBooking.Deposit = newBooking.RentalPrice * (double)vehicle.VehicleGroup.PriceGroup.DepositPercentage;
@@ -133,7 +194,6 @@ namespace CRP.Areas.Customer.Controllers
 		}
 
 		// Route to bookingConfirm page (Page for confirming booking details before paying)
-		[Authorize(Roles = "Customer")]
 		[System.Web.Http.HttpGet]
 		[System.Web.Mvc.Route("bookingConfirm/{bookingID}", Name = "BookingConfirm")]
 		public System.Web.Mvc.ActionResult BookingConfirm(int bookingID)
@@ -152,18 +212,26 @@ namespace CRP.Areas.Customer.Controllers
 		}
 
 		// Route for paying with nganluong
-		[Authorize(Roles = "Customer")]
 		[System.Web.Http.HttpPost]
 		[ValidateAntiForgeryToken]
 		[System.Web.Mvc.Route("bookingConfirm", Name = "BookVehicle")]
 		public System.Web.Mvc.ActionResult BookVehicle(BookingConfirmViewModel bookingModel, NganLuongPaymentModel nganLuongPayment)
 		{
+			var user = HttpContext.GetOwinContext()
+					.GetUserManager<ApplicationUserManager>()
+					.FindById(HttpContext.User.Identity.GetUserId());
+
 			// Check if the request contains all valid params
 			if (bookingModel?.Action == null || bookingModel.Receipt?.ID == null || nganLuongPayment == null)
 				return new HttpStatusCodeResult(400, "Invalid request");
 
 			var bookingService = this.Service<IBookingReceiptService>();
-			var bookingReceipt = bookingService.Get(bookingModel.Receipt.ID);
+			var bookingReceipt = bookingService.Get(br => br.ID == bookingModel.Receipt.ID
+														&& br.CustomerID == user.Id
+														&& br.IsPending).FirstOrDefault();
+
+			if (bookingReceipt == null)
+				return new HttpStatusCodeResult(400, "Invalid request");
 
 			// Act based on the received action's name
 			switch (bookingModel.Action)
@@ -183,10 +251,6 @@ namespace CRP.Areas.Customer.Controllers
 
 			// Only "pay" action left to handle
 			// Now validate nganluong params before redirect to nganluong
-
-			var user = HttpContext.GetOwinContext()
-					.GetUserManager<ApplicationUserManager>()
-					.FindById(HttpContext.User.Identity.GetUserId());
 
 			var info = new RequestInfoTestTemplate
 			{
@@ -212,7 +276,6 @@ namespace CRP.Areas.Customer.Controllers
 		}
 
 		//Route to bookingReceipt page(Redirect from NganLuong/BaoKim after customer has payed)
-		[Authorize(Roles = "Customer")]
 		[System.Web.Mvc.Route("bookingReceipt", Name = "BookingReceipt")]
 		public System.Web.Mvc.ActionResult BookingReceipt(string error_code, string token, int? canceledBookingID = null)
 		{
@@ -271,165 +334,94 @@ namespace CRP.Areas.Customer.Controllers
 			return new HttpStatusCodeResult(400, "Invalid request");
 		}
 
-
 		// Route to bookingHistory page
 		[System.Web.Mvc.Route("management/bookingHistory")]
 		public ViewResult BookingHistory()
 		{
-			/*
-			//Lay ID cua thang User hien hanh
-			string userID = "1";
-			//lay tat booking cua thang User hien hanh
-			List<BookingReceipt> lstBooking = new List<BookingReceipt>();
-			lstBooking = _service.getByUser(userID);
-			ViewBag.BookingList = lstBooking;*/
 			return View("~/Areas/Customer/Views/Booking/BookingHistory.cshtml");
 		}
 
-		[System.Web.Mvc.Route("api/BookingHistorys")]
-		[System.Web.Mvc.HttpGet]
-		public JsonResult GetBookingHistorypListAPI()
-		{
-			String customerID = User.Identity.GetUserId();
-			var service = this.Service<IBookingReceiptService>();
-			var list = service.GetBookingReceiptWithUser(customerID);
-			var now = System.DateTime.Now;
-			foreach(var item in list.ToList())
-			{
-				if (item.EndTime < now)
-				{
-					item.IsCanceled = true;
-				}
-				if (item.IsSelfBooking == true)
-				{
-					list.Remove(item);
-				}
-			}
-			var result = list.Select(q => new IConvertible[] {
-				q.ID,
-				q.VehicleName,
-				q.StartTime,
-				q.EndTime,
-				q.IsCanceled,
-				q.Star,
-				q.RentalPrice,
-				q.BookingFee,
-				q.GarageName,
-				q.GarageAddress,
-				q.Color,
-				q.VehicleModel.Name,
-			});
-			return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
-		}
-
-		[System.Web.Mvc.Route("api/BookingHistorys/{id:int}")]
-		[System.Web.Mvc.HttpGet]
-		public JsonResult getBookingReceiptAPI(int id)
-		{
-			String customerID = User.Identity.GetUserId();
-			var service = this.Service<IBookingReceiptService>();
-			var list = service.Get(id);
-			return Json(new { aaData = list }, JsonRequestBehavior.AllowGet);
-		}
-		/*
 		// API route for getting this user's booking receipts
 		// Pagination needed
 		// Order by startTime, from newer to older
-		[Route("api/bookings/{page:int?}")]
-		[HttpGet]
-		public JsonResult GetBookingReceiptAPI(int page = 1)
+		[System.Web.Mvc.Route("api/bookings/bookingHistory", Name = "GetBookingHistoryAPI")]
+		[System.Web.Mvc.HttpGet]
+		public System.Web.Mvc.ActionResult GetBookingHistoryAPI(int? draw, int page = 1, int recordPerPage = Constants.NUM_OF_SEARCH_RESULT_PER_PAGE)
 		{
-			//lay id user
-			string customerID = "1";
-			//set cung 10 record la 1 page
-			int numberPage = (int) Math.Ceiling((_service.getNumberPage(customerID))/10.0);
-			List<BookingReceipt> lstBooking = new List<BookingReceipt>();
-			List<BookingReceiptModel> jsonBookings = new List<BookingReceiptModel>();
-			//lay theo so record
-			lstBooking = _service.getBookingOfUserWithRecord(customerID, page);
-			foreach (BookingReceipt p in lstBooking)
-			{
-				BookingReceiptModel jsonBooking = new BookingReceiptModel();
-				jsonBooking.ID = p.ID;
-				jsonBooking.VehicleID = (int) p.VehicleID;
-				jsonBooking.VehicleName = p.VehicleName;
-				jsonBooking.BookingFee = p.BookingFee;
-				jsonBooking.CustomerID = p.CustomerID;
-				jsonBooking.Comment = p.Comment;
-				jsonBooking.GarageAddress = p.GarageAddress;
-				jsonBooking.GarageName = p.GarageName;
-				jsonBooking.IsCanceled = p.IsCanceled;
-				jsonBooking.Star = p.Star.GetValueOrDefault();
-				jsonBooking.TotalPrice = p.RentalPrice;
-				jsonBooking.StartTime = p.StartTime;
-				jsonBooking.EndTime = p.EndTime;
-				jsonBooking.numberPage = numberPage;
-				jsonBookings.Add(jsonBooking);
-			}
-			return Json(jsonBookings, JsonRequestBehavior.AllowGet);
-		}
-		*/
+			if (page < 1 || recordPerPage < 0 || draw == null)
+				return new HttpStatusCodeResult(400, "Invalid request");
 
-		[System.Web.Mvc.Route("api/booking/status/{id:int}")]
+			var bookingService = this.Service<IBookingReceiptService>();
+			var receiptList = bookingService.GetBookingHistory(User.Identity.GetUserId(), page, recordPerPage, draw.Value);
+
+			return Json(receiptList, JsonRequestBehavior.AllowGet);
+		}
+
+		// API route for canceling a booking
+		[System.Web.Mvc.Route("api/bookings/{id:int}")]
 		[System.Web.Mvc.HttpDelete]
-		public async Task<JsonResult> ChangeStatus(int id)
+		public async Task<System.Web.Mvc.ActionResult> CancelBookingAPI(int id)
 		{
 			var service = this.Service<IBookingReceiptService>();
-			var entity = await service.GetAsync(id);
-			if (entity != null)
-			{
-				entity.IsCanceled = !entity.IsCanceled;
-				await service.UpdateAsync(entity);
-				return Json(new { result = true, message = "Change status success!" });
-			}
+			var booking = await service.GetAsync(id);
 
-			return Json(new { result = false, message = "Change status failed!" });
+			if (booking == null)
+				return new HttpStatusCodeResult(400, "Invalid request");
+
+			if (booking.CustomerID != User.Identity.GetUserId())
+				return new HttpStatusCodeResult(403, "No access");
+
+			if(booking.IsCanceled)
+				return new HttpStatusCodeResult(400, "Invalid request");
+
+			booking.IsCanceled = true;
+			await service.UpdateAsync(booking);
+
+			return new HttpStatusCodeResult(200, "OK");
 		}
 
 		// API route for sending comment/rating for a booking
-		[System.Web.Mvc.Route("api/bookings/{id:int}")]
+		[System.Web.Mvc.Route("api/bookings")]
 		[System.Web.Mvc.HttpPatch]
-		public System.Web.Mvc.ActionResult RateBookingAPI([FromBody] BookingCommentModel commentModel)
+		public async Task<System.Web.Mvc.ActionResult> RateBookingAPI(BookingCommentModel comment)
 		{
-			var customerID = User.Identity.GetUserId();
+			// Validate the comment model
+			if(comment?.ID ==null || comment.Comment == null
+					|| comment.Comment.Length < BookingCommentModel.MIN_COMMENT_LENGTH
+					|| comment.Comment.Length > BookingCommentModel.MAX_COMMENT_LENGTH
+					|| comment.Star < BookingCommentModel.MIN_RATING
+					|| comment.Star > BookingCommentModel.MAX_RATING)
+				return new HttpStatusCodeResult(400, "Bad request");
 
 			var service = this.Service<IBookingReceiptService>();
-			var status = service.RateBooking(customerID, commentModel);
+			var booking = await service.GetAsync(comment.ID);
 
-			switch (status)
-			{
-				case 0:
-					return new HttpStatusCodeResult(200, "Booking rated successfully.");
-				case 1:
-					return new HttpNotFoundResult();
-				case 2:
-					return new HttpStatusCodeResult(403, "This booking has not been completed.");
-				case 3:
-					return new HttpStatusCodeResult(403, "This booking has already been commented.");
-			}
-			return new HttpStatusCodeResult(500, "Internal server error.");
-		}
-		[System.Web.Mvc.Route("api/CommentBooking")]
-		[System.Web.Mvc.HttpPost]
-		public async Task<JsonResult> EditPC()
-		{
-			SystemService sysService = new SystemService();
-			int id = int.Parse(Request.Params["id"]);
-			String comment = Request.Params["comment"];
-			decimal star = decimal.Parse(Request.Params["star"]);
-			var service = this.Service<IBookingReceiptService>();
-			var entity = await service.GetAsync(id);
-			if (entity != null)
-			{
-				entity.Comment = comment;
-				entity.Star = star;
-				await service.UpdateAsync(entity);
-				//update ratng cho garage va vihicle tuong ung
-				sysService.UpdateRatingGarage(entity.GarageID.GetValueOrDefault());
-				sysService.UpdateRatingVehicle(entity.VehicleID.GetValueOrDefault());
-				return Json(new { result = true, message = "Change status success!" });
-			}
-			return Json(new { result = false, message = "Change status failed!" });
+			if (booking.CustomerID != User.Identity.GetUserId())
+				return new HttpStatusCodeResult(403, "Access denied.");
+
+			// Only allow commenting after the rental has started or been canceled
+			if (DateTime.Now < booking.StartTime && !booking.IsCanceled)
+				return new HttpStatusCodeResult(400, "This booking has yet to complete.");
+
+			if (booking.Star.HasValue)
+				return new HttpStatusCodeResult(400, "This booking has already been rated");
+
+			booking.Comment = comment.Comment;
+			booking.Star = comment.Star;
+
+			// Update vehicle's rating if it still exist
+			if (booking.VehicleID.HasValue)
+				booking.Vehicle.Star = (booking.Vehicle.Star*booking.Vehicle.NumOfComment + comment.Star)
+										/ ++booking.Vehicle.NumOfComment;
+
+			// Update garage's rating if it still exist
+			if (booking.GarageID.HasValue)
+				booking.Garage.Star = (booking.Garage.Star * booking.Garage.NumOfComment + comment.Star)
+										/ ++booking.Garage.NumOfComment;
+
+			await service.UpdateAsync(booking);
+
+			return new HttpStatusCodeResult(200, "OK");
 		}
 	}
 }

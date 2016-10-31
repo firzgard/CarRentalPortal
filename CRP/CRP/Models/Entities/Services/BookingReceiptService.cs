@@ -11,11 +11,7 @@ namespace CRP.Models.Entities.Services
 {
 	public interface IBookingReceiptService : IService<BookingReceipt>
 	{
-		BookingReceiptModel GetBookingHistory(string customerID, int page, int recordPerPage);
-        List<BookingReceipt> GetBookingReceiptWithUser(string customerID);
-        List<BookingReceipt> GetBookingReceiptWithGarage(int garageID);
-        int CancelBooking(string customerID, int bookingID);
-		int RateBooking(string customerID, BookingCommentModel commentModel);
+		BookingHistoryDataTablesModel GetBookingHistory(string customerID, int page, int recordPerPage, int draw);
         BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions);
     }
 	public class BookingReceiptService : BaseService<BookingReceipt>, IBookingReceiptService
@@ -29,82 +25,20 @@ namespace CRP.Models.Entities.Services
         {
         }
 
-        public BookingReceiptModel GetBookingHistory(string customerID, int page, int recordPerPage)
+		// Get the booking history of a customer
+		public BookingHistoryDataTablesModel GetBookingHistory(string customerID, int page, int recordPerPage, int draw)
 		{
-			BookingReceiptModel bookingModel = new BookingReceiptModel();
-			var bookingRecieptList = this.repository.Get();
-			List<BookingReceipt> lstBooking = bookingRecieptList
-				.Where(q => q.CustomerID == customerID)
-				.OrderByDescending(q => q.ID)
+			var receiptList = repository.Get(br => br.CustomerID == customerID && !br.IsSelfBooking);
+
+			var total = receiptList.Count();
+
+			// Sort + paginate
+			receiptList = receiptList
+				.OrderByDescending(q => q.StartTime)
 				.Skip((page - 1) * recordPerPage)
-				.Take(recordPerPage)
-				.ToList();
+				.Take(recordPerPage);
 
-			bookingModel.listReceipt.AddRange(lstBooking);
-			bookingModel.numberPage = (int) Math.Ceiling( bookingRecieptList.Count() / (recordPerPage * 1.0));
-
-			return bookingModel;
-		}
-
-        public List<BookingReceipt> GetBookingReceiptWithUser(string customerID)
-        {
-            var bookingReceiptList = this.repository.Get();
-            List<BookingReceipt> lstBooking = bookingReceiptList
-                 .Where(q => q.CustomerID == customerID)
-                 .OrderByDescending(q => q.ID)
-                 .ToList();
-            return lstBooking;
-        }
-
-        public List<BookingReceipt> GetBookingReceiptWithGarage(int garageID)
-        {
-            var bookingReceiptList = this.repository.Get();
-            List<BookingReceipt> lstBooking = bookingReceiptList
-                 .Where(q => q.GarageID == garageID)
-                 .ToList();
-            return lstBooking;
-        }
-
-        public int CancelBooking(string customerID, int bookingID)
-        {
-            BookingReceipt receipt = this.repository.Get(br => br.CustomerID == customerID && br.ID == bookingID).FirstOrDefault();
-            if (receipt == null)
-            {
-                return 1;
-            }
-            // Do not allow canceling a booking that has already ended
-            if (receipt.EndTime < DateTime.Now)
-            {
-                return 2;
-            }
-            Boolean cc = receipt.IsCanceled;
-            receipt.IsCanceled = true;
-            receipt.IsCanceled = true;
-            repository.Update(receipt);
-            return 0;
-        }
-
-        public int RateBooking(string customerID, BookingCommentModel commentModel)
-		{
-			var receipt = repository.Get(v => v.CustomerID == customerID && v.ID == commentModel.ID).FirstOrDefault();
-
-			if (receipt == null)
-				return 1;
-
-			if (!receipt.IsCanceled || receipt.EndTime < DateTime.Now)
-				return 2;
-
-			if (receipt.Comment != null || receipt.Star != null)
-				return 3;
-
-			receipt.Comment = commentModel.Comment;
-			receipt.Star = commentModel.Star;
-
-			// Need help on how to update star of vehicle and garage here
-
-			repository.Update(receipt);
-
-			return 0;
+			return new BookingHistoryDataTablesModel(receiptList.ToList(), draw, total);
 		}
 
         public BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions)

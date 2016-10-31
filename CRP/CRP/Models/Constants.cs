@@ -17,7 +17,12 @@ namespace CRP.Models
 		// 10 mins
 		public const int BOOKING_PENDING_PERIOD_IN_MILISEC = 1000*60*10;
 
+		// Search vehicle page
 		public const int NUM_OF_SEARCH_RESULT_PER_PAGE = 10;
+
+		// VehicleInfo page's comment section
+		public const int NUM_OF_COMMENT_PER_PAGE = 5;
+
 		public const int SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = 6;
 		public const int SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = 7;
 		public const int LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = 30;
