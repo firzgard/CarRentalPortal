@@ -45,7 +45,7 @@ namespace CRP.Areas.Customer.Controllers
 
 			// Get current user
 			var customerID = User.Identity.GetUserId();
-			var userService = this.Service<IUserReceiptService>();
+			var userService = this.Service<IUserService>();
 			var user = await userService.GetAsync(customerID);
 
 			// Calculate the date of IsProviderUntil
@@ -108,7 +108,7 @@ namespace CRP.Areas.Customer.Controllers
 
 					var userID = words[0];
 					// Get current user
-					var userService = this.Service<IUserReceiptService>();
+					var userService = this.Service<IUserService>();
 					var user = await userService.GetAsync(userID);
 
 					// Validate the user

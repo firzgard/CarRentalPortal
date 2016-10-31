@@ -12,105 +12,133 @@ using CRP.Models;
 
 namespace CRP.Areas.Admin.Controllers
 {
-    public class DashBoardController : BaseController
-    {
-        // GET: Admin/DashBoard
-        public ActionResult Index()
-        {
-            ReportViewModel viewModel = new ReportViewModel();
-            var serviceBooking = this.Service<IBookingReceiptService>();
-            var serviceCar = this.Service<IVehicleService>();
-            var serviceUser = this.Service<IUserReceiptService>();
-            var serviceGarage = this.Service<IGarageService>();
-            viewModel.booking = serviceBooking.Get(q => q.IsPending == false).ToList().Count();
-            var bookSuccess = serviceBooking.Get(q => q.IsCanceled == false && q.IsPending == false).ToList().Count();
-            viewModel.bookingSuccess = bookSuccess;
-            viewModel.booking = serviceBooking.Get().ToList().Count();
-            viewModel.vehicle = serviceCar.Get().ToList().Count();
-            DateTime today = DateTime.Now;
-            //tinh co bookingfee co dinh hay 5%
-            viewModel.money = bookSuccess * 10000;
-            viewModel.provider = serviceUser.Get(q => q.AspNetRoles.Any(r => r.Name == "Provider")).ToList().Count();
-            viewModel.providerActive = serviceUser.Get(q => q.AspNetRoles.Any(r => r.Name == "Provider") && q.IsProviderUntil > today).ToList().Count();
-            viewModel.customer = serviceUser.Get(q => q.AspNetRoles.Any(r => r.Name == "Customer")).ToList().Count();
-            viewModel.customerActive = serviceUser.Get(q => q.AspNetRoles.Any(r => r.Name == "Customer") && q.LockoutEnabled == false).ToList().Count();
-            viewModel.garage = serviceGarage.Get().ToList().Count();
-            viewModel.garageActive = serviceGarage.Get(q => q.IsActive == true).ToList().Count();
-            return View(viewModel);
-        }
+	[Authorize(Roles = "Admin")]
+	public class DashBoardController : BaseController
+	{
+		// Route to admin dashboard
+		[Route("management/admin/dashboard", Name = "AdminDashboard")]
+		public ActionResult AdminDashboard()
+		{
+			var viewModel = new AdminReportViewModel();
+			var bookingService = this.Service<IBookingReceiptService>();
+			var vehicleService = this.Service<IVehicleService>();
+			var userService = this.Service<IUserService>();
+			var garageService = this.Service<IGarageService>();
 
-        [System.Web.Mvc.Route("api/reportProvider")]
-        [System.Web.Mvc.HttpGet]
-        public JsonResult getProviderListAPI()
-        {
-            var serviceUser = this.Service<IUserReceiptService>();
-            var serviceBooking = this.Service<IBookingReceiptService>();
-            var serviceCar = this.Service<IVehicleService>();
-            List<BookingReceipt> lstBooking = new List<BookingReceipt>();
-            var lstProvider = serviceUser.Get(q => q.AspNetRoles.Any(r => r.Name == "Provider")).ToList();
-            List<ReportProviderViewModel> listPro = new List<ReportProviderViewModel>();
-            DateTime today = DateTime.Now;
-            DateTime lastMonth = today.AddMonths(-1);
-            foreach(AspNetUser item in lstProvider)
-            {
-                ReportProviderViewModel item2 = new ReportProviderViewModel();
-                item2.ID = item.Id;
-                item2.ProviderName = item.UserName;
-                lstBooking = serviceBooking.Get(q => q.AspNetUser1.Id == item.Id && q.IsSelfBooking == false && q.IsCanceled == false &&
-                q.IsPending == false).ToList();
-                foreach(BookingReceipt boo in lstBooking)
-                {
-                    item2.money = (item2.money + boo.RentalPrice);
-                }
-                lstBooking = serviceBooking.Get(q => q.AspNetUser1.Id == item.Id && q.IsSelfBooking == false && q.IsCanceled == false &&
-                q.IsPending == false && q.EndTime < lastMonth).ToList();
-                foreach (BookingReceipt boo in lstBooking)
-                {
-                    item2.compare = (item2.compare + boo.RentalPrice);
-                }
-                item2.car = serviceCar.Get(q => q.Garage.OwnerID.Contains(item.Id)).ToList().Count();
-                item2.status = !item.LockoutEnabled;
-                listPro.Add(item2);
-            }
-            return Json(new { aaData = listPro }, JsonRequestBehavior.AllowGet);
-        }
+			var utcNow = DateTime.UtcNow;
+			var activeUsers = userService.Get(u => !(u.LockoutEnabled));
+			viewModel.NumOfActiveUser = activeUsers.Count();
 
-        [System.Web.Mvc.Route("api/reportGarage")]
-        [System.Web.Mvc.HttpGet]
-        public JsonResult getGarageListAPI()
-        {
-            var serviceGarage = this.Service<IGarageService>();
-            var serviceBooking = this.Service<IBookingReceiptService>();
-            var serviceCar = this.Service<IVehicleService>();
-            List<BookingReceipt> lstBooking = new List<BookingReceipt>();
-            List<ReportGarageViewModel> listGarage = new List<ReportGarageViewModel>();
-            var listGara = serviceGarage.Get().ToList();
-            DateTime today = DateTime.Now;
-            DateTime lastMonth = today.AddMonths(-1);
-            foreach (Garage item in listGara)
-            {
-                ReportGarageViewModel item2 = new ReportGarageViewModel();
-                item2.ID = item.ID;
-                item2.GarageName = item.Name;
-                lstBooking = serviceBooking.Get(q => q.GarageID == item.ID && q.IsSelfBooking == false && q.IsCanceled == false &&
-               q.IsPending == false).ToList();
-                foreach (BookingReceipt boo in lstBooking)
-                {
-                    item2.money = (item2.money + boo.RentalPrice);
-                }
+			var activeProviders = activeUsers.Where(u => u.AspNetRoles.Any(r => r.Name == "Provider"));
+			viewModel.NumOfActiveProvider = activeProviders.Count();
 
-                lstBooking = serviceBooking.Get(q => q.GarageID == item.ID && q.IsSelfBooking == false && q.IsCanceled == false &&
-                q.IsPending == false && q.EndTime < lastMonth).ToList();
-                foreach (BookingReceipt boo in lstBooking)
-                {
-                    item2.compare = (item2.compare + boo.RentalPrice);
-                }
-                item2.car = serviceCar.Get(q => q.GarageID == item.ID).ToList().Count();
-                item2.owner = item.AspNetUser.UserName;
-                item2.status = item.IsActive;
-                listGarage.Add(item2);
-            }
-            return Json(new { aaData = listGarage }, JsonRequestBehavior.AllowGet);
-        }
-    }
+			viewModel.NumOfActiveGarage = garageService.Get(g => g.IsActive && activeProviders.Contains(g.AspNetUser)).Count();
+
+			viewModel.NumOfActiveVehicle =
+				vehicleService.Get()
+					.Count(v => v.VehicleGroupID != null
+						&& v.VehicleGroup.IsActive
+						&& activeProviders.Contains(v.Garage.AspNetUser));
+
+			// Current month's report
+			var now = DateTime.Now;
+			var thisMonth = new DateTime(now.Year, now.Month, 1);
+
+			var receipts = bookingService.Get(r => !r.IsCanceled && !r.IsPending && !r.IsSelfBooking
+										&& r.StartTime < now
+										&& r.StartTime.Month == thisMonth.Month
+										&& r.StartTime.Year == thisMonth.Year);
+
+			viewModel.ThisMonthNumOfSuccessfulBooking = receipts.Count();
+			viewModel.ThisMonthNumOfProfit = receipts.Sum(r => r.BookingFee);
+
+			// Calculate monthly reports for last half year
+			for (var i = 1; i < 7; i++)
+			{
+				var reportTime = thisMonth.AddMonths(-i);
+				receipts = bookingService.Get(r => !r.IsCanceled && !r.IsPending && !r.IsSelfBooking
+				                        && r.StartTime < now
+				                        && r.StartTime.Month == reportTime.Month
+				                        && r.StartTime.Year == reportTime.Year);
+
+				viewModel.AddMonthlyReport(receipts.ToList(), reportTime);
+			}
+
+			return View("~/Areas/Admin/Views/Dashboard/Index.cshtml", viewModel);
+		}
+
+		//[System.Web.Mvc.Route("api/reportProvider")]
+		//[System.Web.Mvc.HttpGet]
+		//public JsonResult getProviderListAPI()
+		//{
+		//    var serviceUser = this.Service<IUserReceiptService>();
+		//    var serviceBooking = this.Service<IBookingReceiptService>();
+		//    var serviceCar = this.Service<IVehicleService>();
+		//    List<BookingReceipt> lstBooking = new List<BookingReceipt>();
+		//    var lstProvider = serviceUser.Get(q => q.AspNetRoles.Any(r => r.Name == "Provider")).ToList();
+		//    List<ReportProviderViewModel> listPro = new List<ReportProviderViewModel>();
+		//    DateTime today = DateTime.Now;
+		//    DateTime lastMonth = today.AddMonths(-1);
+		//    foreach(AspNetUser item in lstProvider)
+		//    {
+		//        ReportProviderViewModel item2 = new ReportProviderViewModel();
+		//        item2.ID = item.Id;
+		//        item2.ProviderName = item.UserName;
+		//        lstBooking = serviceBooking.Get(q => q.AspNetUser1.Id == item.Id && q.IsSelfBooking == false && q.IsCanceled == false &&
+		//        q.IsPending == false).ToList();
+		//        foreach(BookingReceipt boo in lstBooking)
+		//        {
+		//            item2.money = (item2.money + boo.RentalPrice);
+		//        }
+		//        lstBooking = serviceBooking.Get(q => q.AspNetUser1.Id == item.Id && q.IsSelfBooking == false && q.IsCanceled == false &&
+		//        q.IsPending == false && q.EndTime < lastMonth).ToList();
+		//        foreach (BookingReceipt boo in lstBooking)
+		//        {
+		//            item2.compare = (item2.compare + boo.RentalPrice);
+		//        }
+		//        item2.car = serviceCar.Get(q => q.Garage.OwnerID.Contains(item.Id)).ToList().Count();
+		//        item2.status = !item.LockoutEnabled;
+		//        listPro.Add(item2);
+		//    }
+		//    return Json(new { aaData = listPro }, JsonRequestBehavior.AllowGet);
+		//}
+
+		//[System.Web.Mvc.Route("api/reportGarage")]
+		//[System.Web.Mvc.HttpGet]
+		//public JsonResult getGarageListAPI()
+		//{
+		//    var serviceGarage = this.Service<IGarageService>();
+		//    var serviceBooking = this.Service<IBookingReceiptService>();
+		//    var serviceCar = this.Service<IVehicleService>();
+		//    List<BookingReceipt> lstBooking = new List<BookingReceipt>();
+		//    List<ReportGarageViewModel> listGarage = new List<ReportGarageViewModel>();
+		//    var listGara = serviceGarage.Get().ToList();
+		//    DateTime today = DateTime.Now;
+		//    DateTime lastMonth = today.AddMonths(-1);
+		//    foreach (Garage item in listGara)
+		//    {
+		//        ReportGarageViewModel item2 = new ReportGarageViewModel();
+		//        item2.ID = item.ID;
+		//        item2.GarageName = item.Name;
+		//        lstBooking = serviceBooking.Get(q => q.GarageID == item.ID && q.IsSelfBooking == false && q.IsCanceled == false &&
+		//       q.IsPending == false).ToList();
+		//        foreach (BookingReceipt boo in lstBooking)
+		//        {
+		//            item2.money = (item2.money + boo.RentalPrice);
+		//        }
+
+		//        lstBooking = serviceBooking.Get(q => q.GarageID == item.ID && q.IsSelfBooking == false && q.IsCanceled == false &&
+		//        q.IsPending == false && q.EndTime < lastMonth).ToList();
+		//        foreach (BookingReceipt boo in lstBooking)
+		//        {
+		//            item2.compare = (item2.compare + boo.RentalPrice);
+		//        }
+		//        item2.car = serviceCar.Get(q => q.GarageID == item.ID).ToList().Count();
+		//        item2.owner = item.AspNetUser.UserName;
+		//        item2.status = item.IsActive;
+		//        listGarage.Add(item2);
+		//    }
+		//    return Json(new { aaData = listGarage }, JsonRequestBehavior.AllowGet);
+		//}
+	}
 }

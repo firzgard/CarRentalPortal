@@ -14,144 +14,141 @@ using Microsoft.AspNet.Identity;
 
 namespace CRP.Areas.Provider.Controllers
 {
+	[Authorize(Roles = "Provider")]
 	public class VehicleManagementController : BaseController
 	{
 
 		// Route to vehicleManagement page
-		[Authorize(Roles = "Provider")]
 		[Route("management/vehicleManagement")]
 		public ViewResult VehicleManagement()
 		{
-            var service = this.Service<IGarageService>();
-            var groupService = this.Service<IVehicleGroupService>();
-            FilterByGarageView garageView = new FilterByGarageView();
-            var providerID = User.Identity.GetUserId();
-            garageView.listGarage = service.Get()
-                .Where(q => q.OwnerID == providerID)
-                .Select(q => new SelectListItem()
-            {
-                Text = q.Name,
-                Value = q.ID.ToString(),
-                Selected = true,
-            });
+			var service = this.Service<IGarageService>();
+			var groupService = this.Service<IVehicleGroupService>();
+			FilterByGarageView garageView = new FilterByGarageView();
+			var providerID = User.Identity.GetUserId();
+			garageView.listGarage = service.Get()
+				.Where(q => q.OwnerID == providerID)
+				.Select(q => new SelectListItem()
+			{
+				Text = q.Name,
+				Value = q.ID.ToString(),
+				Selected = true,
+			});
 
-            return View("~/Areas/Provider/Views/VehicleManagement/VehicleManagement.cshtml", garageView);
+			return View("~/Areas/Provider/Views/VehicleManagement/VehicleManagement.cshtml", garageView);
 		}
 
-        // Load listOtherGarage
-        [Authorize(Roles = "Provider")]
-        [Route("api/listOtherGarage/{garageID:int}")]
-        [HttpGet]
-        public JsonResult LoadOtherGarage(int garageID)
-        {
-            var service = this.Service<IGarageService>();
-            FilterByGarageView garageView = new FilterByGarageView();
-            var providerID = User.Identity.GetUserId();
-            garageView.listGarage = service.Get()
-                .Where(q => q.OwnerID == providerID && q.IsActive && q.ID != garageID)
-                .Select(q => new SelectListItem() {
-                    Text = q.Name,
-                    Value = q.ID.ToString(),
-                    Selected = true,
-                });
+		// Load listOtherGarage
+		[Route("api/listOtherGarage/{garageID:int}")]
+		[HttpGet]
+		public JsonResult LoadOtherGarage(int garageID)
+		{
+			var service = this.Service<IGarageService>();
+			FilterByGarageView garageView = new FilterByGarageView();
+			var providerID = User.Identity.GetUserId();
+			garageView.listGarage = service.Get()
+				.Where(q => q.OwnerID == providerID && q.IsActive && q.ID != garageID)
+				.Select(q => new SelectListItem() {
+					Text = q.Name,
+					Value = q.ID.ToString(),
+					Selected = true,
+				});
 
-            return Json(new { list = garageView.listGarage }, JsonRequestBehavior.AllowGet);
-        }
+			return Json(new { list = garageView.listGarage }, JsonRequestBehavior.AllowGet);
+		}
+		
+		[Route("api/listGroup")]
+		[HttpGet]
+		public JsonResult LoadGroupList()
+		{
+			var service = this.Service<IVehicleGroupService>();
+			// just use it to return a list not for keeping data purpose
+			FilterByGarageView garageView = new FilterByGarageView();
+			var providerID = User.Identity.GetUserId();
+			garageView.listGarage = service.Get()
+				.Where(q => q.OwnerID == providerID)
+				.Select(q => new SelectListItem()
+				{
+					Text = q.Name + " ["+ (q.IsActive ? "đang hoạt động": "ngưng hoạt động") +"]",
+					Value = q.ID.ToString(),
+					Selected = true,
+				});
 
-        [Authorize(Roles = "Provider")]
-        [Route("api/listGroup")]
-        [HttpGet]
-        public JsonResult LoadGroupList()
-        {
-            var service = this.Service<IVehicleGroupService>();
-            // just use it to return a list not for keeping data purpose
-            FilterByGarageView garageView = new FilterByGarageView();
-            var providerID = User.Identity.GetUserId();
-            garageView.listGarage = service.Get()
-                .Where(q => q.OwnerID == providerID)
-                .Select(q => new SelectListItem()
-                {
-                    Text = q.Name + " ["+ (q.IsActive ? "đang hoạt động": "ngưng hoạt động") +"]",
-                    Value = q.ID.ToString(),
-                    Selected = true,
-                });
+			return Json(new { list = garageView.listGarage }, JsonRequestBehavior.AllowGet);
+		}
 
-            return Json(new { list = garageView.listGarage }, JsonRequestBehavior.AllowGet);
-        }
-
-        // Route to vehicle's detailed info page
-        [Authorize(Roles = "Provider")]
+		// Route to vehicle's detailed info page
 		[Route("management/vehicleManagement/{id:int}")]
 		public ViewResult VehihicleDetail(int id)
 		{
 			var service = this.Service<IVehicleService>();
-            var garageService = this.Service<IGarageService>();
-            var groupService = this.Service<IVehicleGroupService>();
-            var brandService = this.Service<IBrandService>();
-            var modelService = this.Service<IModelService>();
-            Vehicle vehicle = service.Get(id);
-            VehicleDetailInfoModel vehiIn = new VehicleDetailInfoModel(vehicle);
-            //FilterByGarageView garageView = new FilterByGarageView();
-            var providerID = User.Identity.GetUserId();
-            vehiIn.listGarage = garageService.Get()
-                .Where(q => q.OwnerID == providerID)
-                .Select(q => new SelectListItem()
-                {
-                    Text = q.Name,
-                    Value = q.ID.ToString(),
-                    Selected = true,
-                });
-            vehiIn.listGroup = groupService.Get()
-                 .Where(q => q.OwnerID == providerID)
-                 .Select(q => new SelectListItem()
-                 {
-                     Text = q.Name,
-                     Value = q.ID.ToString(),
-                     Selected = true,
-                 });
-            //vehiIn.BrandList = brandService.Get(
-            //    b => b.ID != 1 // Exclude unlisted brand
-            //).OrderBy(b => b.Name).ToList();
+			var garageService = this.Service<IGarageService>();
+			var groupService = this.Service<IVehicleGroupService>();
+			var brandService = this.Service<IBrandService>();
+			var modelService = this.Service<IModelService>();
+			Vehicle vehicle = service.Get(id);
+			VehicleDetailInfoModel vehiIn = new VehicleDetailInfoModel(vehicle);
+			//FilterByGarageView garageView = new FilterByGarageView();
+			var providerID = User.Identity.GetUserId();
+			vehiIn.listGarage = garageService.Get()
+				.Where(q => q.OwnerID == providerID)
+				.Select(q => new SelectListItem()
+				{
+					Text = q.Name,
+					Value = q.ID.ToString(),
+					Selected = true,
+				});
+			vehiIn.listGroup = groupService.Get()
+				 .Where(q => q.OwnerID == providerID)
+				 .Select(q => new SelectListItem()
+				 {
+					 Text = q.Name,
+					 Value = q.ID.ToString(),
+					 Selected = true,
+				 });
+			//vehiIn.BrandList = brandService.Get(
+			//    b => b.ID != 1 // Exclude unlisted brand
+			//).OrderBy(b => b.Name).ToList();
 
-            // Reorder each brand's models by name
-            // Only get brand w/ model w/ registered vehicles
-            //vehiIn.BrandList = vehiIn.BrandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
-            //{
-            //    b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
-            //    {
-            //        if (m.Vehicles.Any())
-            //            newModelList.Add(m);
-            //        return newModelList;
-            //    });
+			// Reorder each brand's models by name
+			// Only get brand w/ model w/ registered vehicles
+			//vehiIn.BrandList = vehiIn.BrandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
+			//{
+			//    b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
+			//    {
+			//        if (m.Vehicles.Any())
+			//            newModelList.Add(m);
+			//        return newModelList;
+			//    });
 
-            //    if (b.VehicleModels.Any())
-            //    {
-            //        b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
-            //        newBrandList.Add(b);
-            //    }
+			//    if (b.VehicleModels.Any())
+			//    {
+			//        b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
+			//        newBrandList.Add(b);
+			//    }
 
-            //    return newBrandList;
-            //});
-            vehiIn.listBrand = brandService.Get()
-                 .Select(q => new SelectListItem()
-                 {
-                     Text = q.Name,
-                     Value = q.ID.ToString(),
-                     Selected = true,
-                 });
-            vehiIn.listModel = brandService.Get()
-                 .Select(q => new SelectListItem()
-                 {
-                     Text = q.Name,
-                     Value = q.ID.ToString(),
-                     Selected = true,
-                 });
-            return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehiIn);
+			//    return newBrandList;
+			//});
+			vehiIn.listBrand = brandService.Get()
+				 .Select(q => new SelectListItem()
+				 {
+					 Text = q.Name,
+					 Value = q.ID.ToString(),
+					 Selected = true,
+				 });
+			vehiIn.listModel = brandService.Get()
+				 .Select(q => new SelectListItem()
+				 {
+					 Text = q.Name,
+					 Value = q.ID.ToString(),
+					 Selected = true,
+				 });
+			return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehiIn);
 		}
 
 		// API Route to get a list of vehicle to populate vehicleTable
-		// Only vehicle tables need this API because their possibly huge number of record
-		// So we need this API for server-side pagination
+		// Server-side pagination needed
+		//
 		[Route("api/vehicles", Name = "GetVehicleListAPI")]
 		[HttpGet]
 		public ActionResult GetVehicleListAPI(VehicleManagementFilterConditionModel filterConditions)
