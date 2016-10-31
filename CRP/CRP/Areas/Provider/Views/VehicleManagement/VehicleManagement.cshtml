@@ -1,4 +1,5 @@
-﻿@using System.Threading.Tasks
+﻿@using System.Collections.Generic;
+@using CRP.Models
 @using CRP.Models.Entities
 @using CRP.Models.ViewModels
 
@@ -135,7 +136,40 @@
 }
 @section Scripts {
 	<script type="text/javascript">
-		const queryApiUrl = '@Url.RouteUrl("GetVehicleListAPI", new { controller = "VehicleManagement" })'
+		const queryApiUrl = '@Url.RouteUrl("GetVehicleListAPI", new { controller = "VehicleManagement" })';
 	</script>
 	@Scripts.Render("~/Scripts/VehicleManagement")
 }
+
+<template id="modelOptions">
+	@foreach (VehicleBrand brand in Model.brandList)
+	{
+		<optgroup label="@brand.Name">
+			@foreach (VehicleModel entry in brand.VehicleModels)
+			{
+			<option value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
+			}
+		</optgroup>
+	}
+</template>
+
+<template id="fuelOptions">
+	@foreach (KeyValuePair<int, string> entry in Constants.FUEL_TYPE)
+	{
+		<option value="@entry.Key">@entry.Value</option>
+	}
+</template>
+
+<template id="colorOptions">
+	@for (var i = 1; i < Constants.COLOR.Count(); i++)
+	{
+		<div class="color-selector">
+			<input id="color@(Constants.COLOR[i])" name="newColor" value="@i" type="radio">
+			<label for="color@(Constants.COLOR[i])" style="background-color: @Constants.COLOR[i];"></label>
+		</div>
+	}
+	<div class="color-selector another-color">
+		<input id="color0" name="newColor" value="0" type="radio">
+		<label for="color0"></label>
+	</div>
+</template>

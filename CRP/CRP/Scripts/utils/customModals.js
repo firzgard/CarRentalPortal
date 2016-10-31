@@ -107,16 +107,30 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 							<input type="text" placeholder="Tên xe" value="${name || ''}" id="newName" class="form-control" required>
 						</div>
 						<div class="form-group">
-							<label>Hãng xe*</label>
-							<select id="newBrand" data-placeholder="Vui lòng chọn hãng xe..." class="input-group" required></select>
+							<label>Dòng xe*</label>
+							<select id="newModel" data-placeholder="Vui lòng chọn dòng xe..." class="input-group select2-seed" required>
+								${modelOptions.innerHTML}
+							</select>
 						</div>
 						<div class="form-group">
-							<label>Năm sản xuất*</label>
-							<input id="newYear" type="number" placeholder="Năm sản xuất" value="${year || ''}" class="form-control" required>
+							<label>Garage*</label>
+							<select id="newGarage" data-placeholder="Vui lòng chọn garage..." class="input-group select2-seed" required>
+						</select>
 						</div>
 						<div class="form-group">
+							<label>Loại hộp số*</label>
+							<div class="btn-group btn-group-justified" data-toggle="buttons" >
+								<label class="btn btn-primary ${(transmissionType && (transmissionType == 1) && 'active') || ''}">
+									<input type="radio" value="1" autocomplete="off" ${(transmissionType && (transmissionType == 1) && 'checked') || ''} >Số tự động
+								</label>
+								<label class="btn btn-primary ${(transmissionType && (transmissionType == 2) && 'active') || ''}">
+									<input type="radio" value="2" autocomplete="off" ${(transmissionType && (transmissionType == 2) && 'checked') || ''} >Số sàng
+								</label>
+							</div>
 						</div>
 						<div class="form-group">
+							<label>Động cơ</label>
+							<input type="text" placeholder="Chi tiết về động cơ xe" value="${engine || ''}" class="form-control">
 						</div>
 					</div>
 					<div class="col-sm-6">
@@ -125,54 +139,32 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 							<input type="text" placeholder="Biển số xe" id="newLicense" class="form-control" required>
 						</div>
 						<div class="form-group">
-							<label>Dòng xe*</label>
-							<select id="newModel" data-placeholder="Vui lòng chọn dòng xe..." class="input-group" required></select>
+							<label>Năm sản xuất*</label>
+							<input id="newYear" type="number" placeholder="Năm sản xuất" value="${year || ''}" class="form-control" required>
+						</div>
+						<div class="form-group">
+							<label>Nhóm xe*</label>
+							<select id="newVehicleGroup" data-placeholder="Vui lòng chọn nhóm xe..." class="input-group select2-seed" required>
+							</select>
+						</div>
+						<div class="form-group">
+							<label>Chi tiết về loại hộp số</label>
+							<input type="text" placeholder="Chi tiết về loại hộp số" value="${transmissionDetail || ''}" class="form-control">
+						</div>
+						<div class="form-group">
+							<label>Loại nhiên liệu</label>
+							<select data-placeholder="Please select fuel type..." class="input-group select2-seed">
+								${fuelOptions.innerHTML}
+							</select>
 						</div>
 					</div>
-					<div class="col-sm-6 form-group">
-							
-					</div>
-					<div class="col-sm-6 form-group">
-						<label>Garage*</label>
-						<select id="newGarage" data-placeholder="Vui lòng chọn garage..." class="input-group" required>
-						</select>
-					</div>
-					<div class="col-sm-6 form-group">
-						<label>Nhóm xe*</label>
-						<select id="newVehicleGroup" data-placeholder="Vui lòng chọn nhóm xe..." class="input-group" required>
-						</select>
-					</div>
-					<div class="col-sm-6 form-group">
-						<label>Loại hộp số*</label>
-						<div class="btn-group btn-group-justified" data-toggle="buttons" >
-							<label class="btn btn-primary ${(transmissionType && (transmissionType == 1) && 'active') || ''}">
-								<input type="radio" value="1" autocomplete="off" ${(transmissionType && (transmissionType == 1) && 'checked') || ''} >Số tự động
-							</label>
-							<label class="btn btn-primary ${(transmissionType && (transmissionType == 2) && 'active') || ''}">
-								<input type="radio" value="2" autocomplete="off" ${(transmissionType && (transmissionType == 2) && 'checked') || ''} >Số sàng
-							</label>
-						</div>
-					</div>
-					<div class="col-sm-6 form-group">
-						<label>Chi tiết về loại hộp số</label>
-						<input type="text" placeholder="Chi tiết về loại hộp số" value="${transmissionDetail || ''}" class="form-control">
-					</div>
-					<div class="col-sm-6 form-group">
-						<label>Động cơ</label>
-						<input type="text" placeholder="Chi tiết về động cơ xe" value="${engine || ''}" class="form-control">
-					</div>
-					<div class="col-sm-6 form-group">
-						<label>Loại nhiên liệu</label>
-						<select data-placeholder="Please select fuel type..." class="input-group">
-						</select>
-					</div>
-					<div class="col-sm-12 form-group">
-						<label>Màu xe</label>
-						<div class="btn-group btn-group-justified" data-toggle="buttons" ></div>
+					<label class="col-sm-12">Màu xe</label>
+					<div class="col-sm-12">
+						${colorOptions.innerHTML}
 					</div>
 					<div class="col-sm-12 form-group">
 						<label>Mô tả xe</label>
-						<textarea type="text" ows="20" maxlength="200" class="form-control">${description || ''}</textarea>
+						<textarea type="text" rows="20" maxlength="200" class="form-control">${description || ''}</textarea>
 					</div>
 					<div class="col-sm-12 form-group">
 						<label>Hình ảnh</label>
@@ -189,7 +181,7 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 		</div>
 	</div>`);
 
-	$('#newGarage').select2({
+	$('.select2-seed').select2({
 		width: "100%"
 	})
 

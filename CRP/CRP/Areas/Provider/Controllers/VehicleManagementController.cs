@@ -22,20 +22,29 @@ namespace CRP.Areas.Provider.Controllers
 		[Route("management/vehicleManagement")]
 		public ViewResult VehicleManagement()
 		{
-			var service = this.Service<IGarageService>();
-			var groupService = this.Service<IVehicleGroupService>();
-			FilterByGarageView garageView = new FilterByGarageView();
-			var providerID = User.Identity.GetUserId();
-			garageView.listGarage = service.Get()
-				.Where(q => q.OwnerID == providerID)
-				.Select(q => new SelectListItem()
-			{
-				Text = q.Name,
-				Value = q.ID.ToString(),
-				Selected = true,
-			});
+			var brandService = this.Service<IBrandService>();
+			var brandList = brandService.Get(
+				b => b.VehicleModels.Count != 0 // Only get brand w/ model
+			).OrderBy(b => b.Name).ToList();
 
-			return View("~/Areas/Provider/Views/VehicleManagement/VehicleManagement.cshtml", garageView);
+			var garageService = this.Service<IGarageService>();
+			var providerID = User.Identity.GetUserId();
+			var listGarage = garageService.Get()
+					.Where(q => q.OwnerID == providerID)
+					.Select(q => new SelectListItem()
+					{
+						Text = q.Name,
+						Value = q.ID.ToString(),
+						Selected = true,
+					});
+
+			var viewModel = new FilterByGarageView()
+			{
+				listGarage = listGarage,
+				brandList = brandList
+			};
+
+			return View("~/Areas/Provider/Views/VehicleManagement/VehicleManagement.cshtml", viewModel);
 		}
 
 		// Load listOtherGarage
