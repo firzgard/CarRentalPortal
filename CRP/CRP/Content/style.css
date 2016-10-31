@@ -8278,6 +8278,11 @@ hr {
   border-bottom: 0!important;
 }
 
+.page-heading {
+  padding-top: 0.5em;
+  padding-left: 2em;
+}
+
 .ibox-title {
   background-color: #4CAF50;
   border-top-color: #388E3C;
@@ -8287,6 +8292,11 @@ hr {
 .btn-primary {
   background-color: #4CAF50;
   border-color: #4CAF50;
+}
+
+.btn-primary.btn-outline {
+  color: #2B6D2D;
+  background-color: white;
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary, .btn-primary:active:focus, .btn-primary:active:hover, .btn-primary.active:hover, .btn-primary.active:focus {
@@ -8313,6 +8323,13 @@ hr {
 }
 .green-bg .nav.navbar-right > li > a {
   color:  white;
+}
+
+.bg-success {
+  background-color: #4CAF50;
+}
+.bg-danger {
+  background-color: #ed5565;
 }
 
 .fa-beige {
@@ -8347,6 +8364,16 @@ hr {
 }
 .fa-yellow {
   color: yellow;
+}
+
+.status-label {
+  text-align: center;
+}
+
+.status-label .label {
+  display: inline-block;
+  font-size: 1em;
+  padding: 0.5em 1em;
 }
 
 .center-flex {
@@ -8428,13 +8455,24 @@ hr {
 }
 
 /* FullCalendar */
-.fc-bgevent {
-  background: #000000;
-  opacity: 0.20;
+.fc-day-number {
+  color: #2B2B2B;
+  font-size: 1.5em;
+  font-weight: bold;
 }
+
+.fc-bgevent {
+  opacity: 1;
+}
+
+.fc-day-top.fc-other-month {
+  opacity: .5;
+}
+
 .fc-content {
   display: none;
 }
+
 .fc-state-active {
   background-color: #4CAF50;
 }
@@ -8444,17 +8482,19 @@ hr {
 }
 
 .fc-color-explain {
-  margin-top: 0.5em;
+  display: inline-block;
+  margin-top: 1.2em;
+  width: 15em;
 }
 
 .fc-color {
-  border: 1px solid #CCCCCC;
+  border: 2px solid #CCCCCC;
   margin: 0 1em 0 1em;
   padding: 0.5em 1.5em;
 }
 
 .fc-color.unbookable {
-  background-color: #999999;
+  background-color: #FE4C4C;
 }
 
 .fc-color.booked {
