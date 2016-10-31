@@ -227,13 +227,13 @@ function renderConfirmModal(table, type, action, modalNode, items){
 				</h2>
 			</div>
 			<div class="modal-body">
-				Bạn có chắc chắn ${action === 'delete' ? 'xóa'
-							: (action === 'deactivate' ? 'hủy kích hoạt'
-							: (action === 'reactivate' ? 'kích hoạt lại'
-							: ''))} ${type === 'vehicle group' ? 'nhóm giá'
-									: (type === 'garage' ? 'garage'
-									: (type === 'vehicle' ? 'xe'
-									: '')) } này?
+                Bạn có chắc chắn ${action === 'delete' ? 'xóa'
+                            : (action === 'deactivate' ? 'hủy kích hoạt'
+                            : (action === 'reactivate' ? 'kích hoạt lại'
+                            : ''))} ${type === 'vehicle group' || type === 'vehicleGroupDetail' ? 'nhóm giá'
+                                    : (type === 'garage' ? 'garage'
+                                    : (type === 'vehicle' ? 'xe'
+                                    : '')) } này?
 				<ul>${items.reduce((html, item) => {
 					return html + `<li>${item.name}</li>`
 				}, '')}</ul>
@@ -244,164 +244,173 @@ function renderConfirmModal(table, type, action, modalNode, items){
 			</div>
 		</div>
 	</div>`;
+	
+    $(document).one('click', '#btn-yes', function(event) {
+        switch(type) {
+            case 'vehicle group':{
+                if (action === "deactivate" || action === "reactivate") {
+                    for(var i=0; i< items.length; i++) {
+                        var id = items[i].id;
+                        $.ajax({
+                            url: `/api/vehicleGroups/status/${id}`,
+                            type: "PATCH",
+                            success: function (data) {
+                                if(data.result) {
+                                    $('.modal').modal('hide');
+                                    table.ajax.reload();
+                                } else {
+                                    toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
+                                }
+                            },
+                            eror: function (data) {
+                                toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
+                            }
+                        });
+                    }
+                }
+                if (action === "delete") {
+                    for(var i=0; i< items.length; i++) {
+                        var id = items[i].id;
+                        $.ajax({
+                            url: `/api/vehicleGroups/${id}`,
+                            type: "DELETE",
+                            success: function (data) {
+                                $('.modal').modal('hide');
+                                if(data.result) {
+                                    table.ajax.reload();
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            eror: function (e) {
+                                toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
+                            }
+                        });
+                    }
+                }
+            } break;
+            case 'vehicleGroupDetail':{
+                if (action === "deactivate" || action === "reactivate") {
+                    for(var i=0; i< items.length; i++) {
+                        var id = items[i].id;
+                        $.ajax({
+                            url: `/api/vehicleGroups/status/${id}`,
+                            type: "PATCH",
+                            success: function (data) {
+                                if(data.result) {
+                                    $('.modal').modal('hide');
+                                    if($('#isActive').val() === 'True') {
+                                        $('#isActive').val('False');
+                                    } else {
+                                        $('#isActive').val('True');
+                                    }
+                                    renderActivation();
+                                } else {
+                                    toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
+                                }
+                            },
+                            eror: function (e) {
+                                toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
+                            }
+                        });
+                    }
+                }
+                if (action === "delete") {
+                    for(var i=0; i< items.length; i++) {
+                        var id = items[i].id;
+                        $.ajax({
+                            url: `/api/vehicleGroups/${id}`,
+                            type: "DELETE",
+                            success: function (data) {
+                                if(data.result) {
+                                    window.location.pathname = "/management/vehicleGroupManagement";
+                                } else {
+                                    $('.modal').modal('hide');
+                                    toastr.error(data.message);
+                                }
+                            },
+                            eror: function (data) {
+                                toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
+                            }
+                        });
+                    }
+                }
+            } break;
 
-	$(document).one('click', '#btn-yes', function(event) {
-		switch(type) {
-			case 'vehicle group':{
-				if (action === "deactivate" || action === "reactivate") {
-					for(var i=0; i< items.length; i++) {
-						var id = items[i].id;
-						$.ajax({
-							url: `/api/vehicleGroups/status/${id}`,
-							type: "PATCH",
-							success: function (data) {
-								if(data.result) {
-									$('.modal').modal('hide');
-									table.ajax.reload();
-								} else {
-									alert("fail");
-								}
-							},
-							eror: function (data) {
-								alert("error");
-							}
-						});
-					}
-				}
-				if (action === "delete") {
-					for(var i=0; i< items.length; i++) {
-						var id = items[i].id;
-						$.ajax({
-							url: `/api/vehicleGroups/${id}`,
-							type: "DELETE",
-							success: function (data) {
-								$('.modal').modal('hide');
-								if(data.result) {
-									table.ajax.reload();
-								} else {
-									alert(data.message);
-								}
-							},
-							eror: function (data) {
-								alert("error");
-							}
-						});
-					}
-				}
-			} break;
-			case 'vehicleGroupDetail':{
-				if (action === "deactivate" || action === "reactivate") {
-					for(var i=0; i< items.length; i++) {
-						var id = items[i].id;
-						$.ajax({
-							url: `/api/vehicleGroups/status/${id}`,
-							type: "PATCH",
-							success: function (data) {
-								if(data.result) {
-									$('.modal').modal('hide');
-									if($('#isActive').val() === 'True') {
-										$('#isActive').val('False');
-									} else {
-										$('#isActive').val('True');
-									}
-									renderActivation();
-								} else {
-									alert("fail");
-								}
-							},
-							eror: function (data) {
-								alert("error");
-							}
-						});
-					}
-				}
-				if (action === "delete") {
-					for(var i=0; i< items.length; i++) {
-						var id = items[i].id;
-						$.ajax({
-							url: `/api/vehicleGroups/${id}`,
-							type: "DELETE",
-							success: function (data) {
-								if(data.result) {
-									window.location.pathname = "/management/vehicleGroupManagement";
-								} else {
-									$('.modal').modal('hide');
-									alert(data.message);
-								}
-							},
-							eror: function (data) {
-								alert("error");
-							}
-						});
-					}
-				}
-			} break;
-
-			case 'garage':{
-				if (action === "deactivate" || action === "reactivate") {
-					for(var i=0; i< items.length; i++) {
-						var id = items[i].id;
-						$.ajax({
-							url: `/api/garage/status/${id}`,
-							type: "PATCH",
-							success: function (data) {
-								$('.modal').modal('hide');
-								if(data.result) {
-									table.ajax.reload();
-								} else {
-									alert('fail');
-								}
-							},
-							eror: function (data) {
-								alert("error");
-							}
-						});
-					}
-				}
-				if (action === "delete") {
-					for(var i=0; i< items.length; i++) {
-						var id = items[i].id;
-						$.ajax({
-							url: `/api/deleteGarage/${id}`,
-							type: "DELETE",
-							success: function (data) {
-								$('.modal').modal('hide');
-								if(data.result) {
-									if(table != '') {
-										table.ajax.reload();
-									} else {
-										window.location.pathname = "/management/garageManagement";
-									}
-									
-								} else {
-									alert(data.message);
-								}
-							},
-							eror: function (data) {
-								alert("error");
-							}
-						});
-					}
-				}
-			} break;
-			case 'vehicle':{
-				if(action === "delete") {
-					for(var i=0; i< items.length; i++) {
-						var id = items[i].id;
-						$.ajax({
-							url: `/api/vehicles/${id}`,
-							type: "DELETE",
-							success: function (data) {
-								$('.modal').modal('hide');
-								table.ajax.reload();
-							},
-							eror: function (data) {
-								alert("error");
-							}
-						});
-					}
-				}
-			} break;
-		}
-	});
+            case 'garage':{
+                if (action === "deactivate" || action === "reactivate") {
+                    for(var i=0; i< items.length; i++) {
+                        var id = items[i].id;
+                        $.ajax({
+                            url: `/api/garage/status/${id}`,
+                            type: "PATCH",
+                            success: function (data) {
+                                $('.modal').modal('hide');
+                                if(data.result) {
+                                    if(table != '') {
+                                        table.ajax.reload();
+                                    } else {
+                                        if($('#isActive').val() === 'True') {
+                                            $('#isActive').val('False');
+                                        } else {
+                                            $('#isActive').val('True');
+                                        }
+                                        renderActivation();
+                                    }
+                                } else {
+                                    toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
+                                }
+                            },
+                            eror: function (data) {
+                                toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
+                            }
+                        });
+                    }
+                }
+                if (action === "delete") {
+                    for(var i=0; i< items.length; i++) {
+                        var id = items[i].id;
+                        $.ajax({
+                            url: `/api/deleteGarage/${id}`,
+                            type: "DELETE",
+                            success: function (data) {
+                                $('.modal').modal('hide');
+                                if(data.result) {
+                                    if(table != '') {
+                                        table.ajax.reload();
+                                    } else {
+                                        window.location.pathname = "/management/garageManagement";
+                                    }
+                                    
+                                } else {
+                                    toastr.error(data.message);
+                                }
+                            },
+                            eror: function (data) {
+                                toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
+                            }
+                        });
+                    }
+                }
+            } break;
+            case 'vehicle':{
+                if(action === "delete") {
+                    for(var i=0; i< items.length; i++) {
+                        var id = items[i].id;
+                        $.ajax({
+                            url: `/api/vehicles/${id}`,
+                            type: "DELETE",
+                            success: function (data) {
+                                $('.modal').modal('hide');
+                                table.ajax.reload();
+                            },
+                            eror: function (data) {
+                                toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
+                            }
+                        });
+                    }
+                }
+            } break;
+        }
+    });
 }
