@@ -145,6 +145,14 @@ namespace CRP.Controllers
 			return View();
 		}
 
+        public string Xoakhoangtrang(String text)
+        {
+            while (text.IndexOf(" ") >= 0)
+            {
+                text = text.Replace(" ", "");
+            }  
+            return text;
+        }
 		//
 		// POST: /Account/Register
 		[HttpPost]
@@ -154,7 +162,7 @@ namespace CRP.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var user = new ApplicationUser { UserName = model.Username, Email = model.Email, FullName = model.Fullname, PhoneNumber = model.PhoneNumber};
+				var user = new ApplicationUser { UserName = Xoakhoangtrang(model.Username.Trim()), Email = model.Email, FullName = model.Fullname.Trim(), PhoneNumber = model.PhoneNumber};
 				var result = await UserManager.CreateAsync(user, model.Password);
 				if (result.Succeeded)
 				{
