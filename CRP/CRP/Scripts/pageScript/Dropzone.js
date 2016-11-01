@@ -8,6 +8,7 @@
     init: function () {
         this.on("maxfilesexceeded", function (data) {
             var res = eval('(' + data.xhr.responseText + ')');
+
         });
         this.on("addedfile", function (file) {
 
@@ -25,7 +26,6 @@
                 _this.removeFile(file);
                 // If you want to the delete the file on the server as well,
                 // you can do the AJAX request here.
-
             });
 
             // Add the button to the file preview element.
