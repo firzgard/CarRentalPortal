@@ -43,6 +43,8 @@
         <AssociationConnector Association="CRPDBModel.FK_CarModel_CarBrand" />
         <AssociationConnector Association="CRPDBModel.AspNetUserRoles" />
         <AssociationConnector Association="CRPDBModel.ModelCategoryMapping" />
+        <EntityTypeShape EntityType="CRPDBModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="CRPDBModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

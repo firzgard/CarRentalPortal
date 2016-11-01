@@ -376,6 +376,9 @@
     <Compile Include="Models\Entities\Category.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Entities\C__MigrationHistory.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\Garage.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
@@ -409,6 +412,9 @@
     <Compile Include="Models\Entities\Services\SystemService.cs" />
     <Compile Include="Models\Entities\Services\UserService.cs" />
     <Compile Include="Models\Entities\Services\VehicleImageService.cs" />
+    <Compile Include="Models\Entities\sysdiagram.cs">
+      <DependentUpon>CRP.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
@@ -1536,7 +1542,6 @@
     <Content Include="Content\NoUiSlider\nouislider.min.css" />
     <Content Include="Content\NoUiSlider\nouislider.pips.css" />
     <Content Include="Content\NoUiSlider\nouislider.tooltips.css" />
-    <Content Include="Content\pageStyle\adminDashboard.css" />
     <Content Include="Content\pageStyle\becomeProvider.css" />
     <Content Include="Content\pageStyle\bookingConfirm.css" />
     <Content Include="Content\pageStyle\bookingHistory.css" />
@@ -1803,9 +1808,10 @@
     <Content Include="Areas\Provider\Views\VehicleManagement\VehicleManagement.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingConfirm.cshtml" />
     <Content Include="Areas\Customer\Views\Booking\BookingReceipt.cshtml" />
-    <Content Include="Areas\Admin\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\DashBoard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\UserManagement\UserManagement.cshtml" />
     <Content Include="Areas\Provider\Views\DashBoard\Index.cshtml" />
+    <Content Include="Areas\Provider\Views\DashBoard\TestDropzone.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleManagement\VehicleDetail.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -1839,6 +1845,7 @@
     <Content Include="Scripts\pageScript\becomeProvider.js" />
     <Content Include="Scripts\pageScript\bookingConfirm.js" />
     <Content Include="Scripts\pageScript\bookingHistory.js" />
+    <Content Include="Scripts\pageScript\Dropzone.js" />
     <Content Include="Scripts\pageScript\Personal.js" />
     <Content Include="Scripts\pageScript\bookingManagement.js" />
     <Content Include="Scripts\pageScript\garage.js" />
@@ -1849,7 +1856,7 @@
     <Content Include="Scripts\pageScript\VehicleDetail.js" />
     <Content Include="Scripts\pageScript\vehicleGroup.js" />
     <Content Include="Scripts\pageScript\vehicleGroupManagement.js" />
-    <Content Include="Scripts\pageScript\adminDashboard.js" />
+    <Content Include="Scripts\pageScript\report.js" />
     <Content Include="Scripts\pageScript\vehicleInfo.js" />
     <Content Include="Scripts\pageScript\vehicleManagement.js" />
     <Content Include="Scripts\prototype.js" />
