@@ -3,6 +3,7 @@ using System.Linq;
 using CRP.Models.Entities.Repositories;
 using CRP.Models.ViewModels;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees;
 
 namespace CRP.Models.Entities.Services
 {
@@ -193,6 +194,11 @@ namespace CRP.Models.Entities.Services
 				vehicles = vehicles.Where(v => v.VehicleGroupID == filterConditions.VehicleGroupID);
 
 			var recordsTotal = vehicles.Count();
+
+			// Search, if Search param exists
+			if (filterConditions.Search != null)
+				vehicles = vehicles.Where(v => v.Name.Contains(filterConditions.Search)
+				                               || v.LicenseNumber.Contains(filterConditions.Search));
 
 			// Parse into returnable model
 			var results = vehicles.ToList().Select(v => new VehicleManagementItemJsonModel(v));

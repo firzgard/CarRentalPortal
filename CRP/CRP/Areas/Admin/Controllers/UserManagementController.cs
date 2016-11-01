@@ -36,7 +36,7 @@ namespace CRP.Areas.Admin.Controllers
         public JsonResult GetGarageListAPI()
         {
             List<UserViewModel> lstUser = new List<UserViewModel>();
-            var service = this.Service<IUserReceiptService>();
+            var service = this.Service<IUserService>();
             List<AspNetUser> list = service.Get().ToList();
             foreach (AspNetUser item in list)
             {
@@ -72,7 +72,7 @@ namespace CRP.Areas.Admin.Controllers
         public async Task<JsonResult> ChangeStatus()
         {
             String ID = Request.Params["id"];
-            var service = this.Service<IUserReceiptService>();
+            var service = this.Service<IUserService>();
             var entity = await service.GetAsync(ID);
             if (entity != null)
             {

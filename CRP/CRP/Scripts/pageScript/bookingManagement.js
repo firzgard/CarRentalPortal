@@ -240,7 +240,7 @@ $(document).ready( function () {
                 table.ajax.reload();
             },
             error: function (e) {
-                alert('error');
+                toastr.error("Đã có lỗi xảy ra. Phiền bạn thử lại sau");
             }
         });
     });
