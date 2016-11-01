@@ -126,7 +126,7 @@ $(document).ready(function () {
 	let isInThePast = null;
 
 	let tableBooking = $(bookings).DataTable({
-	    dom: "ltipr"
+	    dom: "lftipr"
 		, serverSide: true
 		, ajax: {
 		    url: queryBookingApiUrl
