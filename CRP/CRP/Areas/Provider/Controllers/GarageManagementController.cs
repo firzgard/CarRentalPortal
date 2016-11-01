@@ -23,10 +23,17 @@ namespace CRP.Areas.Provider.Controllers
 		public ViewResult GarageManagement()
 		{
 			var locationService = this.Service<ILocationService>();
-			List<Location> lstLocation = new List<Location>();
-			lstLocation = locationService.Get().ToList();
-			ViewBag.locationList = lstLocation;
-			return View("~/Areas/Provider/Views/GarageManagement/GarageManagement.cshtml");
+            GarageModel garageModel = new GarageModel();
+
+            garageModel.listLocation = locationService.Get()
+                .Select(q => new SelectListItem()
+                {
+                    Text = q.Name,
+                    Value = q.ID.ToString(),
+                    Selected = false,
+                });
+
+            return View("~/Areas/Provider/Views/GarageManagement/GarageManagement.cshtml", garageModel);
 		}
 
 		// Route to garage's detailed info page
@@ -96,20 +103,21 @@ namespace CRP.Areas.Provider.Controllers
 
         // API Route to create single new garage
         // garageViewModel
+        [Authorize(Roles = "Provider")]
         [Route("api/garages")]
 		[HttpPost]
 		public async Task<ActionResult> CreateGarageAPI(Garage model)
 		{
-			if (!this.ModelState.IsValid)
-			{
-				return new HttpStatusCodeResult(403, "Created unsuccessfully.");
-			}
-			var service = this.Service<IGarageService>();
+            model.OwnerID = User.Identity.GetUserId();
+            model.IsActive = true;
+            model.IsDisabled = false;
+            model.Star = 0m;
+            model.NumOfComment = 0;
+            var service = this.Service<IGarageService>();
+            
+			await service.CreateAsync(model);
 
-			Garage newGarage = this.Mapper.Map<Garage>(model);
-			await service.CreateAsync(newGarage);
-
-			return new HttpStatusCodeResult(200, "Created successfully.");
+            return Json(new { result = true, message = "Created successfully." });
 		}
 
 		// API Route to edit single garage
