@@ -378,7 +378,7 @@ namespace CRP.Areas.Provider.Controllers
         public void SaveUploadedFile(int VehicleID)
         {
             var imageServie = this.Service<IVehicleImageService>();
-            var imageServie2 = this.Service<IVehicleService>();
+            var vehicleService = this.Service<IVehicleService>();
             string fName = "";
             foreach (string fileName in Request.Files)
             {
@@ -411,15 +411,23 @@ namespace CRP.Areas.Provider.Controllers
                         url = uploadResult.Uri.ToString();
                         //luu xuong database
                         VehicleImage imageOfVehicle = new VehicleImage();
-                        var Entit = imageServie2.Get(VehicleID);
+                        var Entity = vehicleService.Get(VehicleID);
                         imageOfVehicle.URL = url;
                         imageOfVehicle.CarID = VehicleID;
-                        imageOfVehicle.Vehicle = Entit;
+                        imageOfVehicle.Vehicle = Entity;
                         imageServie.CreateAsync(imageOfVehicle);
-                        ICollection<VehicleImage> lstImage = Entit.VehicleImages;
+                        ICollection<VehicleImage> lstImage = Entity.VehicleImages;
                         lstImage.Add(imageOfVehicle);
-                        Entit.VehicleImages = lstImage;
-                        imageServie2.UpdateAsync(Entit);
+                        Entity.VehicleImages = lstImage;
+                        var listItem = imageServie.Get(q => q.CarID == Entity.ID).ToList();
+                        if (listItem.Count() > 0)
+                        {
+                            foreach (var item in listItem)
+                            {
+                                imageServie.DeleteAsync(item);
+                            }
+                        }
+                        vehicleService.UpdateAsync(Entity);
                     }
                 }
             }
