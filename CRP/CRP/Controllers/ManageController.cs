@@ -367,22 +367,29 @@ namespace CRP.Controllers
                                  "h4SCiNi8zOKfewxEi2LqNt3IjrQ"
                                     );
             CloudinaryDotNet.Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(account);
-            //dinh dang image     
-            var pic = System.Web.HttpContext.Current.Request.Files["image"];
-            if (pic != null)
+            try
             {
-                CloudinaryDotNet.Actions.ImageUploadParams uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams()
+                var pic = System.Web.HttpContext.Current.Request.Files["image"];
+                if (pic != null)
                 {
-                    //File = new CloudinaryDotNet.Actions.FileDescription(@"c:\mypicture.jpg"),
-                    //PublicId = "sample_remote_file"
-                    File = new FileDescription(pic.FileName,pic.InputStream),
-                    Tags = "Anh cua" + userName,
-                };
-                CloudinaryDotNet.Actions.ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
+                    CloudinaryDotNet.Actions.ImageUploadParams uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams()
+                    {
+                        //File = new CloudinaryDotNet.Actions.FileDescription(@"c:\mypicture.jpg"),
+                        //PublicId = "sample_remote_file"
+                        File = new FileDescription(pic.FileName, pic.InputStream),
+                        Tags = "Anh cua" + userName,
+                    };
+                    CloudinaryDotNet.Actions.ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
 
-                url = uploadResult.Uri.ToString();
+                    url = uploadResult.Uri.ToString();
+                    return url;
+                }
+                } catch (Exception e)
+                 {
+                e.GetHashCode();
+                url = "/Content/img/error.jpg";
                 return url;
-            }
+                };
             return url;
         }
         //
