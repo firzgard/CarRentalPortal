@@ -362,5 +362,28 @@ namespace CRP.Areas.Provider.Controllers
 
 			return new HttpStatusCodeResult(200, "Deleted successfully");
 		}
-	}
+        //[Route("api/vehicles/deletepic")]
+        [HttpGet]
+        public async Task<ActionResult> DeletePic()
+        {
+            string id = Request.QueryString["id"];
+            int intID = int.Parse(id);
+            var vehicleSer = this.Service<IVehicleService>();
+            var entity = vehicleSer.Get(intID);
+            ICollection<VehicleImage> lstVehiIm = entity.VehicleImages;
+            string url = Request.QueryString["Url"];
+            var VehicleImageService = this.Service<IVehicleImageService>();
+            foreach(VehicleImage x in lstVehiIm)
+            {
+                if(x.URL == url)
+                {
+                    await VehicleImageService.DeleteAsync(x);
+                }
+            }
+            //if (vehiEntity == null)
+            //    return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
+            //await VehicleImageService.DeleteAsync(entity);
+            return new HttpStatusCodeResult(200, "Delete successfull");
+        }
+    }
 }

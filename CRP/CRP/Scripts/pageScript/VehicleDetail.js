@@ -41,14 +41,13 @@
         $('#img-div').show();
         $('#my-awesome-dropzone').hide();
     });
-    $('')
     Dropzone.options.myAwesomeDropzone = {
 
         autoProcessQueue: false,
         uploadMultiple: true,
         acceptedFiles: "image/jpeg,image/png,image/gif",
         parallelUploads: 20,
-        maxFiles: 10,
+        maxFiles: 20,
         maxFilesize: 1,
         dictDefaultMessage: "Drop files here to upload (or click)",
         dictInvalidFileType: "Accept image only",
@@ -77,6 +76,7 @@
 
     }
 });
+
 $(document).on('click', "#agreed-delete", function () {
     let id = $('#vehicleID').val();
     $.ajax({

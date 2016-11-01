@@ -295,6 +295,25 @@
                                         </div>
                                     </form>
                                 </div>
+
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="row editFiel" style="display:none">
+                                
+                                    @foreach (string entry in Model.ImageUrls)
+                                    {
+                                        //using (Html.BeginForm("DeletePic", "VehicleManagement", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+                                        //{
+                                        <div class="col-md-3">
+                                            <div class="item">
+                                                <img alt="image" class="img-responsive" src="@entry">
+                                                <input type="hidden" value="@entry" name="Url" id="Url" />
+                                                <input type="hidden" value="@Model.ID" name="id" id="id" />
+                                                <input type="submit" class="btn btn-success" value="Xoa anh" />
+                                            </div>
+                                        </div>
+                                       //}
+                                    }
                             </div>
                             <div class="hr-line-dashed"></div>
                                 <div class="text-center">
@@ -304,7 +323,7 @@
                                 </div>
                             </div>
                         </div>
-
+                   
                     </div>
 
                 </div>
