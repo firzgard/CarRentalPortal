@@ -367,7 +367,7 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
         [Route("Home/SaveUploadedFile/{VehicleID:int}")]
-        public async void SaveUploadedFile(int VehicleID)
+        public void SaveUploadedFile(int VehicleID)
         {
             var imageServie = this.Service<IVehicleImageService>();
             var imageServie2 = this.Service<IVehicleService>();
@@ -407,11 +407,11 @@ namespace CRP.Areas.Provider.Controllers
                         imageOfVehicle.URL = url;
                         imageOfVehicle.CarID = VehicleID;
                         imageOfVehicle.Vehicle = Entit;
-                        await imageServie.CreateAsync(imageOfVehicle);
+                        imageServie.CreateAsync(imageOfVehicle);
                         ICollection<VehicleImage> lstImage = Entit.VehicleImages;
                         lstImage.Add(imageOfVehicle);
                         Entit.VehicleImages = lstImage;
-                        await imageServie2.UpdateAsync(Entit);
+                        imageServie2.UpdateAsync(Entit);
                     }
                 }
             }
