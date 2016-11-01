@@ -39,14 +39,20 @@ $(document).ready(() => {
             //data: searchCondition
         },
         columnDefs: [
+            {
+                targets: 1,
+                render: function (data, type, row) {
+                    return `<a href="/management/garageManagement/${row[0]}">${data}</a>`;
+                }
+            },
 			{
 			    // Render stars
 			    targets: -3,
 			    render: (data, type) => {
-			        if (type === 'display') {
-			            return renderStarRating(data);
+			        if (data !== null) {
+			            return renderStarRating(data, '#4CAF50');
 			        }
-			        return data;
+			        return '-';
 			    }
 			},
 			{
@@ -143,4 +149,157 @@ $(document).ready(() => {
         });
     });
 
+    $('#locationID').select2({
+        width: '100%',
+    });
+    // disable textbox while check Nghi
+    for (let i = 0; i < 7; i++) {
+        if ($(`#chk${i}`).is(':checked')) {
+            $(`.work-start:eq(${i})`).prop('disabled', true);
+            $(`.work-end:eq(${i})`).prop('disabled', true);
+        } else {
+            $(`.work-start:eq(${i})`).prop('disabled', false);
+            $(`.work-end:eq(${i})`).prop('disabled', false);
+        }
+        $(`#chk${i}`).change(function () {
+            if ($(this).is(':checked')) {
+                $(`.work-start:eq(${i})`).val("");
+                $(`.work-end:eq(${i})`).val("");
+                $(`.work-start:eq(${i})`).prop('disabled', true);
+                $(`.work-end:eq(${i})`).prop('disabled', true);
+            } else {
+                $(`.work-start:eq(${i})`).prop('disabled', false);
+                $(`.work-end:eq(${i})`).prop('disabled', false);
+                $(`.work-start:eq(${i})`).val("08:00");
+                $(`.work-end:eq(${i})`).val("17:00");
+            }
+        });
+    }
+
+    $('#btnCreateGarage').on('click', function () {
+        let workTable = [];
+
+        for (var i = 0; i < 7; i++) {
+            if (!$(`.work-start:eq(${i})`).val() && $(`.work-end:eq(${i})`).val()) {
+                toastr.error("Vui lòng nhập thời gian mở cửa");
+                return false;
+            }
+            if ($(`.work-start:eq(${i})`).val() && !$(`.work-end:eq(${i})`).val()) {
+                toastr.error("Vui lòng nhập thời gian đóng cửa");
+                return false;
+            }
+            if ($(`.work-start:eq(${i})`).val() && $(`.work-end:eq(${i})`).val()) {
+                var startStr = $(`.work-start:eq(${i})`).val().split(":");
+                var endStr = $(`.work-end:eq(${i})`).val().split(":");
+                var startTimeInMinute = parseInt(startStr[0]) * 60 + parseInt(startStr[1]);
+                var endTimeinMinute = parseInt(endStr[0]) * 60 + parseInt(endStr[1]);
+                if (startTimeInMinute > endTimeinMinute) {
+                    toastr.error("Xin lỗi, thời gian đóng cửa không được sớm hơn thời gian mở cửa");
+                    return false;
+                }
+                if (startTimeInMinute > 1440 || endTimeinMinute > 1440 || parseInt(startStr[1]) > 59 || parseInt(endStr[1]) > 59) {
+                    toastr.error("Xin lỗi, giá trị thời gian không hợp lệ");
+                    return false;
+                }
+                var item = {};
+                item.DayOfWeek = i;
+                item.OpenTimeInMinute = startTimeInMinute;
+                item.CloseTimeInMinute = endTimeinMinute;
+                workTable.push(item);
+            }
+        }
+
+        let model = {};
+        model.ID = null;
+        model.Name = null;
+        model.LocationID = null;
+        model.Address = null;
+        model.Email = null;
+        model.Phone1 = null;
+        model.Phone2 = null;
+        model.Description = null;
+        model.Policy = null;
+        model.GarageWorkingTimes = workTable;
+
+        if (!$('#garageName').val()) {
+            toastr.error("Vui lòng nhập tên garage");
+            return false;
+        } else if (!$('#garageName').val().length > 100) {
+            toastr.error("Xin lỗi. Tên của garage vượt quá độ dài quy định");
+            return false;
+        } else {
+            model.Name = $('#garageName').val();
+        }
+
+        model.LocationID = $('#locationID').val();
+
+        if (!$('#gAddress').val()) {
+            toastr.error("Vui lòng nhập địa chỉ");
+            return false;
+        } else if ($('#gAddress').val().length > 200) {
+            toastr.error("Xin lỗi. Địa chỉ Vượt quá độ dài quy định");
+            return false;
+        } else {
+            model.Address = $('#gAddress').val();
+        }
+
+        if (!$('#gEmail').val()) {
+            toastr.error("Vui lòng nhập email");
+            return false;
+        } else if (!validateEmail($('#gEmail').val())) {
+            toastr.error("Email không hợp lệ");
+            return false;
+        } else {
+            model.Email = $('#gEmail').val();
+        }
+
+        if (!$('#gPhone1').val()) {
+            toastr.error("Vui lòng nhập số điện thoại");
+            return false;
+        } else if (!validatePhone($('#gPhone1').val())) {
+            toastr.error("Số điện thoại không hợp lệ");
+            return false;
+        } else {
+            model.Phone1 = $('#gPhone1').val();
+        }
+
+        if ($('#gPhone2').val()) {
+            if (!validatePhone($('#gPhone2').val())) {
+                toastr.error("Số điện thoại không hợp lệ");
+                return false;
+            } else {
+                model.Phone2 = $('#gPhone2').val();
+            }
+        }
+
+        if ($('#gDescription').val()) {
+            if ($('#gDescription').val().length > 1000) {
+                toastr.error("Vượt quá độ dài quy định");
+                return false;
+            }
+            model.Description = $('#gDescription').val();
+        }
+
+        if ($('#gPolicy').val()) {
+            model.Policy = $('#gPolicy').val();
+        }
+
+        $.ajax({
+            url: '/api/garages',
+            type: 'POST',
+            data: JSON.stringify(model),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (data) {
+                $('.modal').modal('hide');
+                table.ajax.reload();
+            },
+            fail: function (e) {
+                toastr.error("Tạo mới không thành công. Xin vui lòng thử lại");
+            },
+            error: function (e) {
+                toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
+            }
+        });
+    });
 });

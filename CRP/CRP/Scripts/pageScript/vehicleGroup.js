@@ -164,8 +164,8 @@ $(document).ready(function () {
             {
                 targets: -2
 				, render: function (data, type, row) {
-				    if (data) {
-				        return renderStarRating(data);
+				    if (data !== null) {
+				        return renderStarRating(data, '#4CAF50');
 				    }
 				    return '-';
 				}

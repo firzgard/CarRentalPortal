@@ -1,4 +1,5 @@
-﻿using CRP.Controllers;
+﻿using CloudinaryDotNet.Actions;
+using CRP.Controllers;
 using CRP.Models;
 using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
@@ -6,6 +7,7 @@ using CRP.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -40,7 +42,7 @@ namespace CRP.Areas.Provider.Controllers
             foreach (BookingReceipt item in listBooking)
             {
                 model.money = model.money + item.RentalPrice;
-                model.booking = + 1;
+                model.booking = +1;
             }
             listBooking = BookingService.Get(q => q.AspNetUser1.Id == providerID && q.IsSelfBooking == false &&
                q.IsPending == false).OrderByDescending(q => q.ID).Take(3).ToList();
@@ -94,7 +96,7 @@ namespace CRP.Areas.Provider.Controllers
             var listBooking = new List<BookingReceipt>();
             var listReportMoney = new List<ReportMoneyViewModel>();
             var period = 0;
-            for (int i =1; i <= today.Month; i++)
+            for (int i = 1; i <= today.Month; i++)
             {
                 period = today.Month - i;
                 ReportMoneyViewModel model = new ReportMoneyViewModel();
@@ -108,6 +110,12 @@ namespace CRP.Areas.Provider.Controllers
                 listReportMoney.Add(model);
             }
             return Json(new { aaData = listReportMoney }, JsonRequestBehavior.AllowGet);
+        }
+        // GET: Provider/DashBoard
+        [Route("Dropzone")]
+        public ActionResult TestDropzone()
+        {
+            return View("~/Areas/Provider/Views/DashBoard/TestDropzone.cshtml");
         }
     }
 }

@@ -7,7 +7,11 @@
     ViewBag.Title = "VehihicleDetail";
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
-
+<style type="text/css">
+    .dz-max-files-reached {
+        background-color: black;
+    }
+</style>
 
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-md-10"><h2>Thông tin chi tiết của xe</h2></div>
@@ -279,7 +283,7 @@
                                                         <span class="icon-next"></span>
                                                     </a>
                                                 </div>
-                                                <a id="edit-img" class="btn btn-warning editFiel" style="display:none">Edit image</a>
+                                                <a id="edit-img" class="btn btn-warning editFiel" style="display:none">Thêm ảnh mới</a>
                                             </div>
                                         </div>
                                     </div>
@@ -287,14 +291,22 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                    @*<form id="my-awesome-dropzone" class="dropzone" action="#">
                                         <div id="preview-template">
                                         </div>
                                         <div class="row">
                                             <input type="button" name="submit-img" class="btn btn-success pull-right m-l-xs" value="Save" />
                                             <a id="cancel-img" class="btn btn-default pull-right">Cancel</a>
                                         </div>
+                                    </form>*@
+
+                                    <form action="/Home/SaveUploadedFile/@Model.ID" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple />
+                                            <input type="submit" value="Upload" />
+                                        </div>
                                     </form>
+
                                 </div>
                             </div>
                             <div class="row">
@@ -356,22 +368,24 @@
 </div>*@
 
     @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleDetail")
-          .Include("~/Content/awesome-bootstrap-checkbox.css",
-              "~/Content/chosen.css",
-              "~/Scripts/dropzone/dropzone.css",
-              "~/Scripts/dropzone/basic.css",
-              "~/Content/pageStyle/VehicleDetail.css",
-              "~/Content/select2/select2.css"));
+                                                          .Include("~/Content/awesome-bootstrap-checkbox.css",
+                                                              "~/Content/chosen.css",
+                                                              "~/Scripts/dropzone/dropzone.css",
+                                                              "~/Scripts/dropzone/basic.css",
+                                                              "~/Content/pageStyle/VehicleDetail.css",
+                                                              "~/Content/select2/select2.css"));
     }
     @section Styles {
         @Styles.Render("~/Styles/VehicleDetail")
     }
     @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleDetail")
-            .Include("~/Scripts/chosen.jquery.js",
-               "~/Scripts/bootstrap.min.js",
-               "~/Scripts/dropzone/dropzone.js",
-               "~/Scripts/select2/select2.full.js",
-               "~/Scripts/pageScript/VehicleDetail.js"));
+                                                  .Include("~/Scripts/chosen.jquery.js",
+                                                     "~/Scripts/bootstrap.min.js",
+                                                     "~/Scripts/dropzone/dropzone.js",
+                                                     "~/Scripts/select2/select2.full.js",
+                                                     "~/Scripts/pageScript/VehicleDetail.js",
+                                                     "~/Scripts/pageScript/Dropzone.js"));
+    }
     }
     @section Scripts {
         @Scripts.Render("~/Scripts/VehicleDetail")
