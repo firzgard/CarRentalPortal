@@ -1,18 +1,14 @@
-﻿using System;
+﻿using CRP.Models.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
-namespace CRP.Models.JsonModels
+namespace CRP.Models.ViewModels
 {
-    public class GarageModel
+    public class GarageModel : Garage
     {
-        public int ID { get; set; }
-        public string Name { get; set; }
-        public int LocationID { get; set; }
-        public string LocationName { get; set; }
-        public string Address { get; set; }
-        public decimal Star { get; set; }
-        public bool IsActive { get; set; }
+        public IEnumerable<SelectListItem> listLocation { get; set; }
     }
 }

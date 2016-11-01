@@ -67,7 +67,7 @@ namespace CRP.Controllers
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
-            var _userService = this.Service<IUserReceiptService>();
+            var _userService = this.Service<IUserService>();
             var userId = User.Identity.GetUserId();
             ApplicationUser user = await UserManager.FindByIdAsync(userId);
             AspNetUser userEntity = await _userService.GetAsync(userId);
@@ -91,7 +91,7 @@ namespace CRP.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Update(IndexViewModel model)
         {
-            var _userService = this.Service<IUserReceiptService>();
+            var _userService = this.Service<IUserService>();
             var userId = User.Identity.GetUserId();
             if (ModelState.IsValid)
             {
