@@ -376,9 +376,6 @@
     <Compile Include="Models\Entities\Category.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Entities\C__MigrationHistory.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\Garage.cs">
       <DependentUpon>CRP.tt</DependentUpon>
     </Compile>
@@ -412,9 +409,6 @@
     <Compile Include="Models\Entities\Services\SystemService.cs" />
     <Compile Include="Models\Entities\Services\UserService.cs" />
     <Compile Include="Models\Entities\Services\VehicleImageService.cs" />
-    <Compile Include="Models\Entities\sysdiagram.cs">
-      <DependentUpon>CRP.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Entities\UnitOfWork.cs" />
     <Compile Include="Models\Constants.cs" />
     <Compile Include="Models\Entities\Repositories\ModelRepository.cs" />
@@ -1989,6 +1983,7 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\VehicleInfo.cshtml" />
     <Content Include="Views\Shared\_NganLuongPaymentPartial.cshtml" />
+    <Content Include="Scripts\jquery.validate.vi.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

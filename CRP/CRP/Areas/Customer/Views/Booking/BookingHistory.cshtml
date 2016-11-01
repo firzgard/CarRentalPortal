@@ -35,7 +35,6 @@
 		.Include("~/Scripts/DataTables/jquery.dataTables.js",
 			"~/Scripts/DataTables/dataTables.bootstrap.js",
 			"~/Scripts/jquery-bar-rating/jquery.barrating.min.js",
-			"~/Scripts/jquery.validate.js",
 			"~/Scripts/utils/generateUIElements.js",
 			"~/Scripts/pageScript/BookingHistory.js"));
 }
@@ -45,5 +44,6 @@
 		const CommentUrl = '/api/bookings';
 		const CancelUrl = '/api/bookings';
 	</script>
+	@Scripts.Render("~/bundles/jqueryval")
 	@Scripts.Render("~/Scripts/BookingHistory")
 }

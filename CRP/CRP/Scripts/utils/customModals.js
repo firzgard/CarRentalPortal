@@ -76,188 +76,182 @@ function renderSelectorModal(type, modalNode, vehicles){
 	});
 }
 
-function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, groupID, transmissionType, transmissionDetail, engine, fuel, color, description } = {}){
-	let jqModalNode = $(modalNode)
+function renderCreateVehicleModal(modalNode, table, vehicleID){
+	let jqModalNode = $(modalNode),
+		data;
 
-	jqModalNode.html(`<div class="modal-dialog modal-lg" role="document">
-		<div class="modal-content">
-			<div class="modal-header green-bg">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
-				</button>
-				<h2 class="modal-title">Tạo xe mới</h2>
-			</div>
-			<div class="modal-body">
-				<form id="newVehicleForm" action="#">
-					<div class="row">
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label>Tên xe*</label>
-								<input type="text" placeholder="Tên xe" value="${name || ''}" id="newName" class="form-control" required>
-							</div>
-							<div class="form-group">
-								<label>Dòng xe*</label>
-								<select id="newModel" data-placeholder="Vui lòng chọn dòng xe..." class="input-group select2-seed" required>
-									${modelOptions.innerHTML}
-								</select>
-							</div>
-							<div class="form-group">
-								<label>Garage*</label>
-								<select id="newGarage" data-placeholder="Vui lòng chọn garage..." class="input-group select2-seed" required>
-									${garageOptions.innerHTML}
-								</select>
-							</div>
-							<div class="form-group">
-								<label>Loại hộp số*</label>
-								<div class="btn-group btn-group-justified" data-toggle="buttons" >
-									<label class="btn btn-primary ${(transmissionType && (transmissionType == 1) && 'active') || ''}">
-										<input type="radio" value="1" autocomplete="off" ${(transmissionType && (transmissionType == 1) && 'checked') || ''} >Số tự động
-									</label>
-									<label class="btn btn-primary ${(transmissionType && (transmissionType == 2) && 'active') || ''}">
-										<input type="radio" value="2" autocomplete="off" ${(transmissionType && (transmissionType == 2) && 'checked') || ''} >Số sàng
-									</label>
+	if (vehicleID) {
+		$.ajax({
+			url: '/api/vehicles/' + vehicleID,
+		})
+		.done(function(data) {
+			renderModal(data);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+	} else {
+		renderModal();
+	}
+
+	function renderModal(data = {}){
+		jqModalNode.html(`<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header green-bg">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true"><i class="fa fa-times-circle"></i></span>
+					</button>
+					<h2 class="modal-title">Tạo xe mới</h2>
+				</div>
+				<div class="modal-body">
+					<form method="post" id="newVehicleForm" class="dropzone" style="border: 0; padding: 0;">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label>Tên xe*</label>
+									<input id="Name" name="Name" type="text" placeholder="Tên xe" maxlength="100" minlength="10" value="${data.Name || ''}" class="form-control" required>
+								</div>
+								<div class="form-group">
+									<label>Dòng xe*</label>
+									<select id="ModelID" name="ModelID" class="input-group" required>
+										${modelOptions.innerHTML}
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Garage*</label>
+									<select id="GarageID" name="GarageID" class="input-group" required>
+										${garageOptions.innerHTML}
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Loại hộp số*</label>
+									<div class="btn-group btn-group-justified" data-toggle="buttons" >
+										<label class="btn btn-primary ${(data.TransmissionType && (data.TransmissionType == 1) && 'active') || ''}">
+											<input name="TransmissionType" type="radio" required value="1" autocomplete="off" ${(data.TransmissionType && (data.TransmissionType == 1) && 'checked') || ''} >Số tự động
+										</label>
+										<label class="btn btn-primary ${(data.TransmissionType && (data.TransmissionType == 2) && 'active') || ''}">
+											<input name="TransmissionType" type="radio" value="2" autocomplete="off" ${(data.TransmissionType && (data.TransmissionType == 2) && 'checked') || ''} >Số sàng
+										</label>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Loại nhiên liệu</label>
+									<select class="input-group" id="FuelType" name="FuelType">
+										${fuelOptions.innerHTML}
+									</select>
 								</div>
 							</div>
-							<div class="form-group">
-								<label>Động cơ</label>
-								<input type="text" placeholder="Chi tiết về động cơ xe" value="${engine || ''}" class="form-control">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label>Biển số xe*</label>
+									<input id="LicenseNumber" name="LicenseNumber" type="text" maxlength="50" minlength="10" placeholder="Biển số xe" class="form-control" required>
+								</div>
+								<div class="form-group">
+									<label>Năm sản xuất*</label>
+									<input id="Year" name="Year" type="number" placeholder="Năm sản xuất" value="${data.Year || ''}" class="form-control" required>
+								</div>
+								<div class="form-group">
+									<label>Nhóm xe</label>
+									<select id="VehicleGroupID" name="VehicleGroupID" class="input-group">
+										${groupOptions.innerHTML}
+									</select>
+								</div>
+								<div class="form-group">
+									<label>Chi tiết về hộp số</label>
+									<input id="TransmissionDetail" name="TransmissionDetail" type="text" maxlength="100" placeholder="Chi tiết về loại hộp số" value="${data.TransmissionDetail || ''}" class="form-control">
+								</div>
+								<div class="form-group">
+									<label>Đặc tả động cơ</label>
+									<input id="Engine" name="Engine" type="text" maxlength="100" placeholder="Chi tiết về động cơ xe" value="${data.Engine || ''}" class="form-control">
+								</div>
+							</div>
+							<label class="col-sm-12">Màu xe*</label>
+							<div class="col-sm-12">
+								${colorOptions.innerHTML}
+							</div>
+							<hr>
+							<div class="col-sm-12 form-group">
+								<label>Mô tả xe</label>
+								<textarea id="Description" name="Description" type="text" rows="20" maxlength="1000" class="form-control">${data.Description || ''}</textarea>
+							</div>
+							<hr>
+							<div class="col-sm-12 form-group">
+								<label>Hình ảnh</label>
 							</div>
 						</div>
-						<div class="col-sm-6">
-							<div class="form-group">
-								<label>Biển số xe*</label>
-								<input type="text" placeholder="Biển số xe" id="newLicense" class="form-control" required>
-							</div>
-							<div class="form-group">
-								<label>Năm sản xuất*</label>
-								<input id="newYear" type="number" placeholder="Năm sản xuất" value="${year || ''}" class="form-control" required>
-							</div>
-							<div class="form-group">
-								<label>Nhóm xe</label>
-								<select id="newGroup" data-placeholder="Vui lòng chọn nhóm xe..." class="input-group select2-seed" required>
-									${groupOptions.innerHTML}
-								</select>
-							</div>
-							<div class="form-group">
-								<label>Chi tiết về loại hộp số</label>
-								<input type="text" placeholder="Chi tiết về loại hộp số" value="${transmissionDetail || ''}" class="form-control">
-							</div>
-							<div class="form-group">
-								<label>Loại nhiên liệu</label>
-								<select data-placeholder="Please select fuel type..." class="input-group select2-seed">
-									${fuelOptions.innerHTML}
-								</select>
-							</div>
-						</div>
-						<label class="col-sm-12">Màu xe</label>
-						<div class="col-sm-12">
-							${colorOptions.innerHTML}
-						</div>
-						<hr>
-						<div class="col-sm-12 form-group">
-							<label>Mô tả xe</label>
-							<textarea type="text" rows="20" maxlength="200" class="form-control">${description || ''}</textarea>
-						</div>
-						<hr>
-						<div class="col-sm-12 form-group">
-							<label>Hình ảnh</label>
-							<div id="newImage" class="dropzone">
-								<div class="dropzone-previews"></div>
-							</div>
-						</div>
-					</div>
-				</form>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" id="createNewBtn" class="btn btn-primary">OK</button>
+				</div>
 			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button type="button" class="btn btn-primary">OK</button>
-			</div>
-		</div>
-	</div>`);
+		</div>`);
 
-	$('.select2-seed').select2({
-		allowClear: true
-		, width: '100%'
-	})
+		$('#ModelID').select2({
+			placeholder: "Vui lòng chọn dòng xe..."
+			, width: '100%'
+		})
+		data.ModelID && $('#ModelID').val(data.ModelID).trigger("change")
 
-	$('#newImage').dropzone({
-		acceptedFiles: "image/jpeg,image/png,image/gif"
-		, autoProcessQueue: false
-		, addRemoveLinks: "dictRemoveFile"
-		, dictCancelUpload: 'Xóa'
-		, dictDefaultMessage: "Thả ảnh hoặc nhấn vào đây để upload."
-		, dictFileTooBig: 'Dung lượng ảnh phải dưới {{maxFilesize}} mb.'
-		, dictInvalidFileType: "Không phải file ảnh."
-		, maxFiles: 10
-		, maxFilesize: 1
-		, uploadMultiple: true
-		, url: "/file/post"
-		, init: function () {}
-	});
+		$('#GarageID').select2({
+			placeholder: "Vui lòng chọn garage..." 
+			, width: '100%'
+		})
+		data.GarageID && $('#GarageID').val(data.GarageID).trigger("change")
 
-	// let imageDropzone = $("#imageDropzone").dropzone({
-	// 	url: '#'
-	// 	, autoProcessQueue: false
-	// 	, parallelUploads: 5
-	// 	, maxFilesize: 2
-	// 	, uploadMultiple: true
-	// 	, addRemoveLinks: "dictRemoveFile"
-	// 	, hiddenInputContainer: '.modal-body'
-	// 	, maxFiles: 5
-	// 	, acceptedFiles: "image/jpeg,image/png,image/gif"
-	// 	, init: function () {
-	// 		// this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
-	// 		// 	e.preventDefault();
-	// 		// 	e.stopPropagation();
-	// 		// 	myDropzone.processQueue();
-	// 		// });
-	// 		this.on("sendingmultiple", () => {
-	// 			alert("sending");
-	// 		});
-	// 		this.on("successmultiple", (files, response) => {
-	// 			alert("success");
-	// 		});
-	// 		this.on("errormultiple", (files, response) => {
-	// 			alert("fail");
-	// 		});
-	// 	}
-	// });
+		$('#VehicleGroupID').select2({
+			allowClear: true
+			, placeholder: "Vui lòng chọn nhóm xe..."
+			, width: '100%'
+		})
+		data.VehicleGroupID && $('#VehicleGroupID').val(data.VehicleGroupID).trigger("change")
 
+		$('#FuelType').select2({
+			allowClear: true
+			, placeholder: "Vui lòng chọn loại nhiên liệu..."
+			, width: '100%'
+		})
+		data.FuelType && $('#FuelType').val(data.FuelType).trigger("change")
 
+		data.Color && $(`input[name="Color"][value="${data.Color}"]`).prop('checked',true);
 
-	// Dropzone.options.myAwesomeDropzone = {
+		$('#newVehicleForm').dropzone({
+			acceptedFiles: "image/jpeg,image/png,image/gif"
+			, autoProcessQueue: false
+			, addRemoveLinks: "dictRemoveFile"
+			, dictCancelUpload: 'Xóa'
+			, dictDefaultMessage: "Thả ảnh hoặc nhấn vào đây để upload."
+			, dictFileTooBig: 'Dung lượng ảnh phải dưới {{maxFilesize}} mb.'
+			, dictInvalidFileType: 'Không phải file ảnh.'
+			, dictMaxFilesExceeded: ''
+			, maxFiles: 10
+			, parallelUploads: 10
+			, maxFilesize: 1
+			, uploadMultiple: true
+			, url: "/api/vehicles"
+			, init: function () {
+				this.on("completemultiple", (files) => {
+					jqModalNode.modal('hide');
+					table.ajax.reload();
+					toastr.success('Tạo xe thành công.');
+				});
 
-	// 	autoProcessQueue: false,
-	// 	uploadMultiple: true,
-	// 	acceptedFiles: "image/jpeg,image/png,image/gif",
-	// 	parallelUploads: 20,
-	// 	maxFiles: 20,
-	// 	maxFilesize: 1,
-	// 	dictDefaultMessage: "Drop files here to upload (or click)",
-	// 	dictInvalidFileType: "Accept image only",
-	// 	addRemoveLinks: "dictRemoveFile",
+				$('#createNewBtn').click((evt) => {
+					evt.preventDefault();
+					evt.stopPropagation();
 
-	// 	// Dropzone settings
-	// 	init: function() {
-	// 		var myDropzone = this;
-
-	// 		this.element.querySelector('input[name="submit-img"]').addEventListener("click", function(e) {
-	// 			e.preventDefault();
-	// 			e.stopPropagation();
-	// 			myDropzone.processQueue();
-	// 		});
-	// 		this.on("sendingmultiple", function() {
-	// 			alert("sending");
-	// 		});
-	// 		this.on("successmultiple", function(files, response) {
-	// 			alert("success");
-	// 		});
-	// 		this.on("errormultiple", function(files, response) {
-	// 			alert("fail");
-	// 		});
-	// 	}
-
-	// }
+					if ($("#newVehicleForm")[0].checkValidity() && this.getQueuedFiles().length >= 4) { 
+						this.processQueue();
+					} else if ($('input[name="Color"]:checked').length == 0) {
+						toastr.warning('Bạn chưa chọn màu xe.');
+					} else {
+						toastr.warning('Bạn phải upload ít nhất 4 hình.');
+					}
+				});
+			}
+		});
+	}
 }
 
 function renderConfirmModal(table, type, action, modalNode, items){

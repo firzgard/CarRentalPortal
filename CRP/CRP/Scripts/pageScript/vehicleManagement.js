@@ -78,11 +78,25 @@ $(document).ready(function () {
 		columns: vehicleTableColumns,
 		columnDefs: [
 			{
+				// Name col
+				targets: 1
+				, render: function(data, type, row) {
+					if (type === 'display') {
+						return `<a target="_blank" href="/management/vehicleManagement/${row.ID}">${data}</a>`
+					}
+
+					return data;
+				}
+			},
+			{
 				targets: -2
 				, render: function(data, type, row) {
-					if (data) {
-						return renderStarRating(data);
+					if (type === 'display') {
+						if (row.NumOfComment > 0) {
+							return renderStarRating(data);
+						}
 					}
+						
 					return '-';
 				}
 			},
@@ -137,9 +151,9 @@ $(document).ready(function () {
 		if (action === "deleteVehicle") {
 			renderConfirmModal(table, 'vehicle', 'delete', this, [{ id: id, name: name }]);
 		} else if (action == 'duplicateVehicle') {
-			renderCreateVehicleModal(this);
+			renderCreateVehicleModal(this, table, id);
 		} else if (action == 'createVehicle') {
-			renderCreateVehicleModal(this);
+			renderCreateVehicleModal(this, table);
 		}
 	});
 
