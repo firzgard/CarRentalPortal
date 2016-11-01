@@ -104,6 +104,7 @@ namespace CRP.Controllers
                 if (result.Succeeded)
                 {
                     userEntity.AvatarURL = model.Url;
+                    userEntity.FullName = model.Name;
                     _userService.Update(userEntity);
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return RedirectToAction("Index", "Manage");
