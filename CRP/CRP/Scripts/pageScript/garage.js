@@ -160,7 +160,7 @@ $(document).ready(function () {
 			    targets: -7
 				, render: function (data, type, row) {
 				    if (data !== null) {
-				        return renderStarRating(data, '#4CAF50');
+				        return renderStarRating(data, '#4CAF50', false);
 				    }
 				    return '-';
 				}
