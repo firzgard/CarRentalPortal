@@ -16,6 +16,7 @@ namespace CRP.Models.ViewModels
 		public int? GarageID { get; set; }
 		public int? VehicleGroupID { get; set; }
 
+		public string Search { get; set; }
 		public string OrderBy { get; set; }
 		public bool IsDescendingOrder { get; set; }
 		public int Page { get; set; } = 1;
@@ -181,5 +182,6 @@ namespace CRP.Models.ViewModels
 	{
 		public int garageID { get; set; }
 		public IEnumerable<SelectListItem> listGarage { get; set; }
+		public List<VehicleBrand> brandList { get; set; }
     }
 }

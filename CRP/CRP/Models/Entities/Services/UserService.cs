@@ -8,77 +8,19 @@ using System.Web;
 
 namespace CRP.Models.Entities.Services
 {
-    public interface IUserService : IService<AspNetUser>
-    {
-
-    }
-    public class UserService : BaseService<AspNetUser>, IUserService
+	public interface IUserService : IService<AspNetUser>
 	{
-        public UserService(IUnitOfWork unitOfWork, IUserRepository repository) : base(unitOfWork, repository)
-        {
 
-        }
+	}
+	public class UserService : BaseService<AspNetUser>, IUserService
+	{
+		public UserService()
+		{
+		}
 
-        public UserService()
-        {
-        }
+		public UserService(IUnitOfWork unitOfWork, IUserRepository repository) : base(unitOfWork, repository)
+		{
 
-        public AspNetUser findUserByEmail(String email)
-        {
-            var UserList = this.repository.Get();
-            AspNetUser user = UserList
-                .Where(q => q.Email == email)
-                .FirstOrDefault();
-            return user;
-        }
-        public void Create(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task CreateAsync(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeActivate(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeActivateAsync(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Delete(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DeleteAsync(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<BookingReceipt> Get(Expression<Func<BookingReceipt, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void OnCreate(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Update(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateAsync(BookingReceipt entity)
-        {
-            throw new NotImplementedException();
-        }
-    }
+		}
+	}
 }
