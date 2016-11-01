@@ -77,18 +77,6 @@ function renderSelectorModal(type, modalNode, vehicles){
 }
 
 function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, groupID, transmissionType, transmissionDetail, engine, fuel, color, description } = {}){
-	// Ajax data here
-	let garageList, groupList;
-
-	$.ajax({
-		url: '/api/listGroup'
-	})
-	.done(function() {
-		console.log("success");
-	})
-	.fail(function() {
-		console.log("error");
-	})
 	let jqModalNode = $(modalNode)
 
 	jqModalNode.html(`<div class="modal-dialog modal-lg" role="document">
@@ -100,79 +88,85 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 				<h2 class="modal-title">Tạo xe mới</h2>
 			</div>
 			<div class="modal-body">
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="form-group">
-							<label>Tên xe*</label>
-							<input type="text" placeholder="Tên xe" value="${name || ''}" id="newName" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Dòng xe*</label>
-							<select id="newModel" data-placeholder="Vui lòng chọn dòng xe..." class="input-group select2-seed" required>
-								${modelOptions.innerHTML}
-							</select>
-						</div>
-						<div class="form-group">
-							<label>Garage*</label>
-							<select id="newGarage" data-placeholder="Vui lòng chọn garage..." class="input-group select2-seed" required>
-						</select>
-						</div>
-						<div class="form-group">
-							<label>Loại hộp số*</label>
-							<div class="btn-group btn-group-justified" data-toggle="buttons" >
-								<label class="btn btn-primary ${(transmissionType && (transmissionType == 1) && 'active') || ''}">
-									<input type="radio" value="1" autocomplete="off" ${(transmissionType && (transmissionType == 1) && 'checked') || ''} >Số tự động
-								</label>
-								<label class="btn btn-primary ${(transmissionType && (transmissionType == 2) && 'active') || ''}">
-									<input type="radio" value="2" autocomplete="off" ${(transmissionType && (transmissionType == 2) && 'checked') || ''} >Số sàng
-								</label>
+				<form id="newVehicleForm" action="#">
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label>Tên xe*</label>
+								<input type="text" placeholder="Tên xe" value="${name || ''}" id="newName" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Dòng xe*</label>
+								<select id="newModel" data-placeholder="Vui lòng chọn dòng xe..." class="input-group select2-seed" required>
+									${modelOptions.innerHTML}
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Garage*</label>
+								<select id="newGarage" data-placeholder="Vui lòng chọn garage..." class="input-group select2-seed" required>
+									${garageOptions.innerHTML}
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Loại hộp số*</label>
+								<div class="btn-group btn-group-justified" data-toggle="buttons" >
+									<label class="btn btn-primary ${(transmissionType && (transmissionType == 1) && 'active') || ''}">
+										<input type="radio" value="1" autocomplete="off" ${(transmissionType && (transmissionType == 1) && 'checked') || ''} >Số tự động
+									</label>
+									<label class="btn btn-primary ${(transmissionType && (transmissionType == 2) && 'active') || ''}">
+										<input type="radio" value="2" autocomplete="off" ${(transmissionType && (transmissionType == 2) && 'checked') || ''} >Số sàng
+									</label>
+								</div>
+							</div>
+							<div class="form-group">
+								<label>Động cơ</label>
+								<input type="text" placeholder="Chi tiết về động cơ xe" value="${engine || ''}" class="form-control">
 							</div>
 						</div>
-						<div class="form-group">
-							<label>Động cơ</label>
-							<input type="text" placeholder="Chi tiết về động cơ xe" value="${engine || ''}" class="form-control">
+						<div class="col-sm-6">
+							<div class="form-group">
+								<label>Biển số xe*</label>
+								<input type="text" placeholder="Biển số xe" id="newLicense" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Năm sản xuất*</label>
+								<input id="newYear" type="number" placeholder="Năm sản xuất" value="${year || ''}" class="form-control" required>
+							</div>
+							<div class="form-group">
+								<label>Nhóm xe</label>
+								<select id="newGroup" data-placeholder="Vui lòng chọn nhóm xe..." class="input-group select2-seed" required>
+									${groupOptions.innerHTML}
+								</select>
+							</div>
+							<div class="form-group">
+								<label>Chi tiết về loại hộp số</label>
+								<input type="text" placeholder="Chi tiết về loại hộp số" value="${transmissionDetail || ''}" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Loại nhiên liệu</label>
+								<select data-placeholder="Please select fuel type..." class="input-group select2-seed">
+									${fuelOptions.innerHTML}
+								</select>
+							</div>
+						</div>
+						<label class="col-sm-12">Màu xe</label>
+						<div class="col-sm-12">
+							${colorOptions.innerHTML}
+						</div>
+						<hr>
+						<div class="col-sm-12 form-group">
+							<label>Mô tả xe</label>
+							<textarea type="text" rows="20" maxlength="200" class="form-control">${description || ''}</textarea>
+						</div>
+						<hr>
+						<div class="col-sm-12 form-group">
+							<label>Hình ảnh</label>
+							<div id="newImage" class="dropzone">
+								<div class="dropzone-previews"></div>
+							</div>
 						</div>
 					</div>
-					<div class="col-sm-6">
-						<div class="form-group">
-							<label>Biển số xe*</label>
-							<input type="text" placeholder="Biển số xe" id="newLicense" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Năm sản xuất*</label>
-							<input id="newYear" type="number" placeholder="Năm sản xuất" value="${year || ''}" class="form-control" required>
-						</div>
-						<div class="form-group">
-							<label>Nhóm xe*</label>
-							<select id="newVehicleGroup" data-placeholder="Vui lòng chọn nhóm xe..." class="input-group select2-seed" required>
-							</select>
-						</div>
-						<div class="form-group">
-							<label>Chi tiết về loại hộp số</label>
-							<input type="text" placeholder="Chi tiết về loại hộp số" value="${transmissionDetail || ''}" class="form-control">
-						</div>
-						<div class="form-group">
-							<label>Loại nhiên liệu</label>
-							<select data-placeholder="Please select fuel type..." class="input-group select2-seed">
-								${fuelOptions.innerHTML}
-							</select>
-						</div>
-					</div>
-					<label class="col-sm-12">Màu xe</label>
-					<div class="col-sm-12">
-						${colorOptions.innerHTML}
-					</div>
-					<div class="col-sm-12 form-group">
-						<label>Mô tả xe</label>
-						<textarea type="text" rows="20" maxlength="200" class="form-control">${description || ''}</textarea>
-					</div>
-					<div class="col-sm-12 form-group">
-						<label>Hình ảnh</label>
-						<div id="imageDropzone" class="dropzone">
-							<div class="dropzone-previews"></div>
-						</div>
-					</div>
-				</div>
+				</form>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -182,8 +176,24 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 	</div>`);
 
 	$('.select2-seed').select2({
-		width: "100%"
+		allowClear: true
+		, width: '100%'
 	})
+
+	$('#newImage').dropzone({
+		acceptedFiles: "image/jpeg,image/png,image/gif"
+		, autoProcessQueue: false
+		, addRemoveLinks: "dictRemoveFile"
+		, dictCancelUpload: 'Xóa'
+		, dictDefaultMessage: "Thả ảnh hoặc nhấn vào đây để upload."
+		, dictFileTooBig: 'Dung lượng ảnh phải dưới {{maxFilesize}} mb.'
+		, dictInvalidFileType: "Không phải file ảnh."
+		, maxFiles: 10
+		, maxFilesize: 1
+		, uploadMultiple: true
+		, url: "/file/post"
+		, init: function () {}
+	});
 
 	// let imageDropzone = $("#imageDropzone").dropzone({
 	// 	url: '#'
@@ -212,6 +222,42 @@ function renderCreateVehicleModal(modalNode, { name, modelID, year, garageID, gr
 	// 		});
 	// 	}
 	// });
+
+
+
+	// Dropzone.options.myAwesomeDropzone = {
+
+	// 	autoProcessQueue: false,
+	// 	uploadMultiple: true,
+	// 	acceptedFiles: "image/jpeg,image/png,image/gif",
+	// 	parallelUploads: 20,
+	// 	maxFiles: 20,
+	// 	maxFilesize: 1,
+	// 	dictDefaultMessage: "Drop files here to upload (or click)",
+	// 	dictInvalidFileType: "Accept image only",
+	// 	addRemoveLinks: "dictRemoveFile",
+
+	// 	// Dropzone settings
+	// 	init: function() {
+	// 		var myDropzone = this;
+
+	// 		this.element.querySelector('input[name="submit-img"]').addEventListener("click", function(e) {
+	// 			e.preventDefault();
+	// 			e.stopPropagation();
+	// 			myDropzone.processQueue();
+	// 		});
+	// 		this.on("sendingmultiple", function() {
+	// 			alert("sending");
+	// 		});
+	// 		this.on("successmultiple", function(files, response) {
+	// 			alert("success");
+	// 		});
+	// 		this.on("errormultiple", function(files, response) {
+	// 			alert("fail");
+	// 		});
+	// 	}
+
+	// }
 }
 
 function renderConfirmModal(table, type, action, modalNode, items){

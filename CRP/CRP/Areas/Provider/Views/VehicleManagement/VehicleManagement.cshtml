@@ -41,7 +41,7 @@
 	</div>
 </div>
 
-<div class="modal fade" id="customModal" tabindex="-1" role="dialog"></div>
+<div class="modal fade" id="customModal" role="dialog"></div>
 
 <div id="changeGarage" class="modal fade" role="dialog">
 	<div class="modal-dialog modal-lg">
@@ -109,12 +109,14 @@
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleManagement")
 	 .Include("~/Content/awesome-bootstrap-checkbox.css",
-		 "~/Content/DataTables/css/dataTables.bootstrap.css",
-		 "~/Content/DataTables/css/select.bootstrap.min.css",
-		 "~/Content/NoUISlider/nouislider.css",
-		 "~/Content/NoUISlider/nouislider.pips.css",
-		 "~/Content/NoUISlider/nouislider.tooltips.css",
-		 "~/Content/select2/select2.css"));
+			"~/Content/DataTables/css/dataTables.bootstrap.css",
+			"~/Content/DataTables/css/select.bootstrap.min.css",
+			"~/Scripts/dropzone/dropzone.css",
+			"~/Scripts/dropzone/basic.css",
+			"~/Content/NoUISlider/nouislider.css",
+			"~/Content/NoUISlider/nouislider.pips.css",
+			"~/Content/NoUISlider/nouislider.tooltips.css",
+			"~/Content/select2/select2.css"));
 }
 @section Styles {
 	@Styles.Render("~/Styles/VehicleManagement")
@@ -124,15 +126,14 @@
 }
 
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleManagement")
-	 .Include("~/Scripts/DataTables/jquery.dataTables.js",
-		 "~/Scripts/DataTables/dataTables.bootstrap.js",
-		 "~/Scripts/DataTables/dataTables.select.min.js",
-		 "~/Scripts/moment.js",
-		 "~/Scripts/NoUISlider/nouislider.js",
-		 "~/Scripts/select2/select2.full.js",
-		 "~/Scripts/utils/generateUIElements.js",
-		 "~/Scripts/utils/customModals.js",
-		 "~/Scripts/pageScript/vehicleManagement.js"));
+	.Include("~/Scripts/DataTables/jquery.dataTables.js",
+			"~/Scripts/DataTables/dataTables.bootstrap.js",
+			"~/Scripts/DataTables/dataTables.select.min.js",
+			"~/Scripts/dropzone/dropzone.js",
+			"~/Scripts/select2/select2.full.js",
+			"~/Scripts/utils/generateUIElements.js",
+			"~/Scripts/utils/customModals.js",
+			"~/Scripts/pageScript/vehicleManagement.js"));
 }
 @section Scripts {
 	<script type="text/javascript">
@@ -141,8 +142,23 @@
 	@Scripts.Render("~/Scripts/VehicleManagement")
 }
 
+<template id="garageOptions">
+	@foreach (SelectListItem entry in Model.listGarage)
+	{
+		<option value="@entry.Value">@entry.Text</option>
+	}
+</template>
+
+<template id="groupOptions">
+	<option value=""></option>
+	@foreach (SelectListItem entry in Model.GroupList)
+	{
+		<option value="@entry.Value">@entry.Text</option>
+	}
+</template>
+
 <template id="modelOptions">
-	@foreach (VehicleBrand brand in Model.brandList)
+	@foreach (VehicleBrand brand in Model.BrandList)
 	{
 		<optgroup label="@brand.Name">
 			@foreach (VehicleModel entry in brand.VehicleModels)

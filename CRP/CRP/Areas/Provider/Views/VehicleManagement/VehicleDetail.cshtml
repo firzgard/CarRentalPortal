@@ -356,22 +356,22 @@
 </div>*@
 
     @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleDetail")
-                                                          .Include("~/Content/awesome-bootstrap-checkbox.css",
-                                                              "~/Content/chosen.css",
-                                                              "~/Scripts/dropzone/dropzone.css",
-                                                              "~/Scripts/dropzone/basic.css",
-                                                              "~/Content/pageStyle/VehicleDetail.css",
-                                                              "~/Content/select2/select2.css"));
+          .Include("~/Content/awesome-bootstrap-checkbox.css",
+              "~/Content/chosen.css",
+              "~/Scripts/dropzone/dropzone.css",
+              "~/Scripts/dropzone/basic.css",
+              "~/Content/pageStyle/VehicleDetail.css",
+              "~/Content/select2/select2.css"));
     }
     @section Styles {
         @Styles.Render("~/Styles/VehicleDetail")
     }
     @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleDetail")
-                                        .Include("~/Scripts/chosen.jquery.js",
-                                           "~/Scripts/bootstrap.min.js",
-                                           "~/Scripts/dropzone/dropzone.js",
-                                           "~/Scripts/select2/select2.full.js",
-                                           "~/Scripts/pageScript/VehicleDetail.js"));
+            .Include("~/Scripts/chosen.jquery.js",
+               "~/Scripts/bootstrap.min.js",
+               "~/Scripts/dropzone/dropzone.js",
+               "~/Scripts/select2/select2.full.js",
+               "~/Scripts/pageScript/VehicleDetail.js"));
     }
     @section Scripts {
         @Scripts.Render("~/Scripts/VehicleDetail")

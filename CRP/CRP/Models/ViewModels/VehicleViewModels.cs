@@ -182,6 +182,7 @@ namespace CRP.Models.ViewModels
 	{
 		public int garageID { get; set; }
 		public IEnumerable<SelectListItem> listGarage { get; set; }
-		public List<VehicleBrand> brandList { get; set; }
+		public IEnumerable<SelectListItem> GroupList { get; set; }
+		public List<VehicleBrand> BrandList { get; set; }
     }
 }

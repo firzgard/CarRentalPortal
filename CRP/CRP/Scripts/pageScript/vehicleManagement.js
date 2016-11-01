@@ -259,38 +259,4 @@ $(document).ready(function () {
 			table.ajax.reload();
 		}
 	});
-
-	// Dropzone.options.myAwesomeDropzone = {
-
-	// 	autoProcessQueue: false,
-	// 	uploadMultiple: true,
-	// 	acceptedFiles: "image/jpeg,image/png,image/gif",
-	// 	parallelUploads: 20,
-	// 	maxFiles: 20,
-	// 	maxFilesize: 1,
-	// 	dictDefaultMessage: "Drop files here to upload (or click)",
-	// 	dictInvalidFileType: "Accept image only",
-	// 	addRemoveLinks: "dictRemoveFile",
-
-	// 	// Dropzone settings
-	// 	init: function() {
-	// 		var myDropzone = this;
-
-	// 		this.element.querySelector('input[name="submit-img"]').addEventListener("click", function(e) {
-	// 			e.preventDefault();
-	// 			e.stopPropagation();
-	// 			myDropzone.processQueue();
-	// 		});
-	// 		this.on("sendingmultiple", function() {
-	// 			alert("sending");
-	// 		});
-	// 		this.on("successmultiple", function(files, response) {
-	// 			alert("success");
-	// 		});
-	// 		this.on("errormultiple", function(files, response) {
-	// 			alert("fail");
-	// 		});
-	// 	}
-
-	// }
 });

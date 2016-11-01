@@ -29,8 +29,7 @@ namespace CRP.Areas.Provider.Controllers
 
 			var garageService = this.Service<IGarageService>();
 			var providerID = User.Identity.GetUserId();
-			var listGarage = garageService.Get()
-					.Where(q => q.OwnerID == providerID)
+			var listGarage = garageService.Get(q => q.OwnerID == providerID)
 					.Select(q => new SelectListItem()
 					{
 						Text = q.Name,
@@ -38,10 +37,19 @@ namespace CRP.Areas.Provider.Controllers
 						Selected = true,
 					});
 
+			var groupService = this.Service<IGarageService>();
+			var groupList = groupService.Get(q => q.OwnerID == providerID)
+					.Select(q => new SelectListItem()
+					{
+						Text = q.Name,
+						Value = q.ID.ToString()
+					});
+
 			var viewModel = new FilterByGarageView()
 			{
 				listGarage = listGarage,
-				brandList = brandList
+				GroupList = groupList,
+				BrandList = brandList
 			};
 
 			return View("~/Areas/Provider/Views/VehicleManagement/VehicleManagement.cshtml", viewModel);
