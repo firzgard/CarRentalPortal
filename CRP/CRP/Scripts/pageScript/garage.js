@@ -133,6 +133,7 @@ $(document).ready(function () {
 			, data: (rawData) => {
 			    return {
 			        Draw: rawData.draw,
+			        Search: rawData.search.value,
 			        GarageID: garageID,
 			        IsCanceled: isCanceled,
 			        IsSelfBooking: isSelfBooking,

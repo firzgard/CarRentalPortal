@@ -176,6 +176,7 @@ namespace CRP.Models.ViewModels
 		public bool? IsInThePast { get; set; }
 		public bool IsSelfBooking { get; set; }
 
+        public string Search { get; set; }
 		public string OrderBy { get; set; }
 		public bool IsDescendingOrder { get; set; }
 		public int Page { get; set; } = 1;
