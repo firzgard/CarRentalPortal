@@ -89,18 +89,18 @@
                                             <p>@this.Model.BrandName @this.Model.ModelName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            @*<select id="modelFilter" class="form-control">*@
-                                                @Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })
-                                                @*@foreach (VehicleBrand brand in this.Model.BrandList)
+                                            <select id="modelFilter" class="form-control">
+                                                @*@Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })*@
+                                                @*@foreach (VehicleBrand brand in Model.brandList)
                                                 {
-                                                    <optgroup id="brandID"  value="@(brand.ID)" label="@(brand.Name)">
+                                                    <optgroup label="@brand.Name">
                                                         @foreach (VehicleModel entry in brand.VehicleModels)
                                                         {
-                                                        <option id="modelID" data-brand="@brand.ID" value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
+                                                            <option value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
                                                         }
                                                     </optgroup>
                                                 }*@
-                                            @*</select>*@
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -232,7 +232,7 @@
                                                             <div id="colorFilter" class="color-selector">
                                                                 <input id="color@(Constants.COLOR[i])" name="group" value="@i" type="radio" checked>
                                                                 <label for="color@(Constants.COLOR[i])" name="group" style="background-color: @Constants.COLOR[i];"></label>
-                                                            </div>
+                                                            </div>    
                                                         }
                                                         else
                                                         {
@@ -242,6 +242,10 @@
                                                             </div>
                                                         }
                                                     }
+                                                    <div class="color-selector another-color">
+                                                        <input id="color0" name="newColor" value="0" type="radio">
+                                                        <label for="color0"></label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

@@ -109,20 +109,13 @@ namespace CRP.Models.ViewModels
         public IEnumerable<SelectListItem> listGroup { get; set; }
         public IEnumerable<SelectListItem> listBrand { get; set; }
         public IEnumerable<SelectListItem> listModel { get; set; }
-        //public List<VehicleBrand> BrandList { get; set; }
+        public List<VehicleBrand> brandList { get; set; }
 
         public VehicleDetailInfoModel()
         { }
         public VehicleDetailInfoModel(Vehicle vehicle)
 		{
-            try
-            {
-                this.ID = vehicle.ID;
-            }
-			catch (Exception e)
-            {
-                throw new HttpException(404, "Page not exist");
-            }
+            this.ID = vehicle.ID;
 			this.LicenseNumber = vehicle.LicenseNumber;
 			this.Name = vehicle.Name;
 			this.ModelID = vehicle.ModelID;
