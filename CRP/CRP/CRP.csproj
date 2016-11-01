@@ -473,7 +473,7 @@
     <Compile Include="Models\ViewModels\PriceGroupViewModels.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
-    <Compile Include="Models\ViewModels\ReportViewModel.cs" />
+    <Compile Include="Models\ViewModels\ReportViewModels.cs" />
     <Compile Include="Models\ViewModels\VehicleGroupViewModels.cs" />
     <Compile Include="Models\ViewModels\VehicleViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
