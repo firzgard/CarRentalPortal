@@ -55,14 +55,15 @@ $(document).ready( function () {
 			, data: (rawData) => {
 			    return {
 			        Draw: rawData.draw,
+			        Search: rawData.search.value,
 			        GarageID: garageID,
 			        IsCanceled: isCanceled,
 			        IsSelfBooking: isSelfBooking,
-			        IsInThePast: isInThePast
-					, RecordPerPage: rawData.length
-					, Page: rawData.start / rawData.length + 1
-					, OrderBy: bookingTableColumns[rawData.order[0].column].data
-					, IsDescendingOrder: rawData.order[0].dir == 'desc'
+			        IsInThePast: isInThePast,
+			        RecordPerPage: rawData.length,
+			        Page: rawData.start / rawData.length + 1,
+			        OrderBy: bookingTableColumns[rawData.order[0].column].data,
+			        IsDescendingOrder: rawData.order[0].dir == 'desc'
 			    };
 			}
 		},

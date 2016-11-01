@@ -1842,6 +1842,7 @@
     <Content Include="Scripts\NoUISlider\nouislider.js" />
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
+    <Content Include="Scripts\pageScript\adminDashboard.js" />
     <Content Include="Scripts\pageScript\becomeProvider.js" />
     <Content Include="Scripts\pageScript\bookingConfirm.js" />
     <Content Include="Scripts\pageScript\bookingHistory.js" />
