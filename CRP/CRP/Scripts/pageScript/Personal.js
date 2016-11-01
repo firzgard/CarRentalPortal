@@ -72,8 +72,6 @@
             var files = $("#uploadEditorImage").get(0).files;
             if (files.length > 0) {
                 data.append("image", files[0]);
-                data.append("height", 530);
-                data.append("width", 530);
             }
             progessBar(true);
             $.ajax({
@@ -86,8 +84,6 @@
                     profileImage = successData;
                     $("#profilePreview").attr("src", successData);
                     document.getElementById("newUrl").value = successData;
-                    $("#changeImgRow").addClass("hide");
-                    $("#confirmChangeImgRow").removeClass("hide");
                     progessBar(false);
                 },
                 error: function (er) {

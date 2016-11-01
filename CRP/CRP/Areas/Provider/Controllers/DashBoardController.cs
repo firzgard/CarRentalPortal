@@ -117,45 +117,5 @@ namespace CRP.Areas.Provider.Controllers
         {
             return View("~/Areas/Provider/Views/DashBoard/TestDropzone.cshtml");
         }
-
-        [Route("Home/SaveUploadedFile")]
-        public void SaveUploadedFile()
-        {
-            string fName = "";
-            foreach (string fileName in Request.Files)
-            {
-                HttpPostedFileBase file = Request.Files[fileName];
-                fName = file.FileName;
-                if (file != null && file.ContentLength > 0)
-                {
-
-                    String url = "";
-                    String userName = User.Identity.Name;
-                    String userID = User.Identity.GetUserId();
-                    CloudinaryDotNet.Account account =
-                    new CloudinaryDotNet.Account("ahihicompany",
-                                         "445384272838294",
-                                         "h4SCiNi8zOKfewxEi2LqNt3IjrQ"
-                                            );
-                    CloudinaryDotNet.Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(account);
-                    //dinh dang image     
-                    var pic = file;
-                    if (pic != null)
-                    {
-                        CloudinaryDotNet.Actions.ImageUploadParams uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams()
-                        {
-                            //File = new CloudinaryDotNet.Actions.FileDescription(@"c:\mypicture.jpg"),
-                            //PublicId = "sample_remote_file"
-                            File = new FileDescription(pic.FileName, pic.InputStream),
-                            Tags = "Anh cua" + userName,
-                        };
-                        CloudinaryDotNet.Actions.ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
-                        url = uploadResult.Uri.ToString();
-                    }
-         
-                }
-            }
-
-        }
     }
 }

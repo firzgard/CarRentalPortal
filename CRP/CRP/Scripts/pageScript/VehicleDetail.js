@@ -34,12 +34,12 @@
     $('#edit-img').on('click', function () {
         $('#edit-img').hide();
         $('#img-div').hide();
-        $('#my-awesome-dropzone').show();
+        $('#dropzoneForm').show();
     });
     $('#cancel-img').on('click', function () {
         $('#edit-img').show();
         $('#img-div').show();
-        $('#my-awesome-dropzone').hide();
+        $('#dropzoneForm').hide();
     });
     $('')
     Dropzone.options.myAwesomeDropzone = {

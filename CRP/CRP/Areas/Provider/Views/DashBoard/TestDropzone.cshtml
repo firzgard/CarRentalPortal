@@ -3,6 +3,11 @@
     ViewBag.Title = "TestDropzone";
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
+<style type="text/css">
+    .dz-max-files-reached {
+        background-color: red;
+    }
+</style>
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
         <h2>File upload</h2>
@@ -38,17 +43,12 @@
         </div>
     </div>
 </div>
-<style type="text/css">
-    .dz-max-files-reached {
-        background-color: red;
-    }
-</style>
+
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/GarageList")
-                                                           .Include("~/Content/awesome-bootstrap-checkbox.css",
-                                                               "~/Content/chosen.css",
-                                                               "~/Scripts/dropzone/dropzone.css",
-                                                               "~/Content/DataTables/css/jquery.dataTables.css",
-                                                               "~/Content/DataTables/css/dataTables.bootstrap.css"));
+                                                            .Include("~/Content/awesome-bootstrap-checkbox.css",
+                                                                "~/Scripts/dropzone/dropzone.css",
+                                                                "~/Scripts/dropzone/basic.css",
+                                                                "~/Content/DataTables/css/dataTables.bootstrap.css"));
 }
 @section Styles {
     @Styles.Render("~/Styles/GarageList")
@@ -58,10 +58,10 @@
 }
 
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/GarageList")
-                                                                     .Include("~/Scripts/chosen.jquery.js",
-                                                                                               "~/Scripts/dropzone/dropzone.js",
-                                                                                                "~/Scripts/pageScript/Personal.js"));
+                                                                         .Include("~/Scripts/chosen.jquery.js",
+                                                                                                   "~/Scripts/dropzone/dropzone.js",
+                                                                                                    "~/Scripts/pageScript/Dropzone.js"));
 }
-@section Scripts {
+@section Scripts {s
     @Scripts.Render("~/Scripts/GarageList")
 }
