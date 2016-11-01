@@ -26,7 +26,7 @@ namespace CRP.Areas.Provider.Controllers
             var GarageService = this.Service<IGarageService>();
             var CarService = this.Service<IVehicleService>();
             var BookingService = this.Service<IBookingReceiptService>();
-            var UserService = this.Service<IUserReceiptService>();
+            var UserService = this.Service<IUserService>();
             AspNetUser UserEntity = UserService.Get(q => q.Id == providerID).FirstOrDefault();
             var listGara = GarageService.Get(q => q.OwnerID == providerID).ToList();
             var listComment = new List<CommentModel>();

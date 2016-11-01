@@ -42,7 +42,6 @@ namespace CRP.Models.Entities.Services
 	public abstract class BaseService<TEntity> : IService<TEntity>
 		where TEntity : class
 	{
-        private IUserReceiptService userService;
 
         public IRepository<TEntity> repository { get; set; }
 		public IUnitOfWork unitOfWork { get; set; }
@@ -56,12 +55,6 @@ namespace CRP.Models.Entities.Services
 		public BaseService()
 		{
 		}
-
-        public BaseService(IUnitOfWork unitOfWork, IUserReceiptService userService)
-        {
-            this.unitOfWork = unitOfWork;
-            this.userService = userService;
-        }
 
         public virtual void Create(TEntity entity)
 		{

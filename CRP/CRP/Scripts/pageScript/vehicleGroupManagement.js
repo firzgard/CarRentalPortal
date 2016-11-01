@@ -40,6 +40,12 @@ $(document).ready(() =>{
         language: viDatatables,
         order: [[ 1, "asc" ]],
         columnDefs: [
+            {
+                targets: 1,
+                render: function (data, type, row) {
+                    return `<a href="/management/vehicleGroupManagement/${row[0]}">${data}</a>`;
+                }
+            },
 			{
 				// Render status label
 				targets: -2,

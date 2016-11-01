@@ -20,7 +20,7 @@ namespace CRP.Areas.Admin.Controllers
             ReportViewModel viewModel = new ReportViewModel();
             var serviceBooking = this.Service<IBookingReceiptService>();
             var serviceCar = this.Service<IVehicleService>();
-            var serviceUser = this.Service<IUserReceiptService>();
+            var serviceUser = this.Service<IUserService>();
             var serviceGarage = this.Service<IGarageService>();
             viewModel.booking = serviceBooking.Get(q => q.IsPending == false).ToList().Count();
             var bookSuccess = serviceBooking.Get(q => q.IsCanceled == false && q.IsPending == false).ToList().Count();
@@ -43,7 +43,7 @@ namespace CRP.Areas.Admin.Controllers
         [System.Web.Mvc.HttpGet]
         public JsonResult getProviderListAPI()
         {
-            var serviceUser = this.Service<IUserReceiptService>();
+            var serviceUser = this.Service<IUserService>();
             var serviceBooking = this.Service<IBookingReceiptService>();
             var serviceCar = this.Service<IVehicleService>();
             List<BookingReceipt> lstBooking = new List<BookingReceipt>();

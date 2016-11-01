@@ -35,7 +35,7 @@
                         <div class="col-md-7">
                             <div class="row m-b text-center">
                                 <div class="col-md-4 text-right">
-                                    <label>Địa điểm</label>
+                                    <label>Địa điểm <span style="color: red">*</span></label>
                                 </div>
                                 <div class="col-md-8 text-left">
                                     @Html.DropDownListFor(q => q.LocationID, this.Model.listLocation, new { @class = "form-control", @id="locationID" })
@@ -43,7 +43,7 @@
                             </div>
                             <div class="row m-b text-center">
                                 <div class="col-md-4 text-right">
-                                    <label>Địa chỉ</label>
+                                    <label>Địa chỉ <span style="color: red">*</span></label>
                                 </div>
                                 <div class="col-md-8 text-left">
                                     @Html.TextBoxFor(q => q.Address, new { @class = "form-control", @id="gAddress" })
@@ -51,7 +51,7 @@
                             </div>
                             <div class="row m-b text-center">
                                 <div class="col-md-4 text-right">
-                                    <label>Email</label>
+                                    <label>Email <span style="color: red">*</span></label>
                                 </div>
                                 <div class="col-md-8 text-left">
                                     @Html.TextBoxFor(q => q.Email, new { @type = "email", @class = "form-control", @id="gEmail" })
@@ -59,7 +59,7 @@
                             </div>
                             <div class="row m-b text-center">
                                 <div class="col-md-4 text-right">
-                                    <label>Số điện thoại (mặc định)</label>
+                                    <label>Số điện thoại (mặc định) <span style="color: red">*</span></label>
                                 </div>
                                 <div class="col-md-8 text-left">
                                     @Html.TextBoxFor(q => q.Phone1, new { @class = "form-control", @id="gPhone1" })
