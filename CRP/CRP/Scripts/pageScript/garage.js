@@ -104,8 +104,8 @@ $(document).ready(function () {
             {
                 targets: -2
 				, render: function (data, type, row) {
-				    if (data) {
-				        return renderStarRating(data);
+				    if (data !== null) {
+				        return renderStarRating(data, '#4CAF50');
 				    }
 				    return '-';
 				}
@@ -158,7 +158,10 @@ $(document).ready(function () {
 			{
 			    targets: -7
 				, render: function (data, type, row) {
-				    return renderStarRating(data);
+				    if (data !== null) {
+				        return renderStarRating(data, '#4CAF50');
+				    }
+				    return '-';
 				}
 			},
             {
@@ -365,7 +368,7 @@ $(document).ready(function () {
 	                toastr.error("Xin lỗi, thời gian đóng cửa không được sớm hơn thời gian mở cửa");
 	                return false;
 	            }
-	            if (startTimeInMinute > 1440 || endTimeinMinute > 1440) {
+	            if (startTimeInMinute > 1440 || endTimeinMinute > 1440 || parseInt(startStr[1]) > 59 || parseInt(endStr[1]) > 59) {
 	                toastr.error("Xin lỗi, giá trị thời gian không hợp lệ");
 	                return false;
 	            }
@@ -584,7 +587,7 @@ function workDay(workArray, isEditable) {
     } else if (workArray[0] === 6) {
         textDOW = 'Chủ nhật';
     }
-    if (workArray[1] != '' && workArray[2] != '') {
+    if (workArray[1] !== '' && workArray[2] !== '') {
         var startTime = "";
         var endTime = "";
 
