@@ -6,6 +6,7 @@ using System.Security.Cryptography.Xml;
 using System.Web.Mvc;
 using CRP.Models.Entities;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace CRP.Models.ViewModels
 {
@@ -82,8 +83,16 @@ namespace CRP.Models.ViewModels
 	public class VehicleDetailInfoModel
 	{
 		public int ID { get; set; }
-		public string LicenseNumber { get; set; }
+        [Required]
+        [StringLength(12, ErrorMessage = "Biển số xe phải có ít nhất 6 ký tự", MinimumLength = 6)]
+        [Display(Name = "LicenseNumber")]
+        public string LicenseNumber { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "Tên xe phải có ít nhất 6 ký tự", MinimumLength = 6)]
+        [Display(Name ="Name")]
 		public string Name { get; set; }
+
 		public int ModelID { get; set; }
 		public string ModelName { get; set; }
 		public int BrandID { get; set; }

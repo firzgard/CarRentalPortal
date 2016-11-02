@@ -423,29 +423,40 @@ namespace CRP.Areas.Provider.Controllers
                 }
             }
         }
-    }
-        //[Route("api/vehicles/deletepic")]
-        [HttpGet]
-        public async Task<ActionResult> DeletePic()
+        [Route("api/vehicles/deletepic/{id:int}")]
+        [HttpDelete]
+        public async Task<ActionResult> DeletePic(int id)
         {
-            string id = Request.QueryString["id"];
-            int intID = int.Parse(id);
-            var vehicleSer = this.Service<IVehicleService>();
-            var entity = vehicleSer.Get(intID);
-            ICollection<VehicleImage> lstVehiIm = entity.VehicleImages;
-            string url = Request.QueryString["Url"];
-            var VehicleImageService = this.Service<IVehicleImageService>();
-            foreach(VehicleImage x in lstVehiIm)
+            var vehicleService = this.Service<IVehicleService>();
+            var entity = vehicleService.Get(id);
+            string url = Request.Params["url2"];
+            var vehicleImageService = this.Service<IVehicleImageService>();
+            var lstVehiIm = vehicleImageService.Get(q => q.CarID == id);
+            foreach (var item in lstVehiIm)
             {
-                if(x.URL == url)
+                if(item.URL == url)
                 {
-                    await VehicleImageService.DeleteAsync(x);
+                    vehicleImageService.DeleteAsync(item);
                 }
             }
+            //for (int i = 0; i < listUpdate.Count; i++)
+            //{
+            //    var x = listUpdate.ElementAt(i);
+            //    if (x.URL == url)
+            //    {
+            //        listUpdate.RemoveAt(i);
+
+            //    }
+            //}
+
+            //entity.VehicleImages = listUpdate;
+
+            await vehicleService.UpdateAsync(entity);
+            return Json(new { result = true, message = "Deleted!" });
             //if (vehiEntity == null)
             //    return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
             //await VehicleImageService.DeleteAsync(entity);
-            return new HttpStatusCodeResult(200, "Delete successfull");
         }
     }
+    
 }

@@ -32,7 +32,8 @@
                                             <p>@this.Model.Name</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control", @id = "name", @maxlength = "100" })
+                                            @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control", @id = "name"})
+                                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
@@ -47,6 +48,7 @@
                                         <div class="editFiel col-md-8" style="display:none">
                                             <div class="m-b">
                                                 @Html.TextBoxFor(q => q.LicenseNumber, new { @type = "text", @class = "form-control", @id = "licenseNumber", @maxlength = "50" })
+                                                @Html.ValidationMessageFor(m => m.LicenseNumber, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
                                     </div>
@@ -229,22 +231,12 @@
                                             <div class="form-group row" id="colorFilter">
    
                                                 <div class="col-xs-12">
-                                                    @for (int i = 1; i < Constants.COLOR.Count(); i++)
+                                                    @for (var i = 1; i < Constants.COLOR.Count(); i++)
                                                     {
-                                                        if (i == this.Model.ColorID)
-                                                        {
-                                                            <div id="colorFilter" class="color-selector">
-                                                                <input id="color@(Constants.COLOR[i])" name="group" value="@i" type="radio" checked>
-                                                                <label for="color@(Constants.COLOR[i])" name="group" style="background-color: @Constants.COLOR[i];"></label>
-                                                            </div>    
-                                                        }
-                                                        else
-                                                        {
-                                                            <div id="colorFilter" class="color-selector">
-                                                                <input id="color@(Constants.COLOR[i])" name="group" value="@i" type="radio">
-                                                                <label for="color@(Constants.COLOR[i])" name="group" style="background-color: @Constants.COLOR[i];"></label>
-                                                            </div>
-                                                        }
+                                                        <div class="color-selector">
+                                                            <input id="color@(Constants.COLOR[i])" name="newColor" value="@i" type="radio">
+                                                            <label for="color@(Constants.COLOR[i])" style="background-color: @Constants.COLOR[i];"></label>
+                                                        </div>
                                                     }
                                                     <div class="color-selector another-color">
                                                         <input id="color0" name="newColor" value="0" type="radio">
@@ -323,13 +315,15 @@
                                         <div class="col-md-3">
                                             <div class="item">
                                                 <img alt="image" class="img-responsive" src="@entry">
-                                                <input type="hidden" value="@entry" name="Url" id="Url" />
+                                                <input type="hidden" value="@entry" name="Url" class="imgUrl" />
                                                 <input type="hidden" value="@Model.ID" name="id" id="id" />
-                                                <input type="submit" class="btn btn-success" value="Xoa anh" />
+                                                <input type="submit" class="btn btn-success DeleteImage" value="Xoa anh" />
                                             </div>
                                         </div>
+                                    
                                        //}
                                     }
+                                <input type="hidden" value="" name="Url22" id="Url22" />
                             </div>
                             <div class="hr-line-dashed"></div>
                                 <div class="text-center">
@@ -407,4 +401,5 @@
     }
     @section Scripts {
         @Scripts.Render("~/Scripts/VehicleDetail")
+        @Scripts.Render("~/bundles/jqueryval")
     }
