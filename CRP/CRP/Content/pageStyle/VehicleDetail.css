@@ -12,6 +12,7 @@
 #dropzoneForm {
     display: none;
 }
+/* Color selector in create new vehicle */
 .color-selector {
 	display: inline-block;
 	margin: 2px;
@@ -39,7 +40,6 @@
 	left: 17%;
 	position: absolute;
 	top: 0;
-	transition-duration: 0.5s;
 }
 
 .color-selector input[type="radio"]:checked + label::after {
@@ -49,6 +49,24 @@
 }
 .color-selector input#colorWhite[type="radio"]:checked + label::after {
 	color: #000;
+}
+
+.color-selector.another-color input[type="radio"] + label::after {
+	color: #000;
+	content: "Màu Khác";
+	font-size: 14px;
+	left: 6%;
+	line-height: 100%;
+	text-align: center;
+	top: 15%;
+}
+.color-selector.another-color input[type="radio"]:checked + label::after {
+	content: "\f00c";
+	font-family: "FontAwesome";
+	font-size: 30px;
+	line-height: 140%;
+	left: 17%;
+	top: 0;
 }
 .brand-option {
 	font-weight: bold;
