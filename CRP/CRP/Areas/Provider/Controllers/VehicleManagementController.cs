@@ -454,7 +454,7 @@ namespace CRP.Areas.Provider.Controllers
                         VehicleImage imageOfVehicle = new VehicleImage();
                         var Entit = imageServie2.Get(VehicleID);
                         imageOfVehicle.URL = url;
-                        imageOfVehicle.CarID = VehicleID;
+                        imageOfVehicle.Ve = VehicleID;
                         imageOfVehicle.Vehicle = Entit;
                         imageServie.CreateAsync(imageOfVehicle);
                         ICollection<VehicleImage> lstImage = Entit.VehicleImages;
@@ -473,7 +473,7 @@ namespace CRP.Areas.Provider.Controllers
             var entity = vehicleService.Get(id);
             string url = Request.Params["url2"];
             var vehicleImageService = this.Service<IVehicleImageService>();
-            var lstVehiIm = vehicleImageService.Get(q => q.CarID == id);
+            var lstVehiIm = vehicleImageService.Get(q => q.VehicleID == id);
             foreach (var item in lstVehiIm)
             {
                 if(item.URL == url)
