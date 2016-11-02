@@ -3,7 +3,7 @@ const	fullStar = '<i class="fa fa-star"></i>',
 		halfStar = '<i class="fa fa-star-half-o"></i>',
 		emptyStar = '<i class="fa fa-star-o"></i>';
 		
-function renderStarRating(starRating, color, hasBadge = true, renderEmptyStar = true){
+function renderStarRating(starRating, color = '#4CAF50', hasBadge = true, renderEmptyStar = true){
 	let html = ''
 	if(renderEmptyStar){
 		for(star = starRating, i = 0; i < 5; i++) {
@@ -25,4 +25,14 @@ function renderStarRating(starRating, color, hasBadge = true, renderEmptyStar = 
 	if (color) html = `<span style="color:${color};white-space: nowrap;">${html}</span>`
 	if (hasBadge) html += `&nbsp;<span class="badge">${starRating}</span>`;
 	return html
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+function validatePhone(num) {
+    var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    return regex.test(num);
 }

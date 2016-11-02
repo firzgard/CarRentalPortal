@@ -65,11 +65,14 @@ namespace CRP.Models
 	public class RegisterViewModel
 	{
 		[Required]
-		[Display(Name = "Username")]
+        [StringLength(50, ErrorMessage = "Username phải có ít nhất 3 ký tự", MinimumLength = 3)]
+        [Display(Name = "Username")]
 		public string Username { get; set; }
 
-		[Display(Name = "Full Name")]
-		public string Name { get; set; }
+       
+        [Display(Name = "Full Name")]
+        [StringLength(50, ErrorMessage = "Fullname phải có ít nhất 3 ký tự", MinimumLength = 3)]
+        public string Fullname { get; set; }
 
 		[Required]
 		[EmailAddress]
@@ -79,23 +82,24 @@ namespace CRP.Models
 		[Required]
 		[EmailAddress]
 		[Display(Name = "Confirm Email")]
-		[Compare("Email", ErrorMessage = "The Email and confirmation Email do not match.")]
+		[Compare("Email", ErrorMessage = "Email xác thực không giống nhau.")]
 		public string ConfirmEmail { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-		[DataType(DataType.Password)]
-		[Display(Name = "Password")]
+		[StringLength(100, ErrorMessage = "Có ít nhất 6 ký tự", MinimumLength = 6)]
+		[DataType(DataType.Password, ErrorMessage = "Mật khẩu phải có ký tự hoa và số")]
+        [Display(Name = "Password")]
 		public string Password { get; set; }
 
 		[DataType(DataType.Password)]
 		[Display(Name = "Confirm password")]
-		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+		[Compare("Password", ErrorMessage = "Mật khẩu không khớp")]
 		public string ConfirmPassword { get; set; }
 
 		[Required]
-		[StringLength(50, ErrorMessage = "The {0} must be at least {2} characters.", MinimumLength = 2)]
-		[DataType(DataType.PhoneNumber)]
+		[StringLength(50, ErrorMessage = "Tối thiểu có 2 ký tự.", MinimumLength = 2)]
+        [Range(0, int.MaxValue, ErrorMessage = "Xin vui lòng nhập kí tự số cho Số điện thoại")]
+        [DataType(DataType.PhoneNumber)]
 		[Display(Name = "PhoneNumber")]
 		public string PhoneNumber { get; set; }
 	}

@@ -467,7 +467,7 @@
     <Compile Include="Models\ViewModels\PriceGroupViewModels.cs" />
     <Compile Include="Models\jsTree3Node.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
-    <Compile Include="Models\ViewModels\ReportViewModel.cs" />
+    <Compile Include="Models\ViewModels\ReportViewModels.cs" />
     <Compile Include="Models\ViewModels\VehicleGroupViewModels.cs" />
     <Compile Include="Models\ViewModels\VehicleViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -656,6 +656,7 @@
     <Content Include="Content\img\email_1.jpg" />
     <Content Include="Content\img\email_2.jpg" />
     <Content Include="Content\img\email_3.jpg" />
+    <Content Include="Content\img\error.jpg" />
     <Content Include="Content\img\flags\16\Abkhazia.png" />
     <Content Include="Content\img\flags\16\Afghanistan.png" />
     <Content Include="Content\img\flags\16\Aland.png" />
@@ -1805,6 +1806,8 @@
     <Content Include="Areas\Admin\Views\DashBoard\Index.cshtml" />
     <Content Include="Areas\Admin\Views\UserManagement\UserManagement.cshtml" />
     <Content Include="Areas\Provider\Views\DashBoard\Index.cshtml" />
+    <Content Include="Areas\Provider\Views\DashBoard\TestDropzone.cshtml" />
+    <Content Include="Areas\Provider\Views\VehicleManagement\VehicleDetail.cshtml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -1834,9 +1837,11 @@
     <Content Include="Scripts\NoUISlider\nouislider.js" />
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
+    <Content Include="Scripts\pageScript\adminDashboard.js" />
     <Content Include="Scripts\pageScript\becomeProvider.js" />
     <Content Include="Scripts\pageScript\bookingConfirm.js" />
     <Content Include="Scripts\pageScript\bookingHistory.js" />
+    <Content Include="Scripts\pageScript\Dropzone.js" />
     <Content Include="Scripts\pageScript\Personal.js" />
     <Content Include="Scripts\pageScript\bookingManagement.js" />
     <Content Include="Scripts\pageScript\garage.js" />
@@ -1980,6 +1985,7 @@
     <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Views\Home\VehicleInfo.cshtml" />
     <Content Include="Views\Shared\_NganLuongPaymentPartial.cshtml" />
+    <Content Include="Scripts\jquery.validate.vi.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

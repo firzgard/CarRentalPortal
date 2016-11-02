@@ -41,7 +41,7 @@ namespace CRP.Areas.Provider.Controllers
                 return new HttpStatusCodeResult(400, "Unqualified request");
             }
             if (conditions.OrderBy != null
-                && typeof(VehicleManagementItemJsonModel).GetProperty(conditions.OrderBy) == null)
+                && typeof(BookingsRecordJsonModel).GetProperty(conditions.OrderBy) == null)
             {
                 return new HttpStatusCodeResult(400, "Invalid sorting property");
             }

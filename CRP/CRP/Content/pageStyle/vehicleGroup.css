@@ -19,3 +19,11 @@
 .ibox-title .label {
     float: none !important;
 }
+
+.active-bg {
+    background-color: #4CAF50;
+}
+
+.inactive-bg {
+    background-color: #D32F2F;
+}

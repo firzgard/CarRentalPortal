@@ -2,7 +2,9 @@ const vehicleTableColumns = [
 	{ name: 'ID', visible: false, orderable: false, searchable: false }
 	, { name: 'Name', title: 'Tên' }
     , { name: 'LicenseNumber', title: 'Biển số' }
-	, { name: 'Color', title: 'Màu' }
+    , { name: 'GarageName', title: 'Garage' }
+    , { name: 'Year', title: 'Năm' }
+    , { name: 'NumOfSeat', title: 'Số chỗ' }
 	, { name: 'Star', title: "Đánh giá", width: '6.5em' }
 	, { name: 'Action', title: "Thao tác", orderable: false, searchable: false, width: '20em' }
 ]
@@ -162,8 +164,8 @@ $(document).ready(function () {
             {
                 targets: -2
 				, render: function (data, type, row) {
-				    if (data) {
-				        return renderStarRating(data);
+				    if (data !== null) {
+				        return renderStarRating(data, '#4CAF50');
 				    }
 				    return '-';
 				}
@@ -196,7 +198,7 @@ $(document).ready(function () {
 	            });
 	        },
 	        error: function () {
-	            alert("error");
+	            toastr.error("Đã có lỗi xả ra. Phiền bạn thử lại sau");
 	        }
 	    });
 	});
@@ -212,11 +214,11 @@ $(document).ready(function () {
 	                $('.modal').modal('hide');
 	                table.ajax.reload();
 	            } else {
-	                alert("failed!");
+	                toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
 	            }
 	        },
 	        error: function (e) {
-                alert("error");
+	            toastr.error("Đã có lỗi xả ra. Phiền bạn thử lại sau");
 	        }
 	    });
 	});
@@ -234,11 +236,11 @@ $(document).ready(function () {
 	                $('.modal').modal('hide');
 	                table.ajax.reload();
 	            } else {
-	                alert("failed!");
+	                toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
 	            }
 	        },
 	        error: function (e) {
-	            alert("error");
+	            toastr.error("Đã có lỗi xả ra. Phiền bạn thử lại sau");
 	        }
 	    });
 	});
@@ -255,11 +257,11 @@ $(document).ready(function () {
 	                $('.modal').modal('hide');
 	                table.ajax.reload();
 	            } else {
-	                alert("failed!");
+	                toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
 	            }
 	        },
 	        error: function (e) {
-	            alert("error");
+	            toastr.error("Đã có lỗi xả ra. Phiền bạn thử lại sau");
 	        }
 	    });
 	});
@@ -382,10 +384,12 @@ $(document).on('click', '#saveChange', function () {
     let checkTimeArray = [];
     for (var i = 0; i < $('.max-time').length; i++) {
         if ($(`.max-time:eq(${i})`).val() && !$(`.price:eq(${i})`).val()) {
-            alert("chua nhap tien");
+            toastr.error("Vui lòng nhập giá tiền");
+            return false;
         }
         if (!$(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
-            alert("chua nhap gio");
+            toastr.error("Vui lòng nhập giờ");
+            return false;
         }
         if ($(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
             var item = {};
@@ -398,13 +402,16 @@ $(document).on('click', '#saveChange', function () {
             }
 
             if (item.MaxTime < 1 || item.MaxTime > 23) {
-                alert("số giờ bị sai");
+                toastr.error("Xin lỗi. Số giờ bị sai");
+                return false;
             } else {
                 if (jQuery.inArray(item.MaxTime, checkTimeArray) >= 0) {
-                    alert("trùng giờ");
+                    toastr.error("Xin lỗi. Không được cấu hình giá một khung giờ nhiều lần");
+                    return false;
                 } else {
                     if (item.Price < 0) {
-                        alert("số tiền bị âm");
+                        toastr.error("Xin lỗi. Số tiền không được âm");
+                        return false;
                     } else {
                         priceGroupItemList.push(item);
                         checkTimeArray.push(item.MaxTime);
@@ -429,30 +436,30 @@ $(document).on('click', '#saveChange', function () {
     model.PriceGroup.PriceGroupItems = priceGroupItemList;
 
     if (!$('#groupName').val()) {
-        alert("Name is required!");
+        toastr.error("Vui lòng nhập tên nhóm");
         return false;
     } else if ($('#groupName').val().length > 50) {
-        alert("Name's length is over");
+        toastr.error("Xin lỗi. Tên nhóm vượt quá độ dài quy định");
         return false;
     } else {
         model.Name = $('#groupName').val();
     }
 
     if (!$('#deposit').val()) {
-        alert("Deposit is required!");
+        toastr.error("Vui lòng nhập giá trị đặt cọc");
         return false;
     } else if (parseFloat($('#deposit').val()) < 0 || parseFloat($('#deposit').val()) > 100) {
-        alert("Deposit must in range 0~100");
+        toastr.error("Xin lỗi. giá trị đặt cọc phải từ 0% đến 100%");
         return false;
     } else {
         model.PriceGroup.DepositPercentage = parseFloat($('#deposit').val());
     }
 
     if (!$('#per-day-price').val()) {
-        alert("Per day price is required");
+        toastr.error("Xin vui lòng nhập giá thuê theo ngày");
         return false;
     } else if (parseInt($('#per-day-price').val()) < 0) {
-        alert("not allow negative number");
+        toastr.error("Xin lỗi. Số tiền không được âm");
         return false;
     } else {
         model.PriceGroup.PerDayPrice = parseInt($('#per-day-price').val());
@@ -461,21 +468,21 @@ $(document).on('click', '#saveChange', function () {
     if ($('#max-rent').val()) {
         model.PriceGroup.MaxRentalPeriod = parseInt($('#max-rent').val());
         if (model.PriceGroup.MaxRentalPeriod < 0) {
-            alert("not allow negative number");
+            toastr.error("Xin lỗi. Kì hạn thuê tối đa không được âm");
             return false;
         }
     }
     if ($('#max-distance-day').val()) {
         model.PriceGroup.MaxDistancePerDay = parseInt($('#max-distance-day').val());
         if (model.PriceGroup.MaxDistancePerDay < 0) {
-            alert("not allow negative number");
+            toastr.error("Xin lỗi số km tối đa không được âm");
             return false;
         }
     }
     if ($('#extra-charge-day').val()) {
         model.PriceGroup.ExtraChargePerKm = parseInt($('#extra-charge-day').val());
         if (model.PriceGroup.ExtraChargePerKm < 0) {
-            alert("not allow negative number");
+            toastr.error("Xin lỗi. Số tiền không được âm");
             return false;
         }
     }
@@ -490,11 +497,11 @@ $(document).on('click', '#saveChange', function () {
             if (data.result) {
                 window.location.pathname = `management/vehicleGroupManagement/${groupID}`;
             } else {
-                alert('fail');
+                toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
             }
         },
         error: function () {
-            alert('error');
+            toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
         }
     });
 });
@@ -506,8 +513,8 @@ function renderActivation() {
     let name = $('#displayGroupName');
     let dName = $('#groupNameD').val();
     if (isActivateInput == true) {
-        name.removeClass('bg-danger');
-        name.addClass('bg-success');
+        name.removeClass('inactive-bg');
+        name.addClass('active-bg');
         name.html(`
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
@@ -521,8 +528,8 @@ function renderActivation() {
         btn.removeClass('btn-success');
         btn.addClass('btn-warning');
     } else {
-        name.removeClass('bg-success');
-        name.addClass('bg-danger');
+        name.removeClass('active-bg');
+        name.addClass('inactive-bg');
         name.html(`
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>

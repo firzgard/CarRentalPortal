@@ -212,11 +212,11 @@
         </EntityType>
         <EntityType Name="VehicleImage">
           <Key>
-            <PropertyRef Name="URL" />
-            <PropertyRef Name="CarID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="URL" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
+          <Property Name="URL" Type="varchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="VehicleModel">
           <Key>
@@ -508,7 +508,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="VehicleImage">
-              <PropertyRef Name="CarID" />
+              <PropertyRef Name="VehicleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -960,11 +960,11 @@
         </EntityType>
         <EntityType Name="VehicleImage">
           <Key>
-            <PropertyRef Name="URL" />
-            <PropertyRef Name="CarID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="URL" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <Property Name="URL" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_VehicleImage_Vehicle" FromRole="VehicleImage" ToRole="Vehicle" />
         </EntityType>
         <EntityType Name="VehicleModel">
@@ -1197,7 +1197,7 @@
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="VehicleImage">
-              <PropertyRef Name="CarID" />
+              <PropertyRef Name="VehicleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1430,8 +1430,9 @@
           <EntitySetMapping Name="VehicleImages">
             <EntityTypeMapping TypeName="CRPDBModel.VehicleImage">
               <MappingFragment StoreEntitySet="VehicleImage">
-                <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

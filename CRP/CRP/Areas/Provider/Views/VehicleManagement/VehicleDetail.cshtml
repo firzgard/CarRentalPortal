@@ -7,7 +7,11 @@
     ViewBag.Title = "VehihicleDetail";
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
-
+<style type="text/css">
+    .dz-max-files-reached {
+        background-color: black;
+    }
+</style>
 
         <div class="row wrapper border-bottom white-bg page-heading">
             <div class="col-md-10"><h2>Thông tin chi tiết của xe</h2></div>
@@ -28,7 +32,8 @@
                                             <p>@this.Model.Name</p>
                                         </div>
                                         <div class="editFiel col-md-8 m-b" style="display:none">
-                                            @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control", @id = "name", @maxlength = "100" })
+                                            @Html.TextBoxFor(q => q.Name, new { @type = "text", @class = "form-control", @id = "name"})
+                                            @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
                                 </div>
@@ -43,10 +48,10 @@
                                         <div class="editFiel col-md-8" style="display:none">
                                             <div class="m-b">
                                                 @Html.TextBoxFor(q => q.LicenseNumber, new { @type = "text", @class = "form-control", @id = "licenseNumber", @maxlength = "50" })
+                                                @Html.ValidationMessageFor(m => m.LicenseNumber, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
                                     </div>
-                                    
                                 </div>
                             </div>
                             <div class="row">
@@ -69,7 +74,7 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-4 text-right">
-                                            <label>Nhóm</label>
+                                            <label>Nhóm giá</label>
                                         </div>
                                         <div class="justRead col-md-8">
                                             <p>@this.Model.VehicleGroupName</p>
@@ -90,18 +95,18 @@
                                             <p>@this.Model.BrandName @this.Model.ModelName</p>
                                         </div>
                                         <div class="editFiel col-md-8" style="display:none">
-                                            @*<select id="modelFilter" class="form-control">*@
-                                                @Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })
-                                                @*@foreach (VehicleBrand brand in this.Model.BrandList)
+                                            <select id="modelFilter" class="form-control">
+                                                @*@Html.DropDownListFor(q => q.BrandID, this.Model.listBrand, new { @class = "form-control", @id = "brandID" })*@
+                                                @*@foreach (VehicleBrand brand in Model.brandList)
                                                 {
-                                                    <optgroup id="brandID"  value="@(brand.ID)" label="@(brand.Name)">
+                                                    <optgroup label="@brand.Name">
                                                         @foreach (VehicleModel entry in brand.VehicleModels)
                                                         {
-                                                        <option id="modelID" data-brand="@brand.ID" value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
+                                                            <option value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
                                                         }
                                                     </optgroup>
                                                 }*@
-                                            @*</select>*@
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -226,23 +231,17 @@
                                             <div class="form-group row" id="colorFilter">
    
                                                 <div class="col-xs-12">
-                                                    @for (int i = 1; i < Constants.COLOR.Count(); i++)
+                                                    @for (var i = 1; i < Constants.COLOR.Count(); i++)
                                                     {
-                                                        if (i == this.Model.ColorID)
-                                                        {
-                                                            <div id="colorFilter" class="color-selector">
-                                                                <input id="color@(Constants.COLOR[i])" name="group" value="@i" type="radio" checked>
-                                                                <label for="color@(Constants.COLOR[i])" name="group" style="background-color: @Constants.COLOR[i];"></label>
-                                                            </div>
-                                                        }
-                                                        else
-                                                        {
-                                                            <div id="colorFilter" class="color-selector">
-                                                                <input id="color@(Constants.COLOR[i])" name="group" value="@i" type="radio">
-                                                                <label for="color@(Constants.COLOR[i])" name="group" style="background-color: @Constants.COLOR[i];"></label>
-                                                            </div>
-                                                        }
+                                                        <div class="color-selector">
+                                                            <input id="color@(Constants.COLOR[i])" name="newColor" value="@i" type="radio">
+                                                            <label for="color@(Constants.COLOR[i])" style="background-color: @Constants.COLOR[i];"></label>
+                                                        </div>
                                                     }
+                                                    <div class="color-selector another-color">
+                                                        <input id="color0" name="newColor" value="0" type="radio">
+                                                        <label for="color0"></label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -259,14 +258,14 @@
                                                 <div class="carousel slide m-b" id="carousel1">
                                                     <div class="carousel-inner">
                                                         <div class="item active">
-                                                            <img alt="image" class="img-responsive" src="@this.Model.ImageUrls[0]">
+                                                            <img alt="image" class="img-responsive" src="@this.Model.ImageUrls[0]" style="height:300px; width:350px;">
                                                         </div>
                                                         @foreach (string entry in Model.ImageUrls)
                                                         {
                                                             if (Model.ImageUrls.IndexOf(entry) != 0)
                                                             {
                                                                 <div class="item">
-                                                                    <img alt="image" class="img-responsive" src="@entry">
+                                                                    <img alt="image" class="img-responsive" src="@entry" style="height:300px; width:350px;">
                                                                 </div>
                                                             }
                                                         }
@@ -279,7 +278,7 @@
                                                         <span class="icon-next"></span>
                                                     </a>
                                                 </div>
-                                                <a id="edit-img" class="btn btn-warning editFiel" style="display:none">Edit image</a>
+                                                <a id="edit-img" class="btn btn-warning editFiel" style="display:none">Thêm ảnh mới</a>
                                             </div>
                                         </div>
                                     </div>
@@ -287,29 +286,54 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <form id="my-awesome-dropzone" class="dropzone" action="#">
+                                    @*<form id="my-awesome-dropzone" class="dropzone" action="#">
                                         <div id="preview-template">
                                         </div>
                                         <div class="row">
                                             <input type="button" name="submit-img" class="btn btn-success pull-right m-l-xs" value="Save" />
                                             <a id="cancel-img" class="btn btn-default pull-right">Cancel</a>
                                         </div>
+                                    </form>*@
+
+                                    <form action="/Home/SaveUploadedFile/@Model.ID" method="post" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
+                                        <div class="fallback">
+                                            <input name="file" type="file" multiple />
+                                            <input type="submit" value="Upload" />
+                                        </div>
                                     </form>
+
                                 </div>
+
                             </div>
-                            <div class="row">
+                            <div class="hr-line-dashed"></div>
+                            <div class="row editFiel" style="display:none">
+                                
+                                    @foreach (string entry in Model.ImageUrls)
+                                    {
+                                        //using (Html.BeginForm("DeletePic", "VehicleManagement", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+                                        //{
+                                        <div class="col-md-3">
+                                            <div class="item">
+                                                <img alt="image" class="img-responsive" src="@entry" style="height:300px; width:350px;">
+                                                <input type="hidden" value="@entry" name="Url" class="imgUrl" />
+                                                <input type="hidden" value="@Model.ID" name="id" id="id" />
+                                                <input type="submit" class="btn btn-success DeleteImage" value="Xóa ảnh này" />
+                                            </div>
+                                        </div>
+                                    
+                                       //}
+                                    }
+                                <input type="hidden" value="" name="Url22" id="Url22" />
+                            </div>
+                            <div class="hr-line-dashed"></div>
                                 <div class="text-center">
                                     <a id="delete-btn" class="btn btn-danger" style="margin:20px">Xóa</a>
-                                    <a id="edit-btn" class="btn btn-info" style="margin:20px">Chỉnh sửa</a>
+                                    <a id="edit-btn" class="btn btn-info justRead" style="margin:20px">Chỉnh sửa</a>
                                     <a id="save-btn" class="btn btn-success">Lưu</a>
                                 </div>
                             </div>
-                            </div>
-                            <hr>
-                            
-
                         </div>
-
+                   
                     </div>
 
                 </div>
@@ -367,12 +391,15 @@
         @Styles.Render("~/Styles/VehicleDetail")
     }
     @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleDetail")
-                                        .Include("~/Scripts/chosen.jquery.js",
-                                           "~/Scripts/bootstrap.min.js",
-                                           "~/Scripts/dropzone/dropzone.js",
-                                           "~/Scripts/select2/select2.full.js",
-                                           "~/Scripts/pageScript/VehicleDetail.js"));
+                                                  .Include("~/Scripts/chosen.jquery.js",
+                                                     "~/Scripts/bootstrap.min.js",
+                                                     "~/Scripts/dropzone/dropzone.js",
+                                                     "~/Scripts/select2/select2.full.js",
+                                                     "~/Scripts/pageScript/VehicleDetail.js",
+                                                     "~/Scripts/pageScript/Dropzone.js"));
+    }
     }
     @section Scripts {
         @Scripts.Render("~/Scripts/VehicleDetail")
+        @Scripts.Render("~/bundles/jqueryval")
     }

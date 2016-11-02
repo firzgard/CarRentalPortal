@@ -6,13 +6,13 @@ using System.Web.Mvc;
 using CRP.Models;
 using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
-using CRP.Models.JsonModels;
 using Newtonsoft.Json;
 using CRP.Controllers;
 using AutoMapper.QueryableExtensions;
 using System.Threading.Tasks;
 using System.Web.Security;
 using Microsoft.AspNet.Identity;
+using CRP.Models.ViewModels;
 
 namespace CRP.Areas.Provider.Controllers
 {
@@ -23,10 +23,17 @@ namespace CRP.Areas.Provider.Controllers
 		public ViewResult GarageManagement()
 		{
 			var locationService = this.Service<ILocationService>();
-			List<Location> lstLocation = new List<Location>();
-			lstLocation = locationService.Get().ToList();
-			ViewBag.locationList = lstLocation;
-			return View("~/Areas/Provider/Views/GarageManagement/GarageManagement.cshtml");
+            GarageModel garageModel = new GarageModel();
+
+            garageModel.listLocation = locationService.Get()
+                .Select(q => new SelectListItem()
+                {
+                    Text = q.Name,
+                    Value = q.ID.ToString(),
+                    Selected = false,
+                });
+
+            return View("~/Areas/Provider/Views/GarageManagement/GarageManagement.cshtml", garageModel);
 		}
 
 		// Route to garage's detailed info page
@@ -34,8 +41,22 @@ namespace CRP.Areas.Provider.Controllers
 		public ViewResult GarageManagement(int id)
 		{
 			var service = this.Service<IGarageService>();
-			Garage garage = service.Get(id);
-			return View("~/Areas/Provider/Views/GarageManagement/GarageDetail.cshtml", garage);
+            var locationService = this.Service<ILocationService>();
+            var garage = service.Get(id);
+            if(garage == null)
+            {
+                return View("~/Areas/Provider/Views/GarageManagement/GarageDetail.cshtml");
+            }
+            GarageModel garageModel = this.Mapper.Map<GarageModel>(garage);
+            garageModel.listLocation= locationService.Get()
+                .Select(q => new SelectListItem()
+                {
+                    Text = q.Name,
+                    Value = q.ID.ToString(),
+                    Selected = false,
+                });
+
+            return View("~/Areas/Provider/Views/GarageManagement/GarageDetail.cshtml", garageModel);
 		}
 
 		// API Route to get list of garage
@@ -63,7 +84,7 @@ namespace CRP.Areas.Provider.Controllers
         [Authorize(Roles = "Provider")]
         [Route("api/garage/updateVehicle/{vehicleID:int}/{garageID:int}")]
         [HttpPatch]
-        public async Task<JsonResult> UpdateVehicleInGroup(int vehicleID, int garageID)
+        public async Task<JsonResult> UpdateVehicleInGarage(int vehicleID, int garageID)
         {
             if (!this.ModelState.IsValid)
             {
@@ -82,20 +103,21 @@ namespace CRP.Areas.Provider.Controllers
 
         // API Route to create single new garage
         // garageViewModel
+        [Authorize(Roles = "Provider")]
         [Route("api/garages")]
 		[HttpPost]
 		public async Task<ActionResult> CreateGarageAPI(Garage model)
 		{
-			if (!this.ModelState.IsValid)
-			{
-				return new HttpStatusCodeResult(403, "Created unsuccessfully.");
-			}
-			var service = this.Service<IGarageService>();
+            model.OwnerID = User.Identity.GetUserId();
+            model.IsActive = true;
+            model.IsDisabled = false;
+            model.Star = 0m;
+            model.NumOfComment = 0;
+            var service = this.Service<IGarageService>();
+            
+			await service.CreateAsync(model);
 
-			Garage newGarage = this.Mapper.Map<Garage>(model);
-			await service.CreateAsync(newGarage);
-
-			return new HttpStatusCodeResult(200, "Created successfully.");
+            return Json(new { result = true, message = "Created successfully." });
 		}
 
 		// API Route to edit single garage
@@ -105,17 +127,36 @@ namespace CRP.Areas.Provider.Controllers
 		public async Task<ActionResult> EditGarageAPI(Garage model)
 		{
 			if (!this.ModelState.IsValid)
-				return new HttpStatusCodeResult(403, "Updated unsuccessfully.");
+                return Json(new { result = false, message = "Updated unsuccessfully" });
 
-			var service = this.Service<IGarageService>();
-			var entity = await service.GetAsync(model?.ID);
+            var service = this.Service<IGarageService>();
+            var WTService = this.Service<IGarageWorkingTimeService>();
+			var entity = await service.GetAsync(model.ID);
 			if(entity == null)
-				return new HttpStatusCodeResult(403, "Updated unsuccessfully.");
+				return Json(new { result = false, message = "Updated unsuccessfully" });
 
-			this.Mapper.Map(model, entity);
+            entity.Name = model.Name;
+            entity.LocationID = model.LocationID;
+            entity.Address = model.Address;
+            entity.Email = model.Email;
+            entity.Phone1 = model.Phone1;
+            entity.Phone2 = model.Phone2;
+            entity.Description = model.Description;
+            entity.Policy = model.Policy;
+            entity.GarageWorkingTimes = model.GarageWorkingTimes;
+
+            var workTime = WTService.Get(q => q.GarageID == model.ID);
+            if(workTime.Count() > 0)
+            {
+                foreach(var w in workTime)
+                {
+                    WTService.DeleteAsync(w);
+                }
+            }
+
 			await service.UpdateAsync(entity);
 
-			return new HttpStatusCodeResult(200, "Updated successfully.");
+			return Json(new { result = true, message = "Updated successfully" });
 		}
 
 		// API Route to delete single garage
@@ -144,6 +185,23 @@ namespace CRP.Areas.Provider.Controllers
         //    createNewGarageViewModel viewModel = new createNewGarageViewModel();
         //    return View("~/Areas/Provider/Views/VehicleGroupManagement/CreatePopup.cshtml", viewModel);
         //}
+
+        [Authorize(Roles = "Provider")]
+        [Route("api/workingTime/{id:int}")]
+        [HttpGet]
+        public JsonResult WorkingTime(int id)
+        {
+            var service = this.Service<IGarageWorkingTimeService>();
+            var workingTimeList = service.Get().ToList();
+            var result = workingTimeList
+                .Where(q => q.GarageID == id)
+                .Select(q => new IConvertible[] {
+                    q.DayOfWeek,
+                    q.OpenTimeInMinute,
+                    q.CloseTimeInMinute
+                });
+            return Json(new { list = result }, JsonRequestBehavior.AllowGet);
+        }
 
         [Route("api/deleteGarage/{id:int}")]
         [HttpDelete]
@@ -183,6 +241,47 @@ namespace CRP.Areas.Provider.Controllers
                 return Json(new { result = false, message = "Null" });
             }
             
+        }
+
+        // load vehicle in garage
+        [Authorize(Roles = "Provider")]
+        [Route("api/vehicleInGarage/{id:int}")]
+        [HttpGet]
+        public JsonResult GetVehicleInGarage(int id)
+        {
+            var service = this.Service<IVehicleService>();
+            var list = service.Get(q => q.GarageID == id).ToList();
+            var result = list.Select(q => new IConvertible[] {
+                q.ID,
+                q.Name,
+                q.LicenseNumber,
+                q.VehicleGroup != null ? q.VehicleGroup.Name: null,
+                q.Year,
+                q.VehicleModel.NumOfSeat,
+                //(from kvp in Models.Constants.COLOR where kvp.Key == q.Color select kvp.Value).ToList().FirstOrDefault(),
+                q.Star
+            });
+            return Json(new { data = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        // load all vehicle in other garage
+        [Authorize(Roles = "Provider")]
+        [Route("api/vehicleListGarage/{garageID:int}")]
+        [HttpGet]
+        public JsonResult VehiclesInOtherGarage(int garageID)
+        {
+            var service = this.Service<IVehicleService>();
+            var providerID = User.Identity.GetUserId();
+
+            var listVehicle = service.Get()
+                .Where(q => q.Garage.AspNetUser.Id == providerID && q.GarageID != garageID)
+                .Select(q => new SelectListItem()
+                {
+                    Text = q.Name + " [Biển số: " + q.LicenseNumber + "]" + "[Garage: " + q.Garage.Name + "]",
+                    Value = q.ID.ToString(),
+                    Selected = false,
+                }).ToList();
+            return Json(new { list = listVehicle }, JsonRequestBehavior.AllowGet);
         }
 
         [Route("api/garage/status/{id:int}")]

@@ -81,21 +81,25 @@ namespace CRP.Models.Entities.Services
 
             var recordsTotal = bookings.Count();
 
+            // Search, if Search param exists
+            if (conditions.Search != null)
+                bookings = bookings.Where(b => b.AspNetUser.FullName.Contains(conditions.Search)
+                            || b.VehicleName.Contains(conditions.Search) || b.LicenseNumber.Contains(conditions.Search));
+
             var result = bookings.ToList().Select(b => new BookingsRecordJsonModel(b));
 
             // Sort
             // Default sort
             if(conditions.OrderBy == null || nameof(BookingsRecordJsonModel.ID) == conditions.OrderBy)
             {
-                result = result.OrderByDescending(r => r.EndTime);
+                result = result.OrderBy(r => r.CustomerName);
             }
             else
             {
-                // End time: future ---> past (positive direction)
-                if(nameof(BookingsRecordJsonModel.EndTime) == conditions.OrderBy)
+                if(nameof(BookingsRecordJsonModel.CustomerName) == conditions.OrderBy)
                 {
-                    result = conditions.IsDescendingOrder ? result.OrderBy(r => r.EndTime)
-                        : result.OrderByDescending(r => r.EndTime);
+                    result = conditions.IsDescendingOrder ? result.OrderByDescending(r => r.CustomerName)
+                        : result.OrderBy(r => r.CustomerName);
                 }
                 else
                 {
