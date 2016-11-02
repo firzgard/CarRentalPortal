@@ -5,16 +5,6 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="CRPDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
-          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
-          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
-          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
-        </EntityType>
         <EntityType Name="AspNetRoles">
           <Key>
             <PropertyRef Name="Id" />
@@ -183,16 +173,6 @@
           <Property Name="Price" Type="float" Nullable="false" />
           <Property Name="MaxDistance" Type="int" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
-        </EntityType>
         <EntityType Name="Vehicle">
           <Key>
             <PropertyRef Name="ID" />
@@ -230,15 +210,13 @@
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="WithDriverPriceGroupID" Type="int" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'CRPDB.dbo.VehicleImage' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="VehicleImage">
           <Key>
-            <PropertyRef Name="URL" />
-            <PropertyRef Name="CarID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="URL" Type="varchar" MaxLength="1000" Nullable="false" />
-          <Property Name="CarID" Type="int" Nullable="false" />
+          <Property Name="ID" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
+          <Property Name="URL" Type="varchar" MaxLength="200" Nullable="false" />
         </EntityType>
         <EntityType Name="VehicleModel">
           <Key>
@@ -530,12 +508,11 @@ warning 6002: The table/view 'CRPDB.dbo.VehicleImage' does not have a primary ke
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="VehicleImage">
-              <PropertyRef Name="CarID" />
+              <PropertyRef Name="VehicleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="CRPDBModelStoreContainer">
-          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaims" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
@@ -550,17 +527,11 @@ warning 6002: The table/view 'CRPDB.dbo.VehicleImage' does not have a primary ke
           <EntitySet Name="Nation" EntityType="Self.Nation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceGroup" EntityType="Self.PriceGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PriceGroupItem" EntityType="Self.PriceGroupItem" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Vehicle" EntityType="Self.Vehicle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleBrand" EntityType="Self.VehicleBrand" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleGroup" EntityType="Self.VehicleGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleImage" EntityType="Self.VehicleImage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleModel" EntityType="Self.VehicleModel" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="VehicleImage" EntityType="Self.VehicleImage" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [VehicleImage].[URL] AS [URL], 
-    [VehicleImage].[CarID] AS [CarID]
-    FROM [dbo].[VehicleImage] AS [VehicleImage]</DefiningQuery>
-          </EntitySet>
           <AssociationSet Name="FK_BookingReceipt_AspNetUsers" Association="Self.FK_BookingReceipt_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="BookingReceipt" EntitySet="BookingReceipt" />
@@ -760,8 +731,6 @@ warning 6002: The table/view 'CRPDB.dbo.VehicleImage' does not have a primary ke
             <End Role="Category" EntitySet="Categories" />
             <End Role="VehicleModel" EntitySet="VehicleModels" />
           </AssociationSet>
-          <EntitySet Name="C__MigrationHistory" EntityType="CRPDBModel.C__MigrationHistory" />
-          <EntitySet Name="sysdiagrams" EntityType="CRPDBModel.sysdiagram" />
         </EntityContainer>
         <EntityType Name="AspNetRole">
           <Key>
@@ -991,11 +960,11 @@ warning 6002: The table/view 'CRPDB.dbo.VehicleImage' does not have a primary ke
         </EntityType>
         <EntityType Name="VehicleImage">
           <Key>
-            <PropertyRef Name="URL" />
-            <PropertyRef Name="CarID" />
+            <PropertyRef Name="ID" />
           </Key>
-          <Property Name="URL" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="false" />
-          <Property Name="CarID" Type="Int32" Nullable="false" />
+          <Property Name="ID" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
+          <Property Name="URL" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_VehicleImage_Vehicle" FromRole="VehicleImage" ToRole="Vehicle" />
         </EntityType>
         <EntityType Name="VehicleModel">
@@ -1228,7 +1197,7 @@ warning 6002: The table/view 'CRPDB.dbo.VehicleImage' does not have a primary ke
               <PropertyRef Name="ID" />
             </Principal>
             <Dependent Role="VehicleImage">
-              <PropertyRef Name="CarID" />
+              <PropertyRef Name="VehicleID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1252,26 +1221,6 @@ warning 6002: The table/view 'CRPDB.dbo.VehicleImage' does not have a primary ke
           <End Type="CRPDBModel.Category" Role="Category" Multiplicity="*" />
           <End Type="CRPDBModel.VehicleModel" Role="VehicleModel" Multiplicity="*" />
         </Association>
-        <EntityType Name="C__MigrationHistory">
-          <Key>
-            <PropertyRef Name="MigrationId" />
-            <PropertyRef Name="ContextKey" />
-          </Key>
-          <Property Name="MigrationId" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
-          <Property Name="ContextKey" Type="String" Nullable="false" MaxLength="300" FixedLength="false" Unicode="true" />
-          <Property Name="Model" Type="Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
-          <Property Name="ProductVersion" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1481,8 +1430,9 @@ warning 6002: The table/view 'CRPDB.dbo.VehicleImage' does not have a primary ke
           <EntitySetMapping Name="VehicleImages">
             <EntityTypeMapping TypeName="CRPDBModel.VehicleImage">
               <MappingFragment StoreEntitySet="VehicleImage">
-                <ScalarProperty Name="CarID" ColumnName="CarID" />
                 <ScalarProperty Name="URL" ColumnName="URL" />
+                <ScalarProperty Name="VehicleID" ColumnName="VehicleID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1513,27 +1463,6 @@ warning 6002: The table/view 'CRPDB.dbo.VehicleImage' does not have a primary ke
               <ScalarProperty Name="ID" ColumnName="CategoryID" />
             </EndProperty>
           </AssociationSetMapping>
-          <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="CRPDBModel.C__MigrationHistory">
-              <MappingFragment StoreEntitySet="__MigrationHistory">
-                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
-                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
-                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="CRPDBModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="definition" ColumnName="definition" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

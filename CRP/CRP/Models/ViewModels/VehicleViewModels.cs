@@ -6,6 +6,7 @@ using System.Security.Cryptography.Xml;
 using System.Web.Mvc;
 using CRP.Models.Entities;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
 namespace CRP.Models.ViewModels
 {
@@ -49,6 +50,7 @@ namespace CRP.Models.ViewModels
 		public string Name { get; set; }
 		public int? Year { get; set; }
 		public int NumOfSeat { get; set; }
+		public int NumOfComment { get; set; }
 		public decimal? Star { get; set; }
 
 		protected VehicleRecordJsonModel(Vehicle vehicle)
@@ -58,6 +60,7 @@ namespace CRP.Models.ViewModels
 			Name = vehicle.Name;
 			Year = vehicle.Year;
 			NumOfSeat = vehicle.VehicleModel.NumOfSeat;
+			NumOfComment = vehicle.NumOfComment;
 			Star = vehicle.Star;
 		}
 	}
@@ -82,8 +85,16 @@ namespace CRP.Models.ViewModels
 	public class VehicleDetailInfoModel
 	{
 		public int ID { get; set; }
-		public string LicenseNumber { get; set; }
+        [Required]
+        [StringLength(12, ErrorMessage = "Biển số xe phải có ít nhất 6 ký tự", MinimumLength = 6)]
+        [Display(Name = "LicenseNumber")]
+        public string LicenseNumber { get; set; }
+
+        [Required]
+        [StringLength(50, ErrorMessage = "Tên xe phải có ít nhất 6 ký tự", MinimumLength = 6)]
+        [Display(Name ="Name")]
 		public string Name { get; set; }
+
 		public int ModelID { get; set; }
 		public string ModelName { get; set; }
 		public int BrandID { get; set; }
@@ -109,20 +120,13 @@ namespace CRP.Models.ViewModels
         public IEnumerable<SelectListItem> listGroup { get; set; }
         public IEnumerable<SelectListItem> listBrand { get; set; }
         public IEnumerable<SelectListItem> listModel { get; set; }
-        //public List<VehicleBrand> BrandList { get; set; }
+        public List<VehicleBrand> brandList { get; set; }
 
         public VehicleDetailInfoModel()
         { }
         public VehicleDetailInfoModel(Vehicle vehicle)
 		{
-            try
-            {
-                this.ID = vehicle.ID;
-            }
-			catch (Exception e)
-            {
-                throw new HttpException(404, "Page not exist");
-            }
+            this.ID = vehicle.ID;
 			this.LicenseNumber = vehicle.LicenseNumber;
 			this.Name = vehicle.Name;
 			this.ModelID = vehicle.ModelID;
@@ -182,6 +186,7 @@ namespace CRP.Models.ViewModels
 	{
 		public int garageID { get; set; }
 		public IEnumerable<SelectListItem> listGarage { get; set; }
-		public List<VehicleBrand> brandList { get; set; }
+		public IEnumerable<SelectListItem> GroupList { get; set; }
+		public List<VehicleBrand> BrandList { get; set; }
     }
 }

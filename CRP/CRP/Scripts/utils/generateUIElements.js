@@ -3,7 +3,7 @@ const	fullStar = '<i class="fa fa-star"></i>',
 		halfStar = '<i class="fa fa-star-half-o"></i>',
 		emptyStar = '<i class="fa fa-star-o"></i>';
 		
-function renderStarRating(starRating, color, hasBadge = true, renderEmptyStar = true){
+function renderStarRating(starRating, color = '#4CAF50', hasBadge = true, renderEmptyStar = true){
 	let html = ''
 	if(renderEmptyStar){
 		for(star = starRating, i = 0; i < 5; i++) {
