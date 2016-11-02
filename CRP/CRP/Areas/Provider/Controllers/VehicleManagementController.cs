@@ -448,20 +448,21 @@ namespace CRP.Areas.Provider.Controllers
 						var Entity = vehicleService.Get(VehicleID);
 						imageOfVehicle.URL = url;
 						imageOfVehicle.VehicleID = VehicleID;
+                        imageOfVehicle.ID = uploadResult.PublicId.ToString();
 						imageOfVehicle.Vehicle = Entity;
 						imageServie.CreateAsync(imageOfVehicle);
-						ICollection<VehicleImage> lstImage = Entity.VehicleImages;
-						lstImage.Add(imageOfVehicle);
-						Entity.VehicleImages = lstImage;
-						var listItem = imageServie.Get(q => q.VehicleID == Entity.ID).ToList();
-						if (listItem.Count() > 0)
-						{
-							foreach (var item in listItem)
-							{
-								imageServie.DeleteAsync(item);
-							}
-						}
-						vehicleService.UpdateAsync(Entity);
+      //                  List<VehicleImage> lstImage = imageServie.Get(q => q.VehicleID == Entity.ID).ToList();
+						//lstImage.Add(imageOfVehicle);
+						//Entity.VehicleImages = lstImage;
+						//var listItem = imageServie.Get(q => q.VehicleID == Entity.ID).ToList();
+						//if (listItem.Count() > 0)
+						//{
+						//foreach (var item in listItem)
+						//{
+						//imageServie.DeleteAsync(item);
+					 //   }
+						//}
+						//vehicleService.UpdateAsync(Entity);
 					}
 				}
 			}
