@@ -131,6 +131,7 @@ $(document).on('click', "#save-btn", function () {
     model.Color = $('input[name=newColor]:checked').val();
     model.Year = $('#year').val();
     model.Description = null;
+    model.ModelID = $('#modelFilter').val();
 
     $.ajax({
         type: "PATCH",

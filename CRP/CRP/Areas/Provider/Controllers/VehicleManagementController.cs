@@ -155,13 +155,16 @@ namespace CRP.Areas.Provider.Controllers
 
             //    return newBrandList;
             //});
-            vehiIn.listBrand = brandService.Get()
-                 .Select(q => new SelectListItem()
-                 {
-                     Text = q.Name,
-                     Value = q.ID.ToString(),
-                     Selected = true,
-                 });
+            vehiIn.brandList = brandService.Get(
+                b => b.VehicleModels.Count != 0 // Only get brand w/ model
+            ).OrderBy(b => b.Name).ToList();
+            //vehiIn.listBrand = brandService.Get()
+            //     .Select(q => new SelectListItem()
+            //     {
+            //         Text = q.Name,
+            //         Value = q.ID.ToString(),
+            //         Selected = true,
+            //     });
             vehiIn.listModel = brandService.Get()
                  .Select(q => new SelectListItem()
                  {
