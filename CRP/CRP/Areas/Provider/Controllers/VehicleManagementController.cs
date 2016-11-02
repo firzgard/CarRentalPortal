@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using CloudinaryDotNet.Actions;
 using Microsoft.Ajax.Utilities;
+using System.IO;
 
 namespace CRP.Areas.Provider.Controllers
 {
@@ -416,7 +417,7 @@ namespace CRP.Areas.Provider.Controllers
 
 
 		[Route("Home/SaveUploadedFile/{VehicleID:int}")]
-		public void SaveUploadedFile(int VehicleID)
+		public String SaveUploadedFile(int VehicleID)
 		{
 			var imageServie = this.Service<IVehicleImageService>();
 			var vehicleService = this.Service<IVehicleService>();
@@ -458,22 +459,25 @@ namespace CRP.Areas.Provider.Controllers
                         imageOfVehicle.ID = uploadResult.PublicId.ToString();
 						imageOfVehicle.Vehicle = Entity;
 						imageServie.CreateAsync(imageOfVehicle);
-      //                  List<VehicleImage> lstImage = imageServie.Get(q => q.VehicleID == Entity.ID).ToList();
-						//lstImage.Add(imageOfVehicle);
-						//Entity.VehicleImages = lstImage;
-						//var listItem = imageServie.Get(q => q.VehicleID == Entity.ID).ToList();
-						//if (listItem.Count() > 0)
-						//{
-						//foreach (var item in listItem)
-						//{
-						//imageServie.DeleteAsync(item);
-					 //   }
-						//}
-						//vehicleService.UpdateAsync(Entity);
-					}
+                        return uploadResult.PublicId.ToString();
+
+                    }
 				}
 			}
-		}
+            return "";
+        }
+
+        [Route("api/vehicles/deletepic")]
+        [HttpDelete]
+        public void DeletePicinNew()
+        {
+            var vehicleService = this.Service<IVehicleService>();
+            String id = Request.Params["file"];
+            var vehicleImageService = this.Service<IVehicleImageService>();
+            VehicleImage entityImage = vehicleImageService.Get(q => q.ID == id).FirstOrDefault();
+            vehicleImageService.DeleteAsync(entityImage);
+        }
+
         [Route("api/vehicles/deletepic/{id:int}")]
         [HttpDelete]
         public async Task<ActionResult> DeletePic(int id)
@@ -509,5 +513,4 @@ namespace CRP.Areas.Provider.Controllers
             //await VehicleImageService.DeleteAsync(entity);
         }
     }
-}
 }

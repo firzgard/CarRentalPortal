@@ -34,12 +34,12 @@
     $('#edit-img').on('click', function () {
         $('#edit-img').hide();
         $('#img-div').hide();
-        $('#my-awesome-dropzone').show();
+        $('#dropzoneForm').show();
     });
     $('#cancel-img').on('click', function () {
         $('#edit-img').show();
         $('#img-div').show();
-        $('#my-awesome-dropzone').hide();
+        $('#dropzoneForm').hide();
     });
     Dropzone.options.myAwesomeDropzone = {
         //1MB max size
@@ -107,10 +107,12 @@ $(document).on('click', ".DeleteImage", function () {
         },
         async: true,
         success: function (data) {
-            alert("ok");
+            alert("Xóa thành công");
+            location.reload();
         },
         eror: function (data) {
-            alert("fail");
+            alert("Thất bại");
+            location.reload();
         }
     });
 });
@@ -138,10 +140,12 @@ $(document).on('click', "#save-btn", function () {
         data: model,
         async: true,
         success: function (data) {
-            alert("ok");
+            alert("Tất cả đã được lưu");
+            location.reload();
         },
         eror: function (data) {
-            alert("fail");
+            alert("Thất bại");
+            location.reload();
         }
     });
 });
