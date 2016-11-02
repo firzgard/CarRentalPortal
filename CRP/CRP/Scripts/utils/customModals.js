@@ -148,7 +148,7 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 								</div>
 								<div class="form-group">
 									<label>Năm sản xuất*</label>
-									<input id="Year" name="Year" type="number" placeholder="Năm sản xuất" value="${data.Year || ''}" class="form-control" required>
+									<input id="Year" name="Year" type="number" step="1" placeholder="Năm sản xuất" value="${data.Year || ''}" class="form-control" required>
 								</div>
 								<div class="form-group">
 									<label>Nhóm xe</label>
@@ -187,6 +187,14 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 				</div>
 			</div>
 		</div>`);
+
+		$('#Year').change(function(){
+			if(Number.parseInt($(this).val()) > MAX_YEAR) {
+				$(this).val(MAX_YEAR);
+			} else if (Number.parseInt($(this).val()) < MIN_YEAR) {
+				$(this).val(MIN_YEAR);
+			}
+		})
 
 		$('#ModelID').select2({
 			placeholder: "Vui lòng chọn dòng xe..."
@@ -231,22 +239,45 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 			, uploadMultiple: true
 			, url: "/api/vehicles"
 			, init: function () {
-				this.on("completemultiple", (files) => {
-					jqModalNode.modal('hide');
-					table.ajax.reload();
-					toastr.success('Tạo xe thành công.');
+				let noResponse = true;
+
+				this.on("completemultiple", (files, a) => {
+					if(noResponse) {
+						noResponse = false;
+
+						jqModalNode.modal('hide');
+						table.ajax.reload();
+
+						if(files[0].xhr.status == 200)
+							toastr.success('Tạo xe thành công.');
+						else 
+							toastr.error('Tạo xe thất bại. Vui lòng thử lại sau');
+					}
 				});
 
 				$('#createNewBtn').click((evt) => {
 					evt.preventDefault();
 					evt.stopPropagation();
 
-					if ($("#newVehicleForm")[0].checkValidity() && this.getQueuedFiles().length >= 4) { 
-						this.processQueue();
-					} else if ($('input[name="Color"]:checked').length == 0) {
+					// Validation
+					if (!$("#Name")[0].checkValidity()) { // Check Name : required, max 100, min 10
+						toastr.warning('Tên xe phải từ 10 đến 100 chữ cái.');
+					} else if (!$("#LicenseNumber")[0].checkValidity()) { // Check License: required, max 100, min 10
+						toastr.warning('Biển số xe phải từ 10 đến 50 chữ cái.');
+					} else if (!$("#ModelID")[0].checkValidity()) { // Check model: required
+						toastr.warning('Vui lòng chọn dòng xe.');
+					} else if (!$("#Year")[0].checkValidity()) { // Check Year: required
+						toastr.warning('Vui lòng khai báo năm sản xuất của xe.');
+					} else if (!$("#GarageID")[0].checkValidity()) { // Check garage: required
+						toastr.warning('Vui lòng chọn garage xe.');
+					} else if ($('input[name="TransmissionType"]:checked').length == 0) {
+						toastr.warning('Vui lòng chọn loại hộp số');
+					} else if ($('input[name="Color"]:checked').length == 0) { // Check Color: required
 						toastr.warning('Bạn chưa chọn màu xe.');
-					} else {
+					} else if (this.getQueuedFiles().length < 4) { // Check num of image: required, min 4
 						toastr.warning('Bạn phải upload ít nhất 4 hình.');
+					} else if ($("#newVehicleForm")[0].checkValidity()) { // Valid? Up u go
+						this.processQueue();
 					}
 				});
 			}
