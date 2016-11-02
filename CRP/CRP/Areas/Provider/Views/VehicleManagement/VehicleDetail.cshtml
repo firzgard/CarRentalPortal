@@ -296,7 +296,11 @@
                                                         <span class="icon-next"></span>
                                                     </a>
                                                 </div>
-                                                <a id="edit-img" class="btn btn-warning editFiel" style="display:none">Thêm ảnh mới</a>
+                                                @if (Model.ImageUrls.Count < 8)
+                                                {
+                                                 <a id="edit-img" class="btn btn-warning editFiel" style="display:none">Thêm ảnh mới</a>
+                                                }
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -335,13 +339,15 @@
                                                 <img alt="image" class="img-responsive" src="@entry" style="height:300px; width:350px;">
                                                 <input type="hidden" value="@entry" name="Url" class="imgUrl" />
                                                 <input type="hidden" value="@Model.ID" name="id" id="id" />
-                                                <input type="submit" class="btn btn-success DeleteImage" value="Xóa ảnh này" />
+                                                @if (Model.ImageUrls.Count > 4)
+                                                {
+                                                    <input type="submit" class="btn btn-success DeleteImage" value="Xóa ảnh này" />
+                                                }
                                             </div>
                                         </div>
-                                    
                                        //}
                                     }
-                                <input type="hidden" value="" name="Url22" id="Url22" />
+                                <input type="hidden" value="" name="maxImg" id="maxImg" />
                             </div>
                             <div class="hr-line-dashed"></div>
                                 <div class="text-center">
@@ -418,6 +424,10 @@
     }
     }
     @section Scripts {
+        <script>
+            const MAX_IMG = @Model.ImageUrls.Count;
+        </script>
+
         @Scripts.Render("~/Scripts/VehicleDetail")
         @Scripts.Render("~/bundles/jqueryval")
     }
