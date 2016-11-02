@@ -76,6 +76,11 @@ namespace CRP.Controllers
                 return View(model);
             }
 			var user = UserManager.FindByEmail(model.Email);
+            if(user == null)
+            {
+                ModelState.AddModelError("", "Tài khoản không tồn tại");
+                return View(model);
+            }
 			// This doesn't count login failures towards account lockout
 			// To enable password failures to trigger account lockout, change to shouldLockout: true
 			var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
@@ -89,7 +94,7 @@ namespace CRP.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Đăng nhập lỗi");
                     return View(model);
             }
         }
