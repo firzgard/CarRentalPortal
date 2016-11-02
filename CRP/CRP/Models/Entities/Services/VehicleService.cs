@@ -11,7 +11,6 @@ namespace CRP.Models.Entities.Services
 	{
 		SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions);
 		VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions);
-
 	}
 
 	public class VehicleService : BaseService<Vehicle>, IVehicleService
