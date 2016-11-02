@@ -55,14 +55,15 @@ $(document).ready( function () {
 			, data: (rawData) => {
 			    return {
 			        Draw: rawData.draw,
+			        Search: rawData.search.value,
 			        GarageID: garageID,
 			        IsCanceled: isCanceled,
 			        IsSelfBooking: isSelfBooking,
-			        IsInThePast: isInThePast
-					, RecordPerPage: rawData.length
-					, Page: rawData.start / rawData.length + 1
-					, OrderBy: bookingTableColumns[rawData.order[0].column].data
-					, IsDescendingOrder: rawData.order[0].dir == 'desc'
+			        IsInThePast: isInThePast,
+			        RecordPerPage: rawData.length,
+			        Page: rawData.start / rawData.length + 1,
+			        OrderBy: bookingTableColumns[rawData.order[0].column].data,
+			        IsDescendingOrder: rawData.order[0].dir == 'desc'
 			    };
 			}
 		},
@@ -89,8 +90,8 @@ $(document).ready( function () {
 			{
 			    targets: -7
 				, render: function (data, type, row) {
-				    if (data) {
-                        return renderStarRating(data);
+				    if (data !== null) {
+                        return renderStarRating(data, '#4CAF50', false);
 				    }
 				    return '-';
 				}

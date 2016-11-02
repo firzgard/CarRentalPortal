@@ -50,6 +50,7 @@ namespace CRP.Models.ViewModels
 		public string Name { get; set; }
 		public int? Year { get; set; }
 		public int NumOfSeat { get; set; }
+		public int NumOfComment { get; set; }
 		public decimal? Star { get; set; }
 
 		protected VehicleRecordJsonModel(Vehicle vehicle)
@@ -59,6 +60,7 @@ namespace CRP.Models.ViewModels
 			Name = vehicle.Name;
 			Year = vehicle.Year;
 			NumOfSeat = vehicle.VehicleModel.NumOfSeat;
+			NumOfComment = vehicle.NumOfComment;
 			Star = vehicle.Star;
 		}
 	}
@@ -184,6 +186,7 @@ namespace CRP.Models.ViewModels
 	{
 		public int garageID { get; set; }
 		public IEnumerable<SelectListItem> listGarage { get; set; }
-		public List<VehicleBrand> brandList { get; set; }
+		public IEnumerable<SelectListItem> GroupList { get; set; }
+		public List<VehicleBrand> BrandList { get; set; }
     }
 }

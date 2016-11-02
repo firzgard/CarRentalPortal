@@ -12,6 +12,7 @@ using CRP.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using CloudinaryDotNet.Actions;
+using Microsoft.Ajax.Utilities;
 
 namespace CRP.Areas.Provider.Controllers
 {
@@ -28,22 +29,30 @@ namespace CRP.Areas.Provider.Controllers
                 b => b.VehicleModels.Count != 0 // Only get brand w/ model
             ).OrderBy(b => b.Name).ToList();
 
-            var garageService = this.Service<IGarageService>();
-            var providerID = User.Identity.GetUserId();
-            var listGarage = garageService.Get()
-                    .Where(q => q.OwnerID == providerID)
-                    .Select(q => new SelectListItem()
-                    {
-                        Text = q.Name,
-                        Value = q.ID.ToString(),
-                        Selected = true,
-                    });
+			var garageService = this.Service<IGarageService>();
+			var providerID = User.Identity.GetUserId();
+			var listGarage = garageService.Get(q => q.OwnerID == providerID)
+					.Select(q => new SelectListItem()
+					{
+						Text = q.Name,
+						Value = q.ID.ToString(),
+						Selected = true,
+					});
 
-            var viewModel = new FilterByGarageView()
-            {
-                listGarage = listGarage,
-                brandList = brandList
-            };
+			var groupService = this.Service<IVehicleGroupService>();
+			var groupList = groupService.Get(q => q.OwnerID == providerID)
+					.Select(q => new SelectListItem()
+					{
+						Text = q.Name,
+						Value = q.ID.ToString()
+					});
+
+			var viewModel = new FilterByGarageView()
+			{
+				listGarage = listGarage,
+				GroupList = groupList,
+				BrandList = brandList
+			};
 
             return View("~/Areas/Provider/Views/VehicleManagement/VehicleManagement.cshtml", viewModel);
         }
@@ -163,6 +172,7 @@ namespace CRP.Areas.Provider.Controllers
             return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehiIn);
 		}
 
+
 		// API Route to get a list of vehicle to populate vehicleTable
 		// Only vehicle tables need this API because their possibly huge number of record
 		// So we need this API for server-side pagination
@@ -184,54 +194,79 @@ namespace CRP.Areas.Provider.Controllers
 			return Json(vehicles, JsonRequestBehavior.AllowGet);
 		}
 
+
 		// API Route for getting vehicle's detailed infomations (for example, to duplicate vehicle)
 		[Route("api/vehicles/{id}")]
 		[HttpGet]
 		public JsonResult GetVehicleDetailAPI(int id)
 		{
-			//var vehicle = new vehicle() { id = 666, name = "bwm x7" };
 			var service = this.Service<IVehicleService>();
 			Vehicle vehicle = service.Get(id);
 
-			VehicleDetailInfoModel vehiclemodel = new VehicleDetailInfoModel(vehicle);
-
-			return Json(vehiclemodel, JsonRequestBehavior.AllowGet);
+			return Json(new
+			{
+				Name = vehicle.Name,
+				ModelID = vehicle.ModelID,
+				Year = vehicle.Year,
+				GarageID = vehicle.GarageID,
+				VehicleGroupID = vehicle.VehicleGroupID,
+				TransmissionType = vehicle.TransmissionType,
+				TransmissionDetail = vehicle.TransmissionDetail,
+				FuelType = vehicle.FuelType,
+				Engine = vehicle.Engine,
+				Color = vehicle.Color,
+				Description = vehicle.Description
+			}, JsonRequestBehavior.AllowGet);
 		}
+
 
 		// API Route to create single new vehicles
 		[Route("api/vehicles")]
 		[HttpPost]
-		public async Task<ActionResult> CreateVehicleAPI(Vehicle model)
+		public async Task<ActionResult> CreateVehicleAPI(Vehicle newVehicle)
 		{
 			if (!this.ModelState.IsValid)
-				return new HttpStatusCodeResult(403, "Created unsuccessfully");
-			var service = this.Service<IVehicleService>();
-			var ModelService = this.Service<IModelService>();
-			var BrandService = this.Service<IBrandService>();
-			var GarageService = this.Service<IGarageService>();
-			var VehicleGroupService = this.Service<IVehicleGroupService>();
-			var VehicleImageService = this.Service<IVehicleImageService>();
+				return new HttpStatusCodeResult(400, "Created unsuccessfully");
 
-			var entity = this.Mapper.Map<Vehicle>(model);
-			var ModelEntity = this.Mapper.Map<VehicleModel>(model.VehicleModel);
-			var BrandEntity = this.Mapper.Map<VehicleBrand>(model.VehicleModel.VehicleBrand);
-			var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
-			var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
-			var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
+			// Upload images
+			var imageList = new List<VehicleImage>();
+			foreach (string fileName in Request.Files)
+			{
+				var file = Request.Files[fileName];
 
-			if (entity == null || ModelEntity == null || BrandEntity == null 
-					|| GarageEntity == null || VehicleGroupEntity == null || VehicleImageEntity == null)
-				return new HttpStatusCodeResult(403, "Created unsuccessfully");
+				if (file?.ContentLength > 0)
+				{
+					var cloudinary = new CloudinaryDotNet.Cloudinary(Models.Constants.CLOUDINARY_ACC);
 
-			await BrandService.CreateAsync(BrandEntity);
-			await ModelService.CreateAsync(ModelEntity);
-			await GarageService.CreateAsync(GarageEntity);
-			await VehicleGroupService.CreateAsync(VehicleGroupEntity);
-			await VehicleImageService.CreateAsync(VehicleImageEntity);
-			await service.CreateAsync(entity);
+					// Upload to cloud
+					var uploadResult = cloudinary.Upload(new ImageUploadParams()
+					{
+						File = new FileDescription(file.FileName, file.InputStream)
+					});
+
+					if (uploadResult == null)
+						return new HttpStatusCodeResult(400, "Created unsuccessfully");
+
+					// Get the image's id and url
+					imageList.Add(new VehicleImage() { ID = uploadResult.PublicId, URL = uploadResult.Uri.ToString() });
+				}
+			}
+
+			var vehicleService = this.Service<IVehicleService>();
+			await vehicleService.CreateAsync(newVehicle);
+
+			foreach (var image in imageList)
+			{
+				image.VehicleID = newVehicle.ID;
+				image.Vehicle = newVehicle;
+			}
+
+			newVehicle.VehicleImages = imageList;
+			await vehicleService.UpdateAsync(newVehicle);
 
 			return new HttpStatusCodeResult(200, "Created successfully.");
 		}
+
 
 		// API Route to edit single vehicle
 		[Route("api/vehicles")]
@@ -268,6 +303,7 @@ namespace CRP.Areas.Provider.Controllers
 			return new HttpStatusCodeResult(200, "Updated successfully.");
 		}
 
+
 		// API Route to delete
 		[Route("api/vehicles/{id:int}")]
 		[HttpDelete]
@@ -279,17 +315,18 @@ namespace CRP.Areas.Provider.Controllers
 			if (entity == null)
 				return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
 
-			var VehicleImageEntity = VehicleImageService.Get(q => q.CarID == id);
+			var VehicleImageEntity = VehicleImageService.Get(q => q.VehicleID == id);
 			if (VehicleImageEntity != null)
 			{
 				foreach (var item in VehicleImageEntity)
 				{
-					VehicleImageService.DeleteAsync(item);
+					await VehicleImageService.DeleteAsync(item);
 				}
 			}
 			await service.DeleteAsync(entity);
 			return new HttpStatusCodeResult(200, "Deleted successfully.");
 		}
+
 
 		// API Route to change garage of multiple vehicles
 		[Route("api/vehicles/changeGarage/{garageID:int}")]
@@ -299,7 +336,7 @@ namespace CRP.Areas.Provider.Controllers
 			var service = this.Service<IVehicleService>();
 			List<Vehicle> lstVehicle = service.Get().ToList();
 			List<Vehicle> listVehicleNeedChange = new List<Vehicle>();
-			// 1 2 3 5 8 
+
 			foreach (var item in listVehicleId)
 			{
 				Vehicle v = lstVehicle.FirstOrDefault(a => a.ID == item);
@@ -309,6 +346,7 @@ namespace CRP.Areas.Provider.Controllers
 
 			return new HttpStatusCodeResult(200, "Garage changed successfully.");
 		}
+
 
 		// API Route to change group of multiple vehicles
 		[Route("api/vehicles/changeGroup/{groupID:int}")]
@@ -327,6 +365,7 @@ namespace CRP.Areas.Provider.Controllers
 			return new HttpStatusCodeResult(200, "Group changed successfully.");
 		}
 
+
 		// API route for getting booking receipts of a vehicle
 		// Pagination needed
 		// Order by booking's startTime, newer to older
@@ -339,6 +378,7 @@ namespace CRP.Areas.Provider.Controllers
 			br.Sort((x, y) => DateTime.Compare(x.StartTime, y.StartTime));
 			return Json(br, JsonRequestBehavior.AllowGet);
 		}
+
 
 		// API route for creating an own booking
 		//need provider role
@@ -360,6 +400,7 @@ namespace CRP.Areas.Provider.Controllers
 			return new HttpStatusCodeResult(200, "Created successfully.");
 		}
 
+
 		// API route for canceling an own booking
 		[Route("api/vehicles/bookings/{receiptID:int}")]
 		[HttpDelete]
@@ -373,18 +414,19 @@ namespace CRP.Areas.Provider.Controllers
 			return new HttpStatusCodeResult(200, "Deleted successfully");
 		}
 
-        [Route("Home/SaveUploadedFile/{VehicleID:int}")]
-        public void SaveUploadedFile(int VehicleID)
-        {
-            var imageServie = this.Service<IVehicleImageService>();
-            var imageServie2 = this.Service<IVehicleService>();
-            string fName = "";
-            foreach (string fileName in Request.Files)
-            {
-                HttpPostedFileBase file = Request.Files[fileName];
-                fName = file.FileName;
-                if (file != null && file.ContentLength > 0)
-                {
+
+		[Route("Home/SaveUploadedFile/{VehicleID:int}")]
+		public void SaveUploadedFile(int VehicleID)
+		{
+			var imageServie = this.Service<IVehicleImageService>();
+			var vehicleService = this.Service<IVehicleService>();
+			string fName = "";
+			foreach (string fileName in Request.Files)
+			{
+				HttpPostedFileBase file = Request.Files[fileName];
+				fName = file.FileName;
+				if (file != null && file.ContentLength > 0)
+				{
 
                     String url = "";
                     String userName = User.Identity.Name;

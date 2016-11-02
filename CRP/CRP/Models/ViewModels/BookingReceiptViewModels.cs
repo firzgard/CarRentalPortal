@@ -118,7 +118,7 @@ namespace CRP.Models.ViewModels
 		public double RentalPrice { get; set; }
 		public string StartTime { get; set; }
 		public string EndTime { get; set; }
-		public decimal? Star { get; set; }
+		public int? Star { get; set; }
 		public string Comment { get; set; }
 		public bool IsInThePast { get; set; }
 		public bool IsCanceled { get; set; }
@@ -176,6 +176,7 @@ namespace CRP.Models.ViewModels
 		public bool? IsInThePast { get; set; }
 		public bool IsSelfBooking { get; set; }
 
+        public string Search { get; set; }
 		public string OrderBy { get; set; }
 		public bool IsDescendingOrder { get; set; }
 		public int Page { get; set; } = 1;
