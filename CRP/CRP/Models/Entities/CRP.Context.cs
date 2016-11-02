@@ -42,7 +42,5 @@ namespace CRP.Models.Entities
         public virtual DbSet<VehicleGroup> VehicleGroups { get; set; }
         public virtual DbSet<VehicleImage> VehicleImages { get; set; }
         public virtual DbSet<VehicleModel> VehicleModels { get; set; }
-        public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

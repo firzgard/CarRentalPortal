@@ -39,7 +39,7 @@ $(document).ready(() => {
 				targets: 1,
 				render: (data, type, row) => {
 					if (type === 'display' && row.VehicleID) {
-						return `<a href="/vehicleInfo/${row.VehicleID}">${data}</a>`;
+						return `<a target="_blank" href="/vehicleInfo/${row.VehicleID}">${data}</a>`;
 					}
 					return data;
 				}

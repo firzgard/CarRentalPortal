@@ -41,7 +41,7 @@
 	</div>
 </div>
 
-<div class="modal fade" id="customModal" tabindex="-1" role="dialog"></div>
+<div class="modal fade" id="customModal" role="dialog"></div>
 
 <div id="changeGarage" class="modal fade" role="dialog">
 	<div class="modal-dialog modal-lg">
@@ -109,12 +109,14 @@
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleManagement")
 	 .Include("~/Content/awesome-bootstrap-checkbox.css",
-		 "~/Content/DataTables/css/dataTables.bootstrap.css",
-		 "~/Content/DataTables/css/select.bootstrap.min.css",
-		 "~/Content/NoUISlider/nouislider.css",
-		 "~/Content/NoUISlider/nouislider.pips.css",
-		 "~/Content/NoUISlider/nouislider.tooltips.css",
-		 "~/Content/select2/select2.css"));
+			"~/Content/DataTables/css/dataTables.bootstrap.css",
+			"~/Content/DataTables/css/select.bootstrap.min.css",
+			"~/Scripts/dropzone/dropzone.css",
+			"~/Scripts/dropzone/basic.css",
+			"~/Content/NoUISlider/nouislider.css",
+			"~/Content/NoUISlider/nouislider.pips.css",
+			"~/Content/NoUISlider/nouislider.tooltips.css",
+			"~/Content/select2/select2.css"));
 }
 @section Styles {
 	@Styles.Render("~/Styles/VehicleManagement")
@@ -124,25 +126,42 @@
 }
 
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleManagement")
-	 .Include("~/Scripts/DataTables/jquery.dataTables.js",
-		 "~/Scripts/DataTables/dataTables.bootstrap.js",
-		 "~/Scripts/DataTables/dataTables.select.min.js",
-		 "~/Scripts/moment.js",
-		 "~/Scripts/NoUISlider/nouislider.js",
-		 "~/Scripts/select2/select2.full.js",
-		 "~/Scripts/utils/generateUIElements.js",
-		 "~/Scripts/utils/customModals.js",
-		 "~/Scripts/pageScript/vehicleManagement.js"));
+	.Include("~/Scripts/DataTables/jquery.dataTables.js",
+			"~/Scripts/DataTables/dataTables.bootstrap.js",
+			"~/Scripts/DataTables/dataTables.select.min.js",
+			"~/Scripts/dropzone/dropzone.js",
+			"~/Scripts/select2/select2.full.js",
+			"~/Scripts/utils/generateUIElements.js",
+			"~/Scripts/utils/customModals.js",
+			"~/Scripts/pageScript/vehicleManagement.js"));
 }
 @section Scripts {
 	<script type="text/javascript">
 		const queryApiUrl = '@Url.RouteUrl("GetVehicleListAPI", new { controller = "VehicleManagement" })';
 	</script>
+	@Scripts.Render("~/bundles/jqueryval")
 	@Scripts.Render("~/Scripts/VehicleManagement")
 }
 
+<template id="garageOptions">
+	<option></option>
+	@foreach (SelectListItem entry in Model.listGarage)
+	{
+		<option value="@entry.Value">@entry.Text</option>
+	}
+</template>
+
+<template id="groupOptions">
+	<option></option>
+	@foreach (SelectListItem entry in Model.GroupList)
+	{
+		<option value="@entry.Value">@entry.Text</option>
+	}
+</template>
+
 <template id="modelOptions">
-	@foreach (VehicleBrand brand in Model.brandList)
+	<option></option>
+	@foreach (VehicleBrand brand in Model.BrandList)
 	{
 		<optgroup label="@brand.Name">
 			@foreach (VehicleModel entry in brand.VehicleModels)
@@ -154,6 +173,7 @@
 </template>
 
 <template id="fuelOptions">
+	<option></option>
 	@foreach (KeyValuePair<int, string> entry in Constants.FUEL_TYPE)
 	{
 		<option value="@entry.Key">@entry.Value</option>
@@ -164,12 +184,12 @@
 	@for (var i = 1; i < Constants.COLOR.Count(); i++)
 	{
 		<div class="color-selector">
-			<input id="color@(Constants.COLOR[i])" name="newColor" value="@i" type="radio">
+			<input id="color@(Constants.COLOR[i])" name="Color" value="@i" type="radio">
 			<label for="color@(Constants.COLOR[i])" style="background-color: @Constants.COLOR[i];"></label>
 		</div>
 	}
 	<div class="color-selector another-color">
-		<input id="color0" name="newColor" value="0" type="radio">
+		<input id="color0" name="Color" value="0" type="radio" required>
 		<label for="color0"></label>
 	</div>
 </template>

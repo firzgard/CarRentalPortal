@@ -6,6 +6,10 @@
 	background-repeat: no-repeat;
 }
 
+.wrapper.page-heading {
+	padding-left: 0;
+}
+
 #banner {
 	color: white;
 	font-size: 6em;
