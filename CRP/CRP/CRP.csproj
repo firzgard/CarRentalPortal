@@ -662,6 +662,7 @@
     <Content Include="Content\img\email_1.jpg" />
     <Content Include="Content\img\email_2.jpg" />
     <Content Include="Content\img\email_3.jpg" />
+    <Content Include="Content\img\error.jpg" />
     <Content Include="Content\img\flags\16\Abkhazia.png" />
     <Content Include="Content\img\flags\16\Afghanistan.png" />
     <Content Include="Content\img\flags\16\Aland.png" />
