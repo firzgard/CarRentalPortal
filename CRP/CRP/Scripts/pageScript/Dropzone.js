@@ -1,5 +1,6 @@
-﻿Dropzone.options.dropzoneForm = {
-    maxFiles: 4,
+﻿
+Dropzone.options.dropzoneForm = {
+    maxFiles: (8 - MAX_IMG),
     minFiles: 1,
     maxFilesize: 1,
     dictInvalidFileType: "Chỉ chấp nhận file hình ảnh!",
