@@ -34,22 +34,22 @@
     $('#edit-img').on('click', function () {
         $('#edit-img').hide();
         $('#img-div').hide();
-        $('#dropzoneForm').show();
+        $('#my-awesome-dropzone').show();
     });
     $('#cancel-img').on('click', function () {
         $('#edit-img').show();
         $('#img-div').show();
-        $('#dropzoneForm').hide();
+        $('#my-awesome-dropzone').hide();
     });
-    $('')
     Dropzone.options.myAwesomeDropzone = {
-
+        //1MB max size
         autoProcessQueue: false,
         uploadMultiple: true,
         acceptedFiles: "image/jpeg,image/png,image/gif",
         parallelUploads: 20,
-        maxFiles: 10,
+        maxFiles: 20,
         maxFilesize: 1,
+        maxThumbnailFilesize: 1,
         dictDefaultMessage: "Drop files here to upload (or click)",
         dictInvalidFileType: "Accept image only",
         addRemoveLinks: "dictRemoveFile",
@@ -77,6 +77,7 @@
 
     }
 });
+
 $(document).on('click', "#agreed-delete", function () {
     let id = $('#vehicleID').val();
     $.ajax({
@@ -86,6 +87,27 @@ $(document).on('click', "#agreed-delete", function () {
         success: function (data) {
             //alert("ok");
             window.location.pathname = "/management/vehicleManagement";
+        },
+        eror: function (data) {
+            alert("fail");
+        }
+    });
+});
+$(document).on('click', ".DeleteImage", function () {
+
+    let id = $('#vehicleID').val();
+    var index = $('.DeleteImage').index(this);
+    let url = $(`.imgUrl:eq(${index})`).val();
+    //alert(url);
+    $.ajax({
+        type: "DELETE",
+        url: `/api/vehicles/deletepic/${id}`,
+        data:{id:id,
+            url2:url
+        },
+        async: true,
+        success: function (data) {
+            alert("ok");
         },
         eror: function (data) {
             alert("fail");
@@ -106,7 +128,7 @@ $(document).on('click', "#save-btn", function () {
     model.FuelType = $('#fuelFilter').val();
     model.TransmissionType = $('input[name=TransName]:checked').val();
     model.Star = '4.1';
-    model.Color = $('input[name=group]:checked').val();
+    model.Color = $('input[name=newColor]:checked').val();
     model.Year = $('#year').val();
     model.Description = null;
 
