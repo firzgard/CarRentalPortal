@@ -1532,6 +1532,7 @@
     <Content Include="Content\jsTree\themes\default\throbber.gif" />
     <Content Include="Content\metisMenu.css" />
     <Content Include="Content\metisMenu.min.css" />
+    <Content Include="Content\morris\morris-0.4.3.min.css" />
     <Content Include="Content\NganLuong\NganLuong.css" />
     <Content Include="Content\NoUiSlider\nouislider.css" />
     <Content Include="Content\NoUiSlider\nouislider.min.css" />
@@ -1768,6 +1769,8 @@
     <Content Include="Scripts\FullCalendar\locale\vi.js" />
     <Content Include="Scripts\FullCalendar\locale\zh-cn.js" />
     <Content Include="Scripts\FullCalendar\locale\zh-tw.js" />
+    <Content Include="Scripts\highCharts\exporting.js" />
+    <Content Include="Scripts\highCharts\highcharts.js" />
     <Content Include="Scripts\inspinia.js" />
     <Content Include="Scripts\jasny-bootstrap.js" />
     <Content Include="Scripts\jasny-bootstrap.min.js" />
@@ -1834,6 +1837,8 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\morris\morris.js" />
+    <Content Include="Scripts\morris\raphael-2.1.0.min.js" />
     <Content Include="Scripts\NoUISlider\nouislider.js" />
     <Content Include="Scripts\NoUISlider\nouislider.min.js" />
     <Content Include="Scripts\pace.min.js" />
