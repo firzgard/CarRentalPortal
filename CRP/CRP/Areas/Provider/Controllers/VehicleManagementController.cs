@@ -428,43 +428,52 @@ namespace CRP.Areas.Provider.Controllers
 				if (file != null && file.ContentLength > 0)
 				{
 
-                    String url = "";
-                    String userName = User.Identity.Name;
-                    String userID = User.Identity.GetUserId();
-                    CloudinaryDotNet.Account account =
-                    new CloudinaryDotNet.Account("ahihicompany",
-                                         "445384272838294",
-                                         "h4SCiNi8zOKfewxEi2LqNt3IjrQ"
-                                            );
-                    CloudinaryDotNet.Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(account);
-                    //dinh dang image     
-                    var pic = file;
-                    if (pic != null)
-                    {
-                        CloudinaryDotNet.Actions.ImageUploadParams uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams()
-                        {
-                            //File = new CloudinaryDotNet.Actions.FileDescription(@"c:\mypicture.jpg"),
-                            //PublicId = "sample_remote_file"
-                            File = new FileDescription(pic.FileName, pic.InputStream),
-                            Tags = "Anh cua" + userName,
-                        };
-                        CloudinaryDotNet.Actions.ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
-                        url = uploadResult.Uri.ToString();
-                        //luu xuong database
-                        VehicleImage imageOfVehicle = new VehicleImage();
-                        var Entit = imageServie2.Get(VehicleID);
-                        imageOfVehicle.URL = url;
-                        imageOfVehicle.Ve = VehicleID;
-                        imageOfVehicle.Vehicle = Entit;
-                        imageServie.CreateAsync(imageOfVehicle);
-                        ICollection<VehicleImage> lstImage = Entit.VehicleImages;
-                        lstImage.Add(imageOfVehicle);
-                        Entit.VehicleImages = lstImage;
-                        imageServie2.UpdateAsync(Entit);
-                    }
-                }
-            }
-        }
+					String url = "";
+					String userName = User.Identity.Name;
+					String userID = User.Identity.GetUserId();
+					CloudinaryDotNet.Account account =
+					new CloudinaryDotNet.Account("ahihicompany",
+										 "445384272838294",
+										 "h4SCiNi8zOKfewxEi2LqNt3IjrQ"
+											);
+					CloudinaryDotNet.Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(account);
+					//dinh dang image     
+					var pic = file;
+					if (pic != null)
+					{
+						CloudinaryDotNet.Actions.ImageUploadParams uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams()
+						{
+							//File = new CloudinaryDotNet.Actions.FileDescription(@"c:\mypicture.jpg"),
+							//PublicId = "sample_remote_file"
+							File = new FileDescription(pic.FileName, pic.InputStream),
+							Tags = "Anh cua" + userName,
+						};
+						CloudinaryDotNet.Actions.ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
+						url = uploadResult.Uri.ToString();
+						//luu xuong database
+						VehicleImage imageOfVehicle = new VehicleImage();
+						var Entity = vehicleService.Get(VehicleID);
+						imageOfVehicle.URL = url;
+						imageOfVehicle.VehicleID = VehicleID;
+                        imageOfVehicle.ID = uploadResult.PublicId.ToString();
+						imageOfVehicle.Vehicle = Entity;
+						imageServie.CreateAsync(imageOfVehicle);
+      //                  List<VehicleImage> lstImage = imageServie.Get(q => q.VehicleID == Entity.ID).ToList();
+						//lstImage.Add(imageOfVehicle);
+						//Entity.VehicleImages = lstImage;
+						//var listItem = imageServie.Get(q => q.VehicleID == Entity.ID).ToList();
+						//if (listItem.Count() > 0)
+						//{
+						//foreach (var item in listItem)
+						//{
+						//imageServie.DeleteAsync(item);
+					 //   }
+						//}
+						//vehicleService.UpdateAsync(Entity);
+					}
+				}
+			}
+		}
         [Route("api/vehicles/deletepic/{id:int}")]
         [HttpDelete]
         public async Task<ActionResult> DeletePic(int id)
@@ -476,7 +485,7 @@ namespace CRP.Areas.Provider.Controllers
             var lstVehiIm = vehicleImageService.Get(q => q.VehicleID == id);
             foreach (var item in lstVehiIm)
             {
-                if(item.URL == url)
+                if (item.URL == url)
                 {
                     vehicleImageService.DeleteAsync(item);
                 }
@@ -500,5 +509,5 @@ namespace CRP.Areas.Provider.Controllers
             //await VehicleImageService.DeleteAsync(entity);
         }
     }
-    
+}
 }
