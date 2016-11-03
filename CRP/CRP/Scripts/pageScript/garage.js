@@ -126,7 +126,7 @@ $(document).ready(function () {
 	let isInThePast = null;
 
 	let tableBooking = $(bookings).DataTable({
-	    dom: "ltipr"
+	    dom: "lftipr"
 		, serverSide: true
 		, ajax: {
 		    url: queryBookingApiUrl
@@ -160,7 +160,7 @@ $(document).ready(function () {
 			    targets: -7
 				, render: function (data, type, row) {
 				    if (data !== null) {
-				        return renderStarRating(data, '#4CAF50');
+				        return renderStarRating(data, '#4CAF50', false);
 				    }
 				    return '-';
 				}

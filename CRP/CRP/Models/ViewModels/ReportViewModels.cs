@@ -13,14 +13,14 @@ namespace CRP.Models.ViewModels
 		public int NumOfActiveGarage { get; set; }
 		public int NumOfActiveVehicle { get; set; }
 		public int ThisMonthNumOfSuccessfulBooking { get; set; }
-		public double ThisMonthNumOfProfit { get; set; }
+        public double ThisMonthNumOfProfit { get; set; } = 0.0;
 		public List<MonthlyAdminSaleReport> LastHalfYearSaleReportList { get; set; } = new List<MonthlyAdminSaleReport>();
 
 		public class MonthlyAdminSaleReport
 		{
 			public DateTime Time { get; set; }
 			public int NumOfSuccessfulBooking { get; set; }
-			public double Profit { get; set; }
+            public double Profit { get; set; }
 		}
 
 		public void AddMonthlyReport(List<BookingReceipt> bookingReceipts, DateTime time)
@@ -29,7 +29,7 @@ namespace CRP.Models.ViewModels
 			{
 				Time = time,
 				NumOfSuccessfulBooking = bookingReceipts.Count(),
-				Profit = bookingReceipts.Sum(r => r.BookingFee)
+				Profit = bookingReceipts.Count() > 0 ? bookingReceipts.Sum(r => r.BookingFee) : 0.0
 			};
 
 			LastHalfYearSaleReportList.Add(report);

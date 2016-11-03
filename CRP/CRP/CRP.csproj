@@ -1697,15 +1697,6 @@
     <Content Include="Scripts\dropzone\dropzone.js" />
     <Content Include="Scripts\dropzone\dropzone.min.css" />
     <Content Include="Scripts\dropzone\dropzone.min.js" />
-    <Content Include="Scripts\flot\curvedLines.js" />
-    <Content Include="Scripts\flot\excanvas.min.js" />
-    <Content Include="Scripts\flot\jquery.flot.js" />
-    <Content Include="Scripts\flot\jquery.flot.pie.js" />
-    <Content Include="Scripts\flot\jquery.flot.resize.js" />
-    <Content Include="Scripts\flot\jquery.flot.spline.js" />
-    <Content Include="Scripts\flot\jquery.flot.symbol.js" />
-    <Content Include="Scripts\flot\jquery.flot.time.js" />
-    <Content Include="Scripts\flot\jquery.flot.tooltip.min.js" />
     <Content Include="Scripts\FullCalendar\fullcalendar.js" />
     <Content Include="Scripts\FullCalendar\fullcalendar.min.js" />
     <Content Include="Scripts\FullCalendar\locale-all.js" />
@@ -1768,6 +1759,8 @@
     <Content Include="Scripts\FullCalendar\locale\vi.js" />
     <Content Include="Scripts\FullCalendar\locale\zh-cn.js" />
     <Content Include="Scripts\FullCalendar\locale\zh-tw.js" />
+    <Content Include="Scripts\highCharts\exporting.js" />
+    <Content Include="Scripts\highCharts\highcharts.js" />
     <Content Include="Scripts\inspinia.js" />
     <Content Include="Scripts\jasny-bootstrap.js" />
     <Content Include="Scripts\jasny-bootstrap.min.js" />
