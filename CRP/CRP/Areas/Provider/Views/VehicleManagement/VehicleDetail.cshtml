@@ -103,13 +103,20 @@
                                                     <optgroup label="@brand.Name">
                                                         @foreach (VehicleModel entry in brand.VehicleModels)
                                                         {
-                                                            if (entry.Name != this.Model.ModelName)
+                                                            if (entry.ID == 1)
                                                             {
-                                                                <option value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
+                                                                <option value="@(entry.ID)">@entry.Name</option>
                                                             }
                                                             else
                                                             {
-                                                                <option value="@(entry.ID)" selected>@(brand.Name)&nbsp;@entry.Name</option>
+                                                                if (entry.Name != this.Model.ModelName)
+                                                                {
+                                                                    <option value="@(entry.ID)">@(brand.Name)&nbsp;@entry.Name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@(entry.ID)" selected>@(brand.Name)&nbsp;@entry.Name</option>
+                                                                }
                                                             }
                                                         }
                                                     </optgroup>
@@ -256,10 +263,20 @@
                                                             </div>
                                                         }
                                                     }
-                                                    <div class="color-selector another-color">
-                                                        <input id="color0" name="newColor" value="0" type="radio">
-                                                        <label for="color0"></label>
-                                                    </div>
+                                                    @if (this.Model.ColorID == 0)
+                                                    {
+                                                        <div class="color-selector another-color">
+                                                            <input id="color0" name="newColor" value="0" type="radio" checked>
+                                                            <label for="color0"></label>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="color-selector another-color">
+                                                            <input id="color0" name="newColor" value="0" type="radio">
+                                                            <label for="color0"></label>
+                                                        </div>
+                                                    }
                                                 </div>
                                             </div>
                                         </div>
