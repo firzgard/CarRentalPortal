@@ -14,6 +14,7 @@ using System.Web.Mvc;
 
 namespace CRP.Areas.Provider.Controllers
 {
+    [Authorize(Roles = "Provider")]
     public class DashBoardController : BaseController
     {
         // GET: Provider/DashBoard

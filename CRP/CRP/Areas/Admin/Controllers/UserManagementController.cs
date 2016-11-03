@@ -13,7 +13,8 @@ using System.Web;
 using System.Web.Mvc;
 namespace CRP.Areas.Admin.Controllers
 {
-	public class UserManagementController : BaseController
+    [Authorize(Roles = "Admin")]
+    public class UserManagementController : BaseController
 	{
 		// Route to userManagement page
 		[Route("management/userManagement")]
