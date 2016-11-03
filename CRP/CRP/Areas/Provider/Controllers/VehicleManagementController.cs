@@ -291,7 +291,7 @@ namespace CRP.Areas.Provider.Controllers
 			{
 				foreach (var item in VehicleImageEntity)
 				{
-					await VehicleImageService.DeleteAsync(item);
+					VehicleImageService.DeleteAsync(item);
 				}
 			}
 			await service.DeleteAsync(entity);
