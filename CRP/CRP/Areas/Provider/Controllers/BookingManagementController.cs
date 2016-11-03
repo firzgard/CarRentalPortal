@@ -11,25 +11,25 @@ using System.Web.Mvc;
 
 namespace CRP.Areas.Provider.Controllers
 {
-	[Authorize(Roles = "Provider")]
-	public class BookingManagementController : BaseController
-	{
-		// Route to vehicleManagement page
-		[Route("management/BookingManagement")]
-		public ViewResult BookingManagement()
-		{
-			var service = this.Service<IGarageService>();
-			FilterByGarageView garageView = new FilterByGarageView();
-			var providerID = User.Identity.GetUserId();
-			garageView.listGarage = service.Get(q => q.OwnerID == providerID)
-				.Select(q => new SelectListItem()
-				{
-					Text = q.Name,
-					Value = q.ID.ToString(),
-					Selected = true,
-				});
-			return View("~/Areas/Provider/Views/BookingManagement/BookingManagement.cshtml", garageView);
-		}
+    public class BookingManagementController : BaseController
+    {
+        // Route to vehicleManagement page
+        [Authorize(Roles = "Provider")]
+        [Route("management/BookingManagement")]
+        public ViewResult BookingManagement()
+        {
+            var service = this.Service<IGarageService>();
+            FilterByGarageView garageView = new FilterByGarageView();
+            var providerID = User.Identity.GetUserId();
+            garageView.listGarage = service.Get(q => q.OwnerID == providerID)
+                .Select(q => new SelectListItem()
+                {
+                    Text = q.Name,
+                    Value = q.ID.ToString(),
+                    Selected = true,
+                });
+            return View("~/Areas/Provider/Views/BookingManagement/BookingManagement.cshtml", garageView);
+        }
 
 
 		[Route("api/management/bookings", Name = "GetBookingListAPI")]

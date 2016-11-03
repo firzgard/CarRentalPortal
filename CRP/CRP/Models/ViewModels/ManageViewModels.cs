@@ -13,18 +13,21 @@ namespace CRP.Models
         public bool BrowserRemembered { get; set; }
 
         [Display(Name = "Name")]
-        [StringLength(50, ErrorMessage = "Fullname phải có ít nhất 3 ký tự", MinimumLength = 3)]
+        [StringLength(50, ErrorMessage = "Fullname phải có ít nhất 3 ký tự và ít hơn 50 kí tự", MinimumLength = 3)]
         public string Name { get; set; }
 
         [Display(Name = "Email")]
         [EmailAddress]
+        [StringLength(50, ErrorMessage = "Email phải có ít nhất 3 ký tự", MinimumLength = 3)]
         public string Email { get; set; }
 
-        [Phone]
+
         [Display(Name = "Phone Number")]
-        [StringLength(50, ErrorMessage = "Tối thiểu có 2 ký tự.", MinimumLength = 2)]
-        [Range(0, int.MaxValue, ErrorMessage = "Xin vui lòng nhập kí tự số cho Số điện thoại")]
+        [StringLength(30, ErrorMessage = "Số điện thoại phải có ít nhất 2 kí tự và ít hơn 30 kí tự.", MinimumLength = 2)]
         public string PhoneNumber { get; set; }
+
+
+
         //them field urlAvatar
         [Display(Name = "Url")]
         public string Url { get; set; }
