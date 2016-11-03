@@ -133,30 +133,33 @@ namespace CRP.Areas.Provider.Controllers
 					 Value = q.ID.ToString(),
 					 Selected = true,
 				 });
-			//vehiIn.BrandList = brandService.Get(
-			//    b => b.ID != 1 // Exclude unlisted brand
-			//).OrderBy(b => b.Name).ToList();
+            vehiIn.brandList = brandService.Get(
+                b => b.VehicleModels.Count != 0 // Only get brand w/ model
+            ).OrderBy(b => b.Name).ToList();
+            //vehiIn.BrandList = brandService.Get(
+            //    b => b.ID != 1 // Exclude unlisted brand
+            //).OrderBy(b => b.Name).ToList();
 
-			// Reorder each brand's models by name
-			// Only get brand w/ model w/ registered vehicles
-			//vehiIn.BrandList = vehiIn.BrandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
-			//{
-			//    b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
-			//    {
-			//        if (m.Vehicles.Any())
-			//            newModelList.Add(m);
-			//        return newModelList;
-			//    });
+            // Reorder each brand's models by name
+            // Only get brand w/ model w/ registered vehicles
+            //vehiIn.BrandList = vehiIn.BrandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
+            //{
+            //    b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
+            //    {
+            //        if (m.Vehicles.Any())
+            //            newModelList.Add(m);
+            //        return newModelList;
+            //    });
 
-			//    if (b.VehicleModels.Any())
-			//    {
-			//        b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
-			//        newBrandList.Add(b);
-			//    }
+            //    if (b.VehicleModels.Any())
+            //    {
+            //        b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
+            //        newBrandList.Add(b);
+            //    }
 
-			//    return newBrandList;
-			//});
-			vehiIn.listBrand = brandService.Get()
+            //    return newBrandList;
+            //});
+            vehiIn.listBrand = brandService.Get()
 				 .Select(q => new SelectListItem()
 				 {
 					 Text = q.Name,
@@ -314,12 +317,23 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			var service = this.Service<IVehicleService>();
 			var VehicleImageService = this.Service<IVehicleImageService>();
+            var VehicleReceiptService = this.Service<IBookingReceiptService>();
 			var entity = await service.GetAsync(id);
 			if (entity == null)
 				return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
 
 			var VehicleImageEntity = VehicleImageService.Get(q => q.VehicleID == id);
-			if (VehicleImageEntity != null)
+            var ReceiptEntity = VehicleReceiptService.Get(q => q.VehicleID == id);
+
+            if (ReceiptEntity != null)
+            {
+                foreach (var item in ReceiptEntity)
+                {
+                    item.VehicleID = null;
+                }
+            }
+
+            if (VehicleImageEntity != null)
 			{
 				foreach (var item in VehicleImageEntity)
 				{
