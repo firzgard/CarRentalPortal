@@ -25,7 +25,7 @@
 			<div class="pull-right m-r m-b">
 				<div class="btn-group">
 					<div class="btn-group">
-						<button id="commonActionBtn" data-toggle="dropdown" class="btn btn-info btn-block dropdown-toggle" aria-expanded="false" disabled>
+						<button id="commonActionBtn" data-toggle="dropdown" class="btn btn-success btn-block dropdown-toggle" aria-expanded="false" disabled>
 							<i class="fa fa-gear"></i> Thao tác chung <i class="caret"></i>
 						</button>
 						<ul class="dropdown-menu">
@@ -33,7 +33,7 @@
 							<li><a data-toggle="modal" data-target="#changeGarage">Chuyển xe đến garage</a></li>
 						</ul>
 					</div>
-					<a id="add-car" class="btn btn-success" data-toggle="modal" data-target="#customModal" data-action="createVehicle"><i class="fa fa-plus"></i> Thêm xe mới</a>
+					<a id="add-car" class="btn btn-primary" data-toggle="modal" data-target="#customModal" data-action="createVehicle"><i class="fa fa-plus"></i> Thêm xe mới</a>
 				</div>
 			</div>
 		</div>
@@ -138,6 +138,9 @@
 @section Scripts {
 	<script type="text/javascript">
 		const queryApiUrl = '@Url.RouteUrl("GetVehicleListAPI", new { controller = "VehicleManagement" })';
+
+		const MIN_YEAR = @Constants.MIN_YEAR
+			, MAX_YEAR = new Date().getFullYear();
 	</script>
 	@Scripts.Render("~/bundles/jqueryval")
 	@Scripts.Render("~/Scripts/VehicleManagement")

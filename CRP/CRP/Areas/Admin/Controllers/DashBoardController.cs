@@ -50,7 +50,10 @@ namespace CRP.Areas.Admin.Controllers
 										&& r.StartTime.Year == thisMonth.Year);
 
 			viewModel.ThisMonthNumOfSuccessfulBooking = receipts.Count();
-			viewModel.ThisMonthNumOfProfit = receipts.Sum(r => r.BookingFee);
+            if(receipts.Count() > 0)
+            {
+                viewModel.ThisMonthNumOfProfit = receipts.Sum(r => r.BookingFee);
+            }
 
 			// Calculate monthly reports for last half year
 			for (var i = 1; i < 7; i++)

@@ -103,7 +103,6 @@ namespace CRP.Models.ViewModels
 		public string FuelTypeName { get; set; }
 		public List<string> CategoryList { get; set; }
 		public List<string> ImageList { get; set; }
-		public int NumOfComment { get; set; }
 		// Shortest rental period of this vehicle that fit the filter
 		public string BestPossibleRentalPeriod { get; set; }
 		// Lowest price range of this vehicle that fit the filter
@@ -116,7 +115,6 @@ namespace CRP.Models.ViewModels
 			GarageNumOfComment = vehicle.Garage.NumOfComment;
 			GarageRating = vehicle.Garage.Star;
 			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
-			NumOfComment = vehicle.NumOfComment;
 
 			string tmpString = null;
 			Constants.TRANSMISSION_TYPE.TryGetValue(vehicle.TransmissionType, out tmpString);
