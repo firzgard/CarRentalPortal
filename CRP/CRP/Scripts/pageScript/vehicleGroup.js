@@ -133,11 +133,6 @@ $(document).ready(function () {
 
 	renderActivation();
 
-	// Render star-rating
-	let starRatingDiv = $('#starRating'),
-		star = starRatingDiv.data('star')
-	starRatingDiv.html(renderStarRating(star));
-
 	// ============================================
 	// Load vehicles belonging to this group
 	let table = $(vehicles).DataTable({
