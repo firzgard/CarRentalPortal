@@ -11,10 +11,10 @@ using System.Web.Mvc;
 
 namespace CRP.Areas.Provider.Controllers
 {
+    [Authorize(Roles = "Provider")]
     public class BookingManagementController : BaseController
     {
         // Route to vehicleManagement page
-        [Authorize(Roles = "Provider")]
         [Route("management/BookingManagement")]
         public ViewResult BookingManagement()
         {
