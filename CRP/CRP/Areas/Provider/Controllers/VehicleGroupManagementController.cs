@@ -16,8 +16,8 @@ using System.Web.Mvc;
 
 namespace CRP.Areas.Provider.Controllers
 {
-
-	public class VehicleGroupManagementController : BaseController
+    [Authorize(Roles = "Provider")]
+    public class VehicleGroupManagementController : BaseController
 	{
         //VehicleGroupService service = new VehicleGroupService();
 		// Route to vehicleGroupManagement page

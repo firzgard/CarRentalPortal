@@ -17,7 +17,8 @@ using Constants = CRP.Models.Constants;
 
 namespace CRP.Areas.Customer.Controllers
 {
-	public class BecomeProviderController : BaseController
+    [Authorize(Roles = "Customer")]
+    public class BecomeProviderController : BaseController
 	{
 		// BecomeProvider page
 		[System.Web.Mvc.Route("becomeProvider", Name = "BecomeProvider")]

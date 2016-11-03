@@ -17,7 +17,8 @@ using System.IO;
 
 namespace CRP.Areas.Provider.Controllers
 {
-	public class VehicleManagementController : BaseController
+    [Authorize(Roles = "Provider")]
+    public class VehicleManagementController : BaseController
 	{
 
 		// Route to vehicleManagement page
