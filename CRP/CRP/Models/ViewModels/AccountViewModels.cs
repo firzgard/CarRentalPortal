@@ -65,7 +65,7 @@ namespace CRP.Models
 	public class RegisterViewModel
 	{
 		[Required]
-        [StringLength(50, ErrorMessage = "Username phải có ít nhất 3 ký tự", MinimumLength = 3)]
+        [StringLength(15, ErrorMessage = "Username phải có ít nhất 3 ký tự và ít hơn 15 kí tự", MinimumLength = 3)]
         [Display(Name = "Username")]
 		public string Username { get; set; }
 
@@ -97,9 +97,7 @@ namespace CRP.Models
 		public string ConfirmPassword { get; set; }
 
 		[Required]
-		[StringLength(50, ErrorMessage = "Tối thiểu có 2 ký tự.", MinimumLength = 2)]
-        [Range(0, int.MaxValue, ErrorMessage = "Xin vui lòng nhập kí tự số cho Số điện thoại")]
-        [DataType(DataType.PhoneNumber)]
+		[StringLength(30, ErrorMessage = "Tối thiểu có 2 ký tự và ít hơn 30 kí tự", MinimumLength = 2)]
 		[Display(Name = "PhoneNumber")]
 		public string PhoneNumber { get; set; }
 	}
