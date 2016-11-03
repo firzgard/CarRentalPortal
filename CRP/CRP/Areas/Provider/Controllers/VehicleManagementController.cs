@@ -17,11 +17,11 @@ using System.IO;
 
 namespace CRP.Areas.Provider.Controllers
 {
+	[Authorize(Roles = "Provider")]
 	public class VehicleManagementController : BaseController
 	{
 
 		// Route to vehicleManagement page
-		[Authorize(Roles = "Provider")]
 		[Route("management/vehicleManagement")]
 		public ViewResult VehicleManagement()
 		{
@@ -59,7 +59,6 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// Load listOtherGarage
-		[Authorize(Roles = "Provider")]
 		[Route("api/listOtherGarage/{garageID:int}")]
 		[HttpGet]
 		public JsonResult LoadOtherGarage(int garageID)
@@ -77,8 +76,8 @@ namespace CRP.Areas.Provider.Controllers
 
 			return Json(new { list = garageView.listGarage }, JsonRequestBehavior.AllowGet);
 		}
+		
 
-		[Authorize(Roles = "Provider")]
 		[Route("api/listGroup")]
 		[HttpGet]
 		public JsonResult LoadGroupList()
@@ -100,83 +99,52 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// Route to vehicle's detailed info page
-		[Authorize(Roles = "Provider")]
 		[Route("management/vehicleManagement/{id:int}")]
 		public ActionResult VehihicleDetail(int id)
 		{
 			var providerID = User.Identity.GetUserId();
-			var service = this.Service<IVehicleService>();
+
+			var vehicleService = this.Service<IVehicleService>();
 			var garageService = this.Service<IGarageService>();
 			var groupService = this.Service<IVehicleGroupService>();
 			var brandService = this.Service<IBrandService>();
-			var modelService = this.Service<IModelService>();
-			Vehicle vehicle = service.Get(v => v.ID == id && v.Garage.OwnerID == providerID).FirstOrDefault();
+
+			Vehicle vehicle = vehicleService.Get(v => v.ID == id && v.Garage.OwnerID == providerID).FirstOrDefault();
 			if (vehicle == null)
 			{
-				return new HttpStatusCodeResult(403, "Error");
+				return new HttpStatusCodeResult(404, "Not found");
 			}
-			VehicleDetailInfoModel vehiIn = new VehicleDetailInfoModel(vehicle);
-			//FilterByGarageView garageView = new FilterByGarageView();
-			vehiIn.listGarage = garageService.Get()
-				.Where(q => q.OwnerID == providerID)
-				.Select(q => new SelectListItem()
-				{
-					Text = q.Name,
-					Value = q.ID.ToString(),
-					Selected = true,
-				});
-			vehiIn.listGroup = groupService.Get()
-				 .Where(q => q.OwnerID == providerID)
-				 .Select(q => new SelectListItem()
-				 {
-					 Text = q.Name,
-					 Value = q.ID.ToString(),
-					 Selected = true,
-				 });
-			//vehiIn.BrandList = brandService.Get(
-			//    b => b.ID != 1 // Exclude unlisted brand
-			//).OrderBy(b => b.Name).ToList();
 
-			// Reorder each brand's models by name
-			// Only get brand w/ model w/ registered vehicles
-			//vehiIn.BrandList = vehiIn.BrandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
-			//{
-			//    b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
-			//    {
-			//        if (m.Vehicles.Any())
-			//            newModelList.Add(m);
-			//        return newModelList;
-			//    });
+			var viewModel = new VehicleDetailInfoViewModel(vehicle)
+			{
+				listGarage = garageService.Get()
+					.Where(q => q.OwnerID == providerID)
+					.Select(q => new SelectListItem()
+					{
+						Text = q.Name,
+						Value = q.ID.ToString(),
+						Selected = true,
+					}),
+				listGroup = groupService.Get()
+					.Where(q => q.OwnerID == providerID)
+					.Select(q => new SelectListItem()
+					{
+						Text = q.Name,
+						Value = q.ID.ToString(),
+						Selected = true,
+					}),
+				brandList = brandService.Get(b => b.VehicleModels.Count != 0)
+					.OrderBy(b => b.Name)
+					.ToList()
+			};
 
-			//    if (b.VehicleModels.Any())
-			//    {
-			//        b.VehicleModels = b.VehicleModels.OrderBy(m => m.Name).ToList();
-			//        newBrandList.Add(b);
-			//    }
-
-			//    return newBrandList;
-			//});
-			vehiIn.listBrand = brandService.Get()
-				 .Select(q => new SelectListItem()
-				 {
-					 Text = q.Name,
-					 Value = q.ID.ToString(),
-					 Selected = true,
-				 });
-			vehiIn.listModel = brandService.Get()
-				 .Select(q => new SelectListItem()
-				 {
-					 Text = q.Name,
-					 Value = q.ID.ToString(),
-					 Selected = true,
-				 });
-			return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", vehiIn);
+			return View("~/Areas/Provider/Views/VehicleManagement/VehicleDetail.cshtml", viewModel);
 		}
 
 
 		// API Route to get a list of vehicle to populate vehicleTable
-		// Only vehicle tables need this API because their possibly huge number of record
-		// So we need this API for server-side pagination
+		// Sort needed
+		// Pagination needed
 		[Route("api/vehicles", Name = "GetVehicleListAPI")]
 		[HttpGet]
 		public ActionResult GetVehicleListAPI(VehicleManagementFilterConditionModel filterConditions)
@@ -224,7 +192,7 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to create single new vehicles
 		[Route("api/vehicles")]
 		[HttpPost]
-		public async Task<ActionResult> CreateVehicleAPI(NewVehicleModel newVehicle)
+		public async Task<ActionResult> CreateVehicleAPI(ManagingVehicleModel newVehicle)
 		{
 			var newVehicleEntity = this.Mapper.Map<Vehicle>(newVehicle);
 
@@ -274,7 +242,7 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to edit single vehicle
 		[Route("api/vehicles")]
 		[HttpPatch]
-		public async Task<ActionResult> EditVehicleAPI(Vehicle model)
+		public async Task<ActionResult> EditVehicleAPI(ManagingVehicleModel model)
 		{
 			if (!this.ModelState.IsValid)
 				return new HttpStatusCodeResult(400, "Updated unsuccessfully.");
@@ -314,16 +282,27 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			var service = this.Service<IVehicleService>();
 			var VehicleImageService = this.Service<IVehicleImageService>();
+            var VehicleReceiptService = this.Service<IBookingReceiptService>();
 			var entity = await service.GetAsync(id);
 			if (entity == null)
 				return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
 
 			var VehicleImageEntity = VehicleImageService.Get(q => q.VehicleID == id);
-			if (VehicleImageEntity != null)
+            var ReceiptEntity = VehicleReceiptService.Get(q => q.VehicleID == id);
+
+            if (ReceiptEntity != null)
+            {
+                foreach (var item in ReceiptEntity)
+                {
+                    item.VehicleID = null;
+                }
+            }
+
+            if (VehicleImageEntity != null)
 			{
 				foreach (var item in VehicleImageEntity)
 				{
-					await VehicleImageService.DeleteAsync(item);
+					VehicleImageService.DeleteAsync(item);
 				}
 			}
 			await service.DeleteAsync(entity);
@@ -469,6 +448,7 @@ namespace CRP.Areas.Provider.Controllers
 			return "";
 		}
 
+
 		[Route("api/vehicles/deletepic")]
 		[HttpDelete]
 		public void DeletePicinNew()
@@ -479,6 +459,7 @@ namespace CRP.Areas.Provider.Controllers
 			VehicleImage entityImage = vehicleImageService.Get(q => q.ID == id).FirstOrDefault();
 			vehicleImageService.DeleteAsync(entityImage);
 		}
+
 
 		[Route("api/vehicles/deletepic/{id:int}")]
 		[HttpDelete]
@@ -514,6 +495,7 @@ namespace CRP.Areas.Provider.Controllers
 			//    return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
 			//await VehicleImageService.DeleteAsync(entity);
 		}
+
 
 		// Check entity on create/update
 		public bool CheckVehicleValidity(Vehicle vehicle)

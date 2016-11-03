@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace CRP.Areas.Provider.Controllers
 {
+    [Authorize(Roles = "Provider")]
     public class ModelController : Controller
     {
         // GET: Provider/Model

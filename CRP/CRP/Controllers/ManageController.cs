@@ -103,6 +103,7 @@ namespace CRP.Controllers
                 var result = await UserManager.UpdateAsync(user);
                 if (result.Succeeded)
                 {
+                    userEntity.PhoneNumber = model.PhoneNumber;
                     userEntity.AvatarURL = model.Url;
                     userEntity.FullName = model.Name;
                     _userService.Update(userEntity);
@@ -115,7 +116,7 @@ namespace CRP.Controllers
                 } 
             }
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("Index", "Manage");
+            return View("~/Views/Manage/Index.cshtml", model);
         }
 
 

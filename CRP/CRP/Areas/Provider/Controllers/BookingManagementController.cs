@@ -31,26 +31,26 @@ namespace CRP.Areas.Provider.Controllers
             return View("~/Areas/Provider/Views/BookingManagement/BookingManagement.cshtml", garageView);
         }
 
-        [Authorize(Roles = "Provider")]
-        [Route("api/management/bookings", Name = "GetBookingListAPI")]
-        [HttpGet]
-        public ActionResult GetListBooking(BookingsFilterConditions conditions)
-        {
-            if (conditions.Draw == 0)
-            {
-                return new HttpStatusCodeResult(400, "Unqualified request");
-            }
-            if (conditions.OrderBy != null
-                && typeof(BookingsRecordJsonModel).GetProperty(conditions.OrderBy) == null)
-            {
-                return new HttpStatusCodeResult(400, "Invalid sorting property");
-            }
 
-            conditions.providerID = User.Identity.GetUserId();
+		[Route("api/management/bookings", Name = "GetBookingListAPI")]
+		[HttpGet]
+		public ActionResult GetListBooking(BookingsFilterConditions conditions)
+		{
+			if (conditions.Draw == 0)
+			{
+				return new HttpStatusCodeResult(400, "Unqualified request");
+			}
+			if (conditions.OrderBy != null
+				&& typeof(BookingsRecordJsonModel).GetProperty(conditions.OrderBy) == null)
+			{
+				return new HttpStatusCodeResult(400, "Invalid sorting property");
+			}
 
-            var service = this.Service<IBookingReceiptService>();
-            var bookings = service.FilterBookings(conditions);
-            return Json(bookings, JsonRequestBehavior.AllowGet);
-        }
-    }
+			conditions.providerID = User.Identity.GetUserId();
+
+			var service = this.Service<IBookingReceiptService>();
+			var bookings = service.FilterBookings(conditions);
+			return Json(bookings, JsonRequestBehavior.AllowGet);
+		}
+	}
 }
