@@ -10,8 +10,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CRP.Models.ViewModels
 {
-	// Model for creating new vehicle
-	public class NewVehicleModel
+	// Model for creating/editing vehicle
+	public class ManagingVehicleModel
 	{
 		public string LicenseNumber { get; set; }
 		public string Name { get; set; }
@@ -88,108 +88,85 @@ namespace CRP.Models.ViewModels
 
 		public VehicleManagementItemJsonModel(Vehicle vehicle) : base(vehicle)
 		{
-            if(vehicle.VehicleGroup != null)
-            {
-                VehicleGroupName = vehicle.VehicleGroup.Name;
-            } else
-            {
-                VehicleGroupName = null;
-            }
+			if(vehicle.VehicleGroup != null)
+			{
+				VehicleGroupName = vehicle.VehicleGroup.Name;
+			} else
+			{
+				VehicleGroupName = null;
+			}
 			
 		}
 	}
 
-	public class VehicleDetailInfoModel
+	public class VehicleDetailInfoViewModel
 	{
 		public int ID { get; set; }
-        [Required]
-        [StringLength(12, ErrorMessage = "Biển số xe phải có ít nhất 6 ký tự", MinimumLength = 6)]
-        [Display(Name = "LicenseNumber")]
-        public string LicenseNumber { get; set; }
-
-        [Required]
-        [StringLength(50, ErrorMessage = "Tên xe phải có ít nhất 6 ký tự", MinimumLength = 6)]
-        [Display(Name ="Name")]
+		public string LicenseNumber { get; set; }
 		public string Name { get; set; }
-
 		public int ModelID { get; set; }
 		public string ModelName { get; set; }
 		public int BrandID { get; set; }
 		public string BrandName { get; set; }
+		public int? Year { get; set; }
 		public int GarageID { get; set; }
 		public string GarageName { get; set; }
 		public int? VehicleGroupID { get; set; }
 		public string VehicleGroupName { get; set; }
 		public int TransmissionTypeID { get; set; }
 		public string TransmissionTypeName { get; set; }
+		public string TransmissionDetail { get; set; }
 		public int? FuelTypeID { get; set; }
 		public string FuelTypeName { get; set; }
-        public string Engine { get; set; }
+		public string Engine { get; set; }
 		public int ColorID { get; set; }
 		public string ColorName { get; set; }
 		public decimal Star { get; set; }
-		public int NumOfDoor { get; set; }
-		public int NumOfSeat { get; set; }
-		public int? Year { get; set; }
-		public List<string> Category { get; set; }
-        public List<string> ImageUrls { get; set; }
-        public IEnumerable<SelectListItem> listGarage { get; set; }
-        public IEnumerable<SelectListItem> listGroup { get; set; }
-        public IEnumerable<SelectListItem> listBrand { get; set; }
-        public IEnumerable<SelectListItem> listModel { get; set; }
-        public List<VehicleBrand> brandList { get; set; }
+		public int NumOfComment { get; set; }
+		public List<string> ImageUrls { get; set; }
 
-        public VehicleDetailInfoModel()
-        { }
-        public VehicleDetailInfoModel(Vehicle vehicle)
+		public IEnumerable<SelectListItem> listGarage { get; set; }
+		public IEnumerable<SelectListItem> listGroup { get; set; }
+		public List<VehicleBrand> brandList { get; set; }
+		
+		public VehicleDetailInfoViewModel(Vehicle vehicle)
 		{
-            this.ID = vehicle.ID;
-			this.LicenseNumber = vehicle.LicenseNumber;
-			this.Name = vehicle.Name;
-			this.ModelID = vehicle.ModelID;
-			this.ModelName = vehicle.VehicleModel.Name;
-			this.BrandID = vehicle.VehicleModel.BrandID;
-			this.BrandName = vehicle.VehicleModel.VehicleBrand.Name;
-			this.GarageID = vehicle.GarageID;
-			this.GarageName = vehicle.Garage.Name;
-			this.VehicleGroupID = vehicle.VehicleGroupID;
-            if(VehicleGroupID != null)
-            {
-                this.VehicleGroupName = vehicle.VehicleGroup.Name;
-            }
-			else
-            {
-                this.VehicleGroupName = null;
-            }
-            this.Engine = vehicle.Engine;
+			ID = vehicle.ID;
+			LicenseNumber = vehicle.LicenseNumber;
+			Name = vehicle.Name;
+			ModelID = vehicle.ModelID;
+			ModelName = vehicle.VehicleModel.Name;
+			BrandID = vehicle.VehicleModel.BrandID;
+			BrandName = vehicle.VehicleModel.VehicleBrand.Name;
+			Year = vehicle.Year;
+			GarageID = vehicle.GarageID;
+			GarageName = vehicle.Garage.Name;
 
-			this.TransmissionTypeID = vehicle.TransmissionType;
-			string tmpString = null;
-			Constants.TRANSMISSION_TYPE.TryGetValue(vehicle.TransmissionType, out tmpString);
-			this.TransmissionTypeName = tmpString;
-
-			this.FuelTypeID = vehicle.FuelType;
-			if (vehicle.FuelType != null)
+			if(vehicle.VehicleGroupID != null)
 			{
-				tmpString = null;
-				Constants.FUEL_TYPE.TryGetValue((int)(vehicle.FuelType), out tmpString);
-				this.FuelTypeName = tmpString;
+				VehicleGroupID = vehicle.VehicleGroupID;
+				VehicleGroupName = vehicle.VehicleGroup.Name;
 			}
 
-			this.ColorID = vehicle.Color;
-			tmpString = null;
-			Constants.COLOR.TryGetValue(vehicle.Color, out tmpString);
-			this.ColorName = tmpString;
+			Engine = vehicle.Engine;
+			TransmissionTypeID = vehicle.TransmissionType;
+			TransmissionTypeName = Constants.TRANSMISSION_TYPE[vehicle.TransmissionType];
+			TransmissionDetail = vehicle.TransmissionDetail;
 
-			this.Star = vehicle.Star;
-			this.NumOfDoor = vehicle.VehicleModel.NumOfDoor;
-			this.NumOfSeat = vehicle.VehicleModel.NumOfSeat;
-			this.Year = vehicle.Year;
-			this.Category = vehicle.VehicleModel.Categories.Aggregate(
-				new List<string>(), (categories, mapping) => { categories.Add(mapping.Name); return categories; });
-            this.ImageUrls = vehicle.VehicleImages.Aggregate(
-                new List<string>(), (images, mapping) => { images.Add(mapping.URL); return images; });
-        }
+			if (vehicle.FuelType != null)
+			{
+				FuelTypeID = vehicle.FuelType;
+				FuelTypeName = Constants.FUEL_TYPE[FuelTypeID.Value];
+			}
+
+			ColorID = vehicle.Color;
+			ColorName = Constants.COLOR[ColorID];
+
+			Star = vehicle.Star;
+			NumOfComment = vehicle.NumOfComment;
+
+			this.ImageUrls = vehicle.VehicleImages.Select(i => i.URL).ToList();
+		}
 	}
 
 	public class VehicleCalendarModel
@@ -205,5 +182,5 @@ namespace CRP.Models.ViewModels
 		public IEnumerable<SelectListItem> listGarage { get; set; }
 		public IEnumerable<SelectListItem> GroupList { get; set; }
 		public List<VehicleBrand> BrandList { get; set; }
-    }
+	}
 }
