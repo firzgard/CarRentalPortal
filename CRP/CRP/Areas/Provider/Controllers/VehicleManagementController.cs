@@ -282,12 +282,23 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			var service = this.Service<IVehicleService>();
 			var VehicleImageService = this.Service<IVehicleImageService>();
+            var VehicleReceiptService = this.Service<IBookingReceiptService>();
 			var entity = await service.GetAsync(id);
 			if (entity == null)
 				return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
 
 			var VehicleImageEntity = VehicleImageService.Get(q => q.VehicleID == id);
-			if (VehicleImageEntity != null)
+            var ReceiptEntity = VehicleReceiptService.Get(q => q.VehicleID == id);
+
+            if (ReceiptEntity != null)
+            {
+                foreach (var item in ReceiptEntity)
+                {
+                    item.VehicleID = null;
+                }
+            }
+
+            if (VehicleImageEntity != null)
 			{
 				foreach (var item in VehicleImageEntity)
 				{

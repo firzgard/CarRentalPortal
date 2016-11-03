@@ -70,6 +70,44 @@ namespace CRP.Models.Entities.Services
             smtpClient.EnableSsl = true;
             smtpClient.Send(mailMessage);
         }
+        // //gui mail khi bi dang ki
+        public void SendMailConfirm(string userEmail)
+        {
+            String bodyEmail = "";
+            DateTime today = DateTime.Now;
+            MailMessage mailMessage = new MailMessage("tamntse61384@fpt.edu.vn", userEmail);
+            mailMessage.Subject = "Confirm email, thông tin đăng kí từ CRP Service";
+            bodyEmail = "Cám ơn bạn đã sử dụng dịch vụ của chúng tôi! \n Thông tin tài khoản của bạn như sau"
+            + "\n Email:" + userEmail + "\n Vui lòng Click Link dưới đây để Xác nhận email của bạn!";
+            mailMessage.Body = bodyEmail;
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.Credentials = new System.Net.NetworkCredential()
+            {
+                UserName = "tamntse61384@fpt.edu.vn",
+                Password = "0975420837"
+            };
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(mailMessage);
+        }
+        //gui mail lay lai password
+        public void SendPassword(string userEmail)
+        {
+            String bodyEmail = "";
+            DateTime today = DateTime.Now;
+            MailMessage mailMessage = new MailMessage("tamntse61384@fpt.edu.vn", userEmail);
+            mailMessage.Subject = "Recovering Password, thông tin đăng kí từ CRP Service";
+            bodyEmail = "Cám ơn bạn đã sử dụng dịch vụ của chúng tôi! \n Vui lòng click link bên dưới để thay đổi email:";
+            mailMessage.Body = bodyEmail;
+            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+            smtpClient.Credentials = new System.Net.NetworkCredential()
+            {
+                UserName = "tamntse61384@fpt.edu.vn",
+                Password = "0975420837"
+            };
+            smtpClient.EnableSsl = true;
+            smtpClient.Send(mailMessage);
+        }
+
         public void UpdateRatingGarage(int garageID)
         {
             decimal newRating = 0;
