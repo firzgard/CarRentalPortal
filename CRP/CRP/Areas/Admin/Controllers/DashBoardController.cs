@@ -15,8 +15,9 @@ namespace CRP.Areas.Admin.Controllers
 	[Authorize(Roles = "Admin")]
 	public class DashBoardController : BaseController
 	{
-		// Route to admin dashboard
-		[Route("management/admin/dashboard", Name = "AdminDashboard")]
+        // Route to admin dashboard
+        [Authorize(Roles = "Admin")]
+        [Route("dashboard/admin", Name = "AdminDashboard")]
 		public ActionResult AdminDashboard()
 		{
 			var viewModel = new AdminReportViewModel();

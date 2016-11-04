@@ -1,152 +1,95 @@
 ﻿@using CRP.Models.ViewModels
 @model ProviderReportViewModel
 @{
-    ViewBag.Title = "Index";
-    ReportBookingInYear Dta = ViewBag.brandList;
+    ViewBag.Title = "Quản lý chung - CRP";
     Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
-<script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<script type="text/javascript">
-    window.onload = function () {
-        var chart = new CanvasJS.Chart("chartContainer", {
-            title:{
-                text: "Bảng thống kê lượt booking thành công của các tháng trong năm"
-            },
-            data: [//array of dataSeries
-              { //dataSeries object
-                  /*** Change type "column" to "bar", "area", "line" or "pie"***/
-                  type: "column",
-                  dataPoints: [
-                  { label: "Tháng 1", y: @Dta.month1 },
-                  { label: "Tháng 2", y: @Dta.month2 },
-                  { label: "Tháng 3", y: @Dta.month3 },
-                  { label: "Tháng 4", y: @Dta.month4 },
-                  { label: "Tháng 5", y: @Dta.month5 },
-                  { label: "Tháng 6", y: @Dta.month6 },
-                  { label: "Tháng 7", y: @Dta.month7 },
-                  { label: "Tháng 8", y: @Dta.month8 },
-                  { label: "Tháng 9", y: @Dta.month9 },
-                  { label: "Tháng 10", y: @Dta.month10 },
-                  { label: "Tháng 11", y: @Dta.month11 },
-                  { label: "Tháng 12", y: @Dta.month12 }
-                  ]
-              }
-            ]
-        });
-
-        chart.render();
-    }
-</script>
 <div class="wrapper wrapper-content">
-    <h2>Thông tin về nhà cung cấp @Model.ProviderName</h2>
     <div class="row">
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-success pull-right">Cho tới hiện tại</span>
-                    <h5>Doanh thu</h5>
+                    <h5>Số lượng garage</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">@Model.money VND</h1>
-                    <small>Total income</small>
+                    <h1 class="no-margins">@Model.NumOfGarage</h1>
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-info pull-right">Cho tới hiện tại</span>
-                    <h5>Booking</h5>
+                    <h5>Số lượng xe</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">@Model.booking</h1>
-                    <small>Lượt</small>
+                    <h1 class="no-margins">@Model.NumOfVehicle</h1>
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-primary pull-right">Đang có</span>
-                    <h5>Xe</h5>
+                    <h5>Số lượt đặt xe</h5>
                 </div>
                 <div class="ibox-content">
-                    <h1 class="no-margins">@Model.car</h1>
-                    <div class="stat-percent font-bold text-navy">44% <i class="fa fa-level-up"></i></div>
-                    <small>Xe</small>
+                    <h1 class="no-margins">@Model.NumOfBookingSuccessfulInThisMonth<small> Trên tổng số @Model.NumOfBookingInThisMonth lượt</small></h1>
+                    
                 </div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-danger pull-right">Chú ý</span>
-                    <h5>Là provider đến</h5>
+                    <h5>Lợi nhuận tháng hiện tại</h5>
                 </div>
                 <div class="ibox-content">
-                    <h2 class="no-margins">@Model.providerUtil</h2>
-                    <small>Gia hạn để tiếp tục sử dụng!</small>
+                    <h1 class="no-margins">@Model.Profit<small> VNĐ</small></h1>
                 </div>
             </div>
         </div>
+        
     </div>
 
     <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins" style="margin-bottom:50px;">
-                <div class="ibox-title">
-                    <h5>Bảng thống kê số liệu về doanh thu và booking trong năm nay</h5>
-                    <div class="pull-right">
-                    </div>
-                </div>
-                <div class="ibox-content">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div id="chartContainer" style="height: 300px; width: 100%;">
-                            </div>
-                        </div>
-                   
-                    </div>
-                </div>
-            </div>
+        
+        <div class="col-lg-9">
+            <div id="chart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
         </div>
-    </div>
 
-
-    <div class="row">
-        <div class="col-lg-12">
+        <style>
+            .comment {
+                height: 350px;
+                overflow-y: scroll;
+            }
+        </style>
+        <div class="col-lg-3">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>Nhận xét và đánh giá của khách hàng</h5>
+                    <h5>Nhận xét và đánh giá</h5>
                     <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
                         <span class="label label-success pull-right">Mới nhất</span>
                     </div>
                 </div>
-                <div class="ibox-content">
+                <div class="ibox-content comment">
                     <div class="feed-activity-list">
                         @{
-                            foreach (CommentModel item2 in Model.comment)
+                            foreach (var item in Model.Comment)
                             {
                                 <div class="feed-element" style="border-bottom: 1px solid black">
                                     <div>
-                                        <small class="pull-right text-navy">1m ago</small>
-                                        <strong>@item2.UserName</strong>
-                                        <div>@item2.Comment</div>
-                                        @{ for (int i = 0; i < item2.star; i++)
-                                            {
-                                                <i class="fa fa-star"></i>
+                                        <small class="pull-right text-navy">
+                                            @{ for (int i = 0; i < item.Star; i++)
+                                                {
+                                                    <i class="fa fa-star"></i>
+                                                }
                                             }
-                                        }
-                                       
+                                        </small>
+                                        <strong>@item.UserName</strong>
+                                        <div>@item.Comment</div>
+
                                     </div>
                                 </div>
-                            }
+                                                }
                         }
                     </div>
                 </div>
@@ -154,75 +97,43 @@
         </div>
 
     </div>
-    <div class="row">
-    <div class="flot-chart">
-        <div class="flot-chart-content" id="aa" style="padding: 0px; position: relative;">
-            <canvas class="flot-base" width="1022" height="250" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 818px; height: 200px;"></canvas>
-            <div class="flot-text" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; font-size: smaller; color: rgb(84, 84, 84);">
-                <div class="flot-x-axis flot-x1-axis xAxis x1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">
-                </div>
-                <div class="flot-y-axis flot-y1-axis yAxis y1Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">
-                </div>
-                <div class="flot-y-axis flot-y2-axis yAxis y2Axis" style="position: absolute; top: 0px; left: 0px; bottom: 0px; right: 0px; display: block;">
-                </div>
-            </div>
-            <canvas class="flot-overlay" width="1022" height="250" style="direction: ltr; position: absolute; left: 0px; top: 0px; width: 818px; height: 200px;"></canvas>
-            <div class="legend">
-                <div style="position: absolute; width: 107px; height: 30px; top: 13px; left: 36px; opacity: 0.85; background-color: rgb(255, 255, 255);"> </div>
-                <table style="position:absolute;top:13px;left:36px;font-size:smaller;color:#545454">
-                    <tbody>
-                        <tr>
-                            <td class="legendColorBox">
-                                <div style="border:1px solid #000000;padding:1px">
-                                    <div style="width:4px;height:0;border:5px solid #1ab394;overflow:hidden"></div>
-                                </div>
-                            </td>
-                            <td class="legendLabel">Doanh thu</td>
-                        </tr>
-                        <tr>
-                            <td class="legendColorBox">
-                                <div style="border:1px solid #000000;padding:1px">
-                                    <div style="width:4px;height:0;border:5px solid #1C84C6;overflow:hidden"></div>
-                                </div>
-                            </td>
-                            <td class="legendLabel">Lượt Booking</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-  </div>
 </div>
-        @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/GarageList")
-                                            .Include("~/Content/awesome-bootstrap-checkbox.css",
-                                                "~/Content/chosen.css",
-                                                "~/Content/DataTables/css/jquery.dataTables.css",
-                                                "~/Content/DataTables/css/dataTables.bootstrap.css"));
-        }
-        @section Styles {
-            @Styles.Render("~/Styles/GarageList")
-        }
-        @section PageStyle {
-            @Styles.Render("~/Content/pageStyle/garageList.css")
-        }
+@{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/GarageList")
+                                    .Include("~/Content/awesome-bootstrap-checkbox.css",
+                                        "~/Content/chosen.css",
+                                        "~/Content/DataTables/css/jquery.dataTables.css",
+                                        "~/Content/DataTables/css/dataTables.bootstrap.css"));
+}
+@section Styles {
+    @Styles.Render("~/Styles/GarageList")
+}
+@section PageStyle {
+    @Styles.Render("~/Content/pageStyle/garageList.css")
+}
 
-        @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/GarageList")
-                                                      .Include("~/Scripts/chosen.jquery.js",
-                                                                          "~/Scripts/DataTables/jquery.dataTables.js",
-                                                                                "~/Scripts/DataTables/dataTables.bootstrap.js",
-                                                                                "~/Scripts/utils/generateUIElements.js",
-                                                                                "~/Scripts/utils/customModals.js",
-                                                                                "~/Scripts/flot/jquery.flot.js",
-                                                                                "~/Scripts/flot/jquery.flot.pie.js",
-                                                                                "~/Scripts/flot/jquery.flot.resize.js",
-                                                                                "~/Scripts/flot/jquery.flot.tooltip.min.js",
-                                                                                "~/Scripts/flot/jquery.flot.time.js",
-                                                                                "~/Scripts/flot/jquery.flot.spline.js",
-                                                                                "~/Scripts/flot/jquery.flot.symbol.js",
-                                                                                "~/Scripts/utils/generateCustomDataTablesFilters.js",
-                                                                                 "~/Scripts/pageScript/report.js"));
-        }
-        @section Scripts {
-            @Scripts.Render("~/Scripts/GarageList")
-        }
+@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/GarageList")
+    .Include("~/Scripts/chosen.jquery.js",
+            "~/Scripts/DataTables/jquery.dataTables.js",
+            "~/Scripts/DataTables/dataTables.bootstrap.js",
+            "~/Scripts/highCharts/highcharts.js",
+            "~/Scripts/highCharts/exporting.js",
+            "~/Scripts/utils/generateUIElements.js",
+            "~/Scripts/utils/customModals.js",
+            "~/Scripts/utils/generateCustomDataTablesFilters.js",
+                "~/Scripts/pageScript/report.js"));
+}
+@section Scripts {
+<script>
+    toastr.success(`Xin chào, bạn sẽ là nhà cung cấp đến @Model.ProviderUtil`);
+    const TIME_LIST = @Html.Raw(System.Web.Helpers.Json.Encode(Model.ReportData
+                        .OrderBy(t => t.Time).Select(info => info.Time.Month.ToString()).ToList())),
+        NUM_BOOKING = @Html.Raw(System.Web.Helpers.Json.Encode(Model.ReportData
+                        .OrderBy(t => t.Time).Select(info => info.NumOfBooking).ToList())),
+        NUM_SUCCESS = @Html.Raw(System.Web.Helpers.Json.Encode(Model.ReportData
+                        .OrderBy(t => t.Time).Select(info => info.NumOfSuccessBooking).ToList())),
+        PROFIT      = @Html.Raw(System.Web.Helpers.Json.Encode(Model.ReportData
+                        .OrderBy(t => t.Time).Select(info => info.Profit).ToList()));
+</script>
+
+    @Scripts.Render("~/Scripts/GarageList")
+}
