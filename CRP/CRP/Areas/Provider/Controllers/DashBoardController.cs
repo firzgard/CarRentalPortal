@@ -38,14 +38,14 @@ namespace CRP.Areas.Provider.Controllers
             ProviderReportViewModel model = new ProviderReportViewModel();
             model.ID = providerID;
             model.ProviderName = UserEntity.UserName;
-            listBooking = BookingService.Get(q => q.AspNetUser1.Id == providerID && q.IsSelfBooking == false && q.IsCanceled == false &&
+            listBooking = BookingService.Get(q => q.AspNetUser1.Id == providerID && q.ProviderID != q.CustomerID && q.IsCanceled == false &&
                 q.IsPending == false).ToList();
             foreach (BookingReceipt item in listBooking)
             {
                 model.money = model.money + item.RentalPrice;
                 model.booking = +1;
             }
-            listBooking = BookingService.Get(q => q.AspNetUser1.Id == providerID && q.IsSelfBooking == false &&
+            listBooking = BookingService.Get(q => q.AspNetUser1.Id == providerID && q.CustomerID != q.ProviderID &&
                q.IsPending == false).OrderByDescending(q => q.ID).Take(3).ToList();
             foreach (BookingReceipt item3 in listBooking)
             {

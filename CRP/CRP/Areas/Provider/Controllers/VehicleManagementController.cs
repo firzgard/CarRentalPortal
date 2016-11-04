@@ -14,6 +14,7 @@ using Microsoft.AspNet.Identity;
 using CloudinaryDotNet.Actions;
 using Microsoft.Ajax.Utilities;
 using System.IO;
+using Constants = CRP.Models.Constants;
 
 namespace CRP.Areas.Provider.Controllers
 {
@@ -33,20 +34,20 @@ namespace CRP.Areas.Provider.Controllers
 			var garageService = this.Service<IGarageService>();
 			var providerID = User.Identity.GetUserId();
 			var listGarage = garageService.Get(q => q.OwnerID == providerID)
-					.Select(q => new SelectListItem()
-					{
-						Text = q.Name,
-						Value = q.ID.ToString(),
-						Selected = true,
-					});
+				.Select(q => new SelectListItem()
+				{
+					Text = q.Name,
+					Value = q.ID.ToString(),
+					Selected = true,
+				});
 
 			var groupService = this.Service<IVehicleGroupService>();
 			var groupList = groupService.Get(q => q.OwnerID == providerID)
-					.Select(q => new SelectListItem()
-					{
-						Text = q.Name,
-						Value = q.ID.ToString()
-					});
+				.Select(q => new SelectListItem()
+				{
+					Text = q.Name,
+					Value = q.ID.ToString()
+				});
 
 			var viewModel = new FilterByGarageView()
 			{
@@ -68,15 +69,16 @@ namespace CRP.Areas.Provider.Controllers
 			var providerID = User.Identity.GetUserId();
 			garageView.listGarage = service.Get()
 				.Where(q => q.OwnerID == providerID && q.IsActive && q.ID != garageID)
-				.Select(q => new SelectListItem() {
+				.Select(q => new SelectListItem()
+				{
 					Text = q.Name,
 					Value = q.ID.ToString(),
 					Selected = true,
 				});
 
-			return Json(new { list = garageView.listGarage }, JsonRequestBehavior.AllowGet);
+			return Json(new {list = garageView.listGarage}, JsonRequestBehavior.AllowGet);
 		}
-		
+
 
 		[Route("api/listGroup")]
 		[HttpGet]
@@ -90,12 +92,12 @@ namespace CRP.Areas.Provider.Controllers
 				.Where(q => q.OwnerID == providerID)
 				.Select(q => new SelectListItem()
 				{
-					Text = q.Name + " ["+ (q.IsActive ? "đang hoạt động": "ngưng hoạt động") +"]",
+					Text = q.Name + " [" + (q.IsActive ? "đang hoạt động" : "ngưng hoạt động") + "]",
 					Value = q.ID.ToString(),
 					Selected = true,
 				});
 
-			return Json(new { list = garageView.listGarage }, JsonRequestBehavior.AllowGet);
+			return Json(new {list = garageView.listGarage}, JsonRequestBehavior.AllowGet);
 		}
 
 		// Route to vehicle's detailed info page
@@ -152,7 +154,7 @@ namespace CRP.Areas.Provider.Controllers
 			if (filterConditions.Draw == 0)
 				return new HttpStatusCodeResult(400, "Unqualified request");
 			if (filterConditions.OrderBy != null
-				&& typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy) == null)
+			    && typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy) == null)
 				return new HttpStatusCodeResult(400, "Invalid sorting property");
 
 			filterConditions.ProviderID = User.Identity.GetUserId();
@@ -194,20 +196,24 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPost]
 		public async Task<ActionResult> CreateVehicleAPI(ManagingVehicleModel newVehicle)
 		{
+			var errorMessage = CheckVehicleValidity(newVehicle);
+			if (errorMessage != null)
+				return new HttpStatusCodeResult(400, errorMessage);
+
 			var newVehicleEntity = this.Mapper.Map<Vehicle>(newVehicle);
 
-			if (!CheckVehicleValidity(newVehicleEntity))
-				return new HttpStatusCodeResult(400, "Created unsuccessfully");
+			if(Request.Files.Count < 1 || Request.Files.Count > 10)
+				return new HttpStatusCodeResult(400, "Chỉ được phép upload từ 1 đến 10 hình.");
 
-			// Upload images
+			// Upload images to cloudinary
+			var cloudinary = new CloudinaryDotNet.Cloudinary(Models.Constants.CLOUDINARY_ACC);
 			var imageList = new List<VehicleImage>();
-			foreach (string fileName in Request.Files)
+			try
 			{
-				var file = Request.Files[fileName];
-
-				if (file?.ContentLength > 0)
+				foreach (string fileName in Request.Files)
 				{
-					var cloudinary = new CloudinaryDotNet.Cloudinary(Models.Constants.CLOUDINARY_ACC);
+					var file = Request.Files[fileName];
+					if (file?.ContentLength <= 0) continue;
 
 					// Upload to cloud
 					var uploadResult = cloudinary.Upload(new ImageUploadParams()
@@ -215,12 +221,13 @@ namespace CRP.Areas.Provider.Controllers
 						File = new FileDescription(file.FileName, file.InputStream)
 					});
 
-					if (uploadResult == null)
-						return new HttpStatusCodeResult(400, "Created unsuccessfully");
-
 					// Get the image's id and url
 					imageList.Add(new VehicleImage() { ID = uploadResult.PublicId, URL = uploadResult.Uri.ToString() });
 				}
+			}
+			catch (Exception ex)
+			{
+				return new HttpStatusCodeResult(500, "Upload ảnh thất bại. Vui lòng thử lại sau.");
 			}
 
 			var vehicleService = this.Service<IVehicleService>();
@@ -240,71 +247,63 @@ namespace CRP.Areas.Provider.Controllers
 
 
 		// API Route to edit single vehicle
-		[Route("api/vehicles")]
+		[Route("api/vehicles/{id:int}")]
 		[HttpPatch]
-		public async Task<ActionResult> EditVehicleAPI(ManagingVehicleModel model)
+		public async Task<ActionResult> EditVehicleAPI(int id, ManagingVehicleModel updateModel)
 		{
-			if (!this.ModelState.IsValid)
-				return new HttpStatusCodeResult(400, "Updated unsuccessfully.");
+			var errorMessage = CheckVehicleValidity(updateModel);
+			if (errorMessage != null)
+				return new HttpStatusCodeResult(400, errorMessage);
 
-			var service = this.Service<IVehicleService>();
-			//var ModelService = this.Service<IModelService>();
-			//var BrandService = this.Service<IBrandService>();
-			var GarageService = this.Service<IGarageService>();
-			var VehicleGroupService = this.Service<IVehicleGroupService>();
-			//var VehicleImageService = this.Service<IVehicleImageService>();
+			var vehicleService = this.Service<IVehicleService>();
 
-			var entity = this.Mapper.Map<Vehicle>(model);
-			//var ModelEntity = this.Mapper.Map<VehicleModel>(model.VehicleModel);
-			//var BrandEntity = this.Mapper.Map<VehicleBrand>(model.VehicleModel.VehicleBrand);
-			//var GarageEntity = this.Mapper.Map<Garage>(model.Garage);
-			//var VehicleGroupEntity = this.Mapper.Map<VehicleGroup>(model.VehicleGroup);
-			//var VehicleImageEntity = this.Mapper.Map<VehicleImage>(model.VehicleImages);
+			var currentUserID = User.Identity.GetUserId();
+			var vehicleEntity = vehicleService.Get(v => v.ID == id && v.Garage.OwnerID == currentUserID).FirstOrDefault();
 
-			if (entity == null)
-				return new HttpStatusCodeResult(403, "Updated unsuccessfully.");
+			if(vehicleEntity == null)
+				return new HttpStatusCodeResult(404, "Không tìm thấy xe.");
 
-			//await BrandService.UpdateAsync(BrandEntity);
-			//await ModelService.UpdateAsync(ModelEntity);
-			//await GarageService.UpdateAsync(GarageEntity);
-			//await VehicleGroupService.UpdateAsync(VehicleGroupEntity);
-			//await VehicleImageService.UpdateAsync(VehicleImageEntity);
-			await service.UpdateAsync(entity);
+			Mapper.Map<ManagingVehicleModel, Vehicle>(updateModel, vehicleEntity);
+			await vehicleService.UpdateAsync(vehicleEntity);
 
 			return new HttpStatusCodeResult(200, "Updated successfully.");
 		}
 
 
-		// API Route to delete
+		// API Route to delete single vehicle
 		[Route("api/vehicles/{id:int}")]
 		[HttpDelete]
 		public async Task<ActionResult> DeleteVehiclesAPI(int id)
 		{
+			var currentUserID = User.Identity.GetUserId();
+
 			var service = this.Service<IVehicleService>();
-			var VehicleImageService = this.Service<IVehicleImageService>();
-            var VehicleReceiptService = this.Service<IBookingReceiptService>();
-			var entity = await service.GetAsync(id);
+			var entity = service.Get(v => v.ID == id && v.Garage.OwnerID == currentUserID).FirstOrDefault();
 			if (entity == null)
-				return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
+				return new HttpStatusCodeResult(404, "Không tìm thấy xe.");
 
-			var VehicleImageEntity = VehicleImageService.Get(q => q.VehicleID == id);
-            var ReceiptEntity = VehicleReceiptService.Get(q => q.VehicleID == id);
-
-            if (ReceiptEntity != null)
+			// Remove vehicle ref in booking receipt
+			var vehicleReceiptService = this.Service<IBookingReceiptService>();
+			var receiptEntities = vehicleReceiptService.Get(br => br.VehicleID == id);
+			if (receiptEntities.Any())
             {
-                foreach (var item in ReceiptEntity)
+                foreach (var item in receiptEntities)
                 {
                     item.VehicleID = null;
                 }
             }
 
-            if (VehicleImageEntity != null)
+			// Remove all vehicle's images
+			var vehicleImageService = this.Service<IVehicleImageService>();
+			var vehicleImageEntities = vehicleImageService.Get(q => q.VehicleID == id);
+			if (vehicleImageEntities.Any())
 			{
-				foreach (var item in VehicleImageEntity)
+				foreach (var item in vehicleImageEntities)
 				{
-					VehicleImageService.DeleteAsync(item);
+					vehicleImageService.DeleteAsync(item);
 				}
 			}
+
 			await service.DeleteAsync(entity);
 			return new HttpStatusCodeResult(200, "Deleted successfully.");
 		}
@@ -363,21 +362,31 @@ namespace CRP.Areas.Provider.Controllers
 
 
 		// API route for creating an own booking
-		//need provider role
-		[Route("api/vehicles/bookings/{vehiceID:int}")]
+		[Route("api/vehicles/bookings")]
 		[HttpPost]
-		public async Task<HttpStatusCodeResult> CreateBookingAPI(BookingReceipt model, int vehicleID)
+		public async Task<HttpStatusCodeResult> CreateOwnBookingAPI(DateTime startTime, DateTime endTime, int vehicleID)
 		{
-			if (!this.ModelState.IsValid)
+			var bookingService = this.Service<IBookingReceiptService>();
+			var vehicleService = this.Service<IVehicleService>();
+
+			var currentUserID = User.Identity.GetUserId();
+
+			var vehicle = vehicleService.Get(v => v.ID == vehicleID && v.Garage.OwnerID == currentUserID).FirstOrDefault();
+
+			if(vehicle == null)
+				return new HttpStatusCodeResult(400, "Not found.");
+
+			var newBooking = new BookingReceipt()
 			{
-				return new HttpStatusCodeResult(403, "Created unsuccessfully.");
-			}
+				CustomerID = currentUserID,
+				ProviderID = currentUserID,
+				StartTime = startTime,
+				EndTime = endTime,
+				GarageID = vehicle.GarageID,
+				VehicleID = vehicleID,
+			};
 
-			var service = this.Service<IBookingReceiptService>();
-
-			BookingReceipt newBooking = this.Mapper.Map<BookingReceipt>(model);
-			newBooking.VehicleID = vehicleID;
-			await service.CreateAsync(newBooking);
+			await bookingService.CreateAsync(newBooking);
 
 			return new HttpStatusCodeResult(200, "Created successfully.");
 		}
@@ -386,166 +395,137 @@ namespace CRP.Areas.Provider.Controllers
 		// API route for canceling an own booking
 		[Route("api/vehicles/bookings/{receiptID:int}")]
 		[HttpDelete]
-		public ActionResult CancelBookingAPI(int receiptID)
+		public async Task<ActionResult> CancelBookingAPI(int receiptID)
 		{
-			var service = this.Service<IBookingReceiptService>();
-			BookingReceipt br = service.Get(receiptID);
-			br.IsCanceled = true;
-			service.Update(br);
+			var currentUserID = User.Identity.GetUserId();
+			var bookingService = this.Service<IBookingReceiptService>();
+			var receipt = bookingService.Get(br => br.ID == receiptID
+											&& br.ProviderID == currentUserID
+											&& br.CustomerID == currentUserID)
+										.FirstOrDefault();
+			if(receipt == null)
+				return new HttpStatusCodeResult(400, "Not found.");
+
+			receipt.IsCanceled = true;
+			await bookingService.UpdateAsync(receipt);
 
 			return new HttpStatusCodeResult(200, "Deleted successfully");
 		}
 
 
-		[Route("Home/SaveUploadedFile/{VehicleID:int}")]
-		public String SaveUploadedFile(int VehicleID)
+		[Route("api/vehicles/images/{vehicleID:int}")]
+		[HttpPost]
+		public async Task<ActionResult> SavePictureAPI(int vehicleID)
 		{
-			var imageServie = this.Service<IVehicleImageService>();
-			var vehicleService = this.Service<IVehicleService>();
-			string fName = "";
-			foreach (string fileName in Request.Files)
-			{
-				HttpPostedFileBase file = Request.Files[fileName];
-				fName = file.FileName;
-				if (file != null && file.ContentLength > 0)
-				{
+			string userID = User.Identity.GetUserId();
 
-					String url = "";
-					String userName = User.Identity.Name;
-					String userID = User.Identity.GetUserId();
-					CloudinaryDotNet.Account account =
-					new CloudinaryDotNet.Account("ahihicompany",
-										 "445384272838294",
-										 "h4SCiNi8zOKfewxEi2LqNt3IjrQ"
-											);
-					CloudinaryDotNet.Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(account);
-					//dinh dang image     
-					var pic = file;
-					if (pic != null)
+			var vehicleService = this.Service<IVehicleService>();
+			var vehicle = vehicleService.Get(v => v.ID == vehicleID && v.Garage.OwnerID == userID).FirstOrDefault();
+
+			if(vehicle == null)
+				return new HttpStatusCodeResult(400, "Not found.");
+
+			if (vehicle.VehicleImages.Count > 10)
+			{
+				return new HttpStatusCodeResult(400, "Không thể lưu trữ hơn 10 ảnh.");
+			}
+
+			// Upload images to cloudinary
+			var cloudinary = new CloudinaryDotNet.Cloudinary(Constants.CLOUDINARY_ACC);
+			try
+			{
+				foreach (string fileName in Request.Files)
+				{
+					var file = Request.Files[fileName];
+					if (file?.ContentLength <= 0) continue;
+
+					// Upload to cloud
+					var uploadResult = cloudinary.Upload(new ImageUploadParams()
 					{
-						CloudinaryDotNet.Actions.ImageUploadParams uploadParams = new CloudinaryDotNet.Actions.ImageUploadParams()
-						{
-							//File = new CloudinaryDotNet.Actions.FileDescription(@"c:\mypicture.jpg"),
-							//PublicId = "sample_remote_file"
-							File = new FileDescription(pic.FileName, pic.InputStream),
-							Tags = "Anh cua" + userName,
-						};
-						CloudinaryDotNet.Actions.ImageUploadResult uploadResult = cloudinary.Upload(uploadParams);
-						url = uploadResult.Uri.ToString();
-						//luu xuong database
-						VehicleImage imageOfVehicle = new VehicleImage();
-						var Entity = vehicleService.Get(VehicleID);
-						imageOfVehicle.URL = url;
-						imageOfVehicle.VehicleID = VehicleID;
-						imageOfVehicle.ID = uploadResult.PublicId.ToString();
-						imageOfVehicle.Vehicle = Entity;
-						imageServie.CreateAsync(imageOfVehicle);
-						return uploadResult.PublicId.ToString();
+						File = new FileDescription(file.FileName, file.InputStream)
+					});
 
-					}
+					// Get the image's id and url
+					vehicle.VehicleImages.Add(new VehicleImage() { ID = uploadResult.PublicId, URL = uploadResult.Uri.ToString() });
 				}
 			}
-			return "";
-		}
-
-
-		[Route("api/vehicles/deletepic")]
-		[HttpDelete]
-		public void DeletePicinNew()
-		{
-			var vehicleService = this.Service<IVehicleService>();
-			String id = Request.Params["file"];
-			var vehicleImageService = this.Service<IVehicleImageService>();
-			VehicleImage entityImage = vehicleImageService.Get(q => q.ID == id).FirstOrDefault();
-			vehicleImageService.DeleteAsync(entityImage);
-		}
-
-
-		[Route("api/vehicles/deletepic/{id:int}")]
-		[HttpDelete]
-		public async Task<ActionResult> DeletePic(int id)
-		{
-			var vehicleService = this.Service<IVehicleService>();
-			var entity = vehicleService.Get(id);
-			string url = Request.Params["url2"];
-			var vehicleImageService = this.Service<IVehicleImageService>();
-			var lstVehiIm = vehicleImageService.Get(q => q.VehicleID == id);
-			foreach (var item in lstVehiIm)
+			catch (Exception ex)
 			{
-				if (item.URL == url)
-				{
-					vehicleImageService.DeleteAsync(item);
-				}
+				return new HttpStatusCodeResult(500, "Upload ảnh thất bại. Vui lòng thử lại sau.");
 			}
-			//for (int i = 0; i < listUpdate.Count; i++)
-			//{
-			//    var x = listUpdate.ElementAt(i);
-			//    if (x.URL == url)
-			//    {
-			//        listUpdate.RemoveAt(i);
 
-			//    }
-			//}
+			return new HttpStatusCodeResult(200, "OK");
+		}
 
-			//entity.VehicleImages = listUpdate;
 
-			await vehicleService.UpdateAsync(entity);
-			return Json(new { result = true, message = "Deleted!" });
-			//if (vehiEntity == null)
-			//    return new HttpStatusCodeResult(403, "Deleted unsuccessfully.");
-			//await VehicleImageService.DeleteAsync(entity);
+		[Route("api/vehicles/images/{imageID}")]
+		[HttpDelete]
+		public async Task<ActionResult> DeletePictureAPI(string imageID)
+		{
+			var currentUserID = User.Identity.GetUserId();
+
+			var vehicleImageService = this.Service<IVehicleImageService>();
+			var entityImage = vehicleImageService.Get(img => img.ID == imageID
+															&& img.Vehicle.Garage.OwnerID == currentUserID)
+												.FirstOrDefault();
+
+			await vehicleImageService.DeleteAsync(entityImage);
+
+			return new HttpStatusCodeResult(200, "Deleted successfully");
 		}
 
 
 		// Check entity on create/update
-		public bool CheckVehicleValidity(Vehicle vehicle)
+		public string CheckVehicleValidity(ManagingVehicleModel vehicle)
 		{
 			var vehicleService = this.Service<IVehicleService>();
-			var garageService = this.Service<IGarageService>();
-			var groupService = this.Service<IVehicleGroupService>();
 			var modelService = this.Service<IModelService>();
+
+			var userService = this.Service<IUserService>();
+			var userID = this.User.Identity.GetUserId();
+			var currentUser = userService.Get(userID);
 
 			//License number's uniquity
 			if (vehicleService.Get().Any(v => v.LicenseNumber == vehicle.LicenseNumber))
-				return false;
+				return "Xe với biển số xe này đã tồn tại.";
 
-			if (vehicle.LicenseNumber.Length > 50 || vehicle.LicenseNumber.Length < 10)
-				return false;
+			if (vehicle.LicenseNumber.Length > 50)
+				return "Biển số xe phải dưới 50 ký tự.";
 
-			if (vehicle.Name.Length > 100 || vehicle.Name.Length < 10)
-				return false;
+			if (vehicle.Name.Length > 100)
+				return "Tên xe phải dưới 100 ký tự.'";
 
 			if (!modelService.Get().Any(m => m.ID == vehicle.ModelID))
-				return false;
+				return "Dòng xe không tồn tại.";
 
 			if (vehicle.Year < Models.Constants.MIN_YEAR || vehicle.Year > DateTime.Now.Year)
-				return false;
+				return "Năm sản xuất không hợp lệ";
 
-			if (!garageService.Get().Any(g => g.ID == vehicle.GarageID))
-				return false;
+			if (currentUser.Garages.All(g => g.ID != vehicle.GarageID))
+				return "Garage không tồn tại.";
 
-			if(vehicle.VehicleGroupID != null && !groupService.Get().Any(g => g.ID == vehicle.VehicleGroupID))
-				return false;
+			if(vehicle.VehicleGroupID != null && currentUser.Garages.All(g => g.ID != vehicle.VehicleGroupID))
+				return "Nhóm xe không tồn tại.";
 
 			if(!Models.Constants.TRANSMISSION_TYPE.ContainsKey(vehicle.TransmissionType))
-				return false;
+				return "Loại hộp số không hợp lệ.";
 
 			if (vehicle.FuelType != null && !Models.Constants.FUEL_TYPE.ContainsKey(vehicle.FuelType.Value))
-				return false;
+				return "Loại nhiên liệu không hợp lệ";
 
 			if (vehicle.TransmissionDetail != null && vehicle.TransmissionDetail.Length > 100)
-				return false;
+				return "Chi tiết hộp số phải dưới 100 ký tự.";
 
 			if (vehicle.Engine != null && vehicle.Engine.Length > 100)
-				return false;
+				return "Chi tiết động cơ phải dưới 100 ký tự.";
 
 			if (vehicle.Description != null && vehicle.Description.Length > 1000)
-				return false;
+				return "Mô tả xe phải dưới 1000 ký tự.";
 
 			if (!Models.Constants.COLOR.ContainsKey(vehicle.Color))
-				return false;
+				return "Mã màu không hợp lệ.";
 
-			return true;
+			return null;
 		}
 	}
 }

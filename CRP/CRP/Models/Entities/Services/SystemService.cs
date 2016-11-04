@@ -117,7 +117,7 @@ namespace CRP.Models.Entities.Services
             List<BookingReceipt> lisBook = BookingService.Get(q => q.GarageID == garageID).ToList();
             foreach (BookingReceipt item in lisBook.ToList())
             { 
-                if (item.IsSelfBooking == true)
+                if (item.CustomerID == item.ProviderID)
                 {
                     lisBook.Remove(item);
                 }
@@ -142,7 +142,7 @@ namespace CRP.Models.Entities.Services
             List<BookingReceipt> lisBook = BookingService.Get(q => q.VehicleID == vehicleId).ToList();
             foreach (BookingReceipt item in lisBook.ToList())
             {
-                if (item.IsSelfBooking == true)
+                if (item.ProviderID == item.CustomerID)
                 {
                     lisBook.Remove(item);
                 }
