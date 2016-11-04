@@ -36,7 +36,7 @@ namespace CRP.Areas.Provider.Controllers
             var now = DateTime.Now;
             var thisMonth = new DateTime(now.Year, now.Month, 1);
 
-            var receipts = bookingService.Get(r => !r.IsPending && !r.IsSelfBooking
+            var receipts = bookingService.Get(r => !r.IsPending && r.CustomerID != r.ProviderID
                                         && r.StartTime < now
                                         && r.StartTime.Month == thisMonth.Month
                                         && r.StartTime.Year == thisMonth.Year).ToList();
@@ -51,13 +51,13 @@ namespace CRP.Areas.Provider.Controllers
             model.NumOfBookingInThisMonth = receipts.Count;
             model.NumOfBookingSuccessfulInThisMonth = receipts.Where(r => r.IsCanceled == false).Count();
 
-            if(receipts.Where(r => r.IsCanceled == false).Count() > 0) {
+            if(receipts.Any(r => r.IsCanceled == false)) {
                 model.Profit = receipts.Where(r => r.IsCanceled == false).Sum(r => r.RentalPrice);
             }
 
             model.ProviderUtil = userService.Get(providerID).IsProviderUntil;
 
-            var receiptDes = bookingService.Get(r => !r.IsPending && !r.IsSelfBooking && !r.IsCanceled).OrderByDescending(r => r.StartTime).ToList();
+            var receiptDes = bookingService.Get(r => !r.IsPending && r.CustomerID != r.ProviderID && !r.IsCanceled).OrderByDescending(r => r.StartTime).ToList();
 
             // last 10 comment
             for(int i = 0; i < receiptDes.Count; i++)

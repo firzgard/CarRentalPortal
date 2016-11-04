@@ -28,7 +28,7 @@ namespace CRP.Models.Entities.Services
 		// Get the booking history of a customer
 		public BookingHistoryDataTablesModel GetBookingHistory(string customerID, int page, int recordPerPage, int draw)
 		{
-			var receiptList = repository.Get(br => br.CustomerID == customerID && !br.IsSelfBooking);
+			var receiptList = repository.Get(br => br.CustomerID == customerID && br.CustomerID != br.ProviderID);
 
 			var total = receiptList.Count();
 
@@ -61,7 +61,7 @@ namespace CRP.Models.Entities.Services
             // Exclude canceled receipt while IsSelfBooking is not checked
             if (!conditions.IsSelfBooking)
             {
-                bookings = bookings.Where(b => b.IsSelfBooking == false);
+                bookings = bookings.Where(b => b.CustomerID != b.ProviderID);
             }
 
             if(conditions.IsInThePast != null)
