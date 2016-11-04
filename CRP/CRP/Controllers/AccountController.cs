@@ -76,9 +76,9 @@ namespace CRP.Controllers
                 return View(model);
             }
 			var user = UserManager.FindByEmail(model.Email);
-            if(user == null)
+            if(user == null || user.LockoutEnabled == true)
             {
-                ModelState.AddModelError("", "Tài khoản không tồn tại");
+                ModelState.AddModelError("", "Tài khoản không tồn tại hoặc đã bị chặn");
                 return View(model);
             }
 			// This doesn't count login failures towards account lockout
@@ -87,6 +87,13 @@ namespace CRP.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    if(UserManager.IsInRole(user.Id, "Admin"))
+                    {
+                        return RedirectToAction("AdminDashboard", "Dashboard");
+                    } else if(UserManager.IsInRole(user.Id, "Provider"))
+                    {
+                        return RedirectToAction("Dashboard", "Dashboard");
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -167,7 +174,8 @@ namespace CRP.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var user = new ApplicationUser { UserName = Xoakhoangtrang(model.Username.Trim()), Email = model.Email, FullName = model.Fullname.Trim(), PhoneNumber = model.PhoneNumber};
+                SystemService systemS = new SystemService();
+                var user = new ApplicationUser { UserName = Xoakhoangtrang(model.Username.Trim()), Email = model.Email, FullName = model.Fullname.Trim(), PhoneNumber = model.PhoneNumber};
 				var result = await UserManager.CreateAsync(user, model.Password);
 				if (result.Succeeded)
 				{
@@ -180,6 +188,8 @@ namespace CRP.Controllers
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
                     //set role cho no la Customer
                     await UserManager.AddToRoleAsync(user.Id, "Customer");
+                    //send mail de confirm email
+                    systemS.SendMailConfirm(user.Email);
                     return RedirectToAction("Index", "Home");
 				}
 				AddErrors(result);
@@ -231,7 +241,9 @@ namespace CRP.Controllers
 				 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
 				 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
 				 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-				return RedirectToAction("ForgotPasswordConfirmation", "Account");
+                SystemService systemS = new SystemService();
+                systemS.SendPassword(model.Email);
+                return RedirectToAction("ForgotPasswordConfirmation", "Account");
 			}
 
 			// If we got this far, something failed, redisplay form
