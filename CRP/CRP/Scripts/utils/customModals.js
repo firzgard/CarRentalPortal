@@ -242,16 +242,20 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 				let noResponse = true;
 
 				this.on("completemultiple", (files, a) => {
+					var response = JSON.parse(files[0].xhr.response);
+
 					if(noResponse) {
 						noResponse = false;
 
-						jqModalNode.modal('hide');
-						table.ajax.reload();
+						setTimeout(()=>{
+							jqModalNode.modal('hide');
+							table.ajax.reload();
 
-						if(files[0].xhr.status == 200)
-							toastr.success('Tạo xe thành công.');
-						else 
-							toastr.error('Tạo xe thất bại. Vui lòng thử lại sau');
+							if(files[0].xhr.status == 200)
+								toastr.success(response.message);
+							else 
+								toastr.error(response.message);
+						}, 2000)
 					}
 				});
 

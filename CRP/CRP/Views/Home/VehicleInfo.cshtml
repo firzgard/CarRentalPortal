@@ -322,31 +322,32 @@ else
 				<label class="col-xs-6">Phí thuê xe <span data-toggle="tooltip" title="Tổng phí mà bạn phải trả cho chủ xe." class="badge">?</span></label>
 				<p class="col-xs-6 text-right" id="rentalPrice"></p>
 			</div>
-			<hr />
-			<div class="form-group row" style="margin-bottom: 0;">
-				<label class="col-xs-6">Phí dịch vụ <span data-toggle="tooltip" title="Phí này giúp chúng tôi duy trì hoạt động. Phí sẽ được dùng để trả cho nhà cung cấp xe trong trường hợp bạn hủy đặt xe." class="badge">?</span></label>
-				<p class="col-xs-6 text-right" id="servicePrice"></p>
-			</div>
-			<hr />
-			<div class="form-group row" style="font-size: 1.3em;font-weight: bold;margin-bottom: 0;">
-				<p class="col-xs-6">Tổng chi phí <span data-toggle="tooltip" title="Gồm phí thuê xe và phí dịch vụ." class="badge">?</span></p>
-				<b><p class="col-xs-6 text-right" id="totalPrice"></p></b>
-			</div>
 			<div class="form-group row">
-				<p class="col-xs-6">Đặt cọc <span data-toggle="tooltip" title="Phần tiền phải đặt cọc khi bạn kí hợp đồng với chủ xe." class="badge">?</span></p>
+				<p class="col-xs-6">Đặt cọc <span data-toggle="tooltip" title="Phần tiền phải đặt cọc cho chủ xe mà bạn phải trả trước khi đặt xe." class="badge">?</span></p>
 				<p class="col-xs-6 text-right" id="depositPrice"></p>
 			</div>
 			<hr />
+			<div class="form-group row" style="margin-bottom: 0;">
+				<label class="col-xs-6">Phí dịch vụ <span data-toggle="tooltip" title="Phí này giúp chúng tôi duy trì hoạt động." class="badge">?</span></label>
+				<p class="col-xs-6 text-right" id="servicePrice"></p>
+			</div>
+			<hr />
+			<div class="form-group row" style="font-size: 1.1em;font-weight: bold;margin-bottom: 0;">
+				<p class="col-xs-6">Tổng phí phải trả trước <span data-toggle="tooltip" title="Bao gồm tiền đặt cọc và phí dịch vụ." class="badge">?</span></p>
+				<b><p class="col-xs-6 text-right" id="totalFee"></p></b>
+			</div>
+			<hr />
 			<div class="form-group row" style="margin-bottom: 2em;">
-				<label class="col-xs-6">Quãng đường <span data-toggle="tooltip" title="Nếu quãng đường đi thực của bạn vượt quá quãng đường quy định theo gói, bạn sẽ phải trả thêm phụ phí quãng đường phát sinh. Chi tiết giá cho mỗi km phát sinh vui lòng xem ở mục điều khoản cơ bản." class="badge">?</span></label>
+				<label class="col-xs-6">Quãng đường <span data-toggle="tooltip" title="Nếu quãng đường đi thực của bạn vượt quá quãng đường quy định theo gói, bạn sẽ phải trả thêm phụ phí cho quãng đường phát sinh. Chi tiết giá cho mỗi km phát sinh xin vui lòng tham khảo ở mục điều khoản cơ bản." class="badge">?</span></label>
 				<p class="col-xs-6 text-right" id="distance"></p>
 			</div>
 			@if (!User.IsInRole("Customer"))
 			{
 				<div class="text-center" style="color: red;"><small><b>Bạn cần đăng nhập để có thể đặt xe</b></small></div>
 			}
-			<button class="btn btn-primary btn-block" id="bookingBtn" @(User.IsInRole("Customer") ? "" : "disabled")><b>Đặt xe</b></button>
-			<div class="text-center" style="margin-bottom: 1.5em;"><small>Bạn chỉ phải trả trước phí dịch vụ</small></div>
+			<div style="margin-bottom: 1.5em;">
+				<button class="btn btn-primary btn-block" id="bookingBtn" @(User.IsInRole("Customer") ? "" : "disabled")><b>Đặt xe</b></button>
+			</div>
 		</div>
 	</div>
 </div>
@@ -370,8 +371,7 @@ else
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleInfo")
 					  .Include("~/Content/awesome-bootstrap-checkbox.css",
 							"~/Content/bootstrap-datetimepicker/bootstrap-datetimepicker.css",
-							"~/Content/FullCalendar/fullcalendar.css",
-							"~/Content/select2/select2.css"));
+							"~/Content/FullCalendar/fullcalendar.css"));
 }
 @section Styles {
 	@Styles.Render("~/Styles/VehicleInfo")
@@ -382,7 +382,6 @@ else
 
 @{BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleInfo")
 					.Include(
-						  "~/Scripts/moment.js",
 						  "~/Scripts/bootstrap-datetimepicker/bootstrap-datetimepicker.js",
 						  "~/Scripts/FullCalendar/fullcalendar.js",
 						  "~/Scripts/FullCalendar/locale/vi.js",
