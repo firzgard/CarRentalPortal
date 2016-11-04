@@ -29,7 +29,7 @@ $(document).ready(() => {
             	    render: (data, type) => {
             	        if (type === 'display') {
             	            return `<div class="status-label" >
-							<p class ="label label-${data ? 'danger' : 'primary'}">${data ? 'Đang hoạt động' : 'Bị chặn'}</p>
+							<p class ="label label-${data ? 'primary' : 'danger'}">${data ? 'Đang hoạt động' : 'Bị chặn'}</p>
 						</div>`;
             	        }
             	        return data;
