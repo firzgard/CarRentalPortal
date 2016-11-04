@@ -109,7 +109,7 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label>Tên xe*</label>
-									<input id="Name" name="Name" type="text" placeholder="Tên xe" maxlength="100" minlength="10" value="${data.Name || ''}" class="form-control" required>
+									<input id="Name" name="Name" type="text" placeholder="Tên xe" maxlength="100" value="${data.Name || ''}" class="form-control" required>
 								</div>
 								<div class="form-group">
 									<label>Dòng xe*</label>
@@ -144,7 +144,7 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label>Biển số xe*</label>
-									<input id="LicenseNumber" name="LicenseNumber" type="text" maxlength="50" minlength="10" placeholder="Biển số xe" class="form-control" required>
+									<input id="LicenseNumber" name="LicenseNumber" type="text" maxlength="50" placeholder="Biển số xe" class="form-control" required>
 								</div>
 								<div class="form-group">
 									<label>Năm sản xuất*</label>
@@ -176,13 +176,13 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 							</div>
 							<hr>
 							<div class="col-sm-12 form-group">
-								<label>Hình ảnh</label>
+								<label>Hình ảnh*</label>
 							</div>
 						</div>
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
 					<button type="button" id="createNewBtn" class="btn btn-primary">OK</button>
 				</div>
 			</div>
@@ -260,22 +260,28 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 					evt.stopPropagation();
 
 					// Validation
-					if (!$("#Name")[0].checkValidity()) { // Check Name : required, max 100, min 10
-						toastr.warning('Tên xe phải từ 10 đến 100 chữ cái.');
-					} else if (!$("#LicenseNumber")[0].checkValidity()) { // Check License: required, max 100, min 10
-						toastr.warning('Biển số xe phải từ 10 đến 50 chữ cái.');
+					if (!$("#Name").val()) { // Check Name : required
+						toastr.warning('Tên xe không được để trống.');
+					} else if (!$("#Name")[0].checkValidity()) { // Check Name : max 100
+						toastr.warning('Tên xe phải dưới 100 ký tự.');
+					} else if (!$("#LicenseNumber").val()) { // Check License: required
+						toastr.warning('Biển số xe không được để trống');
+					} else if (!$("#LicenseNumber")[0].checkValidity()) { // Check License: max 100
+						toastr.warning('Biển số xe phải dưới 50 ký tự.');
 					} else if (!$("#ModelID")[0].checkValidity()) { // Check model: required
 						toastr.warning('Vui lòng chọn dòng xe.');
 					} else if (!$("#Year")[0].checkValidity()) { // Check Year: required
-						toastr.warning('Vui lòng khai báo năm sản xuất của xe.');
+						toastr.warning('Năm sản xuất của xe không được để trống.');
 					} else if (!$("#GarageID")[0].checkValidity()) { // Check garage: required
 						toastr.warning('Vui lòng chọn garage xe.');
 					} else if ($('input[name="TransmissionType"]:checked').length == 0) {
 						toastr.warning('Vui lòng chọn loại hộp số');
 					} else if ($('input[name="Color"]:checked').length == 0) { // Check Color: required
-						toastr.warning('Bạn chưa chọn màu xe.');
+						toastr.warning('Vui lòng chọn màu xe.');
 					} else if (this.getQueuedFiles().length < 4) { // Check num of image: required, min 4
 						toastr.warning('Bạn phải upload ít nhất 4 hình.');
+					} else if (this.getQueuedFiles().length > 10){
+						toastr.warning('Bạn chỉ được upload nhiều nhất 10 hình.');		
 					} else if ($("#newVehicleForm")[0].checkValidity()) { // Valid? Up u go
 						this.processQueue();
 					}
