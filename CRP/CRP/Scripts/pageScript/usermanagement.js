@@ -8,14 +8,15 @@
         last: "Trang cuối",
     },
     zeroRecords: "Không tìm thấy dữ liệu",
-    info: "Đang hiển thị trang _PAGE_ trên tổng số _PAGES_ trang",
+    info: "Đang hiển thị _START_ đến _END_ trên tổng cộng _TOTAL_ dòng",
     infoEmpty: "không có dữ liệu",
     infoFiltered: "(được lọc ra từ _MAX_ dòng)"
 }
+
 $(document).ready(() => {
     // Render table
     let table = $('#provider').DataTable({
-        dom: "ltipr",
+        dom: "lftipr",
         //data: mockupData,
         language: viDatatables,
         ajax: {
@@ -29,7 +30,7 @@ $(document).ready(() => {
             	    render: (data, type) => {
             	        if (type === 'display') {
             	            return `<div class="status-label" >
-							<p class ="label label-${data ? 'danger' : 'primary'}">${data ? 'Đang hoạt động' : 'Bị chặn'}</p>
+							<p class ="label label-${data ? 'primary' : 'danger'}">${data ? 'Đang hoạt động': 'Đã bị chặn'}</p>
 						</div>`;
             	        }
             	        return data;
@@ -39,16 +40,11 @@ $(document).ready(() => {
             // render action button
             targets: 7,
             render: (data, type, row) => {
-                return `<div class="btn-group" >
-            <button data-toggle="dropdown" class="btn btn-info dropdown-toggle" aria-expanded="false">
-            <i class="fa fa-gear"></i> Hành động <i class="caret"></i>
-            </button>
-            <ul class ="dropdown-menu">
+                return `
              ${row.status=== true ?
-		    `<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="chan" data-id="${row.ID}">Chặn</a></li>`:
-		    `<li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="bochan" data-id="${row.ID}">Bỏ chặn</a></li>`}
-            </ul>
-            </div>`;
+		    `<a class="btn btn-danger" data-toggle="modal" data-target="#mdModal" data-action="chan" data-id="${row.ID}"><i class="fa fa-lock"></i> Chặn</a>`:
+		    `<a class="btn btn-success" data-toggle="modal" data-target="#mdModal" data-action="bochan" data-id="${row.ID}"><i class="fa fa-unlock-alt"></i> Bỏ chặn</a>`}
+            `;
             }
         }
         ],
@@ -57,8 +53,8 @@ $(document).ready(() => {
         { name: 'UserName', data: 'UserName', title: 'Tên', width: '15%' },
         { name: 'Email', data: 'Email', title: 'Email', width: '15%' },
         { name: 'Phone', data: 'phoneNumber', title: 'Số điện thoại', width: '15%' },
-        { name: 'Role', data: 'role', title: 'Quyền', width: '15%' },
-        { name: 'Providerutil', data: 'providerUtil', title: 'Là provider đến', width: '15%' },
+        { name: 'Role', data: 'role', title: 'Quyền', width: '10%' },
+        { name: 'Providerutil', data: 'providerUtil', title: 'Có quyền hạn đến ngày', width: '20%' },
         { name: 'Status', data: 'status', title: 'Tình trạng', width: '15%' },
         {
             title: 'Action',
@@ -84,7 +80,7 @@ $(document).ready(() => {
             </h2>
             </div>
             <div class="modal-body">
-             Có phải bạn muốn <b>${action}</b> provider này?</b>. Bạn chắc chứ?
+             Có phải bạn muốn bỏ chặn provider này?</b>. Bạn chắc chứ?
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
@@ -102,7 +98,7 @@ $(document).ready(() => {
             </h2>
             </div>
             <div class="modal-body">
-             Có phải bạn muốn <b>${action}</b> provider này?</b>. Bạn chắc chứ?
+             Có phải bạn muốn chặn provider này?</b>. Bạn chắc chứ?
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
@@ -148,7 +144,7 @@ $(document).ready(() => {
                 break;
         }
 
-        $(document).on('click', '.btn-yes', function (event) {
+        $(document).one('click', '.btn-yes', function (event) {
             switch (action) {
                 case 'chan': {
                 }
@@ -160,8 +156,8 @@ $(document).ready(() => {
                             },
                             type: "PATCH",
                             success: function (data) {
-                                alert(data.message);
-                                location.href = "/management/userManagement";
+                                $('.modal').modal('hide');
+                                table.ajax.reload();
                             },
                             eror: function (data) {
                                 alert("fail");
