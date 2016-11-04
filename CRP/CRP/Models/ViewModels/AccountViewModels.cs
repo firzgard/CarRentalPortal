@@ -65,13 +65,13 @@ namespace CRP.Models
 	public class RegisterViewModel
 	{
 		[Required]
-        [StringLength(15, ErrorMessage = "Username phải có ít nhất 3 ký tự và ít hơn 15 kí tự", MinimumLength = 3)]
+        [StringLength(15, ErrorMessage = "Username phải có ít nhất 1 ký tự và ít hơn 15 kí tự", MinimumLength = 1)]
         [Display(Name = "Username")]
 		public string Username { get; set; }
 
        
         [Display(Name = "Full Name")]
-        [StringLength(50, ErrorMessage = "Fullname phải có ít nhất 3 ký tự", MinimumLength = 3)]
+        [StringLength(50, ErrorMessage = "Fullname phải có ít nhất 1 ký tự", MinimumLength = 1)]
         public string Fullname { get; set; }
 
 		[Required]
@@ -97,7 +97,7 @@ namespace CRP.Models
 		public string ConfirmPassword { get; set; }
 
 		[Required]
-		[StringLength(30, ErrorMessage = "Tối thiểu có 2 ký tự và ít hơn 30 kí tự", MinimumLength = 2)]
+		[StringLength(30, ErrorMessage = "Tối thiểu có 2 ký tự và ít hơn 30 kí tự", MinimumLength = 1)]
 		[Display(Name = "PhoneNumber")]
 		public string PhoneNumber { get; set; }
 	}

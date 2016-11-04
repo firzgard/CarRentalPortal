@@ -57,7 +57,7 @@ $(document).ready(() => {
         { name: 'Providerutil', data: 'providerUtil', title: 'Có quyền hạn đến ngày', width: '20%' },
         { name: 'Status', data: 'status', title: 'Tình trạng', width: '15%' },
         {
-            title: 'Action',
+            title: 'Thao tác',
             width: '10%',
             orderable: false,
             searchable: false
