@@ -1,7 +1,7 @@
 ﻿@using CRP.Models.ViewModels
 @model AdminReportViewModel
 @{
-	ViewBag.Title = "Report";
+	ViewBag.Title = "Bảng quản trị - CRP";
 	Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
 
@@ -75,7 +75,7 @@
                             <h5>Lợi nhuận</h5>
                         </div>
                         <div class="ibox-content">
-                            <h1 class="no-margins">@Model.ThisMonthNumOfProfit<span> &#8363;</span></h1>
+                            <h1 class="no-margins">@Model.ThisMonthNumOfProfit<small> VNĐ</small></h1>
                             <small>Tổng lợi nhuận</small>
                         </div>
                     </div>

@@ -36,78 +36,69 @@ namespace CRP.Models.ViewModels
 		}
 	}
 
-	public class ReportProviderViewModel
-	{
-		public string ID { get; set; }
-		public String ProviderName { get; set; }
-		public double money { get; set; }
-		public double compare { get; set; }
-		public int car { get; set; }
-		public Boolean status { get; set; }
-	}
+    public class ProviderReportViewModel
+    {
+        public int NumOfGarage { get; set; }
+        public int NumOfVehicle { get; set; }
+        public int NumOfBookingSuccessfulInThisMonth { get; set; }
+        public int NumOfBookingInThisMonth { get; set; }
+        public double Profit { get; set; } = 0.0;
+        public DateTime? ProviderUtil { get; set; }
+        public List<CommentModel> Comment { get; set; } = new List<CommentModel>();
+        public List<MonthlySaleReport> ReportData { get; set; } = new List<MonthlySaleReport>();
 
-	public class ReportGarageViewModel
-	{
-		public int ID { get; set; }
-		public String GarageName { get; set; }
-		public double money { get; set; }
-		public double compare { get; set; }
-		public int car { get; set; }
-		public string owner { get; set; }
-		public Boolean status { get; set; }
-	}
-	public class UserViewModel
-	{
-		public string ID { get; set; }
-		public String UserName { get; set; }
-		public String Email { get; set; }
-		public string phoneNumber { get; set; }
-		public String role { get; set; }
-		public String providerUtil { get; set; }
-		public Boolean status { get; set; }
-	}
+        public class CommentModel
+        {
+            public string UserName { get; set; }
+            public string Comment { get; set; }
+            public int? Star { get; set; }
+        }
 
-	public class ProviderReportViewModel
-	{
-		public string ID { get; set; }
-		public String ProviderName { get; set; }
-		public double money { get; set; }
-		public int booking { get; set; }
-		public int car { get; set; }
-		public String providerUtil { get; set; }
-		public List<CommentModel> comment { get; set; }
-	}
+        public class MonthlySaleReport
+        {
+            public DateTime Time { get; set; }
+            public int NumOfSuccessBooking { get; set; }
+            public int NumOfBooking { get; set; }
+            public double Profit { get; set; }
+        }
 
-	public class CommentModel
-	{
-		public String UserName { get; set; }
-		public String Comment { get; set; }
-		public decimal star { get; set; }
-	}
-	public class ReportMoneyViewModel
-	{
-		public YearMonthModel Time { get; set; }
-		public double Money { get; set; }
-	}
-	public class YearMonthModel
-	{
-		public int Year { get; set; }
-		public int Month { get; set; }
-	}
-	public class ReportBookingInYear
-	{
-		public int month1 { get; set; }
-		public int month2 { get; set; }
-		public int month3 { get; set; }
-		public int month4 { get; set; }
-		public int month5 { get; set; }
-		public int month6 { get; set; }
-		public int month7 { get; set; }
-		public int month8 { get; set; }
-		public int month9 { get; set; }
-		public int month10 { get; set; }
-		public int month11 { get; set; }
-		public int month12 { get; set; }
+        public void GetCommentData(BookingReceipt booking)
+        {
+            if (booking.Comment != null || booking.Star != null)
+            {
+                var data = new CommentModel
+                {
+                    UserName = booking.AspNetUser.UserName,
+                    Comment = booking.Comment,
+                    Star = booking.Star
+                };
+                Comment.Add(data);
+            }
+        }
 
-	}
+        public void GetDataForReport(List<BookingReceipt> bookings, DateTime time)
+        {
+            var month = new MonthlySaleReport
+            {
+                Time = time,
+                NumOfSuccessBooking = bookings.Count(b => b.IsCanceled == false
+                    && b.IsPending == false && b.CustomerID != b.ProviderID),
+                NumOfBooking = bookings.Count(b => b.IsPending == false && b.CustomerID != b.ProviderID),
+                Profit = bookings.Any(b => b.IsCanceled == false
+                    && b.IsPending == false && b.CustomerID != b.ProviderID) ? bookings.Sum(r => r.RentalPrice) : 0.0
+            };
+            ReportData.Add(month);
+        }
+    }
+
+    public class UserViewModel
+    {
+        public string ID { get; set; }
+        public String UserName { get; set; }
+        public String Email { get; set; }
+        public string phoneNumber { get; set; }
+        public String role { get; set; }
+        public String providerUtil { get; set; }
+        public Boolean status { get; set; }
+    }
 }
