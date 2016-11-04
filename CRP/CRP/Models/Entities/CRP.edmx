@@ -91,7 +91,6 @@
           <Property Name="Color" Type="int" Nullable="false" />
           <Property Name="IsCanceled" Type="bit" Nullable="false" />
           <Property Name="IsPending" Type="bit" Nullable="false" />
-          <Property Name="IsSelfBooking" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Category">
           <Key>
@@ -185,9 +184,9 @@
           <Property Name="GarageID" Type="int" Nullable="false" />
           <Property Name="VehicleGroupID" Type="int" />
           <Property Name="TransmissionType" Type="int" Nullable="false" />
-          <Property Name="TransmissionDetail" Type="nvarchar" MaxLength="200" />
+          <Property Name="TransmissionDetail" Type="nvarchar" MaxLength="100" />
           <Property Name="FuelType" Type="int" />
-          <Property Name="Engine" Type="nvarchar" MaxLength="200" />
+          <Property Name="Engine" Type="nvarchar" MaxLength="100" />
           <Property Name="Color" Type="int" Nullable="false" />
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
           <Property Name="NumOfComment" Type="int" Nullable="false" />
@@ -820,7 +819,6 @@
           <Property Name="Color" Type="Int32" Nullable="false" />
           <Property Name="IsCanceled" Type="Boolean" Nullable="false" />
           <Property Name="IsPending" Type="Boolean" Nullable="false" />
-          <Property Name="IsSelfBooking" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="BookingReceipt" ToRole="AspNetUser" />
           <NavigationProperty Name="AspNetUser1" Relationship="CRPDBModel.FK_BookingReceipt_Provider" FromRole="BookingReceipt" ToRole="AspNetUser" />
           <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_BookingReceipt_Garage" FromRole="BookingReceipt" ToRole="Garage" />
@@ -924,9 +922,9 @@
           <Property Name="GarageID" Type="Int32" Nullable="false" />
           <Property Name="VehicleGroupID" Type="Int32" />
           <Property Name="TransmissionType" Type="Int32" Nullable="false" />
-          <Property Name="TransmissionDetail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="TransmissionDetail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="FuelType" Type="Int32" />
-          <Property Name="Engine" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Engine" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Color" Type="Int32" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="NumOfComment" Type="Int32" Nullable="false" />
@@ -1278,7 +1276,6 @@
           <EntitySetMapping Name="BookingReceipts">
             <EntityTypeMapping TypeName="CRPDBModel.BookingReceipt">
               <MappingFragment StoreEntitySet="BookingReceipt">
-                <ScalarProperty Name="IsSelfBooking" ColumnName="IsSelfBooking" />
                 <ScalarProperty Name="IsPending" ColumnName="IsPending" />
                 <ScalarProperty Name="IsCanceled" ColumnName="IsCanceled" />
                 <ScalarProperty Name="Color" ColumnName="Color" />

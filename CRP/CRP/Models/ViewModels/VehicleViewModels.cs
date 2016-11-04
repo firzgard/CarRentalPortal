@@ -24,7 +24,7 @@ namespace CRP.Models.ViewModels
 		public int? FuelType { get; set; }
 		public string Engine { get; set; }
 		public int Color { get; set; }
-		public int Description { get; set; }
+		public string Description { get; set; }
 	}
 
 	// Model for containing vehicle datatables filtering conditions
