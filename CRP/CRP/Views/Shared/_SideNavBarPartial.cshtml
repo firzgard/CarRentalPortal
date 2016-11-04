@@ -3,12 +3,33 @@
 	<div class="sidebar-collapse">
 		<ul class="nav metismenu" id="side-menu">
 			<li class="nav-header">
-				<div class="dropdown profile-element text-center">
-					<a href="@Url.Action("Index", "Home")"><h1><i class="fa fa-car"></i> CRP</h1></a>
-				</div>
-				<div class="logo-element">
-					<a href="@Url.Action("Index", "Home")"><i class="fa fa-car"></i></a>
-				</div>
+                @if (User.IsInRole("Admin"))
+                {
+                    <div class="dropdown profile-element text-center">
+                        <a href="@Url.Action("AdminDashboard", "Dashboard")"><h1><i class="fa fa-car"></i> CRP</h1></a>
+                    </div>
+                    <div class="logo-element">
+                        <a href="@Url.Action("AdminDashboard", "Dashboard")"><i class="fa fa-car"></i></a>
+                    </div>
+                }
+                else if (User.IsInRole("Provider"))
+                {
+                    <div class="dropdown profile-element text-center">
+                        <a href="@Url.Action("Dashboard", "Dashboard")"><h1><i class="fa fa-car"></i> CRP</h1></a>
+                    </div>
+                    <div class="logo-element">
+                        <a href="@Url.Action("Dashboard", "Dashboard")"><i class="fa fa-car"></i></a>
+                    </div>
+                }
+                else
+                {
+                    <div class="dropdown profile-element text-center">
+                        <a href="@Url.Action("Index", "Home")"><h1><i class="fa fa-car"></i> CRP</h1></a>
+                    </div>
+                    <div class="logo-element">
+                        <a href="@Url.Action("Index", "Home")"><i class="fa fa-car"></i></a>
+                    </div>
+                }
 			</li>
 			<li>
 				<a href="@Url.Action("Index", "Manage")">
@@ -19,7 +40,7 @@
 			@if (User.IsInRole("Admin"))
 			{
 			<li>
-				<a href="@Url.Action("Index", "UserManagement")">
+				<a href="@Url.Action("UserManagement", "UserManagement")">
 					<i class="fa fa-th-large"></i>
 					<span class="nav-label">Quản lý người dùng</span>
 				</a>

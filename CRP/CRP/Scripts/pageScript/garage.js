@@ -44,6 +44,7 @@ const viDatatables = {
 }
 
 let table = null;
+let star = parseFloat($('#star').val());
 
 $(document).on('click', '#btnEditGarage', function () {
     $('.display-control').css('display', 'none');
@@ -53,7 +54,7 @@ $(document).on('click', '#btnEditGarage', function () {
 $(document).on('click', '#cancelChange', function () {
     $('.display-control').css('display', 'inherit');
     $('.edit-control').css('display', 'none');
-    renderActivation();
+    renderActivation(star);
 });
 
 $(document).ready(function () {
@@ -65,17 +66,12 @@ $(document).ready(function () {
         $('.edit-control').css('display', 'inherit');
         $('.display-control').css('display', 'none');
     });
-    renderActivation();
-
-	// Render star-rating
-	let starRatingDiv = $('#starRating'),
-		star = starRatingDiv.data('star')
-	starRatingDiv.html(renderStarRating(star));
+    renderActivation(star);
 
 	// ============================================
 	// Vehicle table
 
-	let garageID = parseInt($('#garageID').val());
+    let garageID = parseInt($('#garageID').val());
 
 	renderWorkingTime(garageID, false);
 	renderWorkingTime(garageID, true);
@@ -477,7 +473,7 @@ $(document).ready(function () {
 	});
 });
 
-function renderActivation() {
+function renderActivation(star) {
     let isActivateInput = ($('#isActive').val() === 'True');
     let btn = $('#activationBtn');
     let name = $('#displayGarageName');
@@ -489,7 +485,9 @@ function renderActivation() {
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
                     <label class ="label label-primary label-lg">đang hoạt động</label>
+                    <span style="font-size: 20px;">${renderStarRating(star, 'white')}</span>
                 </div>
+                
                 <div class ="col-md-2 pull-right m-t m-r-lg">
                     <a id="btnEditGarage" class ="btn btn-success"><i class ="fa fa-pencil-square-o"></i><span> Chỉnh sửa thông tin</span></a>
                 </div>`);
@@ -505,6 +503,7 @@ function renderActivation() {
                     <span>${dName}</span>
                     <label class ="label label-danger label-lg">ngưng hoạt động</label>
                 </div>
+                <div>${renderStarRating(star, 'white')}</div>
                 <div class ="col-md-2 pull-right m-t m-r-lg">
                     <a id="btnEditGarage" class ="btn btn-success"><i class ="fa fa-pencil-square-o"></i><span> Chỉnh sửa thông tin</span></a>
                 </div>`);

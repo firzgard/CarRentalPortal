@@ -148,7 +148,7 @@ namespace CRP.Models.ViewModels
 			}
 
 			IsCanceled = receipt.IsCanceled;
-			IsSelfBooking = receipt.IsSelfBooking;
+			IsSelfBooking = receipt.ProviderID == receipt.CustomerID;
 		}
 	}
 

@@ -15,108 +15,72 @@ using System.Web.Mvc;
 namespace CRP.Areas.Provider.Controllers
 {
     [Authorize(Roles = "Provider")]
-    public class DashBoardController : BaseController
+    public class DashboardController : BaseController
     {
         // GET: Provider/DashBoard
-        [Route("DashBoard/provider")]
-        public ActionResult Index()
+        [Authorize(Roles = "Provider")]
+        [Route("dashboard/provider")]
+        public ActionResult Dashboard()
         {
             DateTime day = DateTime.Now;
             DateTime fromDay = new DateTime();
             fromDay = day.AddMonths(-(day.Month));
-            DateTime toDay = new DateTime();
             var providerID = User.Identity.GetUserId();
-            var GarageService = this.Service<IGarageService>();
-            var CarService = this.Service<IVehicleService>();
-            var BookingService = this.Service<IBookingReceiptService>();
-            var UserService = this.Service<IUserService>();
-            AspNetUser UserEntity = UserService.Get(q => q.Id == providerID).FirstOrDefault();
-            var listGara = GarageService.Get(q => q.OwnerID == providerID).ToList();
-            var listComment = new List<CommentModel>();
-            var listBooking = new List<BookingReceipt>();
-            var comment = new CommentModel();
-            ProviderReportViewModel model = new ProviderReportViewModel();
-            model.ID = providerID;
-            model.ProviderName = UserEntity.UserName;
-            listBooking = BookingService.Get(q => q.AspNetUser1.Id == providerID && q.IsSelfBooking == false && q.IsCanceled == false &&
-                q.IsPending == false).ToList();
-            foreach (BookingReceipt item in listBooking)
-            {
-                model.money = model.money + item.RentalPrice;
-                model.booking = +1;
-            }
-            listBooking = BookingService.Get(q => q.AspNetUser1.Id == providerID && q.IsSelfBooking == false &&
-               q.IsPending == false).OrderByDescending(q => q.ID).Take(3).ToList();
-            foreach (BookingReceipt item3 in listBooking)
-            {
-                comment.UserName = item3.AspNetUser.UserName;
-                comment.Comment = item3.Comment;
-                comment.star = item3.Star.GetValueOrDefault();
-                listComment.Add(comment);
-            }
-            model.car = CarService.Get(q => q.Garage.AspNetUser.Id == providerID).ToList().Count();
-            model.providerUtil = UserEntity.IsProviderUntil.ToString();
-            model.comment = listComment;
-            //lay data cho chart
-            ReportBookingInYear chart = new ReportBookingInYear();
-            chart.month1 = 12;
-            chart.month2 = 9;
-            chart.month3 = 12;
-            chart.month4 = 12;
-            chart.month5 = 17;
-            chart.month6 = 13;
-            chart.month7 = 19;
-            chart.month8 = 13;
-            chart.month9 = 12;
-            chart.month10 = 8;
-            chart.month11 = 11;
-            chart.month12 = 13;
-            //for (int i =1; i<=12; i++)
-            //{
+            var garageService = this.Service<IGarageService>();
+            var bookingService = this.Service<IBookingReceiptService>();
+            var userService = this.Service<IUserService>();
 
-            //    chart.month = i;
-            //    chart.booking = i * 10;
-            //    ////code khi co data
-            //    //toDay = fromDay.AddMonths(1);
-            //    //chart.booking = BookingService.Get(q => q.AspNetUser1.Id == providerID && q.IsSelfBooking == false &&
-            //    //    q.IsPending == false && q.IsCanceled == false && q.EndTime >= fromDay && q.EndTime <= toDay).ToList().Count();
-            //    //fromDay = toDay;
-            //    listBookingInY.Add(chart);
-            //}
-            ViewBag.brandList = chart;
-            return View("~/Areas/Provider/Views/DashBoard/Index.cshtml", model);
-        }
-        //test
-        [Route("api/getProviderData1")]
-        [HttpGet]
-        public ActionResult GetTestData()
-        {
-            DateTime today = DateTime.Now;
-            var providerID = User.Identity.GetUserId();
-            var BookingService = this.Service<IBookingReceiptService>();
-            var listBooking = new List<BookingReceipt>();
-            var listReportMoney = new List<ReportMoneyViewModel>();
-            var period = 0;
-            for (int i = 1; i <= today.Month; i++)
+            var listGarage = garageService.Get(q => q.OwnerID == providerID).ToList();
+
+            // Current month's report
+            var now = DateTime.Now;
+            var thisMonth = new DateTime(now.Year, now.Month, 1);
+
+            var receipts = bookingService.Get(r => !r.IsPending && r.CustomerID != r.ProviderID
+                                        && r.StartTime < now
+                                        && r.StartTime.Month == thisMonth.Month
+                                        && r.StartTime.Year == thisMonth.Year).ToList();
+
+            ProviderReportViewModel model = new ProviderReportViewModel();
+            model.NumOfGarage = listGarage.Count;
+            model.NumOfVehicle = 0;
+            foreach(var garage in listGarage)
             {
-                period = today.Month - i;
-                ReportMoneyViewModel model = new ReportMoneyViewModel();
-                YearMonthModel Time = new YearMonthModel();
-                Time.Month = i;
-                Time.Year = today.Year;
-                model.Time = Time;
-                model.Money = period * 10010;
-                //test
-                //listBooking = BookingService.Get(q => q.EndTime < today.AddMonths(-period)).ToList();
-                listReportMoney.Add(model);
+                model.NumOfVehicle += garage.Vehicles.Count;
             }
-            return Json(new { aaData = listReportMoney }, JsonRequestBehavior.AllowGet);
-        }
-        // GET: Provider/DashBoard
-        [Route("Dropzone")]
-        public ActionResult TestDropzone()
-        {
-            return View("~/Areas/Provider/Views/DashBoard/TestDropzone.cshtml");
+            model.NumOfBookingInThisMonth = receipts.Count;
+            model.NumOfBookingSuccessfulInThisMonth = receipts.Where(r => r.IsCanceled == false).Count();
+
+            if(receipts.Any(r => r.IsCanceled == false)) {
+                model.Profit = receipts.Where(r => r.IsCanceled == false).Sum(r => r.RentalPrice);
+            }
+
+            model.ProviderUtil = userService.Get(providerID).IsProviderUntil;
+
+            var receiptDes = bookingService.Get(r => !r.IsPending && r.CustomerID != r.ProviderID && !r.IsCanceled).OrderByDescending(r => r.StartTime).ToList();
+
+            // last 10 comment
+            for(int i = 0; i < receiptDes.Count; i++)
+            {
+                model.GetCommentData(receiptDes.ElementAt(i));
+                if(model.Comment.Count == 10)
+                {
+                    break;
+                }
+            }
+
+            // Calculate monthly reports for last half year
+            for (var i = 1; i < 7; i++)
+            {
+                var reportTime = thisMonth.AddMonths(-i);
+                receipts = bookingService.Get(r => r.StartTime < now
+                                        && r.StartTime.Month == reportTime.Month
+                                        && r.StartTime.Year == reportTime.Year).ToList();
+
+                model.GetDataForReport(receipts, reportTime);
+            }
+
+            return View("~/Areas/Provider/Views/DashBoard/Index.cshtml", model);
         }
     }
 }

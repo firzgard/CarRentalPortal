@@ -87,6 +87,13 @@ namespace CRP.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    if(UserManager.IsInRole(user.Id, "Admin"))
+                    {
+                        return RedirectToAction("AdminDashboard", "Dashboard");
+                    } else if(UserManager.IsInRole(user.Id, "Provider"))
+                    {
+                        return RedirectToAction("Dashboard", "Dashboard");
+                    }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");

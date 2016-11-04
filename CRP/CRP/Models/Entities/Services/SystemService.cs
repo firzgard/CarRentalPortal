@@ -96,7 +96,7 @@ namespace CRP.Models.Entities.Services
             DateTime today = DateTime.Now;
             MailMessage mailMessage = new MailMessage("tamntse61384@fpt.edu.vn", userEmail);
             mailMessage.Subject = "Recovering Password, thông tin đăng kí từ CRP Service";
-            bodyEmail = "Cám ơn bạn đã sử dụng dịch vụ của chúng tôi! \n Vui lòng click link bên dưới để thay đổi email:";
+            bodyEmail = "Cám ơn bạn đã sử dụng dịch vụ của chúng tôi! \n Mật khẩu mới của bạn là:";
             mailMessage.Body = bodyEmail;
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
             smtpClient.Credentials = new System.Net.NetworkCredential()
@@ -117,7 +117,7 @@ namespace CRP.Models.Entities.Services
             List<BookingReceipt> lisBook = BookingService.Get(q => q.GarageID == garageID).ToList();
             foreach (BookingReceipt item in lisBook.ToList())
             { 
-                if (item.IsSelfBooking == true)
+                if (item.CustomerID == item.ProviderID)
                 {
                     lisBook.Remove(item);
                 }
@@ -142,7 +142,7 @@ namespace CRP.Models.Entities.Services
             List<BookingReceipt> lisBook = BookingService.Get(q => q.VehicleID == vehicleId).ToList();
             foreach (BookingReceipt item in lisBook.ToList())
             {
-                if (item.IsSelfBooking == true)
+                if (item.ProviderID == item.CustomerID)
                 {
                     lisBook.Remove(item);
                 }
