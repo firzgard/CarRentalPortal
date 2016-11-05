@@ -10,11 +10,12 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CRP.Models;
 using CRP.Models.Entities.Services;
+using CRP.Models.Entities;
 
 namespace CRP.Controllers
 {
 	[Authorize]
-	public class AccountController : Controller
+	public class AccountController : BaseController
 	{
 		private ApplicationSignInManager _signInManager;
 		private ApplicationUserManager _userManager;
@@ -76,7 +77,7 @@ namespace CRP.Controllers
                 return View(model);
             }
 			var user = UserManager.FindByEmail(model.Email);
-            if(user == null || user.LockoutEnabled == true)
+            if(user == null || user.LockoutEnabled == false)
             {
                 ModelState.AddModelError("", "Tài khoản không tồn tại hoặc đã bị chặn");
                 return View(model);
@@ -87,7 +88,9 @@ namespace CRP.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    if(UserManager.IsInRole(user.Id, "Admin"))
+                    var userInfoService = this.Service<IUserService>();
+                    Session["avatar"] = userInfoService.Get(user.Id).AvatarURL;
+                    if (UserManager.IsInRole(user.Id, "Admin"))
                     {
                         return RedirectToAction("AdminDashboard", "Dashboard");
                     } else if(UserManager.IsInRole(user.Id, "Provider"))
@@ -190,11 +193,31 @@ namespace CRP.Controllers
                     await UserManager.AddToRoleAsync(user.Id, "Customer");
                     //send mail de confirm email
                     systemS.SendMailConfirm(user.Email);
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    LoginViewModel login = new LoginViewModel();
+                    login.Email = model.Email;
+                    login.Password = model.Password;
+                    var user2 = UserManager.FindByEmail(model.Email);
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, change to shouldLockout: true
+                    var result2 = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, shouldLockout: false);
+                    switch (result2)
+                    {
+                        case SignInStatus.Success:
+                            if (UserManager.IsInRole(user.Id, "Admin"))
+                            {
+                                return RedirectToAction("AdminDashboard", "Dashboard");
+                            }
+                            else if (UserManager.IsInRole(user.Id, "Provider"))
+                            {
+                                return RedirectToAction("Dashboard", "Dashboard");
+                            }
+                            return RedirectToAction("Index", "Home");
+                    }
                     return RedirectToAction("Index", "Home");
 				}
 				AddErrors(result);
 			}
-
 			// If we got this far, something failed, redisplay form
 			return View(model);
 		}
@@ -240,9 +263,9 @@ namespace CRP.Controllers
 				// Send an email with this link
 				 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
 				 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-				 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+				 //await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 SystemService systemS = new SystemService();
-                systemS.SendPassword(model.Email);
+                systemS.SendPassword(model.Email, callbackUrl);
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
 			}
 
@@ -277,7 +300,7 @@ namespace CRP.Controllers
 			{
 				return View(model);
 			}
-			var user = await UserManager.FindByNameAsync(model.Email);
+			var user = await UserManager.FindByEmailAsync(model.Email);
 			if (user == null)
 			{
 				// Don't reveal that the user does not exist

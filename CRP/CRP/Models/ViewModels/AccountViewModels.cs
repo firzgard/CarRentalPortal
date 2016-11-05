@@ -64,7 +64,7 @@ namespace CRP.Models
 
 	public class RegisterViewModel
 	{
-		[Required]
+        [Required(ErrorMessage = "Xin vui lòng nhập tên tài khoản!", AllowEmptyStrings = false)]
         [StringLength(15, ErrorMessage = "Username phải có ít nhất 1 ký tự và ít hơn 15 kí tự", MinimumLength = 1)]
         [Display(Name = "Username")]
 		public string Username { get; set; }
@@ -137,14 +137,14 @@ namespace CRP.Models
 		public string Email { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+		[StringLength(100, ErrorMessage = "Mật khẩu có ít nhất kí tự hoa và số.", MinimumLength = 6)]
 		[DataType(DataType.Password)]
-		[Display(Name = "Password")]
+		[Display(Name = "Mật khẩu mới!")]
 		public string Password { get; set; }
 
 		[DataType(DataType.Password)]
-		[Display(Name = "Confirm password")]
-		[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+		[Display(Name = "Xác nhận mật khẩu mới!")]
+		[Compare("Password", ErrorMessage = "Không khớp mật khẩu.")]
 		public string ConfirmPassword { get; set; }
 
 		public string Code { get; set; }

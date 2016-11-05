@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CRP.Models.Entities;
+using System.Text.RegularExpressions;
 
 namespace CRP.Models.ViewModels
 {
@@ -69,7 +70,7 @@ namespace CRP.Models.ViewModels
                 var data = new CommentModel
                 {
                     UserName = booking.AspNetUser.UserName,
-                    Comment = booking.Comment,
+                    Comment = booking.Comment != null ? Regex.Replace(booking.Comment, @"\r\n?|\n", "<br>"): null,
                     Star = booking.Star
                 };
                 Comment.Add(data);
@@ -84,8 +85,10 @@ namespace CRP.Models.ViewModels
                 NumOfSuccessBooking = bookings.Count(b => b.IsCanceled == false
                     && b.IsPending == false && b.CustomerID != b.ProviderID),
                 NumOfBooking = bookings.Count(b => b.IsPending == false && b.CustomerID != b.ProviderID),
-                Profit = bookings.Any(b => b.IsCanceled == false
-                    && b.IsPending == false && b.CustomerID != b.ProviderID) ? bookings.Sum(r => r.RentalPrice) : 0.0
+                Profit = (bookings.Any(b => !b.IsCanceled && !b.IsPending && b.CustomerID != b.ProviderID)
+                    ? bookings.Sum(r => r.RentalPrice) : 0.0)
+                    + (bookings.Any(b => b.IsCanceled && !b.IsPending && b.CustomerID != b.ProviderID)
+                    ? bookings.Sum(r => r.Deposit) : 0.0)
             };
             ReportData.Add(month);
         }
