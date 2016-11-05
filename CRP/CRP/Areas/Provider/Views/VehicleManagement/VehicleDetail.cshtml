@@ -9,7 +9,7 @@
 }
 
 <div class="row wrapper border-bottom white-bg page-heading">
-	<div class="col-md-10"><h2>Thông tin chi tiết của xe</h2></div>
+	<div class="col-md-10"><h2>Thông tin xe</h2></div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 	<div class="row">
@@ -250,35 +250,6 @@
 									<div class="col-md-4 text-right">
 										<label>Hình</label>
 									</div>
-									<div class="col-md-8">
-										<div class="carousel slide m-b" id="carousel1">
-											<div class="carousel-inner">
-												<div class="item active">
-													<img alt="image" class="img-responsive" src="@this.Model.ImageUrls[0]" style="height:300px; width:350px;">
-												</div>
-												@foreach (string entry in Model.ImageUrls)
-												{
-													if (Model.ImageUrls.IndexOf(entry) != 0)
-													{
-														<div class="item">
-															<img alt="image" class="img-responsive" src="@entry" style="height:300px; width:350px;">
-														</div>
-													}
-												}
-
-											</div>
-											<a data-slide="prev" href="#carousel1" class="left carousel-control">
-												<span class="icon-prev"></span>
-											</a>
-											<a data-slide="next" href="#carousel1" class="right carousel-control">
-												<span class="icon-next"></span>
-											</a>
-										</div>
-										@if (Model.ImageUrls.Count < 8)
-										{
-										 <a id="edit-img" class="btn btn-warning editFiel" style="display:none">Thêm ảnh mới</a>
-										}
-									</div>
 								</div>
 							</div>
 							
@@ -297,7 +268,7 @@
 					<div class="hr-line-dashed"></div>
 					<div class="row editFiel" style="display:none">
 					
-						@foreach (string entry in Model.ImageUrls)
+						@* @foreach (string entry in Model.ImageUrls)
 						{
 							//using (Html.BeginForm("DeletePic", "VehicleManagement", FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
 							//{
@@ -313,7 +284,7 @@
 								</div>
 							</div>
 						   //}
-						}
+						} *@
 					<input type="hidden" value="" name="maxImg" id="maxImg" />
 				</div>
 				<div class="hr-line-dashed"></div>
@@ -434,16 +405,6 @@
 					</div>
 
 					<div class="col-md-6">
-						<div id="vehicleImg" style="background-image:url('#');"></div>
-						<!-- Controls -->
-						<a class="left carousel-control">
-							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-							<span class="sr-only">Previous</span>
-						</a>
-						<a class="right carousel-control">
-							<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-							<span class="sr-only">Next</span>
-						</a>
 					</div>
 
 				</div>
@@ -460,99 +421,110 @@
 				</div>
 			</div>
 
-			<div class="display-control row form-group">
+			<div class="display-control form-group">
 				<div class="row">
-					<div class="col-md-6">
-						<div class="row m-b">
-							<div class="col-md-4">
+					<div class="col-lg-6">
+						<div class="row m-b m-t">
+							<div class="col-md-offset-1 col-md-4">
 								<label>Biển số xe</label>
 							</div>
-							<div class="col-md-8">
+							<div class="col-md-7">
 								@Model.LicenseNumber
 							</div>
 						</div>
 						<div class="row m-b">
-							<div class="col-md-4">
+							<div class="col-md-offset-1 col-md-4">
 								<label>Dòng xe</label>
 							</div>
-							<div class="col-md-8">
+							<div class="col-md-7">
 								@Model.BrandName @Model.ModelName
 							</div>
 						</div>
 						<div class="row m-b">
-							<div class="col-md-4">
+							<div class="col-md-offset-1 col-md-4">
 								<label>Năm sản xuất</label>
 							</div>
-							<div class="col-md-8">
+							<div class="col-md-7">
 								@Model.Year
 							</div>
 						</div>
 						<div class="row m-b">
-							<div class="col-md-4">
+							<div class="col-md-offset-1 col-md-4">
 								<label>Garage</label>
 							</div>
-							<div class="col-md-8">
+							<div class="col-md-7">
 								@Model.GarageName
 							</div>
 						</div>
 						<div class="row m-b">
-							<div class="col-md-4">
+							<div class="col-md-offset-1 col-md-4">
 								<label>Nhóm xe</label>
 							</div>
-							<div class="col-md-8">
-								@(Model.VehicleGroupName ? Model.VehicleGroupName : "-Không thuộc nhóm nào-")
+							<div class="col-md-7">
+								@(Model.VehicleGroupName == null ? "-Không thuộc nhóm nào-" : Model.VehicleGroupName)
 							</div>
 						</div>
 						<div class="row m-b">
-							<div class="col-md-4">
+							<div class="col-md-offset-1 col-md-4">
 								<label>Loại hộp số</label>
 							</div>
-							<div class="col-md-8">
+							<div class="col-md-7">
 								@Model.TransmissionTypeName
 							</div>
 						</div>
 						@if (@Model.TransmissionDetail != null) {
 							<div class="row m-b">
-								<div class="col-md-4">
+								<div class="col-md-offset-1 col-md-4">
 									<label>Chi tiết về hộp số</label>
 								</div>
-								<div class="col-md-8">
+								<div class="col-md-7">
 									@Model.TransmissionDetail
 								</div>
 							</div>
 						}
 						@if (@Model.FuelTypeName != null) {
 							<div class="row m-b">
-								<div class="col-md-4">
+								<div class="col-md-offset-1 col-md-4">
 									<label>Loại nhiên liệu</label>
 								</div>
-								<div class="col-md-8">
+								<div class="col-md-7">
 									@Model.FuelTypeName
 								</div>
 							</div>
 						}
-						@if (@Model.FuelTypeName != null) {
+						@if (@Model.Engine != null) {
 							<div class="row m-b">
-								<div class="col-md-4">
+								<div class="col-md-offset-1 col-md-4">
 									<label>Động cơ</label>
 								</div>
-								<div class="col-md-8">
-									@Model.FuelTypeName
+								<div class="col-md-7">
+									@Model.Engine
 								</div>
 							</div>
 						}
 						<div class="row m-b">
-							<div class="col-md-4">
+							<div class="col-md-offset-1 col-md-4">
 								<label>Màu xe</label>
 							</div>
-							<div class="col-md-8">
+							<div class="col-md-7">
 								<i class="fa fa-circle fa-lg" style="color:@(Model.ColorName)"></i>
 							</div>
 						</div>
 					</div>
 
-					<div class="col-md-6">
-						
+					<div class="col-lg-6">
+						<div class="small-vehicle-carousel">
+							<div class="small-vehicle-carousel-display"></div>
+							<!-- Controls -->
+							<a class="left carousel-control">
+								<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+								<span class="sr-only">Previous</span>
+							</a>
+							<a class="right carousel-control">
+								<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+								<span class="sr-only">Next</span>
+							</a>
+						</div>
 					</div>
 
 				</div>
@@ -570,25 +542,8 @@
 								}
 								else
 								{
-									<text>chưa có</text>
+									<text>Trống</text>
 								}
-							</div>
-						</div>
-						<hr>
-						<div class="row m-b text-center">
-							<div class="col-md-2 text-right">
-								<label>Điều khoản</label>
-							</div>
-							<div class="col-md-9 text-left">
-								@if (Model.Policy != null)
-								{
-									@Model.Policy
-								}
-								else
-								{
-									<text>chưa có</text>
-								}
-
 							</div>
 						</div>
 					</div>
@@ -597,10 +552,7 @@
 		</div>
 		<div class="ibox-footer">
 			<div>
-				<div class="btn-group">
-					<button id="activationBtn" class="btn btn-warning" data-toggle="modal" data-target="#customModal"></button>
-					<button class="btn btn-danger" data-toggle="modal" data-target="#customModal" data-action="deleteGarage">Xóa garage</button>
-				</div>
+				<button class="btn btn-danger" data-toggle="modal" data-target="#customModal" data-action="deleteGarage">Xóa xe</button>
 				<button id="saveChange" class="edit-control btn btn-primary pull-right">Lưu lại</button>
 				<button id="cancelChange" class="edit-control btn btn-default pull-right m-r-xs">Hủy bỏ</button>
 			</div>
@@ -610,10 +562,10 @@
 	<div class="tabs-container">
 		<ul class="nav nav-tabs">
 			<li class="active"><a data-toggle="tab" href="#tab-booking">Thông tin đặt xe</a></li>
-			<li class=""><a data-toggle="tab" href="#tab-review">Thông tin đánh giá</a></li>
+			<li class=""><a data-toggle="tab" href="#tab-comment">Thông tin đánh giá</a></li>
 		</ul>
 		<div class="tab-content">
-			<div id="tab-booking" class="tab-pane">
+			<div id="tab-booking" class="tab-pane active">
 				<div class="panel-body">
 					<div class="ibox ibox-content float-e-margins">
 						<div class="row">
@@ -650,7 +602,7 @@
 				</div>
 			</div>
 
-			<div id="tab-review" class="tab-pane active">
+			<div id="tab-comment" class="tab-pane">
 				<div class="panel-body">
 					<div class="ibox ibox-content float-e-margins">
 						@if (Model.NumOfComment > 0)
@@ -676,7 +628,19 @@
 	
 </div>
 
-
+<div id="bigCarousel">
+	<div id="bigCarouselDisplay"></div>
+	<!-- Controls -->
+	<a class="left carousel-control">
+		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+	</a>
+	<a class="right carousel-control">
+		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+	</a>
+	<i class="fa fa-times"></i>
+</div>
 
 <div id="delete-car" class="modal fade" role="dialog">
 <div class="modal-dialog">
@@ -697,27 +661,37 @@
 </div>
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleDetail")
-													  .Include("~/Content/awesome-bootstrap-checkbox.css",
-														  "~/Content/chosen.css",
-														  "~/Scripts/dropzone/dropzone.css",
-														  "~/Scripts/dropzone/basic.css",
-														  "~/Content/pageStyle/VehicleDetail.css",
-														  "~/Content/select2/select2.css"));
+	.Include("~/Content/awesome-bootstrap-checkbox.css",
+		"~/Content/chosen.css",
+		"~/Scripts/dropzone/dropzone.css",
+		"~/Scripts/dropzone/basic.css",
+		"~/Content/pageStyle/VehicleDetail.css",
+		"~/Content/select2/select2.css"));
 }
 @section Styles {
 	@Styles.Render("~/Styles/VehicleDetail")
 }
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleDetail")
-											  .Include("~/Scripts/chosen.jquery.js",
-												 "~/Scripts/bootstrap.min.js",
-												 "~/Scripts/dropzone/dropzone.js",
-												 "~/Scripts/select2/select2.full.js",
-												 "~/Scripts/pageScript/VehicleDetail.js"));
+	.Include("~/Scripts/chosen.jquery.js",
+		"~/Scripts/bootstrap.min.js",
+		"~/Scripts/dropzone/dropzone.js",
+		"~/Scripts/select2/select2.full.js",
+		"~/Scripts/twbsPagination/jquery.twbsPagination.js",
+		"~/Scripts/utils/generateUIElements.js",
+		"~/Scripts/pageScript/VehicleDetail.js"));
 }
 }
 @section Scripts {
-	<script>
-		const MAX_IMG = @Model.ImageUrls.Count;
+	<script type="text/javascript">
+		const MAX_IMG = @Model.ImageList.Count;
+
+		const COMMENT_FETCHING_URL = '@Url.RouteUrl("GetCommentAPI", new { controller = "Home", vehicleID = @Model.ID })';
+
+		const VEHICLE_ID = "@Model.ID",
+			NUM_OF_COMMENT = @Model.NumOfComment,
+			NUM_OF_COMMENT_PER_PAGE = @Constants.NUM_OF_COMMENT_PER_PAGE;
+
+		const imageList = @Html.Raw(System.Web.Helpers.Json.Encode(Model.ImageList));
 	</script>
 
 	@Scripts.Render("~/Scripts/VehicleDetail")

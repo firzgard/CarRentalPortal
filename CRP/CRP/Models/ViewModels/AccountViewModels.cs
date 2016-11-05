@@ -64,7 +64,7 @@ namespace CRP.Models
 
 	public class RegisterViewModel
 	{
-		[Required]
+        [Required(ErrorMessage = "Xin vui lòng nhập tên tài khoản!", AllowEmptyStrings = false)]
         [StringLength(15, ErrorMessage = "Username phải có ít nhất 1 ký tự và ít hơn 15 kí tự", MinimumLength = 1)]
         [Display(Name = "Username")]
 		public string Username { get; set; }

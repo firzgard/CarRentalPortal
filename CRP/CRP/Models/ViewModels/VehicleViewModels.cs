@@ -121,9 +121,10 @@ namespace CRP.Models.ViewModels
 		public string Engine { get; set; }
 		public int ColorID { get; set; }
 		public string ColorName { get; set; }
+		public string Description { get; set; }
 		public decimal Star { get; set; }
 		public int NumOfComment { get; set; }
-		public List<string> ImageUrls { get; set; }
+		public List<ImageView> ImageList { get; set; }
 
 		public IEnumerable<SelectListItem> listGarage { get; set; }
 		public IEnumerable<SelectListItem> listGroup { get; set; }
@@ -162,10 +163,18 @@ namespace CRP.Models.ViewModels
 			ColorID = vehicle.Color;
 			ColorName = Constants.COLOR[ColorID];
 
+			Description = vehicle.Description;
+
 			Star = vehicle.Star;
 			NumOfComment = vehicle.NumOfComment;
 
-			this.ImageUrls = vehicle.VehicleImages.Select(i => i.URL).ToList();
+			this.ImageList = vehicle.VehicleImages.Select(i => new ImageView() {Id = i.ID, Url = i.URL}).ToList();
+		}
+
+		public class ImageView
+		{
+			public string Id { get; set; }
+			public string Url { get; set; }
 		}
 	}
 

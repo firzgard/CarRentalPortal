@@ -16,10 +16,10 @@ namespace CRP.Models
 		// Cloudinary account
 		public static readonly CloudinaryDotNet.Account CLOUDINARY_ACC = new CloudinaryDotNet.Account("ahihicompany", "445384272838294", "h4SCiNi8zOKfewxEi2LqNt3IjrQ");
 
-		public const double BOOKING_FEE_PERCENTAGE = 0.05;
+		public const double BOOKING_FEE_PERCENTAGE = 0.01;
 
 		// 10 mins
-		public const int BOOKING_PENDING_PERIOD_IN_MILISEC = 1000*60*10;
+		public const int BOOKING_PENDING_PERIOD_IN_MINUTES = 10;
 
 		// Search vehicle page
 		public const int NUM_OF_SEARCH_RESULT_PER_PAGE = 10;
