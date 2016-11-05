@@ -311,7 +311,7 @@ $(document).ready(function(){
 		$rentalTypePrice = $('#rentalTypePrice')
 		$rentalPrice = $('#rentalPrice'),
 		$servicePrice = $('#servicePrice'),
-		$totalPrice = $('#totalPrice'),
+		$totalFee = $('#totalFee'),
 		$depositPrice = $('#depositPrice'),
 		$numOfDay = $('#numOfDay'),
 		$distance = $('#distance');
@@ -340,15 +340,16 @@ $(document).ready(function(){
 		rentalPriceValue = rentalTypeValue == 0 ? rentalUnitPrice * numOfDayValue : rentalUnitPrice
 		$rentalPrice.html(`${rentalPriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
+		// Deposit
+		depositValue = Number.parseInt(rentalPriceValue * DEPOSIT_PERCENTAGE);
+		$depositPrice.html(`${depositValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
 		// Service Price
 		servicePriceValue = Number.parseInt(rentalPriceValue * BOOKING_FEE_PERCENTAGE);
 		$servicePrice.html(`${servicePriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
-		// Total Price
-		$totalPrice.html(`${(rentalPriceValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
-
-		// Deposit
-		$depositPrice.html(`${Number.parseInt(rentalPriceValue * DEPOSIT_PERCENTAGE).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+		// Total fee
+		$totalFee.html(`${(depositValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
 		// Distance
 		rentalUnitDistance = $rentalType.find('option:selected').data('distance') || NaN;
@@ -373,15 +374,16 @@ $(document).ready(function(){
 		rentalPriceValue = rentalTypeValue == '0' ? rentalUnitPrice * numOfDayValue : rentalUnitPrice
 		$rentalPrice.html(`${rentalPriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
+		// Deposit
+		depositValue = Number.parseInt(rentalPriceValue * DEPOSIT_PERCENTAGE);
+		$depositPrice.html(`${depositValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+
 		// Service Price
 		servicePriceValue = Number.parseInt(rentalPriceValue * BOOKING_FEE_PERCENTAGE);
 		$servicePrice.html(`${servicePriceValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
-		// Total Price
-		$totalPrice.html(`${(rentalPriceValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
-
-		// Deposit
-		$depositPrice.html(`${Number.parseInt(rentalPriceValue * DEPOSIT_PERCENTAGE).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
+		// Total Fee
+		$totalFee.html(`${(depositValue + servicePriceValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`);
 
 		// Distance
 		distanceValue = rentalTypeValue == 0 ? rentalUnitDistance * numOfDayValue : rentalUnitDistance

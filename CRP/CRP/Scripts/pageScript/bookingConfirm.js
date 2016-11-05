@@ -1,4 +1,7 @@
-﻿$(document).ready(() => {
+﻿// Timer for redirecting back to info page upon pending period timeout'd
+setTimeout(() => { window.location = '/vehicleInfo/' + vehicleID; }, BOOKING_PENDING_PERIOD_IN_MINUTES * 60 * 1000)
+
+$(document).ready(() => {
 	// payment method radio group
 	$('input[name="PaymentMethod"]').change(function(evt){
 		$('.payment-type-detail').removeClass('active');

@@ -198,12 +198,18 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			var errorMessage = CheckVehicleValidity(newVehicle);
 			if (errorMessage != null)
-				return new HttpStatusCodeResult(400, errorMessage);
+			{
+				Response.StatusCode = 400;
+				return Json(new {message = errorMessage});
+			}
 
 			var newVehicleEntity = this.Mapper.Map<Vehicle>(newVehicle);
 
-			if(Request.Files.Count < 1 || Request.Files.Count > 10)
-				return new HttpStatusCodeResult(400, "Chỉ được phép upload từ 1 đến 10 hình.");
+			if (Request.Files.Count < 1 || Request.Files.Count > 10)
+			{
+				Response.StatusCode = 400;
+				return Json(new { message = "Chỉ được phép upload từ 1 đến 10 hình." });
+			}
 
 			// Upload images to cloudinary
 			var cloudinary = new CloudinaryDotNet.Cloudinary(Models.Constants.CLOUDINARY_ACC);
@@ -227,7 +233,8 @@ namespace CRP.Areas.Provider.Controllers
 			}
 			catch (Exception ex)
 			{
-				return new HttpStatusCodeResult(500, "Upload ảnh thất bại. Vui lòng thử lại sau.");
+				Response.StatusCode = 500;
+				return Json(new { message = "Upload ảnh thất bại. Vui lòng thử lại sau." });
 			}
 
 			var vehicleService = this.Service<IVehicleService>();
@@ -242,7 +249,8 @@ namespace CRP.Areas.Provider.Controllers
 			newVehicleEntity.VehicleImages = imageList;
 			await vehicleService.UpdateAsync(newVehicleEntity);
 
-			return new HttpStatusCodeResult(200, "Created successfully.");
+			Response.StatusCode = 200;
+			return Json(new { message = "Tạo xe thành công." });
 		}
 
 
@@ -504,7 +512,7 @@ namespace CRP.Areas.Provider.Controllers
 			if (currentUser.Garages.All(g => g.ID != vehicle.GarageID))
 				return "Garage không tồn tại.";
 
-			if(vehicle.VehicleGroupID != null && currentUser.Garages.All(g => g.ID != vehicle.VehicleGroupID))
+			if(vehicle.VehicleGroupID != null && currentUser.VehicleGroups.All(g => g.ID != vehicle.VehicleGroupID))
 				return "Nhóm xe không tồn tại.";
 
 			if(!Models.Constants.TRANSMISSION_TYPE.ContainsKey(vehicle.TransmissionType))
