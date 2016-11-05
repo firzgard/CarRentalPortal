@@ -104,9 +104,17 @@ namespace CRP.Controllers
                 if (result.Succeeded)
                 {
                     userEntity.PhoneNumber = model.PhoneNumber;
-                    userEntity.AvatarURL = model.Url;
-                    userEntity.FullName = model.Name;
-                    _userService.Update(userEntity);
+                    if (model.Url.Equals("/Content/img/error.jpg"))
+                    {
+                        userEntity.FullName = model.Name;
+                        _userService.Update(userEntity);
+                    } else
+                    {
+                        userEntity.AvatarURL = model.Url;
+                        userEntity.FullName = model.Name;
+                        _userService.Update(userEntity);
+                    }
+                    userEntity.AvatarURL = userEntity.AvatarURL;
                     Session["avatar"] = userEntity.AvatarURL;
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     return RedirectToAction("Index", "Manage");
