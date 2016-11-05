@@ -74,11 +74,11 @@
 					<div class="row">
 						<div class="section-header col-md-12"><b>Thời gian đặt xe:</b></div>
 						<div class="col-xs-11 col-xs-offset-1">
-							<p><b>Từ:</b> @Model.Receipt.StartTime.ToString()</p>
+							<p><b>Từ:</b> @Model.Receipt.StartTime.ToString(@"dd\/MM\/yyyy HH:mm")</p>
 							
 						</div>
 						<div class="col-xs-11 col-xs-offset-1">
-							<div><b>Đến:</b> @Model.Receipt.EndTime.ToString()</div>
+							<div><b>Đến:</b> @Model.Receipt.EndTime.ToString(@"dd\/MM\/yyyy HH:mm")</div>
 						</div>
 					</div>
 					<hr>
@@ -91,7 +91,7 @@
 						<label class="col-md-7">Phí thuê xe</label>
 						<div class="col-md-5 text-right">@(((int)Model.Receipt.RentalPrice).ToString("#,##0"))₫</div>
 					</div>
-					<div class="row">
+					<div class="row" style="font-size: 1.1em;">
 						<span class="col-md-7">Đặt cọc</span>
 						<div class="col-md-5 text-right">@(((int)Model.Receipt.Deposit).ToString("#,##0"))₫</div>
 					</div>
@@ -102,11 +102,11 @@
 					</div>
 					<hr>
 					<div class="row" style="font-size: 1.4em;">
-						<label class="col-md-7">Tổng cộng</label>
-						<div class="col-md-5 text-right">@(((int)Model.Receipt.RentalPrice + Model.Receipt.BookingFee).ToString("#,##0"))₫</div>
+						<label class="col-md-7">Phí phải thanh toán</label>
+						<div class="col-md-5 text-right">@(((int)Model.Receipt.Deposit + Model.Receipt.BookingFee).ToString("#,##0"))₫</div>
 					</div>
 					<hr>
-					<small>* Bạn chỉ phải thanh toán trước phí dịch vụ</small>
+					<small>* Hệ thống sẽ xóa đơn đặt xe này trong vòng @Constants.BOOKING_PENDING_PERIOD_IN_MINUTES phút. Bạn vui lòng thanh toán trong thời gian trên.</small>
 				</div>
 			</div>
 		</div>
@@ -134,5 +134,9 @@
 				  .Include("~/Scripts/pageScript/bookingConfirm.js"));
 }
 @section Scripts {
+	<script>
+		const BOOKING_PENDING_PERIOD_IN_MINUTES = @Constants.BOOKING_PENDING_PERIOD_IN_MINUTES;
+		const vehicleID = @Model.Receipt.VehicleID;
+	</script>
 	@Scripts.Render("~/Scripts/BookingConfirm")
 }

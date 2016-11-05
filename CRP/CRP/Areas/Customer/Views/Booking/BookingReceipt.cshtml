@@ -69,11 +69,11 @@
 					<div class="row">
 						<div class="section-header col-md-12"><b>Thời gian đặt xe:</b></div>
 						<div class="col-xs-11 col-xs-offset-1">
-							<p><b>Từ:</b> @Model.StartTime.ToString()</p>
+							<p><b>Từ:</b> @Model.StartTime.ToString(@"dd\/MM\/yyyy HH:mm")</p>
 							
 						</div>
 						<div class="col-xs-11 col-xs-offset-1">
-							<div><b>Đến:</b> @Model.EndTime.ToString()</div>
+							<div><b>Đến:</b> @Model.EndTime.ToString(@"dd\/MM\/yyyy HH:mm")</div>
 						</div>
 					</div>
 					<hr>
@@ -86,7 +86,7 @@
 						<label class="col-md-7">Phí thuê xe</label>
 						<div class="col-md-5 text-right">@(((int)Model.RentalPrice).ToString("#,##0"))₫</div>
 					</div>
-					<div class="row">
+					<div class="row" style="font-size: 1.1em;">
 						<span class="col-md-7">Đặt cọc</span>
 						<div class="col-md-5 text-right">@(((int)Model.Deposit).ToString("#,##0"))₫</div>
 					</div>
@@ -96,9 +96,9 @@
 						<div class="col-md-5 text-right">@(((int)Model.BookingFee).ToString("#,##0"))₫</div>
 					</div>
 					<hr>
-					<div class="row" style="font-size: 1.4em;">
-						<label class="col-md-7">Tổng cộng</label>
-						<div class="col-md-5 text-right">@(((int)Model.RentalPrice + Model.BookingFee).ToString("#,##0"))₫</div>
+					<div class="row" style="font-size: 1.3em;">
+						<label class="col-md-7">Phí đã thanh toán</label>
+						<div class="col-md-5 text-right">@(((int)Model.Deposit + Model.BookingFee).ToString("#,##0"))₫</div>
 					</div>
 				</div>
 			</div>

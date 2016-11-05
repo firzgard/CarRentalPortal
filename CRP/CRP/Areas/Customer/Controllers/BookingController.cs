@@ -172,7 +172,7 @@ namespace CRP.Areas.Customer.Controllers
 			bookingService.Create(newBooking);
 
 			// Set timer to delete the booking if it is still pending after x-milisec
-			System.Timers.Timer checkPendingBookingTimer = new System.Timers.Timer(Models.Constants.BOOKING_PENDING_PERIOD_IN_MILISEC);
+			System.Timers.Timer checkPendingBookingTimer = new System.Timers.Timer(Models.Constants.BOOKING_PENDING_PERIOD_IN_MINUTES * 60 * 1000 );
 			checkPendingBookingTimer.AutoReset = false;
 
 			// Add callback
@@ -183,6 +183,7 @@ namespace CRP.Areas.Customer.Controllers
 		}
 
 		// Handler for TryBookingApi
+		// Remove booking if it is still pending upon called
 		private static void CheckPendingBooking(int bookingID)
 		{
 			var dbContext = new CRPEntities();
