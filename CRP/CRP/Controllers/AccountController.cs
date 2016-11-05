@@ -77,7 +77,7 @@ namespace CRP.Controllers
                 return View(model);
             }
 			var user = UserManager.FindByEmail(model.Email);
-            if(user == null || user.LockoutEnabled == true)
+            if(user == null || user.LockoutEnabled == false)
             {
                 ModelState.AddModelError("", "Tài khoản không tồn tại hoặc đã bị chặn");
                 return View(model);
@@ -261,9 +261,9 @@ namespace CRP.Controllers
 				// Send an email with this link
 				 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
 				 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-				 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+				 //await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 SystemService systemS = new SystemService();
-                systemS.SendPassword(model.Email);
+                systemS.SendPassword(model.Email, callbackUrl);
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
 			}
 
@@ -298,7 +298,7 @@ namespace CRP.Controllers
 			{
 				return View(model);
 			}
-			var user = await UserManager.FindByNameAsync(model.Email);
+			var user = await UserManager.FindByEmailAsync(model.Email);
 			if (user == null)
 			{
 				// Don't reveal that the user does not exist
