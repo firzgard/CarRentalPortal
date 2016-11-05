@@ -15,7 +15,7 @@ using CRP.Models.Entities;
 namespace CRP.Controllers
 {
 	[Authorize]
-	public class AccountController : Controller
+	public class AccountController : BaseController
 	{
 		private ApplicationSignInManager _signInManager;
 		private ApplicationUserManager _userManager;
@@ -88,7 +88,10 @@ namespace CRP.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    if(UserManager.IsInRole(user.Id, "Admin"))
+                    var userInfoService = this.Service<IUserService>();
+                    Session["avatar"] = userInfoService.Get(user.Id).AvatarURL;
+
+                    if (UserManager.IsInRole(user.Id, "Admin"))
                     {
                         return RedirectToAction("AdminDashboard", "Dashboard");
                     } else if(UserManager.IsInRole(user.Id, "Provider"))
