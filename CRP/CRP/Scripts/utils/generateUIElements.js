@@ -36,3 +36,10 @@ function validatePhone(num) {
     var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
     return regex.test(num);
 }
+
+function renderComma(str) {
+    if (str.length < 4) {
+        return str;
+    }
+    return str.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+}

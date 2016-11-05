@@ -58,7 +58,7 @@
                 location.reload();
             },
             error: function (er) {
-                alert(er);
+                toastr.error("Đã có lỗi xảy ra");
             } });
     }
     function cancelChangeImg() {

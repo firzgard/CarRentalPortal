@@ -33,15 +33,16 @@
                 @Html.DropDownListFor(q => q.garageID, this.Model.listGarage, new { @class = "form-control", @id = "garageID" })
             </div>
             <div class="pull-right m-r m-b table-bordered">
-                <h3>Trạng thái hóa đơn</h3>
+                <br>
                 <div class="checkbox">
-                    <input type="checkbox" id="isCanceled"> 
-                    <label for="isCanceled"> Đã hủy</label>
+                    <input type="checkbox" id="isCanceled" checked>
+                    <label for="isCanceled"> Hiện hóa đơn đã hủy</label>
                 </div>
                 <div class="checkbox">
-                    <input type="checkbox" id="isSelfBooking">
-                    <label for="isSelfBooking"> Tự đặt</label>
+                    <input type="checkbox" id="isSelfBooking" checked>
+                    <label for="isSelfBooking"> HIện hóa đợn tự đặt</label>
                 </div>
+                <br>
             </div>
             <div class="pull-right m-r m-b table-bordered">
                 <h3>Thời gian thanh toán</h3>
@@ -127,33 +128,25 @@
                                 <br>
                                 Đến <span id="endTime"></span>
                             </div>
-                            <div class="col-md-3 text-center">
-                                <label>Đánh giá và nhận xét</label>
+                            <div class="col-md-2 text-right">
+                                <label>Tiền đặt cọc</label>
                             </div>
+                            <div id="deposit" class="col-md-4 text-center"></div>
+
                             <div class="col-md-6">
-                                <p id="rating"></p>
-                                <p id="comment"></p>
+                                <div class="row m-t">
+                                    <div class="col-md-6">
+                                        <label>Đánh giá và nhận xét</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span id="rating"></span>
+                                    </div>
+                                    <div class="col-md-offset-1 col-md-10">
+                                        <p id="comment"></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    
-
-                    <div class="col-md-6">
-                    </div>
-
-                    <div class="col-md-6">
-                    </div>
-
-                    <div class="col-md-6">
-                    </div>
-
-                    <div class="col-md-6">
-                    </div>
-
-                    <div class="col-md-6">
                     </div>
                 </div>
             </div>
