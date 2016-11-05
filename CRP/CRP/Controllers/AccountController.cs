@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CRP.Models;
 using CRP.Models.Entities.Services;
+using CRP.Models.Entities;
 
 namespace CRP.Controllers
 {
@@ -190,11 +191,31 @@ namespace CRP.Controllers
                     await UserManager.AddToRoleAsync(user.Id, "Customer");
                     //send mail de confirm email
                     systemS.SendMailConfirm(user.Email);
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                    LoginViewModel login = new LoginViewModel();
+                    login.Email = model.Email;
+                    login.Password = model.Password;
+                    var user2 = UserManager.FindByEmail(model.Email);
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, change to shouldLockout: true
+                    var result2 = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, false, shouldLockout: false);
+                    switch (result2)
+                    {
+                        case SignInStatus.Success:
+                            if (UserManager.IsInRole(user.Id, "Admin"))
+                            {
+                                return RedirectToAction("AdminDashboard", "Dashboard");
+                            }
+                            else if (UserManager.IsInRole(user.Id, "Provider"))
+                            {
+                                return RedirectToAction("Dashboard", "Dashboard");
+                            }
+                            return RedirectToAction("Index", "Home");
+                    }
                     return RedirectToAction("Index", "Home");
 				}
 				AddErrors(result);
 			}
-
 			// If we got this far, something failed, redisplay form
 			return View(model);
 		}
