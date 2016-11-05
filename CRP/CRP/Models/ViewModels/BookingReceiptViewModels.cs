@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using CRP.Models.Entities;
+using System.Text.RegularExpressions;
 
 namespace CRP.Models.ViewModels
 {
@@ -116,6 +117,7 @@ namespace CRP.Models.ViewModels
 		public string VehicleName { get; set; }
 		public string LicenseNumber { get; set; }
 		public double RentalPrice { get; set; }
+        public double Deposit { get; set; }
 		public string StartTime { get; set; }
 		public string EndTime { get; set; }
 		public int? Star { get; set; }
@@ -133,10 +135,11 @@ namespace CRP.Models.ViewModels
 			VehicleName = receipt.VehicleName;
 			LicenseNumber = receipt.LicenseNumber;
 			RentalPrice = receipt.RentalPrice;
+            Deposit = receipt.Deposit;
 			StartTime = receipt.StartTime.ToShortTimeString() + " " + receipt.StartTime.ToShortDateString();
 			EndTime = receipt.EndTime.ToShortTimeString() + " " +receipt.EndTime.ToShortDateString();
 			Star = receipt.Star;
-			Comment = receipt.Comment;
+            Comment = receipt.Comment != null ? Regex.Replace(receipt.Comment, @"\r\n?|\n", "<br>"): null;
 
 			DateTime now = DateTime.Now;
 			if(receipt.StartTime < now)

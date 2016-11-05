@@ -253,15 +253,16 @@
                                 </div>
                             </div>
                             <div class="pull-left m-r m-b table-bordered">
-                                <h3>Trạng thái hóa đơn</h3>
+                                <br>
                                 <div class="checkbox">
                                     <input type="checkbox" id="isCanceled">
-                                    <label for="isCanceled"> Đã hủy</label>
+                                    <label for="isCanceled"> Hiện hóa đơn đã hủy</label>
                                 </div>
                                 <div class="checkbox">
                                     <input type="checkbox" id="isSelfBooking">
-                                    <label for="isSelfBooking"> Tự đặt</label>
+                                    <label for="isSelfBooking"> Hiện hóa đơn tự đặt</label>
                                 </div>
+                                <br>
                             </div>
                         </div>
                         
@@ -274,6 +275,99 @@
 </div>
 
 <div class="modal fade" id="customModal" tabindex="-1" role="dialog"></div>
+
+<div id="detailBooking" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Thông tin đặt xe</h4>
+            </div>
+            <div class="modal-body">
+                <div class="ibox">
+                    <div class="ibox-title">Thông tin khách hàng</div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label>Tên khách hàng</label>
+                            </div>
+                            <div id="customerName" class="col-md-4 text-center"></div>
+
+                            <div class="col-md-2 text-right">
+                                <label>Email liên hệ</label>
+                            </div>
+                            <div id="customerEmail" class="col-md-4 text-center"></div>
+                            <div class="col-md-offset-6 col-md-2 text-right">
+                                <label>Số điện thoại</label>
+                            </div>
+                            <div id="customerPhone" class="col-md-4 text-center"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ibox">
+                    <div class="ibox-title">Thông tin xe cho thuê</div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label>Tên xe</label>
+                            </div>
+                            <div id="vehicleName" class="col-md-4 text-center"></div>
+
+                            <div class="col-md-2 text-right">
+                                <label>Biển số xe</label>
+                            </div>
+                            <div id="licenseNumber" class="col-md-4 text-center"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ibox">
+                    <div class="ibox-title">Nội dung đặt xe chi tiết</div>
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-md-2 text-right">
+                                <label>Giá cho thuê</label>
+                            </div>
+                            <div id="rentalPrice" class="col-md-4 text-center"></div>
+
+                            <div class="col-md-2 text-right">
+                                <label>Thời gian thuê</label>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                Từ <span id="startTime"></span>
+                                <br>
+                                Đến <span id="endTime"></span>
+                            </div>
+                            <div class="col-md-2 text-right">
+                                <label>Tiền đặt cọc</label>
+                            </div>
+                            <div id="deposit" class="col-md-4 text-center"></div>
+
+                            <div class="col-md-6">
+                                <div class="row m-t">
+                                    <div class="col-md-6">
+                                        <label>Đánh giá và nhận xét</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <span id="rating"></span>
+                                    </div>
+                                    <div class="col-md-offset-1 col-md-10">
+                                        <p id="comment"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <style>
     .select2-dropdown {
