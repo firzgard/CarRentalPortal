@@ -188,23 +188,52 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 			</div>
 		</div>`);
 
-		$('#Year').change(function(){
-			if(Number.parseInt($(this).val()) > MAX_YEAR) {
+		// =====================================
+		// Validate on change
+		$('#Name').focusout(function(){
+			if(!$(this)[0].checkValidity())
+				toastr.warning('Tên xe không được để trống.');
+		})
+
+		$('#LicenseNumber').focusout(function(){
+			if(!$(this)[0].checkValidity())
+				toastr.warning('Biển số xe không được để trống.');
+		})
+
+		$('#Year').focusout(function(){
+			let value = Number.parseInt($(this).val());
+			// To ensure that it is integer
+			$(this).val(value);
+
+			if(!value) {
+				toastr.warning('Năm sản xuất của xe không được để trống.');
+			} else if(value > MAX_YEAR) {
 				$(this).val(MAX_YEAR);
-			} else if (Number.parseInt($(this).val()) < MIN_YEAR) {
+			} else if (value < MIN_YEAR) {
 				$(this).val(MIN_YEAR);
 			}
 		})
 
+		// =====================================
+		// Initiate select2
 		$('#ModelID').select2({
 			placeholder: "Vui lòng chọn dòng xe..."
+			, matcher: function(term, data) {
+				return data.id == '0' ? data : $.fn.select2.defaults.defaults.matcher.apply(this, arguments);
+			}
 			, width: '100%'
+		})
+		.on('select2:close', () => {
+			$('#ModelID')[0].checkValidity() || toastr.warning('Dòng xe không được để trống.');
 		})
 		data.ModelID && $('#ModelID').val(data.ModelID).trigger("change")
 
 		$('#GarageID').select2({
 			placeholder: "Vui lòng chọn garage..." 
 			, width: '100%'
+		})
+		.on('select2:close', () => {
+			$('#GarageID')[0].checkValidity() || toastr.warning('Garage không được để trống.');
 		})
 		data.GarageID && $('#GarageID').val(data.GarageID).trigger("change")
 
@@ -224,15 +253,16 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 
 		data.Color && $(`input[name="Color"][value="${data.Color}"]`).prop('checked',true);
 
+		// Initiate dropzone
 		$('#newVehicleForm').dropzone({
 			acceptedFiles: "image/jpeg,image/png,image/gif"
 			, autoProcessQueue: false
-			, addRemoveLinks: "dictRemoveFile"
-			, dictCancelUpload: 'Xóa'
+			, addRemoveLinks: true
 			, dictDefaultMessage: "Thả ảnh hoặc nhấn vào đây để upload."
 			, dictFileTooBig: 'Dung lượng ảnh phải dưới {{maxFilesize}} mb.'
 			, dictInvalidFileType: 'Không phải file ảnh.'
-			, dictMaxFilesExceeded: ''
+			, dictMaxFilesExceeded: 'Chỉ được upload tối đa 10 ảnh.'
+			, dictRemoveFile: 'Xóa'
 			, maxFiles: 10
 			, parallelUploads: 10
 			, maxFilesize: 1
@@ -264,31 +294,35 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 					evt.stopPropagation();
 
 					// Validation
-					if (!$("#Name").val()) { // Check Name : required
+					if (!$("#Name")[0].checkValidity()) // Check Name : required
 						toastr.warning('Tên xe không được để trống.');
-					} else if (!$("#Name")[0].checkValidity()) { // Check Name : max 100
-						toastr.warning('Tên xe phải dưới 100 ký tự.');
-					} else if (!$("#LicenseNumber").val()) { // Check License: required
+					
+					if (!$("#LicenseNumber")[0].checkValidity()) // Check License: required
 						toastr.warning('Biển số xe không được để trống');
-					} else if (!$("#LicenseNumber")[0].checkValidity()) { // Check License: max 100
-						toastr.warning('Biển số xe phải dưới 50 ký tự.');
-					} else if (!$("#ModelID")[0].checkValidity()) { // Check model: required
+
+					if (!$("#ModelID")[0].checkValidity()) // Check model: required
 						toastr.warning('Vui lòng chọn dòng xe.');
-					} else if (!$("#Year")[0].checkValidity()) { // Check Year: required
+					
+					if (!$("#Year")[0].checkValidity()) // Check Year: required
 						toastr.warning('Năm sản xuất của xe không được để trống.');
-					} else if (!$("#GarageID")[0].checkValidity()) { // Check garage: required
+					
+					if (!$("#GarageID")[0].checkValidity()) // Check garage: required
 						toastr.warning('Vui lòng chọn garage xe.');
-					} else if ($('input[name="TransmissionType"]:checked').length == 0) {
+
+					if ($('input[name="TransmissionType"]:checked').length == 0) // Check transmission type: required
 						toastr.warning('Vui lòng chọn loại hộp số');
-					} else if ($('input[name="Color"]:checked').length == 0) { // Check Color: required
+
+					if ($('input[name="Color"]:checked').length == 0) // Check Color: required
 						toastr.warning('Vui lòng chọn màu xe.');
-					} else if (this.getQueuedFiles().length < 4) { // Check num of image: required, min 4
+
+					if (this.getQueuedFiles().length < 4) // Check num of image: required, min 4
 						toastr.warning('Bạn phải upload ít nhất 4 hình.');
-					} else if (this.getQueuedFiles().length > 10){
-						toastr.warning('Bạn chỉ được upload nhiều nhất 10 hình.');		
-					} else if ($("#newVehicleForm")[0].checkValidity()) { // Valid? Up u go
+
+					if (this.getQueuedFiles().length > 10) // Check num of image: required, max 10
+						toastr.warning('Bạn chỉ được upload nhiều nhất 10 hình.');
+
+					if ($("#newVehicleForm")[0].checkValidity()) // Valid? Up u go
 						this.processQueue();
-					}
 				});
 			}
 		});

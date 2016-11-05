@@ -111,7 +111,6 @@ namespace CRP.Areas.Provider.Controllers
 		{
             model.OwnerID = User.Identity.GetUserId();
             model.IsActive = true;
-            model.IsDisabled = false;
             model.Star = 0m;
             model.NumOfComment = 0;
             var service = this.Service<IGarageService>();
