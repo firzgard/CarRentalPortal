@@ -35,7 +35,6 @@ namespace CRP.Models.Entities
         public string Description { get; set; }
         public string Policy { get; set; }
         public bool IsActive { get; set; }
-        public bool IsDisabled { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
