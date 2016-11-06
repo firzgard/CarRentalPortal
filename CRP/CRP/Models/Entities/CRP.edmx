@@ -116,7 +116,6 @@
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
           <Property Name="Policy" Type="nvarchar" MaxLength="1000" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="IsDisabled" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="GarageWorkingTime">
           <Key>
@@ -850,7 +849,6 @@
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Policy" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_Garage_AspNetUsers" FromRole="Garage" ToRole="AspNetUser" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_Garage" FromRole="Garage" ToRole="BookingReceipt" />
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Car_Store" FromRole="Garage" ToRole="Vehicle" />
@@ -1318,7 +1316,6 @@
           <EntitySetMapping Name="Garages">
             <EntityTypeMapping TypeName="CRPDBModel.Garage">
               <MappingFragment StoreEntitySet="Garage">
-                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Policy" ColumnName="Policy" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

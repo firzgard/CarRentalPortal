@@ -166,6 +166,7 @@
 	<option></option>
 	@foreach (VehicleBrand brand in Model.BrandList)
 	{
+		<option></option>
 		<optgroup label="@brand.Name">
 			@foreach (VehicleModel entry in brand.VehicleModels)
 			{
@@ -173,6 +174,7 @@
 			}
 		</optgroup>
 	}
+	<option value="0">--Dòng xe chưa được liệt kê--</option>
 </template>
 
 <template id="fuelOptions">

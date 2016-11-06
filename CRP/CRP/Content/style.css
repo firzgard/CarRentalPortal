@@ -8508,3 +8508,8 @@ hr {
 .fc-color.available {
   background-color: #fff;
 }
+
+/* Dropzone */
+.dz-error-message {
+  top: 180px!important;
+}

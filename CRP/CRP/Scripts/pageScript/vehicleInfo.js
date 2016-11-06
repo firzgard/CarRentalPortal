@@ -156,7 +156,7 @@ $(document).ready(function(){
 				</div>
 				<div class="comment-content">
 					<p>${renderStarRating(data.star, '#388E3C', false)}</p>
-					<p>${data.comment}</p>
+					<p style="white-space: pre-line;">${data.comment}</p>
 				</div>
 			</div>`;
 		}
