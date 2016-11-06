@@ -322,8 +322,8 @@ namespace CRP.Areas.Customer.Controllers
 
 					// Send alert email
 					SystemService sysService = new SystemService();
-					sysService.SendMailBooking(bookingReceipt.AspNetUser.Email, bookingReceipt);
-					sysService.SendMailBooking(bookingReceipt.AspNetUser1.Email, bookingReceipt);
+					sysService.SendBookingAlertEmailToCustomer(bookingReceipt);
+					sysService.SendBookingAlertEmailToProvider(bookingReceipt);
 
 					return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", bookingReceipt);
 				}
