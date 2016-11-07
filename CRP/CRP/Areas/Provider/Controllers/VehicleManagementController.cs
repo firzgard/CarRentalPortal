@@ -207,10 +207,10 @@ namespace CRP.Areas.Provider.Controllers
 
 			var newVehicleEntity = this.Mapper.Map<Vehicle>(newVehicle);
 
-			if (Request.Files.Count < 1 || Request.Files.Count > 10)
+			if (Request.Files.Count < 4 || Request.Files.Count > 10)
 			{
 				Response.StatusCode = 400;
-				return Json(new { message = "Chỉ được phép upload từ 1 đến 10 hình." });
+				return Json(new { message = "Chỉ được phép upload từ 4 đến 10 hình." });
 			}
 
 			// Upload images to cloudinary
