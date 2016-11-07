@@ -89,7 +89,7 @@ namespace CRP.Controllers
 			{
 				case SignInStatus.Success:
 					var userInfoService = this.Service<IUserService>();
-					Session["avatar"] = userInfoService.Get(user.Id).AvatarURL;
+					user.AvatarURL = userInfoService.Get(user.Id).AvatarURL;
 					if (UserManager.IsInRole(user.Id, "Admin"))
 					{
 						return RedirectToAction("AdminDashboard", "Dashboard");
