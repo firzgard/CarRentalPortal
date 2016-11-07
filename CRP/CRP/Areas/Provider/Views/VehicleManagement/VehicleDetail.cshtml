@@ -316,7 +316,7 @@
 				<div class="panel-body">
 					<div class="ibox ibox-content float-e-margins">
 						<div class="row">
-							<div class="pull-left m-r m-b table-bordered">
+							<div class="m-l m-b pull-left">
 								<h3>Thời gian thanh toán</h3>
 								<div class="radio">
 									<input type="radio" id="rd1" value="all" name="bookingTime" checked>
@@ -331,20 +331,23 @@
 									<label for="rd3"> Sắp đến</label>
 								</div>
 							</div>
-							<div class="pull-left m-r m-b table-bordered">
-								<h3>Trạng thái hóa đơn</h3>
+							<div class="m-l m-b pull-left">
+								<br>
 								<div class="checkbox">
-									<input type="checkbox" id="isCanceled">
-									<label for="isCanceled"> Đã hủy</label>
+									<input type="checkbox" id="isCanceled" checked>
+									<label for="isCanceled"> Hiện hóa đơn đã hủy</label>
 								</div>
 								<div class="checkbox">
-									<input type="checkbox" id="isSelfBooking">
-									<label for="isSelfBooking"> Tự đặt</label>
+									<input type="checkbox" id="isSelfBooking" checked>
+									<label for="isSelfBooking"> HIện hóa đợn tự đặt</label>
 								</div>
+								<br>
+							</div>
+							<div class="m-r m-b pull-right">
+								<button class="btn btn-primary" data-toggle="modal" data-target="#createSelfBooking"><i class="fa fa-plus"></i> Tạo đặt xe</button>
 							</div>
 						</div>
-						
-						<table class="table table-striped table-bordered table-hover" width="100%" id="bookings"></table>
+						<table id="bookingTable" class="table table-stripped table-bordered table-hover" width="100%"></table>
 					</div>
 				</div>
 			</div>
@@ -407,31 +410,179 @@
 </div>
 </div>
 
+<!-- ----------------------Model of booking management---------------------------- -->
+
+<div id="detailBooking" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Thông tin đặt xe</h4>
+			</div>
+			<div class="modal-body">
+				<div class="ibox">
+					<div class="ibox-title">Thông tin khách hàng</div>
+					<div class="ibox-content">
+						<div class="row">
+							<div class="col-md-2 text-right">
+								<label>Tên khách hàng</label>
+							</div>
+							<div id="customerName" class="col-md-4 text-center"></div>
+
+							<div class="col-md-2 text-right">
+								<label>Email liên hệ</label>
+							</div>
+							<div id="customerEmail" class="col-md-4 text-center"></div>
+							<div class="col-md-offset-6 col-md-2 text-right">
+								<label>Số điện thoại</label>
+							</div>
+							<div id="customerPhone" class="col-md-4 text-center"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="ibox">
+					<div class="ibox-title">Thông tin xe cho thuê</div>
+					<div class="ibox-content">
+						<div class="row">
+							<div class="col-md-2 text-right">
+								<label>Tên xe</label>
+							</div>
+							<div id="vehicleName" class="col-md-4 text-center"></div>
+
+							<div class="col-md-2 text-right">
+								<label>Biển số xe</label>
+							</div>
+							<div id="licenseNumber" class="col-md-4 text-center"></div>
+						</div>
+					</div>
+				</div>
+
+				<div class="ibox">
+					<div class="ibox-title">Nội dung đặt xe chi tiết</div>
+					<div class="ibox-content">
+						<div class="row">
+							<div class="col-md-2 text-right">
+								<label>Giá cho thuê</label>
+							</div>
+							<div id="rentalPrice" class="col-md-4 text-center"></div>
+
+							<div class="col-md-2 text-right">
+								<label>Thời gian thuê</label>
+							</div>
+							<div class="col-md-4 text-center">
+								Từ <span id="startTime"></span>
+								<br>
+								Đến <span id="endTime"></span>
+							</div>
+							<div class="col-md-2 text-right">
+								<label>Tiền đặt cọc</label>
+							</div>
+							<div id="deposit" class="col-md-4 text-center"></div>
+
+							<div class="col-md-6">
+								<div class="row m-t">
+									<div class="col-md-6">
+										<label>Đánh giá và nhận xét</label>
+									</div>
+									<div class="col-md-6">
+										<span id="rating"></span>
+									</div>
+									<div class="col-md-offset-1 col-md-10">
+										<p id="comment"></p>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="createSelfBooking" class="modal fade" role="dialog" >
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content" style="margin-top: 10em;">
+			<div class="modal-header green-bg">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Tạo đặt xe</h4>
+			</div>
+			<div class="modal-body" >
+				<div style="width: 100%;height: 2em;">
+					<b>
+						<div class="pull-left">Từ</div>
+						<div style="margin-left: 290px;position: relative;" >Đến</div>
+					</b>
+				</div>
+				<div class="input-group">
+					<input type="text" class="form-control" id="startTimeInput" readonly />
+					<span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
+					<input type="text" class="form-control" id="endTimeInput" readonly />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+				<button id="createSelfBookingBtn" class="btn btn-primary" type="button">Tạo</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="cancelBooking" class="modal fade" role="dialog">
+	<div class="modal-dialog modal-lg">
+		<!-- Modal content-->
+		<div class="modal-content">
+			<div class="modal-header red-bg">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Hủy đặt xe</h4>
+			</div>
+			<div class="modal-body">
+				<input type="hidden" id="br-id" />
+				Bạn có chắc chắn hủy đặt xe <span id="vehicle-name"></span> trong khoảng từ <span id="start-time"></span> đến <span id="end-time"></span> không?
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+				<button id="btnCancelBooking" class="btn btn-danger" type="button">Đồng ý</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleDetail")
 	.Include("~/Content/awesome-bootstrap-checkbox.css",
-		"~/Content/chosen.css",
+		"~/Content/bootstrap-datetimepicker/bootstrap-datetimepicker.css",
+		"~/Content/DataTables/css/dataTables.bootstrap.css",
 		"~/Scripts/dropzone/dropzone.css",
 		"~/Scripts/dropzone/basic.css",
-		"~/Content/pageStyle/VehicleDetail.css",
-		"~/Content/select2/select2.css"));
+		"~/Content/select2/select2.css",
+		"~/Content/pageStyle/VehicleDetail.css"));
 }
 @section Styles {
 	@Styles.Render("~/Styles/VehicleDetail")
 }
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleDetail")
-	.Include("~/Scripts/dropzone/dropzone.js",
+	.Include("~/Scripts/bootstrap-datetimepicker/bootstrap-datetimepicker.js",
+		"~/Scripts/DataTables/jquery.dataTables.js",
+		"~/Scripts/DataTables/dataTables.bootstrap.js",
+		"~/Scripts/dropzone/dropzone.js",
 		"~/Scripts/select2/select2.full.js",
 		"~/Scripts/twbsPagination/jquery.twbsPagination.js",
 		"~/Scripts/utils/generateUIElements.js",
 		"~/Scripts/pageScript/VehicleDetail.js"));
-}
 }
 @section Scripts {
 	<script type="text/javascript">
 		const MIN_YEAR = @Constants.MIN_YEAR
 			, MAX_YEAR = new Date().getFullYear();
 
-		const COMMENT_FETCHING_URL = '@Url.RouteUrl("GetCommentAPI", new { controller = "Home", vehicleID = @Model.ID })';
+		const COMMENT_FETCHING_URL = '@Url.RouteUrl("GetCommentAPI", new { controller = "Home", vehicleID = @Model.ID })',
+			BOOKING_FETCHING_URL = '@Url.RouteUrl("GetBookingListAPI", new { controller = "BookingManagement" })';
 
 		const VEHICLE_ID = "@Model.ID",
 			NUM_OF_COMMENT = @Model.NumOfComment,
