@@ -46,7 +46,8 @@ namespace CRP.Areas.Customer.Controllers
 			var vehicleService = this.Service<IVehicleService>();
 			var vehicle = vehicleService.Get(v => v.ID == model.VehicleID.Value
 																&& v.Garage.IsActive
-																&& !v.Garage.IsDisabled
+																&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
+																&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
 																&& v.VehicleGroup != null
 																&& v.VehicleGroup.IsActive
 				).FirstOrDefault();
@@ -321,8 +322,8 @@ namespace CRP.Areas.Customer.Controllers
 
 					// Send alert email
 					SystemService sysService = new SystemService();
-					sysService.SendMailBooking(bookingReceipt.AspNetUser.Email, bookingReceipt);
-					sysService.SendMailBooking(bookingReceipt.AspNetUser1.Email, bookingReceipt);
+					sysService.SendBookingAlertEmailToCustomer(bookingReceipt);
+					sysService.SendBookingAlertEmailToProvider(bookingReceipt);
 
 					return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", bookingReceipt);
 				}

@@ -1,19 +1,4 @@
-﻿.btn-color {
-	border-radius: 0 !important;
-	border: #000 solid 1px;
-	margin: 2px 0px;
-}
-#editFiel{
-	display:none;
-}
-#panel-color {
-	display: none;
-}
-#dropzoneForm {
-	display: none;
-}
-
-.edit-control {
+﻿.edit-control {
 	display: none;
 }
 
@@ -24,6 +9,9 @@
 	position: relative;
 	width: 50px;
 }
+
+/* =========================================================== */
+/* Color selectors */
 
 .color-selector input {
 	opacity: 0;
@@ -73,19 +61,6 @@
 	left: 17%;
 	top: 0;
 }
-.brand-option {
-	font-weight: bold;
-}
-.model-option {
-	padding-left: 1em;
-}
-.select2-container--default .select2-results__option[aria-disabled=true] {
-	display: none;
-}
-
-.dz-max-files-reached {
-	background-color: black;
-}
 
 /* =========================================================== */
 /* Comment sections */
@@ -122,18 +97,18 @@
 /* =========================================================== */
 /* Small Image display */
 
-.small-vehicle-carousel{
+#smallCarousel{
 	background-color: #BFBFBF;
 	position: relative;
 }
 
-.small-vehicle-carousel-display {
+#smallCarouselDisplay {
 	animation-duration: 0.5s;
 	background-position: center;
     background-repeat: no-repeat;
 	background-size: cover;
 	cursor: pointer;
-	padding-top: 75%;
+	padding-top: 60%;
 	position: relative;
 	width: 100%;
 }

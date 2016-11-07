@@ -1,6 +1,12 @@
-﻿$(document).ready(function () {
+﻿Dropzone.autoDiscover = false;
+
+$(document).ready(function () {
 	// =============================================
-	// Comments
+	// Comment section
+
+	// Render star ratings
+	$('.rating').each(function(){ $(this).html(renderStarRating($(this).data('rating'), '#388E3C')); })
+	
 	if(NUM_OF_COMMENT > 0){
 		let $commentContainer = $('#commentContainer');
 
@@ -52,19 +58,18 @@
 		});
 	}
 
-	// =========================================================================================
+	// ==============================================================================================================
 	// Image section
-	let imageIndex = 0,
-		lastImageIndex = imageList.length - 1;
+	let imageIndex = 0;
 
 	function changeImg(){
-		$smallCarouselDisplays.addClass('animated fadeOut')
+		$smallCarouselDisplay.addClass('animated fadeOut')
 		.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
-			$smallCarouselDisplays.removeClass('animated fadeOut')
+			$smallCarouselDisplay.removeClass('animated fadeOut')
 			.css('background-image', `url('${imageList[imageIndex].Url}')`)
 			.addClass('animated fadeIn')
 			.one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', ()=>{
-				$smallCarouselDisplays.removeClass('animated fadeIn')
+				$smallCarouselDisplay.removeClass('animated fadeIn')
 			});
 		});
 		
@@ -81,17 +86,17 @@
 
 	// ===========================================
 	// Small image carousel
-	let $smallCarouselDisplays = $('.small-vehicle-carousel-display');
+	let $smallCarouselDisplay = $('#smallCarouselDisplay');
 
 	// Left change img btn
-	$('.small-vehicle-carousel .left.carousel-control').click(() => {
-		imageIndex = (imageIndex === 0) ? lastImageIndex : imageIndex - 1;
+	$('#smallCarousel .left.carousel-control').click(() => {
+		imageIndex = (imageIndex === 0) ? imageList.length -1 : imageIndex - 1;
 		changeImg();
 	});
 
 	// Right change img btn
-	$('.small-vehicle-carousel .right.carousel-control').click(() => {
-		imageIndex = (imageIndex === lastImageIndex) ? 0 : imageIndex + 1;
+	$('#smallCarousel .right.carousel-control').click(() => {
+		imageIndex = (imageIndex === imageList.length -1) ? 0 : imageIndex + 1;
 		changeImg();
 	});
 
@@ -103,7 +108,7 @@
 	changeImg();
 
 	// Open big carousel on clicking a small carousel
-	$smallCarouselDisplays.click(() => {
+	$smallCarouselDisplay.click(() => {
 		$bigCarousel.addClass('active');
 		$('body').addClass('modal-open');
 	})
@@ -114,11 +119,11 @@
 		$('body').removeClass('modal-open');
 	});
 	$bigCarousel.find('.left.carousel-control').click(() => {
-		imageIndex = (imageIndex === 0) ? lastImageIndex : imageIndex - 1;
+		imageIndex = (imageIndex === 0) ? imageList.length -1 : imageIndex - 1;
 		changeImg();
 	});
 	$bigCarousel.find('.right.carousel-control').click(() => {
-		imageIndex = (imageIndex === lastImageIndex) ? 0 : imageIndex + 1;
+		imageIndex = (imageIndex === imageList.length -1) ? 0 : imageIndex + 1;
 		changeImg();
 	});
 
@@ -131,190 +136,232 @@
 	});
 
 
+	// ==============================================================================================================
+	// Edit vehicle's info section
 
+	// Button to toggle between display mode and edit mode
+	$('#editInfoBtn').click(function () {
+		$('.display-control').css('display', 'none');
+		$('.edit-control').css('display', 'inherit');
+	});
 
+	// Cancel change. Reset all inputs
+	$('#cancelChangeBtn').click(function () {
+		$('.edit-control').css('display', 'none');
+		$('.display-control').css('display', 'inherit');
 
+		$('#vehicleNameInput').val($('#vehicleNameInput').data('default'));
+		$('#licenseNumberInput').val($('#licenseNumberInput').data('default'));
+		$('#engineInput').val($('#engineInput').data('default'));
+		$('#transmissionDetailInput').val($('#transmissionDetailInput').data('default'));
+		$('#yearInput').val($('#yearInput').data('default'));
+		$('#descriptionInput').val($('#descriptionInput').data('default'));
 
-	$('#deleteImageBtn').click(() => {
+		$('#modelIDInput').val($('#modelIDInput').data('default')).trigger("change");
+		$('#garageIDInput').val($('#garageIDInput').data('default')).trigger("change");
+		$('#vehicleGroupIDInput').val($('#vehicleGroupIDInput').data('default')).trigger("change");
+		$('#fuelTypeInput').val($('#fuelTypeInput').data('default')).trigger("change");
+
+		$('input[name="transmissionTypeInput"][data-default="True"]').parent().click();
+		$('input[name="colorInput"][data-default="True"]').prop('checked', true)
+	});
+
+	$('#saveChangeBtn').click(() => {
+		if (!$("#vehicleNameInput")[0].checkValidity()) // Check Name : required
+			return toastr.warning('Tên xe không được để trống.');
 		
+		if (!$("#licenseNumberInput")[0].checkValidity()) // Check License: required
+			return toastr.warning('Biển số xe không được để trống');
+
+		let updateModel = {
+			Name: $('#vehicleNameInput').val()
+			, LicenseNumber: $('#licenseNumberInput').val()
+			, GarageID: $('#garageIDInput').val()
+			, VehicleGroupID: $('#vehicleGroupIDInput').val()
+			, ModelID: $('#modelIDInput').val()
+			, Year: $('#yearInput').val()
+			, Engine: $('#engineInput').val()
+			, FuelType: $('#fuelTypeInput').val()
+			, TransmissionType: $('input[name="transmissionTypeInput"]:checked').val()
+			, TransmissionDetail: $('#transmissionDetailInput').val()
+			, Color: $('input[name="colorInput"]:checked').val()
+			, Description: $('#descriptionInput').val()
+		};
+
+		$.ajax({
+			type: "PATCH",
+			url: `/api/vehicles/${VEHICLE_ID}`,
+			data: updateModel,
+			success: () => {
+				location.reload();
+			},
+			eror: () => {
+				toastr.error("Chỉnh sửa thất bại. Vui lòng thử lại sau");
+			}
+		});
+	});
+
+	// =====================================
+	// Validate on change
+	$('#vehicleNameInput').focusout(function(){
+		if(!$(this)[0].checkValidity())
+			toastr.warning('Tên xe không được để trống.');
 	})
 
-	Dropzone.options.dropzoneForm = {
+	$('#licenseNumberInput').focusout(function(){
+		if(!$(this)[0].checkValidity())
+			toastr.warning('Biển số xe không được để trống.');
+	})
+
+	$('#yearInput').focusout(function(){
+		let value = Number.parseInt($(this).val());
+		// To ensure that it is integer
+		$(this).val(value);
+
+		if(!value) {
+			toastr.warning('Năm sản xuất của xe không được để trống.');
+		} else if(value > MAX_YEAR) {
+			$(this).val(MAX_YEAR);
+		} else if (value < MIN_YEAR) {
+			$(this).val(MIN_YEAR);
+		}
+	})
+
+	// =====================================
+	// Initiate select2
+	$('#modelIDInput').select2({
+		placeholder: "Vui lòng chọn dòng xe..."
+		, matcher: function(term, data) {
+			return data.id == '0' ? data : $.fn.select2.defaults.defaults.matcher.apply(this, arguments);
+		}
+		, width: '100%'
+	})
+	.on('select2:close', () => {
+		$('#modelIDInput')[0].checkValidity() || toastr.warning('Dòng xe không được để trống.');
+	})
+
+	$('#garageIDInput').select2({
+		placeholder: "Vui lòng chọn garage..." 
+		, width: '100%'
+	})
+	.on('select2:close', () => {
+		$('#garageIDInput')[0].checkValidity() || toastr.warning('Garage không được để trống.');
+	})
+
+	$('#vehicleGroupIDInput').select2({
+		allowClear: true
+		, placeholder: "Vui lòng chọn nhóm xe..."
+		, width: '100%'
+	})
+
+	$('#fuelTypeInput').select2({
+		allowClear: true
+		, placeholder: "Vui lòng chọn loại nhiên liệu..."
+		, width: '100%'
+	})
+
+	// ==============================================================================================================
+	// Image uploading
+
+	$('#dropzoneForm').dropzone({
 		acceptedFiles: "image/jpeg,image/png,image/gif"
-		, addRemoveLinks: "dictRemoveFile"
-		, dictCancelUpload: 'Xóa'
 		, dictDefaultMessage: "Thả ảnh hoặc nhấn vào đây để upload."
 		, dictFileTooBig: 'Dung lượng ảnh phải dưới {{maxFilesize}} mb.'
 		, dictInvalidFileType: 'Không phải file ảnh.'
-		, maxFiles: (10 - MAX_IMG)
+		, dictMaxFilesExceeded: 'Chỉ được upload tối đa 10 ảnh.'
+		, dictRemoveFile: 'Xóa'
+		, maxFiles: 10
 		, maxFilesize: 1
-		, parallelUploads: 20
-		, uploadMultiple: true
+		, parallelUploads: 1
+		, uploadMultiple: false
 
 		, init: function () {
 			var myDropzone = this;
 
-			this.element.querySelector('input[name="submit-img"]').addEventListener("click", function (e) {
-				e.preventDefault();
-				e.stopPropagation();
+			this.on('success', function (file, response) {
+				// The id for deleting img by clicking delete btn
+				file.Id = response.Id;
 
-				myDropzone.processQueue();
+				// Add it into img list
+				imageList.push(response);
 			});
 
-			this.on("success", function (file, response) {
-				file.serverId = response;
-			});
-
-			this.on("maxfilesexceeded", function (data) {
-
-			});
-
-			this.on("addedfile", function (file) {
+			this.on('addedfile', (file) => {
 				// Create the remove button
-				var removeButton = Dropzone.createElement("<button>Xóa chọn</button>");
-				// Capture the Dropzone instance as closure.
-				var _this = this;
+				var removeButton = Dropzone.createElement('<div class="text-center m-t"><button class="btn btn-danger">Xóa</button></div>');
 
 				// Listen to the click event
-				removeButton.addEventListener("click", function (e) {
-					// Make sure the button click doesn't submit the form:
+				removeButton.addEventListener('click',(e) => {
 					e.preventDefault();
 					e.stopPropagation();
-					// Remove the file preview.
-					_this.removeFile(file);
-					// If you want to the delete the file on the server as well,
-					// you can do the AJAX request here.
-					$.ajax({
-						type: "DELETE",
-						url: `/api/vehicles/deletepic`,
-						data: {
-							file: file.serverId,
-						},
-						async: true,
-						success: function (data) {
-							alert("Xóa chọn thành công");
-							this.reload();
-						},
-						eror: function (data) {
-							alert("Thất bại");
-							this.reload();
+
+					// At least leave 4 img behind
+					if(imageList.length > 4){
+						if(file.Id) {
+							$.ajax({
+								type: "DELETE",
+								url: `/api/vehicles/images/${file.Id}`,
+								success: (data) => {
+									this.removeFile(file);
+
+									// Remove it from img list
+									imageList = imageList.filter(img => img.Id != file.Id );
+
+									// Increase maxFiles if the deleted file has already existed beforehand
+									if(file.isSenpai)
+										this.options.maxFiles++;
+
+									// Change the img displayed on carousels
+									changeImg();
+
+									toastr.success('Xóa ảnh thành công.')
+								},
+								eror: function (data) {
+									toastr.error('Xóa ảnh thất bại. Vui lòng thử lại sau.')
+								}
+							});
+						} else {
+							this.removeFile(file);
 						}
-					});
+					} else {
+						toastr.warning('Bạn phải có ít nhất 4 ảnh cho mỗi xe.')
+					}
 				});
 
 				// Add the button to the file preview element.
 				file.previewElement.appendChild(removeButton);
 			});
+
+			// Add existed imgs into review
+			imageList.map(image => {
+				image.isSenpai = true;
+				this.emit("addedfile", image);
+
+				this.createThumbnailFromUrl(image, image.Url, undefined, true);
+
+				// Make sure that there is no progress bar, etc...
+				this.emit("complete", image);
+
+				// Reduce the allowed num of uploading img
+				this.options.maxFiles--;
+
+				return image;
+			})
 		}
-	}
-	
-	$('#delete-btn').on('click', function () {
-		$('#delete-car').modal('show');
-	});
+	})
 
-	$('#change-color').on('click', function () {
-		$('#panel-color').show();
-	});
 
-	$('#edit-btn').on('click', function () {
-		$('.justRead').hide();
-		$('.editFiel').css('display', 'inline-block');
-	});
-
-	$('#edit-img').on('click', function () {
-		$('#edit-img').hide();
-		$('#img-div').hide();
-		$('#dropzoneForm').show();
-	});
-
-	$('#cancel-img').on('click', function () {
-		$('#edit-img').show();
-		$('#img-div').show();
-		$('#dropzoneForm').hide();
-	});
 	// =========================================================================================
-});
+	// Delete vehicle
 
-$(document).on('click', "#agreed-delete", function () {
-	let id = $('#vehicleID').val();
-	$.ajax({
+	$('#deleteVehicleBtn').click(() => $.ajax({
 		type: "DELETE",
-		url: `/api/vehicles/${id}`,
-		async: true,
-		success: function (data) {
-			//alert("ok");
+		url: `/api/vehicles/${VEHICLE_ID}`,
+		success: () => {
 			window.location.pathname = "/management/vehicleManagement";
 		},
-		eror: function (data) {
-			alert("fail");
+		eror: () => {
+			toastr.warning('Xoá thất bại. Bạn vui lòng thử lại sau.')
 		}
-	});
-});
-
-$(document).on('click', ".DeleteImage", function () {
-
-	let id = $('#vehicleID').val();
-	var index = $('.DeleteImage').index(this);
-	let url = $(`.imgUrl:eq(${index})`).val();
-	//alert(url);
-	$.ajax({
-		type: "DELETE",
-		url: `/api/vehicles/deletepic/${id}`,
-		data:{id:id,
-			url2:url
-		},
-		async: true,
-		success: function (data) {
-			alert("Xóa thành công");
-			location.reload();
-		},
-		eror: function (data) {
-			alert("Thất bại");
-			location.reload();
-		}
-	});
-});
-
-$(document).on('click', "#save-btn", function () {
-	let model = {};
-	model.ID = $('#vehicleID').val();
-	model.Name = $('#name').val();
-	model.LicenseNumber = $('#licenseNumber').val();
-	model.GarageID = $('#garageID').val();
-	model.VehicleGroupID = $('#groupID').val();
-	model.ModelID = $('#modelFilter').val();
-	model.Year = $('#year').val();
-	model.Engine = $('#engine').val();
-	model.FuelType = $('#fuelFilter').val();
-	model.TransmissionType = $('input[name=TransName]:checked').val();
-	model.Color = $('input[name=newColor]:checked').val();
-	model.Description = $('#description').val();
-
-	$.ajax({
-		type: "PATCH",
-		url: '/api/vehicles',
-		data: model,
-		async: true,
-		success: function (data) {
-			alert("Tất cả đã được lưu");
-			location.reload();
-		},
-		eror: function (data) {
-			toastr.error("Chỉnh sửa thất bại. Vui lòng thử lại sau");
-		}
-	});
-});
-
-$(function () {
-	$("#year").keydown(function () {
-		// Save old value.
-		$(this).data("old", $(this).val());
-	});
-	$("#year").keyup(function () {
-		// Check correct, else revert back to old value.
-		if (parseInt($(this).val()) <= 2016 && parseInt($(this).val()) >= 1988)
-			;
-		else
-			$(this).val($(this).data("old"));
-	});
+	}));
 });

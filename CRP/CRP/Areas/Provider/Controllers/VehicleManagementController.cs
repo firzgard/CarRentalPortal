@@ -28,7 +28,8 @@ namespace CRP.Areas.Provider.Controllers
 		{
 			var brandService = this.Service<IBrandService>();
 			var brandList = brandService.Get(
-				b => b.VehicleModels.Count != 0 // Only get brand w/ model
+				b => b.ID != 0 // Exclude Unlisted
+					&& b.VehicleModels.Count != 0 // Only get brand w/ model
 			).OrderBy(b => b.Name).ToList();
 
 			var garageService = this.Service<IGarageService>();
@@ -111,11 +112,9 @@ namespace CRP.Areas.Provider.Controllers
 			var groupService = this.Service<IVehicleGroupService>();
 			var brandService = this.Service<IBrandService>();
 
-			Vehicle vehicle = vehicleService.Get(v => v.ID == id && v.Garage.OwnerID == providerID).FirstOrDefault();
+			var vehicle = vehicleService.Get(v => v.ID == id && v.Garage.OwnerID == providerID).FirstOrDefault();
 			if (vehicle == null)
-			{
-				return new HttpStatusCodeResult(404, "Not found");
-			}
+				return new HttpNotFoundResult();
 
 			var viewModel = new VehicleDetailInfoViewModel(vehicle)
 			{
@@ -135,7 +134,10 @@ namespace CRP.Areas.Provider.Controllers
 						Value = q.ID.ToString(),
 						Selected = true,
 					}),
-				brandList = brandService.Get(b => b.VehicleModels.Count != 0)
+				brandList = brandService.Get(
+						b => b.ID != 0 // Exclude Unlisted
+							&& b.VehicleModels.Count != 0 // Only get brand w/ model
+					)
 					.OrderBy(b => b.Name)
 					.ToList()
 			};
@@ -205,10 +207,10 @@ namespace CRP.Areas.Provider.Controllers
 
 			var newVehicleEntity = this.Mapper.Map<Vehicle>(newVehicle);
 
-			if (Request.Files.Count < 1 || Request.Files.Count > 10)
+			if (Request.Files.Count < 4 || Request.Files.Count > 10)
 			{
 				Response.StatusCode = 400;
-				return Json(new { message = "Chỉ được phép upload từ 1 đến 10 hình." });
+				return Json(new { message = "Chỉ được phép upload từ 4 đến 10 hình." });
 			}
 
 			// Upload images to cloudinary
@@ -423,7 +425,7 @@ namespace CRP.Areas.Provider.Controllers
 
 		[Route("api/vehicles/images/{vehicleID:int}")]
 		[HttpPost]
-		public async Task<ActionResult> SavePictureAPI(int vehicleID)
+		public ActionResult SavePictureAPI(int vehicleID)
 		{
 			string userID = User.Identity.GetUserId();
 
@@ -433,7 +435,7 @@ namespace CRP.Areas.Provider.Controllers
 			if(vehicle == null)
 				return new HttpStatusCodeResult(400, "Not found.");
 
-			if (vehicle.VehicleImages.Count > 10)
+			if (vehicle.VehicleImages.Count > 9)
 			{
 				return new HttpStatusCodeResult(400, "Không thể lưu trữ hơn 10 ảnh.");
 			}
@@ -442,42 +444,45 @@ namespace CRP.Areas.Provider.Controllers
 			var cloudinary = new CloudinaryDotNet.Cloudinary(Constants.CLOUDINARY_ACC);
 			try
 			{
-				foreach (string fileName in Request.Files)
+				var file = Request.Files[0];
+				var uploadResult = cloudinary.Upload(new ImageUploadParams()
 				{
-					var file = Request.Files[fileName];
-					if (file?.ContentLength <= 0) continue;
+					File = new FileDescription(file.FileName, file.InputStream)
+				});
 
-					// Upload to cloud
-					var uploadResult = cloudinary.Upload(new ImageUploadParams()
-					{
-						File = new FileDescription(file.FileName, file.InputStream)
-					});
+				// Get the image's id and url
+				vehicle.VehicleImages.Add(new VehicleImage() { ID = uploadResult.PublicId, URL = uploadResult.Uri.ToString() });
 
-					// Get the image's id and url
-					vehicle.VehicleImages.Add(new VehicleImage() { ID = uploadResult.PublicId, URL = uploadResult.Uri.ToString() });
-				}
+				vehicleService.Update(vehicle);
+
+				return Json(new {Id = uploadResult.PublicId, Url = uploadResult.Uri.ToString() });
 			}
 			catch (Exception ex)
 			{
-				return new HttpStatusCodeResult(500, "Upload ảnh thất bại. Vui lòng thử lại sau.");
+				Response.StatusCode = 500;
+				return Json("Upload ảnh thất bại. Vui lòng thử lại sau.");
 			}
-
-			return new HttpStatusCodeResult(200, "OK");
 		}
 
 
 		[Route("api/vehicles/images/{imageID}")]
 		[HttpDelete]
-		public async Task<ActionResult> DeletePictureAPI(string imageID)
+		public ActionResult DeletePictureAPI(string imageID)
 		{
 			var currentUserID = User.Identity.GetUserId();
 
 			var vehicleImageService = this.Service<IVehicleImageService>();
-			var entityImage = vehicleImageService.Get(img => img.ID == imageID
+			var image = vehicleImageService.Get(img => img.ID == imageID
 															&& img.Vehicle.Garage.OwnerID == currentUserID)
 												.FirstOrDefault();
+			if (image == null)
+				return HttpNotFound();
 
-			await vehicleImageService.DeleteAsync(entityImage);
+			// Leave at least 4 img behind for each vehicle.
+			if (image.Vehicle.VehicleImages.Count == 4)
+				return new HttpStatusCodeResult(400, "A vehicle must have at least 4 images.");
+
+			vehicleImageService.Delete(image);
 
 			return new HttpStatusCodeResult(200, "Deleted successfully");
 		}
@@ -503,7 +508,7 @@ namespace CRP.Areas.Provider.Controllers
 			if (vehicle.Name.Length > 100)
 				return "Tên xe phải dưới 100 ký tự.'";
 
-			if (!modelService.Get().Any(m => m.ID == vehicle.ModelID))
+			if (modelService.Get().All(m => m.ID != vehicle.ModelID))
 				return "Dòng xe không tồn tại.";
 
 			if (vehicle.Year < Models.Constants.MIN_YEAR || vehicle.Year > DateTime.Now.Year)
@@ -512,13 +517,13 @@ namespace CRP.Areas.Provider.Controllers
 			if (currentUser.Garages.All(g => g.ID != vehicle.GarageID))
 				return "Garage không tồn tại.";
 
-			if(vehicle.VehicleGroupID != null && currentUser.VehicleGroups.All(g => g.ID != vehicle.VehicleGroupID))
+			if(vehicle.VehicleGroupID.HasValue && currentUser.VehicleGroups.All(g => g.ID != vehicle.VehicleGroupID))
 				return "Nhóm xe không tồn tại.";
 
 			if(!Models.Constants.TRANSMISSION_TYPE.ContainsKey(vehicle.TransmissionType))
 				return "Loại hộp số không hợp lệ.";
 
-			if (vehicle.FuelType != null && !Models.Constants.FUEL_TYPE.ContainsKey(vehicle.FuelType.Value))
+			if (vehicle.FuelType.HasValue && !Models.Constants.FUEL_TYPE.ContainsKey(vehicle.FuelType.Value))
 				return "Loại nhiên liệu không hợp lệ";
 
 			if (vehicle.TransmissionDetail != null && vehicle.TransmissionDetail.Length > 100)

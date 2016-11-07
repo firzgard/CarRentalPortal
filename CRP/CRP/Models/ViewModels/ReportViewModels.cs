@@ -50,6 +50,8 @@ namespace CRP.Models.ViewModels
 
         public class CommentModel
         {
+            public int? VehicleID { get; set; }
+            public string VehicleName { get; set; }
             public string UserName { get; set; }
             public string Comment { get; set; }
             public int? Star { get; set; }
@@ -69,6 +71,8 @@ namespace CRP.Models.ViewModels
             {
                 var data = new CommentModel
                 {
+                    VehicleID = booking.VehicleID,
+                    VehicleName = booking.VehicleName,
                     UserName = booking.AspNetUser.UserName,
                     Comment = booking.Comment != null ? Regex.Replace(booking.Comment, @"\r\n?|\n", "<br>"): null,
                     Star = booking.Star

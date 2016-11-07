@@ -64,95 +64,95 @@ namespace CRP.Models
 
 	public class RegisterViewModel
 	{
-        [Required(ErrorMessage = "Xin vui lòng nhập tên tài khoản!", AllowEmptyStrings = false)]
-        [StringLength(15, ErrorMessage = "Username phải có ít nhất 1 ký tự và ít hơn 15 kí tự", MinimumLength = 1)]
-        [Display(Name = "Username")]
+		[Required(ErrorMessage = "Username không được để trống", AllowEmptyStrings = false)]
+		[StringLength(20, ErrorMessage = "Username chỉ được dài tối đa 20 kí tự.")]
+		[RegularExpression(@"^\S*$", ErrorMessage = "Tên đăng nhập không được có khoảng trắng.")]
+		[Display(Name = "Username")]
 		public string Username { get; set; }
 
-       
-        [Display(Name = "Full Name")]
-        [StringLength(50, ErrorMessage = "Fullname phải có ít nhất 1 ký tự", MinimumLength = 1)]
-        public string Fullname { get; set; }
+		
+		[Display(Name = "Tên đầy đủ")]
+		[Required(ErrorMessage = "Tên đầy đủ không được để trống", AllowEmptyStrings = false)]
+		[StringLength(50, ErrorMessage = "Tên đầy đủ phải có từ 10 đến 50 kí tự.", MinimumLength = 10)]
+		public string Fullname { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Email không được để trống", AllowEmptyStrings = false)]
 		[EmailAddress]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
-
-		[Required]
+		
 		[EmailAddress]
-		[Display(Name = "Confirm Email")]
-		[Compare("Email", ErrorMessage = "Email xác thực không giống nhau.")]
+		[Display(Name = "Xác nhận email")]
+		[Compare("Email", ErrorMessage = "Email không trùng khớp.")]
 		public string ConfirmEmail { get; set; }
 
-		[Required]
-		[StringLength(100, ErrorMessage = "Có ít nhất 6 ký tự", MinimumLength = 6)]
-		[DataType(DataType.Password, ErrorMessage = "Mật khẩu phải có ký tự hoa và số")]
-        [Display(Name = "Password")]
+		[Required(ErrorMessage = "Mật khẩu không được để trống", AllowEmptyStrings = false)]
+		[StringLength(100, ErrorMessage = "Mật khẩu phải có ít nhất 6 ký tự.", MinimumLength = 6)]
+		[DataType(DataType.Password, ErrorMessage = "Mật khẩu phải có ít nhất 1 ký tự hoa, ký tự thường và số.")]
+		[Display(Name = "Mật khẩu")]
 		public string Password { get; set; }
 
 		[DataType(DataType.Password)]
-		[Display(Name = "Confirm password")]
+		[Display(Name = "Xác nhận mật khẩu")]
 		[Compare("Password", ErrorMessage = "Mật khẩu không khớp")]
 		public string ConfirmPassword { get; set; }
 
-		[Required]
-		[StringLength(30, ErrorMessage = "Tối thiểu có 2 ký tự và ít hơn 30 kí tự", MinimumLength = 1)]
-		[Display(Name = "PhoneNumber")]
+		[Required(ErrorMessage = "Số điện thoại không được để trống", AllowEmptyStrings = false)]
+		[RegularExpression(@"^[0-9-+]+$", ErrorMessage = "Chỉ chấp nhận số, '-' và '+'.")]
+		[StringLength(20, ErrorMessage = "Số điện thoại phải có độ dài từ 10 đến 20 ký tự.", MinimumLength = 10)]
+		[Display(Name = "Số điện thoại")]
 		public string PhoneNumber { get; set; }
 	}
 
-    public class createNewGarageViewModel
-    {
-        [Required]
-        [Display(Name = "Garage Name")]
-        public string GarageName { get; set; }
-
-        [Required]
-        [Display(Name = "Location")]
-        public string LocationID { get; set; }
-
-        [Required]
-        [Display(Name = "Address")]
-        public string Address { get; set; }
-
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(50, ErrorMessage = "The {0} must be at least {2} characters.", MinimumLength = 2)]
-        [DataType(DataType.PhoneNumber)]
-        [Display(Name = "PhoneNumber")] 
-        public string PhoneNumber { get; set; }
-}
-
-
-    public class ResetPasswordViewModel
+	public class createNewGarageViewModel
 	{
+		[Required]
+		[Display(Name = "Garage Name")]
+		public string GarageName { get; set; }
+
+		[Required]
+		[Display(Name = "Location")]
+		public string LocationID { get; set; }
+
+		[Required]
+		[Display(Name = "Address")]
+		public string Address { get; set; }
+
 		[Required]
 		[EmailAddress]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
 		[Required]
-		[StringLength(100, ErrorMessage = "Mật khẩu có ít nhất kí tự hoa và số.", MinimumLength = 6)]
-		[DataType(DataType.Password)]
-		[Display(Name = "Mật khẩu mới!")]
+		[StringLength(50, ErrorMessage = "The {0} must be at least {2} characters.", MinimumLength = 2)]
+		[DataType(DataType.PhoneNumber)]
+		[Display(Name = "PhoneNumber")] 
+		public string PhoneNumber { get; set; }
+	}
+
+
+	public class ResetPasswordViewModel
+	{
+		[Required]
+		public string UserId { get; set; }
+		[Required]
+		public string Token { get; set; }
+
+		[Required(ErrorMessage = "Mật khẩu mới không được để trống", AllowEmptyStrings = false)]
+		[StringLength(100, ErrorMessage = "Mật khẩu phải có ít nhất 6 ký tự.", MinimumLength = 6)]
+		[DataType(DataType.Password, ErrorMessage = "Mật khẩu phải có ít nhất 1 ký tự hoa, ký tự thường và số.")]
+		[Display(Name = "Mật khẩu")]
 		public string Password { get; set; }
 
 		[DataType(DataType.Password)]
-		[Display(Name = "Xác nhận mật khẩu mới!")]
-		[Compare("Password", ErrorMessage = "Không khớp mật khẩu.")]
+		[Display(Name = "Xác nhận mật khẩu")]
+		[Compare("Password", ErrorMessage = "Mật khẩu không khớp.")]
 		public string ConfirmPassword { get; set; }
-
-		public string Code { get; set; }
 	}
 
 	public class ForgotPasswordViewModel
 	{
-		[Required]
+		[Required(ErrorMessage = "Email không được để trống", AllowEmptyStrings = false)]
 		[EmailAddress]
 		[Display(Name = "Email")]
 		public string Email { get; set; }

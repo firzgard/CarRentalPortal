@@ -22,7 +22,11 @@ namespace CRP.Models.Entities.Services
 
 		public SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions)
 		{
-			var vehicles = repository.Get(v => v.VehicleGroupID != null && v.VehicleGroup.IsActive && v.Garage.IsActive);
+			var vehicles = repository.Get(v => v.Garage.IsActive
+										&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
+										&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
+										&& v.VehicleGroup != null
+										&& v.VehicleGroup.IsActive);
 			
 			// Transmission condition
 			if (filterConditions.TransmissionTypeIDList != null)

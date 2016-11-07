@@ -106,8 +106,6 @@ namespace CRP.Models.ViewModels
 		public string Name { get; set; }
 		public int ModelID { get; set; }
 		public string ModelName { get; set; }
-		public int BrandID { get; set; }
-		public string BrandName { get; set; }
 		public int? Year { get; set; }
 		public int GarageID { get; set; }
 		public string GarageName { get; set; }
@@ -136,9 +134,9 @@ namespace CRP.Models.ViewModels
 			LicenseNumber = vehicle.LicenseNumber;
 			Name = vehicle.Name;
 			ModelID = vehicle.ModelID;
-			ModelName = vehicle.VehicleModel.Name;
-			BrandID = vehicle.VehicleModel.BrandID;
-			BrandName = vehicle.VehicleModel.VehicleBrand.Name;
+			ModelName = vehicle.ModelID == 0
+				? "Dòng xe chưa được liệt kê."
+				: vehicle.VehicleModel.VehicleBrand.Name + " " + vehicle.VehicleModel.Name;
 			Year = vehicle.Year;
 			GarageID = vehicle.GarageID;
 			GarageName = vehicle.Garage.Name;

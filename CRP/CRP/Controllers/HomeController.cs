@@ -81,7 +81,16 @@ namespace CRP.Controllers
 		[Route("vehicleInfo/{id:int}", Name = "VehicleInfo")]
 		public ActionResult VehicleInfo(int id)
 		{
-			var vehicle = this.Service<IVehicleService>().Get(id);
+			var vehicle = this.Service<IVehicleService>().Get(v => v.ID == id
+										&& v.Garage.IsActive
+										&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
+										&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
+										&& v.VehicleGroup != null
+										&& v.VehicleGroup.IsActive)
+								.FirstOrDefault();
+
+			if(vehicle == null)
+				return new HttpNotFoundResult();
 
 			return View(vehicle);
 		}
@@ -174,7 +183,7 @@ namespace CRP.Controllers
 					{
 						customer = br.AspNetUser.UserName
 						, avatarURL = br.AspNetUser.AvatarURL
-						, comment = Regex.Replace(br.Comment, @"\r\n?|\n", "<br>")
+						, comment = br.Comment
 						, star = br.Star
 					});
 
