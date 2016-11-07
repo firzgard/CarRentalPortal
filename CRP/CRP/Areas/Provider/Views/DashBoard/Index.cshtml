@@ -77,15 +77,24 @@
                             {
                                 <div class="feed-element" style="border-bottom: 1px solid black">
                                     <div>
-                                        <small class="pull-right text-navy">
-                                            @{ for (int i = 0; i < item.Star; i++)
-                                                {
-                                                    <i class="fa fa-star"></i>
-                                                }
-                                            }
-                                        </small>
                                         <strong>@item.UserName</strong>
-                                        <div>@Html.Raw(item.Comment)</div>
+                                        @if(item.VehicleID != null)
+                                        {
+                                            <span>đã đánh giá xe <a href="/management/VehicleManagement/@item.VehicleID">@item.VehicleName</a></span>
+                                        }
+                                        <br>
+                                        <div style="border-bottom: solid 1px #777">
+                                            <small class="text-navy">
+                                                @{ for (int i = 0; i < item.Star; i++)
+                                                    {
+                                                        <i class="fa fa-star"></i>
+                                                    }
+                                                }
+                                            </small>
+                                        </div>
+                                        <div>
+                                        @Html.Raw(item.Comment)
+                                        </div>
 
                                     </div>
                                 </div>

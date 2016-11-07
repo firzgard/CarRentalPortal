@@ -1,100 +1,106 @@
-﻿@model CRP.Models.IndexViewModel
+﻿@model CRP.Models.PersonalInfoViewModel
 @{
-    ViewBag.Title = "Manage";
-    String UError = ViewBag.Error;
-    Layout = "~/Views/Shared/_ManagementLayout.cshtml";
+	ViewBag.Title = "Manage";
+	String UError = ViewBag.Error;
+	Layout = "~/Views/Shared/_ManagementLayout.cshtml";
 }
 <div id="wrapper">
-    <div class="row wrapper border-bottom white-bg page-heading">
-        <div class="col-lg-10">
-            <h2>Thông tin cá nhân cơ bản</h2>
-        </div>
-        <div class="col-lg-2"> </div>
-    </div>
-    <div class="wrapper wrapper-content animated fadeInLeft">
-        <div class="ibox float-e-margins">
-            <div class="ibox-content">
-               @using (Html.BeginForm("Update", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-               {
-                @Html.AntiForgeryToken()
-                @Html.ValidationSummary("", new { @class = "text-danger" })
-                 <h3>@UError</h3>
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="form-group row">
-                            <label class="col-xs-2 control-label">Tên đầy đủ:</label>
-                            <div class="col-xs-10">
-                                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group row">
-                            <label class="col-xs-2 control-label">Email</label>
-                            <div class="col-xs-10">
-                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email", disabled = "disabled", @readonly = "readonly"})
-                                @Html.TextBoxFor(m => m.Email, new { style = "display: none;" })
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group row">
-                            <label class="col-xs-2 control-label">Số điện thoại</label>
-                            <div class="col-xs-10">
-                                @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Phone" })
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                        <div class="form-group row">
-                            <label class="col-xs-2 control-label">Thay đổi mật khẩu</label>
-                            <div class="col-xs-10">
-                                [
-                                @if (Model.HasPassword)
-                                {
-                                    @Html.ActionLink("Change your password", "ChangePassword")
-                                }
-                                else
-                                {
-                                    @Html.ActionLink("Create", "SetPassword")
-                                }
-                                ]
-                            </div>
-                        </div>
-                        <div class="hr-line-dashed"></div>
-                    </div>
-                    <div class="col-xs-4" style="margin-left:40px">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <div class="col-md-12">
-                                    <img id="profilePreview" src="@("".Equals(@Model.Url) ? "/Content/img/avatars/error.jpg" : @Model.Url)" onerror="this.src = '/Content/img/error.jpg';" alt="Đây là avatar!Click chọn tệp để thay đổi" class = "img-rounded" style="height:200px;width:230px;">
-                                    @Html.TextBoxFor(m => m.Url, new { style = "display: none;", id = "newUrl" })
-                                    <div id="progressBar" class="progress" style="width: 200px" hidden="hidden">
-                                        <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 200px">
-                                        </div>
-                                    </div>
-                                    <input type="file" id="uploadEditorImage"  accept=".png, .jpg, .jpeg" style="margin-left:10px; margin-top:10px;" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>  
-                </div>
-                <div class="form-group row">
-                    <div class="col-xs-4 col-sm-offset-2">
-                        <button class="btn btn-primary" type="submit">Lưu</button>
-                        @Html.ActionLink("Hủy bỏ", "Index", "Manage")
-                    </div>
-                </div>
-               }
-            </div>
-        </div>
-    </div>
+	<div class="row wrapper border-bottom white-bg page-heading">
+		<div class="col-lg-10">
+			<h2>Thông tin cá nhân</h2>
+		</div>
+		<div class="col-lg-2"> </div>
+	</div>
+	<div class="wrapper wrapper-content animated fadeInLeft">
+		<div class="ibox float-e-margins">
+			<div class="ibox-content">
+				@using (Html.BeginForm("Update", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype="multipart/form-data" }))
+				{
+				@Html.AntiForgeryToken()
+				@Html.ValidationSummary("", new { @class = "text-danger" })
+				 <h3>@UError</h3>
+				<div class="row">
+					<div class="col-xs-7">
+						<div class="form-group row">
+							<label class="col-xs-3 control-label">Tên đầy đủ:</label>
+							<div class="col-xs-9">
+								@Html.TextBoxFor(m => m.Fullname, new { @class = "form-control", placeholder = "Name" })
+								@Html.ValidationMessageFor(m => m.Fullname, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group row">
+							<label class="col-xs-3 control-label">Email</label>
+							<div class="col-xs-9">
+								@Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email", disabled = "disabled", @readonly = "readonly"})
+								@Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group row">
+							<label class="col-xs-3 control-label">Số điện thoại</label>
+							<div class="col-xs-9">
+								@Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", placeholder = "Phone" })
+								@Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+						<div class="form-group row">
+							<label class="col-xs-3 control-label">Mật khẩu</label>
+							<div class="col-xs-9">
+								@Html.ActionLink("Thay đổi mật khẩu", "ChangePassword", null, new {@class="btn btn-primary"})
+							</div>
+						</div>
+						<div class="hr-line-dashed"></div>
+					</div>
+					<div class="col-xs-offset-1 col-xs-4">
+						<input type="file" id="avatarInput" name="image" accept="image/*" style="display: none;" />
+						<div id="avatarReview">
+							@if(Model.AvatarUrl == null){
+								<i class="img-circle fa fa-user-circle" style="color:#4CAF50;cursor:pointer;font-size:200px;"
+										onclick="javascript:document.getElementById('avatarInput').click()" >
+								</i>
+							} else {
+								<img class="avatar-preview" src="@Model.AvatarUrl"
+										onclick="javascript:document.getElementById('avatarInput').click()" >
+							}
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-xs-7 text-right">
+						@Html.ActionLink("Hủy bỏ", "Index", "Manage", null, new {@class = "btn btn-default"})
+						<button class="btn btn-primary" type="submit">Lưu</button>
+					</div>
+				</div>
+				}
+			</div>
+		</div>
+	</div>
 </div>
-    @section PageStyle {
-        @Styles.Render("~/Content/pageStyle/personalInfo.css")
-    }
-@{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/BookingHistory")
-                                                                                     .Include("~/Scripts/chosen.jquery.js",
-                                                                                             "~/Scripts/cropper.min.js",
-                                                                                        "~/Scripts/pageScript/Personal.js"));
+
+@section PageStyle {
+	<style>
+		.avatar-preview {
+			border-radius: 100px;
+			cursor: pointer;
+			height: 200px;
+			width: 200px;
+		}
+	</style>
 }
+
+@{
+	BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/PersonalInfo")
+		.Include("~/Scripts/pageScript/personalInfo.js"));
+}
+
 @section Scripts {
-    @Scripts.Render("~/Scripts/BookingHistory")
+	<script>
+		const OLD_AVATAR_URL = '@Model.AvatarUrl'
+			, IS_SUCCESS = @Model.IsSuccess.ToString().ToLower()
+			, STATUS_MESSAGE = '@Model.StatusMessage';
+	</script>
+	@Scripts.Render("~/bundles/jqueryval")
+	@Scripts.Render("~/Scripts/PersonalInfo")
 }

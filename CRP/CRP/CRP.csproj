@@ -1836,7 +1836,7 @@
     <Content Include="Scripts\pageScript\bookingHistory.js" />
     <Content Include="Scripts\pageScript\Dropzone.js" />
     <Content Include="Scripts\pageScript\signup.js" />
-    <Content Include="Scripts\pageScript\Personal.js" />
+    <Content Include="Scripts\pageScript\personalInfo.js" />
     <Content Include="Scripts\pageScript\bookingManagement.js" />
     <Content Include="Scripts\pageScript\garage.js" />
     <Content Include="Scripts\pageScript\garageManagement.js" />
