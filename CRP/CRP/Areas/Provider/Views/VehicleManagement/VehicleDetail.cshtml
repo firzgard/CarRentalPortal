@@ -316,19 +316,7 @@
 				<div class="panel-body">
 					<div class="ibox ibox-content float-e-margins">
 						<div class="row">
-							<div class="pull-right m-r m-b table-bordered">
-								<br>
-								<div class="checkbox">
-									<input type="checkbox" id="isCanceled" checked>
-									<label for="isCanceled"> Hiện hóa đơn đã hủy</label>
-								</div>
-								<div class="checkbox">
-									<input type="checkbox" id="isSelfBooking" checked>
-									<label for="isSelfBooking"> HIện hóa đợn tự đặt</label>
-								</div>
-								<br>
-							</div>
-							<div class="pull-right m-r m-b table-bordered">
+							<div class="m-l m-b pull-left">
 								<h3>Thời gian thanh toán</h3>
 								<div class="radio">
 									<input type="radio" id="rd1" value="all" name="bookingTime" checked>
@@ -342,6 +330,21 @@
 									<input type="radio" id="rd3" value="future" name="bookingTime">
 									<label for="rd3"> Sắp đến</label>
 								</div>
+							</div>
+							<div class="m-l m-b pull-left">
+								<br>
+								<div class="checkbox">
+									<input type="checkbox" id="isCanceled" checked>
+									<label for="isCanceled"> Hiện hóa đơn đã hủy</label>
+								</div>
+								<div class="checkbox">
+									<input type="checkbox" id="isSelfBooking" checked>
+									<label for="isSelfBooking"> HIện hóa đợn tự đặt</label>
+								</div>
+								<br>
+							</div>
+							<div class="m-r m-b pull-right">
+								<button class="btn btn-primary" data-toggle="modal" data-target="#createSelfBooking"><i class="fa fa-plus"></i> Tạo đặt xe</button>
 							</div>
 						</div>
 						<table id="bookingTable" class="table table-stripped table-bordered table-hover" width="100%"></table>
@@ -502,6 +505,35 @@
 	</div>
 </div>
 
+<div id="createSelfBooking" class="modal fade" role="dialog" >
+	<div class="modal-dialog">
+		<!-- Modal content-->
+		<div class="modal-content" style="margin-top: 10em;">
+			<div class="modal-header green-bg">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h4 class="modal-title">Tạo đặt xe</h4>
+			</div>
+			<div class="modal-body" >
+				<div style="width: 100%;height: 2em;">
+					<b>
+						<div class="pull-left">Từ</div>
+						<div style="margin-left: 290px;position: relative;" >Đến</div>
+					</b>
+				</div>
+				<div class="input-group">
+					<input type="text" class="form-control" id="startTimeInput" readonly />
+					<span class="input-group-addon"><i class="fa fa-arrow-right"></i></span>
+					<input type="text" class="form-control" id="endTimeInput" readonly />
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+				<button id="createSelfBookingBtn" class="btn btn-primary" type="button">Tạo</button>
+			</div>
+		</div>
+	</div>
+</div>
+
 <div id="cancelBooking" class="modal fade" role="dialog">
 	<div class="modal-dialog modal-lg">
 		<!-- Modal content-->
@@ -524,6 +556,7 @@
 
 @{ BundleTable.Bundles.Add(new StyleBundle("~/Styles/VehicleDetail")
 	.Include("~/Content/awesome-bootstrap-checkbox.css",
+		"~/Content/bootstrap-datetimepicker/bootstrap-datetimepicker.css",
 		"~/Content/DataTables/css/dataTables.bootstrap.css",
 		"~/Scripts/dropzone/dropzone.css",
 		"~/Scripts/dropzone/basic.css",
@@ -534,7 +567,8 @@
 	@Styles.Render("~/Styles/VehicleDetail")
 }
 @{ BundleTable.Bundles.Add(new ScriptBundle("~/Scripts/VehicleDetail")
-	.Include("~/Scripts/DataTables/jquery.dataTables.js",
+	.Include("~/Scripts/bootstrap-datetimepicker/bootstrap-datetimepicker.js",
+		"~/Scripts/DataTables/jquery.dataTables.js",
 		"~/Scripts/DataTables/dataTables.bootstrap.js",
 		"~/Scripts/dropzone/dropzone.js",
 		"~/Scripts/select2/select2.full.js",

@@ -52,6 +52,7 @@ $(document).ready(function () {
 				return {
 					Draw: rawData.draw,
 					Search: rawData.search.value,
+					vehicleID: VEHICLE_ID,
 					IsCanceled: isCanceled,
 					IsSelfBooking: isSelfBooking,
 					IsInThePast: isInThePast,
@@ -577,4 +578,68 @@ $(document).ready(function () {
 			toastr.warning('Xoá thất bại. Bạn vui lòng thử lại sau.')
 		}
 	}));
+
+
+	// ==============================================================================================================
+	// Create new booking
+
+	// Start time
+	$(startTimeInput).datetimepicker({
+		useCurrent: false,
+		minDate: moment(),
+		format: 'YYYY/MM/DD HH:mm',
+		locale: 'vi',
+		ignoreReadonly: true,
+	})
+	.on('dp.hide', (data)=>{
+		if(data.date.isAfter($(endTimeInput).data('DateTimePicker').date())){
+			let newEndTime = data.date.clone().add(1, 'days')
+			$(endTimeInput).data('DateTimePicker').date(newEndTime);
+		}
+	})
+
+	// End time
+	$(endTimeInput).datetimepicker({
+		useCurrent: false,
+		minDate: moment(),
+		format: 'YYYY/MM/DD HH:mm',
+		locale: 'vi',
+		ignoreReadonly: true,
+	})
+	.on('dp.hide', (data)=>{
+		if(data.date.isBefore($(startTimeInput).data('DateTimePicker').date())){
+			let newStartTime = data.date.clone().subtract(1, 'days')
+			$(startTimeInput).data('DateTimePicker').date(newStartTime);
+		}
+	})
+
+	$('#createSelfBooking').on('show.bs.modal', function (event) {
+		// Set default day for datetimepickers on showing modal
+		$(startTimeInput).data('DateTimePicker').date(moment());
+		$(endTimeInput).data('DateTimePicker').date(moment().add(1, 'days'));
+	});
+
+	$('#createSelfBookingBtn').click((evt) => {
+		$.ajax({
+			url: `/api/vehicles/bookings`,
+			data: {
+				vehicleID: VEHICLE_ID,
+				startTime: $(startTimeInput).data('DateTimePicker').date().toJSON(),
+				endTime: $(endTimeInput).data('DateTimePicker').date().toJSON(),
+			},
+			type: 'POST',
+			success: (data) => {
+				if(data.isSuccess){
+					$('.modal').modal('hide');
+					table.ajax.reload();
+					toastr.success('Tạo đặt xe mới thành công.')
+				} else {
+					toastr.error(data.errorMessage);
+				}
+			},
+			error: (e) => {
+				toastr.error("Đã có lỗi xảy ra. Phiền bạn thử lại sau");
+			}
+		});
+	});
 });
