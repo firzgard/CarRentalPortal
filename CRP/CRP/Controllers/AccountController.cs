@@ -174,9 +174,12 @@ namespace CRP.Controllers
 				var result = await UserManager.CreateAsync(user, model.Password);
 				if (result.Succeeded)
 				{
-					// For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-					// Send an email with this link
-
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+                    // Send an email with this link
+                    var userSer = this.Service<IUserService>();
+                    AspNetUser entity = await userSer.GetAsync(user.Id);
+                    entity.LockoutEnabled = false;
+                    await userSer.UpdateAsync(entity);
 					var token = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
 					var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, protocol: Request.Url.Scheme);
 					//send mail de confirm email
