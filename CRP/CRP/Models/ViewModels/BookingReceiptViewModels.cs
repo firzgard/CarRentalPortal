@@ -174,6 +174,7 @@ namespace CRP.Models.ViewModels
 	public class BookingsFilterConditions
 	{
 		public string providerID { get; set; }
+		public int? vehicleID { get; set; }
 		public int? garageID { get; set; }
 		public bool IsCanceled { get; set; }
 		public bool? IsInThePast { get; set; }

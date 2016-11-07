@@ -255,11 +255,11 @@
                             <div class="pull-left m-r m-b table-bordered">
                                 <br>
                                 <div class="checkbox">
-                                    <input type="checkbox" id="isCanceled">
+                                    <input type="checkbox" id="isCanceled" checked>
                                     <label for="isCanceled"> Hiện hóa đơn đã hủy</label>
                                 </div>
                                 <div class="checkbox">
-                                    <input type="checkbox" id="isSelfBooking">
+                                    <input type="checkbox" id="isSelfBooking" checked>
                                     <label for="isSelfBooking"> Hiện hóa đơn tự đặt</label>
                                 </div>
                                 <br>
@@ -428,6 +428,26 @@
             </div>
         </div>
 
+    </div>
+</div>
+
+<div id="cancelBooking" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header red-bg">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Hủy đặt xe</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="br-id" />
+                Bạn có chắc chắn hủy đặt xe <span id="vehicle-name"></span> trong khoảng từ <span id="start-time"></span> đến <span id="end-time"></span> không?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                <button id="btnCancelBooking" class="btn btn-danger" type="button">Đồng ý</button>
+            </div>
+        </div>
     </div>
 </div>
 

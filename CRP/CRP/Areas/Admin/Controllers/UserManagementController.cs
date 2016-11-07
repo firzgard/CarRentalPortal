@@ -62,7 +62,14 @@ namespace CRP.Areas.Admin.Controllers
                 {
                     viewModel.providerUtil = item.IsProviderUntil.ToString() ;
                 }
-                viewModel.status = !item.LockoutEnabled;
+                if (item.LockoutEnabled == true && item.LockoutEndDateUtc > DateTime.UtcNow)
+                {
+                    viewModel.status = false;
+                }
+                else
+                {
+                    viewModel.status = true;
+                }
                 lstUser.Add(viewModel);
             }
             return Json(new { aaData = lstUser }, JsonRequestBehavior.AllowGet);
@@ -82,6 +89,14 @@ namespace CRP.Areas.Admin.Controllers
                     return Json(new { result = false, message = "Có lỗi xảy ra!" });
                 }
                 entity.LockoutEnabled = !entity.LockoutEnabled;
+                if (entity.LockoutEndDateUtc == null || entity.LockoutEndDateUtc < DateTime.UtcNow)
+                {
+                    entity.LockoutEndDateUtc = DateTime.UtcNow.AddYears(100);
+                }
+                else
+                {
+                    entity.LockoutEndDateUtc = DateTime.UtcNow.AddYears(-100);
+                }
                 await service.UpdateAsync(entity);
                 return Json(new { result = true, message = "Đã thay đổi thành công!" });
             }

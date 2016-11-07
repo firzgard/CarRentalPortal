@@ -119,8 +119,8 @@ $(document).ready(function () {
 		],
 	});
 
-	let isCanceled = false;
-	let isSelfBooking = false;
+	let isCanceled = true;
+	let isSelfBooking = true;
 	let isInThePast = null;
 
 	let tableBooking = $(bookings).DataTable({
