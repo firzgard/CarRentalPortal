@@ -7,6 +7,7 @@
 	, { name: 'VehicleName', title: 'Tên xe', data: 'VehicleName' }
 	, { name: 'LicenseNumber', title: 'Biển số', data: 'LicenseNumber' }
     , { name: 'RentalPrice', title: 'Giá thuê', data: 'RentalPrice' }
+    , { name: 'Deposit', title: 'Đặt cọc', data: 'Deposit' }
     , { name: 'StartTime', title: 'Thuê từ', data: 'StartTime' }
     , { name: 'EndTime', title: 'Thuê đến', data: 'EndTime' }
 	, { name: 'Star', title: "Đánh giá", data: 'Star', width: '6.5em' }
@@ -138,7 +139,7 @@ $(document).ready( function () {
 				    var info = `<a class="btn btn-success btn-sm" data-toggle="modal" data-target="#detailBooking"
                         data-customer-name="${row.CustomerName}" data-customer-email="${row.CustomertEmail}" data-customer-phone="${row.CustomerPhone}"
                         data-vehicle-name="${row.VehicleName}" data-license-number="${row.LicenseNumber}"
-                        data-rental-price="${row.RentalPrice}" data-start-time="${row.StartTime}" data-end-time="${row.EndTime}"
+                        data-rental-price="${row.RentalPrice}" data-deposit="${row.Deposit}" data-start-time="${row.StartTime}" data-end-time="${row.EndTime}"
                         data-star="${row.Star}" data-comment="${row.Comment}" ><i class ="fa fa-info-circle"></i><span> Chi tiết</span></a>`;
 				    var del = '';
 				    if (row.IsSelfBooking && !row.IsInThePast && !row.IsCanceled) {
@@ -197,6 +198,7 @@ $(document).ready( function () {
             vehicleName = button.data('vehicle-name'),
             licenseNumber = button.data('license-number'),
             rentalPrice = button.data('rental-price'),
+            deposit = button.data('deposit'),
             startTime = button.data('start-time'),
 	        endTime = button.data('end-time'),
             star = button.data('star'),
@@ -208,14 +210,15 @@ $(document).ready( function () {
         $('#vehicleName').text(vehicleName);
         $('#licenseNumber').text(licenseNumber);
         $('#rentalPrice').text(rentalPrice);
+        $('#deposit').text(deposit);
         $('#startTime').text(startTime);
         $('#endTime').text(endTime);
         if (star != null) {
-            $('#rating').html(renderStarRating(star));
+            $('#rating').html(renderStarRating(star, undefined, false));
         } else {
             $('#rating').html('');
         }
-        $('#comment').text(comment);
+        $('#comment').html(comment);
     });
 
     $('#cancelBooking').on('show.bs.modal', function (event) {

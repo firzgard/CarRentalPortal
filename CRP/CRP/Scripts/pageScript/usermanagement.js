@@ -157,9 +157,11 @@ $(document).ready(() => {
                             type: "PATCH",
                             success: function (data) {
                                 $('.modal').modal('hide');
+                                alert(data.message);
                                 table.ajax.reload();
                             },
                             eror: function (data) {
+                                alert(data.message);
                                 alert("fail");
                             }
                         });

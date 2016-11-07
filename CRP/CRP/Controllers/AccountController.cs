@@ -10,17 +10,18 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using CRP.Models;
 using CRP.Models.Entities.Services;
+using CRP.Models.Entities;
 
 namespace CRP.Controllers
 {
 	[Authorize]
-	public class AccountController : Controller
+	public class AccountController : BaseController
 	{
 		private ApplicationSignInManager _signInManager;
 		private ApplicationUserManager _userManager;
-        private UserService _service;
+		private UserService _service;
 
-        public AccountController()
+		public AccountController()
 		{
 		}
 
@@ -28,7 +29,7 @@ namespace CRP.Controllers
 		{
 			UserManager = userManager;
 			SignInManager = signInManager;
-            _service = new UserService();
+			_service = new UserService();
 		}
 
 		public ApplicationSignInManager SignInManager
@@ -64,47 +65,49 @@ namespace CRP.Controllers
 			return View();
 		}
 
-        //
-        // POST: /Account/Login
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+		//
+		// POST: /Account/Login
+		[HttpPost]
+		[AllowAnonymous]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+		{
+			if (!ModelState.IsValid)
+			{
+				return View(model);
+			}
 			var user = UserManager.FindByEmail(model.Email);
-            if(user == null || user.LockoutEnabled == true)
-            {
-                ModelState.AddModelError("", "Tài khoản không tồn tại hoặc đã bị chặn");
-                return View(model);
-            }
+			if(user == null || (user.LockoutEnabled == true && user.LockoutEndDateUtc > DateTime.UtcNow))
+			{
+				ModelState.AddModelError("", "Tài khoản không tồn tại hoặc đã bị chặn");
+				return View(model);
+			}
 			// This doesn't count login failures towards account lockout
 			// To enable password failures to trigger account lockout, change to shouldLockout: true
-			var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    if(UserManager.IsInRole(user.Id, "Admin"))
-                    {
-                        return RedirectToAction("AdminDashboard", "Dashboard");
-                    } else if(UserManager.IsInRole(user.Id, "Provider"))
-                    {
-                        return RedirectToAction("Dashboard", "Dashboard");
-                    }
-                    return RedirectToLocal(returnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Đăng nhập lỗi");
-                    return View(model);
-            }
-        }
+			var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: true);
+			switch (result)
+			{
+				case SignInStatus.Success:
+					var userInfoService = this.Service<IUserService>();
+					Session["avatar"] = userInfoService.Get(user.Id).AvatarURL;
+					if (UserManager.IsInRole(user.Id, "Admin"))
+					{
+						return RedirectToAction("AdminDashboard", "Dashboard");
+					} else if(UserManager.IsInRole(user.Id, "Provider"))
+					{
+						return RedirectToAction("Dashboard", "Dashboard");
+					}
+					return RedirectToLocal(returnUrl);
+				case SignInStatus.LockedOut:
+					return View("Lockout");
+				case SignInStatus.RequiresVerification:
+					return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+				case SignInStatus.Failure:
+				default:
+					ModelState.AddModelError("", "Sai tên đăng nhập hoặc mật khẩu");
+					return View(model);
+			}
+		}
 
 		//
 		// GET: /Account/VerifyCode
@@ -156,16 +159,8 @@ namespace CRP.Controllers
 		{
 			return View();
 		}
+		
 
-        public string Xoakhoangtrang(String text)
-        {
-            while (text.IndexOf(" ") >= 0)
-            {
-                text = text.Replace(" ", "");
-            }  
-            return text;
-        }
-		//
 		// POST: /Account/Register
 		[HttpPost]
 		[AllowAnonymous]
@@ -174,27 +169,29 @@ namespace CRP.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-                SystemService systemS = new SystemService();
-                var user = new ApplicationUser { UserName = Xoakhoangtrang(model.Username.Trim()), Email = model.Email, FullName = model.Fullname.Trim(), PhoneNumber = model.PhoneNumber};
+				var systemS = new SystemService();
+				var user = new ApplicationUser { UserName = model.Username, Email = model.Email, FullName = model.Fullname.Trim(), PhoneNumber = model.PhoneNumber};
 				var result = await UserManager.CreateAsync(user, model.Password);
 				if (result.Succeeded)
 				{
-					await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    //set role cho no la Customer
-                    await UserManager.AddToRoleAsync(user.Id, "Customer");
-                    //send mail de confirm email
-                    systemS.SendMailConfirm(user.Email);
-                    return RedirectToAction("Index", "Home");
+                    var userSer = this.Service<IUserService>();
+                    AspNetUser entity = await userSer.GetAsync(user.Id);
+                    entity.LockoutEnabled = false;
+                    await userSer.UpdateAsync(entity);
+					var token = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+					var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, protocol: Request.Url.Scheme);
+					//send mail de confirm email
+					var systenService = new SystemService();
+					systenService.SendRegistrationConfirmEmail(user.Email, callbackUrl);
+					
+					await SignInManager.SignInAsync(UserManager.FindById(user.Id), isPersistent: false, rememberBrowser: false);
+
+					return RedirectToAction("Index", "Home");
 				}
 				AddErrors(result);
 			}
-
 			// If we got this far, something failed, redisplay form
 			return View(model);
 		}
@@ -202,14 +199,26 @@ namespace CRP.Controllers
 		//
 		// GET: /Account/ConfirmEmail
 		[AllowAnonymous]
-		public async Task<ActionResult> ConfirmEmail(string userId, string code)
+		public async Task<ActionResult> ConfirmEmail(string userId, string token)
 		{
-			if (userId == null || code == null)
+			if (userId == null || token == null)
 			{
 				return View("Error");
 			}
-			var result = await UserManager.ConfirmEmailAsync(userId, code);
-			return View(result.Succeeded ? "ConfirmEmail" : "Error");
+			await UserManager.AddToRoleAsync(userId, "Customer");
+			var result = await UserManager.ConfirmEmailAsync(userId, token);
+			if (result.Succeeded)
+			{
+				// Log the user out if he is logged in
+				if(Request.IsAuthenticated)
+					AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+				
+				// Then relog him in
+				await SignInManager.SignInAsync(UserManager.FindById(userId), isPersistent: false, rememberBrowser: false);
+				return View("ConfirmEmail");
+			}
+			AddErrors(result);
+			return View("Error");
 		}
 
 		//
@@ -229,21 +238,21 @@ namespace CRP.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-                var user = await UserManager.FindByEmailAsync(model.Email);
+				var user = await UserManager.FindByEmailAsync(model.Email);
 				if (user == null)
 				{
 					// Don't reveal that the user does not exist or is not confirmed
-					return View("ForgotPassword");
+					return View();
 				}
 
 				// For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
 				// Send an email with this link
-				 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-				 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-				 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                SystemService systemS = new SystemService();
-                systemS.SendPassword(model.Email);
-                return RedirectToAction("ForgotPasswordConfirmation", "Account");
+				 var token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+				 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, token = token }, protocol: Request.Url.Scheme);		
+				 //await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+				SystemService systemS = new SystemService();
+				systemS.SendRecoverPasswordEmail(model.Email, callbackUrl);
+				return RedirectToAction("ForgotPasswordConfirmation", "Account");
 			}
 
 			// If we got this far, something failed, redisplay form
@@ -261,9 +270,9 @@ namespace CRP.Controllers
 		//
 		// GET: /Account/ResetPassword
 		[AllowAnonymous]
-		public ActionResult ResetPassword(string code)
+		public ActionResult ResetPassword(string userId, string token)
 		{
-			return code == null ? View("Error") : View();
+			return token == null ? View("Error") : View(new ResetPasswordViewModel() { UserId = userId, Token = token });
 		}
 
 		//
@@ -273,30 +282,23 @@ namespace CRP.Controllers
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
 		{
+			AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 			if (!ModelState.IsValid)
 			{
 				return View(model);
 			}
-			var user = await UserManager.FindByNameAsync(model.Email);
+			var user = await UserManager.FindByIdAsync(model.UserId);
 			if (user == null)
 			{
 				// Don't reveal that the user does not exist
-				return RedirectToAction("ResetPasswordConfirmation", "Account");
+				return View();
 			}
-			var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+			var result = await UserManager.ResetPasswordAsync(model.UserId, model.Token, model.Password);
 			if (result.Succeeded)
 			{
-				return RedirectToAction("ResetPasswordConfirmation", "Account");
+				return RedirectToAction("Login", "Account");
 			}
 			AddErrors(result);
-			return View();
-		}
-
-		//
-		// GET: /Account/ResetPasswordConfirmation
-		[AllowAnonymous]
-		public ActionResult ResetPasswordConfirmation()
-		{
 			return View();
 		}
 
@@ -424,14 +426,14 @@ namespace CRP.Controllers
 			return RedirectToAction("Index", "Home");
 		}
    
-        public ActionResult LogOut()
-        {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("Login", "Account");
-        }
-        //
-        // GET: /Account/ExternalLoginFailure
-        [AllowAnonymous]
+		public ActionResult LogOut()
+		{
+			AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+			return RedirectToAction("Login", "Account");
+		}
+		//
+		// GET: /Account/ExternalLoginFailure
+		[AllowAnonymous]
 		public ActionResult ExternalLoginFailure()
 		{
 			return View();

@@ -46,7 +46,8 @@ namespace CRP.Areas.Customer.Controllers
 			var vehicleService = this.Service<IVehicleService>();
 			var vehicle = vehicleService.Get(v => v.ID == model.VehicleID.Value
 																&& v.Garage.IsActive
-																&& !v.Garage.IsDisabled
+																&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
+																&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
 																&& v.VehicleGroup != null
 																&& v.VehicleGroup.IsActive
 				).FirstOrDefault();
@@ -172,7 +173,7 @@ namespace CRP.Areas.Customer.Controllers
 			bookingService.Create(newBooking);
 
 			// Set timer to delete the booking if it is still pending after x-milisec
-			System.Timers.Timer checkPendingBookingTimer = new System.Timers.Timer(Models.Constants.BOOKING_PENDING_PERIOD_IN_MILISEC);
+			System.Timers.Timer checkPendingBookingTimer = new System.Timers.Timer(Models.Constants.BOOKING_PENDING_PERIOD_IN_MINUTES * 60 * 1000 );
 			checkPendingBookingTimer.AutoReset = false;
 
 			// Add callback
@@ -183,6 +184,7 @@ namespace CRP.Areas.Customer.Controllers
 		}
 
 		// Handler for TryBookingApi
+		// Remove booking if it is still pending upon called
 		private static void CheckPendingBooking(int bookingID)
 		{
 			var dbContext = new CRPEntities();
@@ -320,8 +322,8 @@ namespace CRP.Areas.Customer.Controllers
 
 					// Send alert email
 					SystemService sysService = new SystemService();
-					sysService.SendMailBooking(bookingReceipt.AspNetUser.Email, bookingReceipt);
-					sysService.SendMailBooking(bookingReceipt.AspNetUser1.Email, bookingReceipt);
+					sysService.SendBookingAlertEmailToCustomer(bookingReceipt);
+					sysService.SendBookingAlertEmailToProvider(bookingReceipt);
 
 					return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", bookingReceipt);
 				}

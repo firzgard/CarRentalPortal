@@ -243,6 +243,7 @@ $(document).ready(function () {
 		if (fail) {
 			alert('fail');
 		} else {
+			$('#commonActionBtn').prop('disabled', true);
 			table.ajax.reload();
 		}
 	});
@@ -270,6 +271,7 @@ $(document).ready(function () {
 		if (fail) {
 			alert('fail');
 		} else {
+			$('#commonActionBtn').prop('disabled', true);
 			table.ajax.reload();
 		}
 	});
