@@ -406,10 +406,13 @@ $(document).ready(function () {
 			type: "PATCH",
 			url: `/api/vehicles/${VEHICLE_ID}`,
 			data: updateModel,
-			success: () => {
-				location.reload();
+			success: (data) => {
+				if(data.message)
+					toastr.error(data.message);
+				else
+					location.reload();
 			},
-			eror: () => {
+			error: () => {
 				toastr.error("Chỉnh sửa thất bại. Vui lòng thử lại sau");
 			}
 		});
@@ -530,7 +533,7 @@ $(document).ready(function () {
 
 									toastr.success('Xóa ảnh thành công.')
 								},
-								eror: function (data) {
+								error: function (data) {
 									toastr.error('Xóa ảnh thất bại. Vui lòng thử lại sau.')
 								}
 							});
@@ -574,7 +577,7 @@ $(document).ready(function () {
 		success: () => {
 			window.location.pathname = "/management/vehicleManagement";
 		},
-		eror: () => {
+		error: () => {
 			toastr.warning('Xoá thất bại. Bạn vui lòng thử lại sau.')
 		}
 	}));
