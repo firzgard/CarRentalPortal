@@ -17,7 +17,6 @@
 				@using (Html.BeginForm("Update", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype="multipart/form-data" }))
 				{
 				@Html.AntiForgeryToken()
-				@Html.ValidationSummary("", new { @class = "text-danger" })
 				 <h3>@UError</h3>
 				<div class="row">
 					<div class="col-xs-7">
