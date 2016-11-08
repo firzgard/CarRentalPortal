@@ -11,7 +11,7 @@
 <div class="row wrapper border-bottom white-bg page-heading">
 	<div class="col-md-10"><h2>Thông tin xe</h2></div>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight" style="margin-bottom: 10em;">
+<div class="wrapper wrapper-content animated fadeInRight">
 	<div class="ibox float-e-margins">
 		@Html.HiddenFor(q => q.ID, new { @id = "vehicleID" })
 		
@@ -306,7 +306,7 @@
 		</div>
 	</div>
 
-	<div class="tabs-container">
+	<div class="tabs-container" style="margin-bottom: 10em;">
 		<ul class="nav nav-tabs">
 			<li class="active"><a data-toggle="tab" href="#tab-booking">Thông tin đặt xe</a></li>
 			<li class=""><a data-toggle="tab" href="#tab-comment">Thông tin đánh giá</a></li>
