@@ -47,6 +47,7 @@ const viDatatables = {
 
 let table = null;
 let star = parseFloat($('#star').val());
+const defaultStar = parseFloat($('#star').val());
 let garageID = parseInt($('#garageID').val());
 let defaultData = {};
 
@@ -388,11 +389,11 @@ $(document).ready(function () {
 
 	    switch (action) {
 	        case 'deactivateGarage': {
-	            renderConfirmModal('', 'garage', 'deactivate', this, [{ id: garageID, name: $('#garageNameD').val() }]);
+	            renderConfirmModal('', 'garage', 'deactivate', this, [{ id: garageID, name: $('#garageNameD').val(), defaultStar: defaultStar }]);
 	        }
 	            break;
 	        case 'reactivateGarage': {
-	            renderConfirmModal('', 'garage', 'reactivate', this, [{ id: garageID, name: $('#garageNameD').val() }]);
+	            renderConfirmModal('', 'garage', 'reactivate', this, [{ id: garageID, name: $('#garageNameD').val(), defaultStar: defaultStar }]);
 	        }
 	            break;
 	        case 'deleteGarage': {
@@ -581,8 +582,9 @@ function renderActivation(star) {
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
                     <label class ="label label-danger label-lg">ngưng hoạt động</label>
+                    <span style="font-size: 20px;">${renderStarRating(star, 'white')}</span>
                 </div>
-                <div>${renderStarRating(star, 'white')}</div>
+
                 <div class ="col-md-2 pull-right m-t m-r-lg">
                     <a id="btnEditGarage" class ="btn btn-success"><i class ="fa fa-pencil-square-o"></i><span> Chỉnh sửa thông tin</span></a>
                 </div>`);
