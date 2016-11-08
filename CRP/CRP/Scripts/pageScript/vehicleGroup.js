@@ -28,6 +28,16 @@ let table1 = null;
 const groupID = $('#groupID').val();
 const priceGroupID = $('#priceGroupID').val();
 
+let defaultData = {};
+defaultData.Name = $('#groupName').val();
+defaultData.PriceGroup = {};
+defaultData.PriceGroup.ID = parseInt(priceGroupID);
+defaultData.PriceGroup.DepositPercentage = $('#deposit').val();
+defaultData.PriceGroup.PerDayPrice = $('#per-day-price').val();
+defaultData.PriceGroup.MaxRentalPeriod = $('#max-rent').val();
+defaultData.PriceGroup.MaxDistancePerDay = $('#max-distance-day').val();
+defaultData.PriceGroup.ExtraChargePerKm = $('#extra-charge-day').val();
+
 $(document).ready(function () {
     $('#drpVehicle').select2({
         width: '100%',
@@ -311,6 +321,85 @@ $(document).on('click', '#btnEditGroup', function () {
 $(document).on('click', '#cancelChange', function () {
     $('.display-control').css('display', 'inherit');
     $('.edit-control').css('display', 'none');
+
+    $('#groupName').val(defaultData.Name);
+    $('#deposit').val(defaultData.PriceGroup.DepositPercentage);
+    $('#per-day-price').val(defaultData.PriceGroup.PerDayPrice);
+    $('#max-rent').val(defaultData.PriceGroup.MaxRentalPeriod);
+    $('#max-distance-day').val(defaultData.PriceGroup.MaxDistancePerDay);
+    $('#extra-charge-day').val(defaultData.PriceGroup.ExtraChargePerKm);
+
+    // reRender bang gia thue xe theo gio
+    table1.destroy();
+    table1 = null;
+    $('#priceGroupItem').empty();
+    table1 = $('#priceGroupItem').DataTable({
+        dom: "t",
+        displayLength: 23,
+        ordering: false,
+        ajax: {
+            url: `/api/priceGroup/${priceGroupID}`,
+            type: "GET",
+        },
+        columnDefs: [
+            {
+                // Render action button
+                targets: 0,
+                render: (data, type, row) => {
+                    return `<button type="button" class ="btn btn-danger btn-circle btn-number minus-btn"  data-type="minus">
+                                <i class="fa fa-minus"></i>
+                            </button>`;
+                }
+            },
+            {
+                targets: 1,
+                render: (data, type, row) => {
+                    return `<input type="number" min="1" max="23" class="max-time form-control" value="${row[0]}" />`;
+                }
+            },
+            {
+                targets: 2,
+                render: (data, type, row) => {
+                    return `<input type="number" class="price form-control" value="${row[1]}" />`;
+                }
+            },
+            {
+                targets: 3,
+                render: (data, type, row) => {
+                    return `<input type="number" min="1" max="2400" class="max-distance form-control" value="${row[2]}" />`;
+                }
+            }
+        ],
+        language: viDatatables,
+        columns: [
+            {
+                width: '10%'
+            },
+            {
+                title: 'Thời gian (giờ)',
+                width: '30%',
+                data: "0"
+            },
+            {
+                title: 'Giá tiền (VNĐ)',
+                width: '30%',
+                data: "1"
+            },
+            {
+                title: 'Số Km tối đa (Km)',
+                width: '30%',
+                data: "2"
+            }
+        ],
+        initComplete: function (settings, json) {
+            if ($('.max-time').length == 0) {
+                table1.destroy();
+                table1 = null;
+                $('#priceGroupItem').empty();
+            }
+        }
+    });
+
     renderActivation();
 });
 

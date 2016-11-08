@@ -88,6 +88,24 @@ $(document).ready( function () {
 					return data;
 				}
 			},
+            {
+                targets: -9
+				, render: function (data, type, row) {
+				    if (type === 'display') {
+				        return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
+				    }
+				    return data;
+				}
+            },
+            {
+                targets: -8
+				, render: function (data, type, row) {
+				    if (type === 'display') {
+				        return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
+				    }
+				    return data;
+				}
+            },
 			{
 				targets: -7
 				, render: function (data, type, row) {
@@ -145,6 +163,9 @@ $(document).ready( function () {
 					if (row.IsSelfBooking && !row.IsInThePast && !row.IsCanceled) {
 						del = `<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#cancelBooking" data-id="${row.ID}"
 							data-vehicle-name="${row.VehicleName}" data-start-time="${row.StartTime}" data-end-time="${row.EndTime}" ><i class="fa fa-trash"></i><span> Hủy</span></a>`;
+					}
+					if (row.IsSelfBooking) {
+					    return del;
 					}
 					return info +" "+ del;
 				}
