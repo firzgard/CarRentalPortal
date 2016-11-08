@@ -47,6 +47,18 @@ const viDatatables = {
 
 let table = null;
 let star = parseFloat($('#star').val());
+let garageID = parseInt($('#garageID').val());
+let defaultData = {};
+
+defaultData.Name = $('#garageName').val();
+defaultData.LocationID = $('#locationID').val();
+defaultData.Address = $('#gAddress').val();
+defaultData.Email = $('#gEmail').val();
+defaultData.Phone1 = $('#gPhone1').val();
+defaultData.Phone2 = $('#gPhone2').val();
+defaultData.Description = $('#gDescription').val();
+defaultData.Policy = $('#gPolicy').val();
+//defaultData.GarageWorkingTimes = workTable;
 
 $(document).on('click', '#btnEditGarage', function () {
     $('.display-control').css('display', 'none');
@@ -56,7 +68,18 @@ $(document).on('click', '#btnEditGarage', function () {
 $(document).on('click', '#cancelChange', function () {
     $('.display-control').css('display', 'inherit');
     $('.edit-control').css('display', 'none');
+
+    // set default value
+    $('#garageName').val(defaultData.Name);
+    $('#locationID').val(defaultData.LocationID).trigger("change");
+    $('#gAddress').val(defaultData.Address);
+    $('#gEmail').val(defaultData.Email);
+    $('#gPhone1').val(defaultData.Phone1);
+    $('#gPhone2').val(defaultData.Phone2);
+    $('#gDescription').val(defaultData.Description);
+    $('#gPolicy').val(defaultData.Policy);
     renderActivation(star);
+    renderWorkingTime(garageID, true);
 });
 
 $(document).ready(function () {
@@ -72,8 +95,6 @@ $(document).ready(function () {
 
 	// ============================================
 	// Vehicle table
-
-    let garageID = parseInt($('#garageID').val());
 
 	renderWorkingTime(garageID, false);
 	renderWorkingTime(garageID, true);
@@ -163,6 +184,24 @@ $(document).ready(function () {
                     return data;
                 }
             },
+            {
+                targets: -9
+				, render: function (data, type, row) {
+				    if (type === 'display') {
+				        return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
+				    }
+				    return data;
+				}
+            },
+            {
+                targets: -8
+				, render: function (data, type, row) {
+				    if (type === 'display') {
+				        return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
+				    }
+				    return data;
+				}
+            },
 			{
 			    targets: -7
 				, render: function (data, type, row) {
@@ -216,6 +255,9 @@ $(document).ready(function () {
 				    if (row.IsSelfBooking && !row.IsInThePast && !row.IsCanceled) {
 				        del = `<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#cancelBooking" data-id="${row.ID}"
                             data-vehicle-name="${row.VehicleName}" data-start-time="${row.StartTime}" data-end-time="${row.EndTime}" ><i class="fa fa-trash"></i><span> Hủy</span></a>`;
+				    }
+				    if (row.IsSelfBooking) {
+				        return del;
 				    }
 				    return info + " " + del;
 				}
@@ -318,8 +360,8 @@ $(document).ready(function () {
             licenseNumber = button.data('license-number'),
             rentalPrice = button.data('rental-price'),
             deposit = button.data('deposit'),
-            startTime = button.data('start-time'),
-	        endTime = button.data('end-time'),
+            startTime = moment(button.data('start-time')).local().format('ddd, DD/MM/YYYY, HH:mm'),
+	        endTime = moment(button.data('end-time')).local().format('ddd, DD/MM/YYYY, HH:mm'),
             star = button.data('star'),
             comment = button.data('comment');
 

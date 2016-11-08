@@ -88,6 +88,24 @@ $(document).ready( function () {
 					return data;
 				}
 			},
+            {
+                targets: -9
+				, render: function (data, type, row) {
+				    if (type === 'display') {
+				        return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
+				    }
+				    return data;
+				}
+            },
+            {
+                targets: -8
+				, render: function (data, type, row) {
+				    if (type === 'display') {
+				        return moment(data).local().format('ddd, DD/MM/YYYY, HH:mm');
+				    }
+				    return data;
+				}
+            },
 			{
 				targets: -7
 				, render: function (data, type, row) {
@@ -146,6 +164,9 @@ $(document).ready( function () {
 						del = `<a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#cancelBooking" data-id="${row.ID}"
 							data-vehicle-name="${row.VehicleName}" data-start-time="${row.StartTime}" data-end-time="${row.EndTime}" ><i class="fa fa-trash"></i><span> Hủy</span></a>`;
 					}
+					if (row.IsSelfBooking) {
+					    return del;
+					}
 					return info +" "+ del;
 				}
 			}
@@ -199,8 +220,8 @@ $(document).ready( function () {
 			licenseNumber = button.data('license-number'),
 			rentalPrice = button.data('rental-price'),
 			deposit = button.data('deposit'),
-			startTime = button.data('start-time'),
-			endTime = button.data('end-time'),
+			startTime = moment(button.data('start-time')).local().format('ddd, DD/MM/YYYY, HH:mm'),
+			endTime = moment(button.data('end-time')).local().format('ddd, DD/MM/YYYY, HH:mm'),
 			star = button.data('star'),
 			comment = button.data('comment');
 
