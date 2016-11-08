@@ -156,7 +156,7 @@ namespace CRP.Areas.Provider.Controllers
 			if (filterConditions.Draw == 0)
 				return new HttpStatusCodeResult(400, "Unqualified request");
 			if (filterConditions.OrderBy != null
-			    && typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy) == null)
+				&& typeof(VehicleManagementItemJsonModel).GetProperty(filterConditions.OrderBy) == null)
 				return new HttpStatusCodeResult(400, "Invalid sorting property");
 
 			filterConditions.ProviderID = User.Identity.GetUserId();
@@ -296,12 +296,12 @@ namespace CRP.Areas.Provider.Controllers
 			var vehicleReceiptService = this.Service<IBookingReceiptService>();
 			var receiptEntities = vehicleReceiptService.Get(br => br.VehicleID == id);
 			if (receiptEntities.Any())
-            {
-                foreach (var item in receiptEntities)
-                {
-                    item.VehicleID = null;
-                }
-            }
+			{
+				foreach (var item in receiptEntities)
+				{
+					item.VehicleID = null;
+				}
+			}
 
 			// Remove all vehicle's images
 			var vehicleImageService = this.Service<IVehicleImageService>();
@@ -374,7 +374,7 @@ namespace CRP.Areas.Provider.Controllers
 		// API route for creating an own booking
 		[Route("api/vehicles/bookings")]
 		[HttpPost]
-		public async Task<HttpStatusCodeResult> CreateOwnBookingAPI(DateTime startTime, DateTime endTime, int vehicleID)
+		public async Task<ActionResult> CreateOwnBookingAPI(DateTime startTime, DateTime endTime, int vehicleID)
 		{
 			var bookingService = this.Service<IBookingReceiptService>();
 			var vehicleService = this.Service<IVehicleService>();
@@ -383,9 +383,37 @@ namespace CRP.Areas.Provider.Controllers
 
 			var vehicle = vehicleService.Get(v => v.ID == vehicleID && v.Garage.OwnerID == currentUserID).FirstOrDefault();
 
-			if(vehicle == null)
+			// Check if vehicle exists
+			if (vehicle == null)
 				return new HttpStatusCodeResult(400, "Not found.");
 
+			// Check if startTime is after now
+			if (startTime < DateTime.Now)
+				return Json(new {
+					isSuccess = false,
+					errorMessage = "Thời gian bắt đầu phải nằm sau thời gian hiện tại."
+				}, JsonRequestBehavior.AllowGet);
+
+			// Check if endTime is after now
+			if (endTime < startTime)
+				return Json(new {
+					isSuccess = false,
+					errorMessage = "Thời gian kết thúc phải nằm sau thời gian bắt đầu."
+				}, JsonRequestBehavior.AllowGet);
+
+			// Check if this vehicle has any other bookings in the timespan of this booking
+			if (vehicle.BookingReceipts.Any(br => !br.IsCanceled && (
+								 (startTime > br.StartTime && startTime < br.EndTime)
+							  || (endTime > br.StartTime && endTime < br.EndTime)
+							  || (startTime <= br.StartTime && endTime >= br.EndTime)
+						 )))
+				return Json(new
+				{
+					isSuccess = false,
+					errorMessage = "Xe đã có đặt xe trong thời gian bạn đã chọn."
+				}, JsonRequestBehavior.AllowGet);
+
+			// Checked OK. Create new booking.
 			var newBooking = new BookingReceipt()
 			{
 				CustomerID = currentUserID,
@@ -394,11 +422,27 @@ namespace CRP.Areas.Provider.Controllers
 				EndTime = endTime,
 				GarageID = vehicle.GarageID,
 				VehicleID = vehicleID,
+				RentalPrice = 0,
+				Deposit = 0,
+				BookingFee = 0,
+				GarageName = vehicle.Garage.Name,
+				GarageAddress = vehicle.Garage.Address + ", " + vehicle.Garage.Location.Name,
+				GaragePhone = vehicle.Garage.Phone1,
+				GarageEmail = vehicle.Garage.Email,
+				LicenseNumber = vehicle.LicenseNumber,
+				VehicleName = vehicle.Name,
+				ModelID = vehicle.ModelID,
+				Year = vehicle.Year,
+				TransmissionType = vehicle.TransmissionType,
+				TransmissionDetail = vehicle.TransmissionDetail,
+				FuelType = vehicle.FuelType,
+				Engine = vehicle.Engine,
+				Color = vehicle.Color
 			};
 
 			await bookingService.CreateAsync(newBooking);
 
-			return new HttpStatusCodeResult(200, "Created successfully.");
+			return Json(new { isSuccess = true });
 		}
 
 

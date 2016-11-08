@@ -411,6 +411,7 @@ $(document).ready(function(){
 				toastr.error(data.message);
 		})
 		.fail(function(err, textStatus, errorThrown) {
+			toastr.error("Đã có lỗi xảy ra. Phiền bạn thử lại sau");
 			console.log(err);
 		})
 		

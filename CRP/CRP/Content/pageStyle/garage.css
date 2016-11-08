@@ -16,12 +16,6 @@
     display: none;
 }
 
-.label {
-    font-style: italic !important;
-    font-size: 13px !important;
-    font-weight: 500 !important;
-}
-
 .ibox-title {
     padding: 0 15px !important;
 }
