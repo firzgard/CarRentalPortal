@@ -475,12 +475,19 @@ $(document).on('click', '#saveChange', function () {
             toastr.error("Vui lòng nhập giờ");
             return false;
         }
+        if ($(`.max-distance:eq(${i})`).val() && !$(`.max-time:eq(${i})`).val() && !$(`.price:eq(${i})`).val()) {
+            toastr.error("Vui lòng nhập giờ và giá tiền");
+            return false;
+        }
         if ($(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
             var item = {};
             item.MaxTime = parseInt($(`.max-time:eq(${i})`).val());
             item.Price = parseInt($(`.price:eq(${i})`).val());
             if ($(`.max-distance:eq(${i})`).val()) {
                 item.MaxDistance = parseInt($(`.max-distance:eq(${i})`).val());
+                if (item.MaxDistance < 0) {
+                    toastr.error("Xin lỗi. Số tiền Km tối đa theo giờ không được âm");
+                }
             } else {
                 item.MaxDistance = null;
             }
@@ -532,7 +539,7 @@ $(document).on('click', '#saveChange', function () {
     if (!$('#deposit').val()) {
         toastr.error("Vui lòng nhập giá trị đặt cọc");
         return false;
-    } else if (parseFloat($('#deposit').val()) < 0 || parseFloat($('#deposit').val()) > 100) {
+    } else if (parseFloat($('#deposit').val()) < 0 || parseFloat($('#deposit').val()) > 1) {
         toastr.error("Xin lỗi. giá trị đặt cọc phải từ 0% đến 100%");
         return false;
     } else {
