@@ -220,8 +220,8 @@ $(document).ready( function () {
 			licenseNumber = button.data('license-number'),
 			rentalPrice = button.data('rental-price'),
 			deposit = button.data('deposit'),
-			startTime = button.data('start-time'),
-			endTime = button.data('end-time'),
+			startTime = moment(button.data('start-time')).local().format('ddd, DD/MM/YYYY, HH:mm'),
+			endTime = moment(button.data('end-time')).local().format('ddd, DD/MM/YYYY, HH:mm'),
 			star = button.data('star'),
 			comment = button.data('comment');
 
