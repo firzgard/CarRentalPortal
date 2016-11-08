@@ -48,12 +48,12 @@ namespace CRP.Models
 
 	public class LoginViewModel
 	{
-		[Required]
+		[Required(ErrorMessage = "Email không được để trống", AllowEmptyStrings = false)]
 		[Display(Name = "Email")]
-		[EmailAddress]
+		[EmailAddress(ErrorMessage = "Không đúng định dạng email.")]
 		public string Email { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Password không được để trống", AllowEmptyStrings = false)]
 		[DataType(DataType.Password)]
 		[Display(Name = "Password")]
 		public string Password { get; set; }
@@ -77,11 +77,11 @@ namespace CRP.Models
 		public string Fullname { get; set; }
 
 		[Required(ErrorMessage = "Email không được để trống", AllowEmptyStrings = false)]
-		[EmailAddress]
+		[EmailAddress(ErrorMessage = "Không đúng định dạng email.")]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
-		
-		[EmailAddress]
+
+		[EmailAddress(ErrorMessage = "Không đúng định dạng email.")]
 		[Display(Name = "Xác nhận email")]
 		[Compare("Email", ErrorMessage = "Email không trùng khớp.")]
 		public string ConfirmEmail { get; set; }
@@ -119,7 +119,7 @@ namespace CRP.Models
 		public string Address { get; set; }
 
 		[Required]
-		[EmailAddress]
+		[EmailAddress(ErrorMessage = "Không đúng định dạng email.")]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 
@@ -153,7 +153,7 @@ namespace CRP.Models
 	public class ForgotPasswordViewModel
 	{
 		[Required(ErrorMessage = "Email không được để trống", AllowEmptyStrings = false)]
-		[EmailAddress]
+		[EmailAddress(ErrorMessage = "Không đúng định dạng email.")]
 		[Display(Name = "Email")]
 		public string Email { get; set; }
 	}
