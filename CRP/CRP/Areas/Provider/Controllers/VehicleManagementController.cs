@@ -433,11 +433,7 @@ namespace CRP.Areas.Provider.Controllers
 				GarageEmail = vehicle.Garage.Email,
 				LicenseNumber = vehicle.LicenseNumber,
 				VehicleName = vehicle.Name,
-				ModelID = vehicle.ModelID,
-				Year = vehicle.Year,
-				TransmissionType = vehicle.TransmissionType,
 				TransmissionDetail = vehicle.TransmissionDetail,
-				FuelType = vehicle.FuelType,
 				Engine = vehicle.Engine,
 				Color = vehicle.Color
 			};
