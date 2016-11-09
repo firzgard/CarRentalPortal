@@ -22,7 +22,8 @@ namespace CRP.Models.Entities.Services
 
 		public SearchResultJsonModel SearchVehicle(SearchConditionModel filterConditions)
 		{
-			var vehicles = repository.Get(v => v.Garage.IsActive
+			var vehicles = repository.Get(v => !v.IsDeleted
+										&& v.Garage.IsActive
 										&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
 										&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
 										&& v.VehicleGroup != null
@@ -185,8 +186,9 @@ namespace CRP.Models.Entities.Services
 
 		public VehicleDataTablesJsonModel FilterVehicle(VehicleManagementFilterConditionModel filterConditions)
 		{
-			// Get only vehicles belonged to this user
-			var vehicles = repository.Get(v => v.Garage.OwnerID == filterConditions.ProviderID);
+			// Get only vehicles belonged to this user and is not deleted
+			var vehicles = repository.Get(v => v.Garage.OwnerID == filterConditions.ProviderID
+											&& !v.IsDeleted);
 
 			// Get vehicles belonged to this garage
 			if(filterConditions.GarageID != null)

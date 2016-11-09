@@ -41,33 +41,6 @@
 						</div>
 						<div class="row m-b">
 							<div class="col-md-4 text-right">
-								<label>Dòng xe <span style="color: red">*</span></label>
-							</div>
-							<div class="col-md-8">
-								<select id="modelIDInput" class="form-control" required data-default="@Model.ModelID" >
-									@foreach (VehicleBrand brand in Model.brandList)
-									{
-										<optgroup label="@brand.Name">
-											@foreach (VehicleModel entry in brand.VehicleModels)
-											{
-											<option value="@(entry.ID)" selected="@(entry.ID == Model.ModelID)">@(brand.Name)&nbsp;@entry.Name</option>
-											}
-										</optgroup>
-									}
-									<option value="0">--Dòng xe chưa được liệt kê--</option>
-								</select>
-							</div>
-						</div>
-						<div class="row m-b">
-							<div class="col-md-4 text-right">
-								<label>Năm sản xuất <span style="color: red">*</span></label>
-							</div>
-							<div class="col-md-8">
-								@Html.TextBoxFor(q => q.Year, new { @type = "number", @step = 1, @class = "form-control", @id = "yearInput", @max = DateTime.Now.Year, @min = Constants.MIN_YEAR, required = true, data_default = Model.Year })
-							</div>
-						</div>
-						<div class="row m-b">
-							<div class="col-md-4 text-right">
 								<label>Garage <span style="color: red">*</span></label>
 							</div>
 							<div class="col-md-8">
@@ -90,39 +63,10 @@
 						</div>
 						<div class="row m-b">
 							<div class="col-md-4 text-right">
-								<label>Loại hộp số <span style="color: red">*</span></label>
-							</div>
-							<div class="col-md-8">
-								<div class="btn-group btn-group-justified" data-toggle="buttons" >
-									<label class="btn btn-primary @(Model.TransmissionTypeID == 1 ? "active" : "")">
-										<input name="transmissionTypeInput" type="radio" required value="1" autocomplete="off" checked="@(Model.TransmissionTypeID == 1)" data-default="@(Model.TransmissionTypeID == 1)" >Số tự động
-									</label>
-									<label class="btn btn-primary @(Model.TransmissionTypeID == 2 ? "active" : "")">
-										<input name="transmissionTypeInput" type="radio" value="2" autocomplete="off" checked="@(Model.TransmissionTypeID == 2)" data-default="@(Model.TransmissionTypeID == 2)" >Số sàng
-									</label>
-								</div>
-							</div>
-						</div>
-						<div class="row m-b">
-							<div class="col-md-4 text-right">
 								<label>Chi tiết về hộp số</label>
 							</div>
 							<div class="col-md-8">
 								@Html.TextBoxFor(q => q.TransmissionDetail, new { @type = "text", @class = "form-control", @id = "transmissionDetailInput", @maxlength = "100", data_default = Model.TransmissionDetail })
-							</div>
-						</div>
-						<div class="row m-b">
-							<div class="col-md-4 text-right">
-								<label>Loại nhiên liệu</label>
-							</div>
-							<div class="col-md-8">
-								<select id="fuelTypeInput" class="form-control" data-default="@Model.FuelTypeID" >
-									<option></option>
-									@foreach (KeyValuePair<int, string> entry in Constants.FUEL_TYPE)
-									{
-										<option value="@entry.Key" selected="@(entry.Key == Model.FuelTypeID)">@entry.Value</option>
-									}
-								</select>
 							</div>
 						</div>
 						<div class="row m-b">

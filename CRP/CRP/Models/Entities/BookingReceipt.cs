@@ -16,7 +16,6 @@ namespace CRP.Models.Entities
     {
         public int ID { get; set; }
         public string CustomerID { get; set; }
-        public string ProviderID { get; set; }
         public double RentalPrice { get; set; }
         public double Deposit { get; set; }
         public double BookingFee { get; set; }
@@ -40,7 +39,6 @@ namespace CRP.Models.Entities
         public bool IsPending { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual Garage Garage { get; set; }
         public virtual Vehicle Vehicle { get; set; }
     }

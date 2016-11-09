@@ -11,6 +11,7 @@ namespace CRP.Models.ViewModels
 	public class SearchPageViewModel
 	{
 		public List<VehicleBrand> BrandList { get; set; }
+		public List<int> NumOfSeatList { get; set; }
 		public List<Category> CategoryList { get; set; }
 		public List<Location> LocationList { get; set; }
 		public double MaxPrice { get; set; }
@@ -18,9 +19,10 @@ namespace CRP.Models.ViewModels
 		public int MaxYear { get; set; }
 		public int MinYear { get; set; }
 
-		public SearchPageViewModel(List<VehicleBrand> brandList, List<Category> categoryList, List<Location> locationList, double maxPrice, double minPrice, int maxYear, int minYear)
+		public SearchPageViewModel(List<VehicleBrand> brandList, List<int> numOfSeatList, List<Category> categoryList, List<Location> locationList, double maxPrice, double minPrice, int maxYear, int minYear)
 		{
 			BrandList = brandList;
+			NumOfSeatList = numOfSeatList;
 			CategoryList = categoryList;
 			LocationList = locationList;
 			MaxPrice = maxPrice;

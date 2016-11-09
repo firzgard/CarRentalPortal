@@ -65,7 +65,6 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CustomerID" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="ProviderID" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="RentalPrice" Type="float" Nullable="false" />
           <Property Name="Deposit" Type="float" Nullable="false" />
           <Property Name="BookingFee" Type="float" Nullable="false" />
@@ -112,6 +111,7 @@
           <Property Name="Description" Type="nvarchar" MaxLength="1000" />
           <Property Name="Policy" Type="nvarchar" MaxLength="1000" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="GarageWorkingTime">
           <Key>
@@ -244,18 +244,6 @@
             </Principal>
             <Dependent Role="BookingReceipt">
               <PropertyRef Name="GarageID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BookingReceipt_Provider">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="BookingReceipt" Type="Self.BookingReceipt" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingReceipt">
-              <PropertyRef Name="ProviderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -523,10 +511,6 @@
             <End Role="Garage" EntitySet="Garage" />
             <End Role="BookingReceipt" EntitySet="BookingReceipt" />
           </AssociationSet>
-          <AssociationSet Name="FK_BookingReceipt_Provider" Association="Self.FK_BookingReceipt_Provider">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="BookingReceipt" EntitySet="BookingReceipt" />
-          </AssociationSet>
           <AssociationSet Name="FK_BookingReceipt_Vehicle" Association="Self.FK_BookingReceipt_Vehicle">
             <End Role="Vehicle" EntitySet="Vehicle" />
             <End Role="BookingReceipt" EntitySet="BookingReceipt" />
@@ -635,10 +619,6 @@
             <End Role="AspNetUserLogin" EntitySet="AspNetUserLogins" />
           </AssociationSet>
           <AssociationSet Name="FK_BookingReceipt_AspNetUsers" Association="CRPDBModel.FK_BookingReceipt_AspNetUsers">
-            <End Role="AspNetUser" EntitySet="AspNetUsers" />
-            <End Role="BookingReceipt" EntitySet="BookingReceipts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_BookingReceipt_Provider" Association="CRPDBModel.FK_BookingReceipt_Provider">
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="BookingReceipt" EntitySet="BookingReceipts" />
           </AssociationSet>
@@ -758,7 +738,6 @@
           <NavigationProperty Name="AspNetUserClaims" Relationship="CRPDBModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserClaim" />
           <NavigationProperty Name="AspNetUserLogins" Relationship="CRPDBModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUser" ToRole="AspNetUserLogin" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="AspNetUser" ToRole="BookingReceipt" />
-          <NavigationProperty Name="BookingReceipts1" Relationship="CRPDBModel.FK_BookingReceipt_Provider" FromRole="AspNetUser" ToRole="BookingReceipt" />
           <NavigationProperty Name="Garages" Relationship="CRPDBModel.FK_Garage_AspNetUsers" FromRole="AspNetUser" ToRole="Garage" />
           <NavigationProperty Name="VehicleGroups" Relationship="CRPDBModel.FK_VehicleGroup_AspNetUsers" FromRole="AspNetUser" ToRole="VehicleGroup" />
           <NavigationProperty Name="AspNetRoles" Relationship="CRPDBModel.AspNetUserRoles" FromRole="AspNetUser" ToRole="AspNetRole" />
@@ -769,7 +748,6 @@
           </Key>
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CustomerID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="ProviderID" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="RentalPrice" Type="Double" Nullable="false" />
           <Property Name="Deposit" Type="Double" Nullable="false" />
           <Property Name="BookingFee" Type="Double" Nullable="false" />
@@ -792,7 +770,6 @@
           <Property Name="IsCanceled" Type="Boolean" Nullable="false" />
           <Property Name="IsPending" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_BookingReceipt_AspNetUsers" FromRole="BookingReceipt" ToRole="AspNetUser" />
-          <NavigationProperty Name="AspNetUser1" Relationship="CRPDBModel.FK_BookingReceipt_Provider" FromRole="BookingReceipt" ToRole="AspNetUser" />
           <NavigationProperty Name="Garage" Relationship="CRPDBModel.FK_BookingReceipt_Garage" FromRole="BookingReceipt" ToRole="Garage" />
           <NavigationProperty Name="Vehicle" Relationship="CRPDBModel.FK_BookingReceipt_Vehicle" FromRole="BookingReceipt" ToRole="Vehicle" />
         </EntityType>
@@ -821,6 +798,7 @@
           <Property Name="Description" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Policy" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AspNetUser" Relationship="CRPDBModel.FK_Garage_AspNetUsers" FromRole="Garage" ToRole="AspNetUser" />
           <NavigationProperty Name="BookingReceipts" Relationship="CRPDBModel.FK_BookingReceipt_Garage" FromRole="Garage" ToRole="BookingReceipt" />
           <NavigationProperty Name="Vehicles" Relationship="CRPDBModel.FK_Car_Store" FromRole="Garage" ToRole="Vehicle" />
@@ -986,18 +964,6 @@
             </Principal>
             <Dependent Role="BookingReceipt">
               <PropertyRef Name="CustomerID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_BookingReceipt_Provider">
-          <End Type="CRPDBModel.AspNetUser" Role="AspNetUser" Multiplicity="1" />
-          <End Type="CRPDBModel.BookingReceipt" Role="BookingReceipt" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUser">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="BookingReceipt">
-              <PropertyRef Name="ProviderID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1255,7 +1221,6 @@
                 <ScalarProperty Name="BookingFee" ColumnName="BookingFee" />
                 <ScalarProperty Name="Deposit" ColumnName="Deposit" />
                 <ScalarProperty Name="RentalPrice" ColumnName="RentalPrice" />
-                <ScalarProperty Name="ProviderID" ColumnName="ProviderID" />
                 <ScalarProperty Name="CustomerID" ColumnName="CustomerID" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
@@ -1272,6 +1237,7 @@
           <EntitySetMapping Name="Garages">
             <EntityTypeMapping TypeName="CRPDBModel.Garage">
               <MappingFragment StoreEntitySet="Garage">
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="Policy" ColumnName="Policy" />
                 <ScalarProperty Name="Description" ColumnName="Description" />

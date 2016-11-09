@@ -23,14 +23,24 @@
 						<a class="" href="@Url.Action("Index", "Home")"><h2><b>CRP</b></h2></a>
 					</div>
 					
-					<ul class="nav navbar-top-links navbar-right">
+					<ul class="nav navbar-top-links navbar-right" style="margin: 0 1em;">
 						@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
 						{
 							@Html.AntiForgeryToken()
 
 							<ul class="nav navbar-nav navbar-right">
 								<li>
-									@Html.ActionLink("Xin chào, " + User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage Infomation" })
+									@if (User.IsInRole("Admin"))
+									{
+										@Html.ActionLink("Xin chào, " + User.Identity.GetUserName(), "AdminDashboard", "Dashboard", routeValues: null, htmlAttributes: new { title = "Manage Infomation" })
+									}
+									else if (User.IsInRole("Provider"))
+									{
+										@Html.ActionLink("Xin chào, " + User.Identity.GetUserName(), "Dashboard", "Dashboard", routeValues: null, htmlAttributes: new { title = "Manage Infomation" })
+									}
+									else {
+										@Html.ActionLink("Xin chào, " + User.Identity.GetUserName(), "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage Infomation" })
+									}
 								</li>
 								<li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out"></i> Đăng xuất</a></li>
 							</ul>

@@ -30,7 +30,6 @@ namespace CRP.Models
 		public const int SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR = 6;
 		public const int SOONEST_POSSIBLE_BOOKING_END_TIME_FROM_NOW_IN_HOUR = 7;
 		public const int LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = 30;
-		public static readonly int[] COMMON_NUM_OF_SEAT = new int[] { 2, 4, 5, 7, 8, 16 };
 		public static int MIN_YEAR = 1908;
 		public static int MAX_YEAR = DateTime.Now.Year;
 		public static readonly List<int> PROVIDER_PLAN = new List<int>() { 1, 3, 6 };
