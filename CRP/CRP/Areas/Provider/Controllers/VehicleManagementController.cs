@@ -198,7 +198,7 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPost]
 		public async Task<ActionResult> CreateVehicleAPI(ManagingVehicleModel newVehicle)
 		{
-			var errorMessage = CheckVehicleValidity(newVehicle);
+			var errorMessage = CheckVehicleValidity(newVehicle, false);
 			if (errorMessage != null)
 			{
 				Response.StatusCode = 400;
@@ -261,9 +261,11 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpPatch]
 		public async Task<ActionResult> EditVehicleAPI(int id, ManagingVehicleModel updateModel)
 		{
-			var errorMessage = CheckVehicleValidity(updateModel);
+			var errorMessage = CheckVehicleValidity(updateModel, true, id);
 			if (errorMessage != null)
-				return new HttpStatusCodeResult(400, errorMessage);
+			{
+				return Json(new { message = errorMessage });
+			}
 
 			var vehicleService = this.Service<IVehicleService>();
 
@@ -533,18 +535,23 @@ namespace CRP.Areas.Provider.Controllers
 
 
 		// Check entity on create/update
-		public string CheckVehicleValidity(ManagingVehicleModel vehicle)
+		public string CheckVehicleValidity(ManagingVehicleModel vehicle, bool isEdit, int vehicleID = 0)
 		{
-			var vehicleService = this.Service<IVehicleService>();
 			var modelService = this.Service<IModelService>();
 
+			var vehicleService = this.Service<IVehicleService>();
 			var userService = this.Service<IUserService>();
 			var userID = this.User.Identity.GetUserId();
 			var currentUser = userService.Get(userID);
 
 			//License number's uniquity
-			if (vehicleService.Get().Any(v => v.LicenseNumber == vehicle.LicenseNumber))
+			if (isEdit)
+			{
+				if (vehicleService.Get().Any(v => v.LicenseNumber == vehicle.LicenseNumber && v.ID != vehicleID))
+					return "Xe với biển số xe này đã tồn tại.";
+			} else if (vehicleService.Get().Any(v => v.LicenseNumber == vehicle.LicenseNumber))
 				return "Xe với biển số xe này đã tồn tại.";
+
 
 			if (vehicle.LicenseNumber.Length > 50)
 				return "Biển số xe phải dưới 50 ký tự.";

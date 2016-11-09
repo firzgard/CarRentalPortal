@@ -459,6 +459,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
                 if (action === "deactivate" || action === "reactivate") {
                     for(var i=0; i< items.length; i++) {
                         var id = items[i].id;
+                        var star = items[i].defaultStar;
                         $.ajax({
                             url: `/api/garage/status/${id}`,
                             type: "PATCH",
@@ -473,7 +474,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
                                         } else {
                                             $('#isActive').val('True');
                                         }
-                                        renderActivation();
+                                        renderActivation(star);
                                     }
                                 } else {
                                     toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
