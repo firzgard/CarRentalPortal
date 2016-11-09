@@ -114,6 +114,7 @@ namespace CRP.Models.ViewModels
 			GarageName = vehicle.Garage.Name;
 			GarageNumOfComment = vehicle.Garage.NumOfComment;
 			GarageRating = vehicle.Garage.Star;
+
 			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
 
 			string tmpString = null;
