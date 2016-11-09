@@ -33,11 +33,7 @@ namespace CRP.Models.Entities
         public Nullable<int> VehicleID { get; set; }
         public string LicenseNumber { get; set; }
         public string VehicleName { get; set; }
-        public int ModelID { get; set; }
-        public int Year { get; set; }
-        public int TransmissionType { get; set; }
         public string TransmissionDetail { get; set; }
-        public Nullable<int> FuelType { get; set; }
         public string Engine { get; set; }
         public int Color { get; set; }
         public bool IsCanceled { get; set; }
@@ -46,7 +42,6 @@ namespace CRP.Models.Entities
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual Garage Garage { get; set; }
-        public virtual VehicleModel VehicleModel { get; set; }
         public virtual Vehicle Vehicle { get; set; }
     }
 }

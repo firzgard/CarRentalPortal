@@ -354,6 +354,7 @@
     </Compile>
     <Compile Include="Helpers\APICheckoutV3.cs" />
     <Compile Include="Helpers\Recommender.cs" />
+    <Compile Include="Helpers\Searcher.cs" />
     <Compile Include="Models\AutofacModules\AutoMapperModule.cs" />
     <Compile Include="Models\AutofacModules\EntityFrameworkModule.cs" />
     <Compile Include="Models\AutofacModules\RepositoryModule.cs" />

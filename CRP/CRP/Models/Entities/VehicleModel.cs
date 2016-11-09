@@ -17,7 +17,6 @@ namespace CRP.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public VehicleModel()
         {
-            this.BookingReceipts = new HashSet<BookingReceipt>();
             this.Vehicles = new HashSet<Vehicle>();
             this.Categories = new HashSet<Category>();
         }
@@ -28,8 +27,6 @@ namespace CRP.Models.Entities
         public int NumOfDoor { get; set; }
         public int NumOfSeat { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<BookingReceipt> BookingReceipts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehicle> Vehicles { get; set; }
         public virtual VehicleBrand VehicleBrand { get; set; }

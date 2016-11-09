@@ -29,9 +29,12 @@ namespace CRP.Helpers
 								+ categoryList.Count();
 
 			// Get the list of userIds of users that has booked a same vehicle with this user.
+			// Exclude this user
 			var similarUserIdList = user.BookingReceipts
 					.SelectMany(b => b.Vehicle.BookingReceipts.Select(b2 => b2.CustomerID))
-					.Distinct().ToList();
+					.Distinct()
+					.Where(id => id != user.Id)
+					.ToList();
 
 			// User profile is built from attribute vectors
 			var userProfile = BuildUserProfile(user, brandList, categoryList, similarUserIdList.Count(), numOfAttribute);
@@ -80,11 +83,11 @@ namespace CRP.Helpers
 			var bookingList = new List<List<double>>();
 			foreach (var booking in user.BookingReceipts)
 			{
-				bookingList.Add(CalculateAttributeVectorsOfItem(booking.TransmissionType,
-																booking.FuelType,
+				bookingList.Add(CalculateAttributeVectorsOfItem(booking.Vehicle.TransmissionType,
+																booking.Vehicle.FuelType,
 																booking.Color,
-																booking.VehicleModel.BrandID,
-																booking.VehicleModel.Categories.ToList(),
+																booking.Vehicle.VehicleModel.BrandID,
+																booking.Vehicle.VehicleModel.Categories.ToList(),
 																numOfSimilarUser,
 																brandList,
 																categoryList));
@@ -157,15 +160,22 @@ namespace CRP.Helpers
 			}
 
 			// Num of customer that has booked this item and also has booked a vehicle that this user has book before.
-			vectorList.Add(numOfSimilarUser);
+			// 
+			vectorList.Add(numOfSimilarUser == 0 ? 0 : (1 + Math.Log10(numOfSimilarUser)));
 
 			// Get the number of attribute length value that equals 1
-			var numOfTruthyAttribute = vectorList.Count(v => v == 1);
+			var numOfEqual1Attribute = vectorList.Count(v => v == 1);
 
-			// Calc the divisor to nomalize the attribute vectors
-			var divisor = Math.Sqrt(numOfTruthyAttribute);
+			// The addition is calc based on square of TF(Current attribute length) of numOfSimilarUser
+			// If numOfSimilarUser equals 0, then its TF is 0
+			// If numOfSimilarUser equals 1, then its TF is 1, meaning it is already included in the numOfEqul1Attribute
+			var addition = numOfSimilarUser == 0 || numOfSimilarUser == 1 ? 0 : Math.Pow(1 + Math.Log10(numOfSimilarUser), 2);
 
-			// Return the nomalized vectors
+			// Calc the length of master vector
+			var divisor = Math.Sqrt(numOfEqual1Attribute + addition);
+
+			// Return the nomalized vectors.
+			// Lengths of normalized vectors are calc by dividing it by the master vector's length
 			return vectorList.Select(v => v /= divisor).ToList();
 		}
 	}
@@ -215,11 +225,7 @@ namespace CRP.Helpers
 			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
 
 			TransmissionTypeName = Constants.TRANSMISSION_TYPE[vehicle.TransmissionType];
-
-			if (vehicle.FuelType != null)
-			{
-				FuelTypeName = Constants.FUEL_TYPE[vehicle.FuelType.Value];
-			}
+			FuelTypeName = vehicle.FuelType == null ? null : Constants.FUEL_TYPE[vehicle.FuelType.Value];
 
 			// Get the list of userid of users that has booked this vehicle
 			CustomerIdList = vehicle.BookingReceipts.Select(b => b.CustomerID).Distinct().ToList();
