@@ -1,6 +1,8 @@
 ﻿@using Microsoft.AspNet.Identity
 @{ 
-    var avatar = Session["avatar"] as string;
+    var claims = ((System.Security.Claims.ClaimsIdentity)User.Identity).Claims;
+    var claim = claims.SingleOrDefault(m => m.Type == "UserAvatar");
+    var avatar = claim.Value;
 }
 <nav class="navbar-default navbar-static-side" role="navigation">
 	<div class="sidebar-collapse">
