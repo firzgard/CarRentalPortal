@@ -118,8 +118,8 @@ namespace CRP.Models.ViewModels
 		public string LicenseNumber { get; set; }
 		public double RentalPrice { get; set; }
         public double Deposit { get; set; }
-		public string StartTime { get; set; }
-		public string EndTime { get; set; }
+		public DateTime StartTime { get; set; }
+		public DateTime EndTime { get; set; }
 		public int? Star { get; set; }
 		public string Comment { get; set; }
 		public bool IsInThePast { get; set; }
@@ -136,8 +136,8 @@ namespace CRP.Models.ViewModels
 			LicenseNumber = receipt.LicenseNumber;
 			RentalPrice = receipt.RentalPrice;
             Deposit = receipt.Deposit;
-			StartTime = receipt.StartTime.ToShortTimeString() + " " + receipt.StartTime.ToShortDateString();
-			EndTime = receipt.EndTime.ToShortTimeString() + " " +receipt.EndTime.ToShortDateString();
+			StartTime = receipt.StartTime;
+			EndTime = receipt.EndTime;
 			Star = receipt.Star;
             Comment = receipt.Comment != null ? Regex.Replace(receipt.Comment, @"\r\n?|\n", "<br>"): null;
 
@@ -174,6 +174,7 @@ namespace CRP.Models.ViewModels
 	public class BookingsFilterConditions
 	{
 		public string providerID { get; set; }
+		public int? vehicleID { get; set; }
 		public int? garageID { get; set; }
 		public bool IsCanceled { get; set; }
 		public bool? IsInThePast { get; set; }

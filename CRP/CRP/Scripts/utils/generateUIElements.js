@@ -33,7 +33,10 @@ function validateEmail(email) {
 }
 
 function validatePhone(num) {
-    var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+    if(num.length < 10 || num.length > 20) {
+        return false;
+    }
+    var regex = /^[0-9-+]+$/;
     return regex.test(num);
 }
 

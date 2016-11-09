@@ -18,7 +18,7 @@ namespace CRP.Models
 		public string Fullname { get; set; }
 
 		[Display(Name = "Email")]
-		[EmailAddress]
+		[EmailAddress(ErrorMessage = "Không đúng định dạng email.")]
 		public string Email { get; set; }
 		
 		[Required(ErrorMessage = "Số điện thoại không được để trống", AllowEmptyStrings = false)]

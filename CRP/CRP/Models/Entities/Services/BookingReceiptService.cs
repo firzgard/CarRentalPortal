@@ -47,7 +47,12 @@ namespace CRP.Models.Entities.Services
             var bookings = repository.Get(b => b.ProviderID == conditions.providerID
                 && b.IsPending == false);
 
-            if(conditions.garageID != null)
+			if (conditions.vehicleID != null)
+			{
+				bookings = bookings.Where(b => b.VehicleID == conditions.vehicleID);
+			}
+
+			if (conditions.garageID != null)
             {
                 bookings = bookings.Where(b => b.GarageID == conditions.garageID);
             }
