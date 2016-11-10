@@ -59,7 +59,11 @@ namespace CRP.Controllers
 
 			var locationService = this.Service<ILocationService>();
 			// Only get location w/ garage
-			var locationList = locationService.Get(l => l.Garages.Count > 0).OrderBy(l => l.Name).ToList();
+			var locationList = locationService.Get(l => l.Garages.Any(g => g.IsActive
+																			&& !g.IsDeleted
+																			&& g.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
+																			&& (g.AspNetUser.LockoutEndDateUtc == null || g.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow))
+					).OrderBy(l => l.Name).ToList();
 
 			var priceGroupService = this.Service<IPriceGroupService>();
 			var maxPerDayPrice = priceGroupService.Get().Max(pg => pg.PerDayPrice);
