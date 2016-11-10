@@ -16,21 +16,11 @@ namespace CRP.Models.ViewModels
 		public List<Category> CategoryList { get; set; }
 		public List<Location> LocationList { get; set; }
 		public double MaxPrice { get; set; }
+		public string MaxPriceUnit { get; set; }
 		public double MinPrice { get; set; }
+		public string MinPriceUnit { get; set; }
 		public int MaxYear { get; set; }
 		public int MinYear { get; set; }
-
-		public SearchPageViewModel(List<VehicleBrand> brandList, List<int> numOfSeatList, List<Category> categoryList, List<Location> locationList, double maxPrice, double minPrice, int maxYear, int minYear)
-		{
-			BrandList = brandList;
-			NumOfSeatList = numOfSeatList;
-			CategoryList = categoryList;
-			LocationList = locationList;
-			MaxPrice = maxPrice;
-			MinPrice = minPrice;
-			MaxYear = maxYear;
-			MinYear = minYear;
-		}
 	}
 
 	//// Model to populate the vehicle info page
@@ -82,8 +72,9 @@ namespace CRP.Models.ViewModels
 		public int TotalResult { get; set; }
 		public int TotalPage { get; set; }
 		public double? AveragePrice { get; set; }
+		public double? AveragePeriod { get; set; }
 
-		public SearchResultJsonModel(List<SearchResultItemJsonModel> searchResultList, double? averagePrice, int totalResult, int currentPage)
+		public SearchResultJsonModel(List<SearchResultItemJsonModel> searchResultList, double? averagePrice, double? averagePeriod, int totalResult, int currentPage)
 		{
 			if (!searchResultList.Any()) return;
 
@@ -92,6 +83,7 @@ namespace CRP.Models.ViewModels
 			TotalResult = totalResult;
 			TotalPage = (int)Math.Ceiling((float)totalResult / Constants.NUM_OF_SEARCH_RESULT_PER_PAGE);
 			AveragePrice = averagePrice;
+			AveragePeriod = averagePeriod;
 		}
 	}
 
@@ -113,7 +105,7 @@ namespace CRP.Models.ViewModels
 		public decimal? Star { get; set; }
 		public List<string> ImageList { get; set; }
 		// Shortest rental period of this vehicle that fit the filter
-		public string BestPossibleRentalPeriod { get; set; }
+		public int BestPossibleRentalPeriod { get; set; }
 		// Lowest price range of this vehicle that fit the filter
 		public double BestPossibleRentalPrice { get; set; }
 

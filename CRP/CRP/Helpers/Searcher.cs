@@ -112,9 +112,12 @@ namespace CRP.Helpers
 			// Parse into models suitable to run recommendation algor
 			var vehicleList2 = vehicles.ToList().Select(vehicle => new VehicleFilterModel(vehicle, rentalTime));
 
-			double? averagePrice = null;
+			double? averagePrice = null, averagePeriod = null;
 			if (vehicleList2.Any())
+			{
 				averagePrice = vehicleList2.Average(r => r.BestPossibleRentalPrice);
+				averagePeriod = vehicleList2.Average(r => r.BestPossibleRentalPeriod);
+			}
 
 			// Max/Min Price conditions
 			// Do not validate MaxPrice > MinPrice here. Do it before this in the controller
@@ -130,8 +133,11 @@ namespace CRP.Helpers
 
 			// All normal filterings passed, recommender's job coming
 			// =============================================================================================
-			var recommender = new Recommender();
-			vehicleList2 = recommender.CalculateRecommendScoreForSearchResults(vehicleList2.ToList(), user);
+			if (user != null)
+			{
+				var recommender = new Recommender();
+				vehicleList2 = recommender.CalculateRecommendScoreForSearchResults(vehicleList2.ToList(), user);
+			}
 
 
 			// =============================================================================================
@@ -174,7 +180,7 @@ namespace CRP.Helpers
 			var filterResults = vehicleList2.Select(v => new SearchResultItemJsonModel(v));
 
 			// Nest into result object
-			return new SearchResultJsonModel(filterResults.ToList(), averagePrice, filteredRecords, filterConditions.Page);
+			return new SearchResultJsonModel(filterResults.ToList(), averagePrice, averagePeriod, filteredRecords, filterConditions.Page);
 		}
 	}
 }

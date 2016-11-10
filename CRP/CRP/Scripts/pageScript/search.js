@@ -46,7 +46,7 @@ function renderSearchResultItem(searchResult){
 					</a>
 				</div>
 				<div class="vehicle-price-tag" >
-					${Math.ceil(Number.parseInt(searchResult.BestPossibleRentalPrice)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}<up>&#8363;</up>/<per>${searchResult.BestPossibleRentalPeriod}</per>
+					${Math.ceil(Number.parseInt(searchResult.BestPossibleRentalPrice)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}<up>&#8363;</up>/<per>${searchResult.BestPossibleRentalPeriod < 24 ? `${searchResult.BestPossibleRentalPeriod} giờ` : 'ngày' }</per>
 				</div>
 			</div>
 			<div class="vehicle-info row">
@@ -149,8 +149,8 @@ function renderPriceSlider(data){
 		behaviour: 'drag-tap',
 		connect: true,
 		format: {
-			to: value => `${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`,
-			from: value => Number.parseInt(value.replace('₫', '').replace(',', ''))
+			to: value => `${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫/<small>${value == PRICE_SLIDER_MAX ? PRICE_SLIDER_MAX_UNIT: PRICE_SLIDER_MIN_UNIT}</small>`,
+			from: value => Number.parseInt(value.replace('₫/', '').replace(',', ''))
 		},
 		margin: 100000,
 		pips: {
@@ -158,8 +158,7 @@ function renderPriceSlider(data){
 			values: [ Number.parseInt(data.AveragePrice) ],
 			density: Infinity,
 			format: {
-				to: value => `Trung&nbsp;bình:&nbsp;${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`,
-				from: value => Number.parseInt(value.replace('₫', '').replace('Trung bình ', '').replace(',', ''))
+				to: value => `Trung&nbsp;bình:&nbsp;${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫/<small>${data.AveragePeriod < 24 ? `${data.AveragePeriod} giờ` : 'ngày'}</small>`
 			}
 		},
 		start: [searchConditions.MinPrice || PRICE_SLIDER_MIN || 0, searchConditions.MaxPrice || PRICE_SLIDER_MAX || 100000],
@@ -561,8 +560,8 @@ $(document).ready(() => {
 		behaviour: 'drag-tap',
 		connect: true,
 		format: {
-			to: value => `₫${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`,
-			from: value => Number.parseInt(value.replace('₫', '').replace(',', ''))
+			to: value => `${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫/<small>${value == PRICE_SLIDER_MAX ? PRICE_SLIDER_MAX_UNIT: PRICE_SLIDER_MIN_UNIT}</small>`,
+			from: value => Number.parseInt(value.replace('₫/', '').replace(',', ''))
 		},
 		margin: 100000,
 		start: [PRICE_SLIDER_MIN || 0, PRICE_SLIDER_MAX || 100000],
