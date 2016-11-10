@@ -22,7 +22,6 @@ namespace CRP.Areas.Customer.Controllers
 	{
 		// BecomeProvider page
 		[System.Web.Mvc.Route("becomeProvider", Name = "BecomeProvider")]
-		[Authorize(Roles = "Customer")]
 		public ActionResult Index()
 		{
 			return View("~/Areas/Customer/Views/BecomeProvider/Index.cshtml");
@@ -31,7 +30,6 @@ namespace CRP.Areas.Customer.Controllers
 		// Process payment from BecomeProvider
 		// Redirect to NganLuong to handle payment
 		// Return to /becomeProvider/success
-		[Authorize(Roles = "Customer")]
 		[System.Web.Http.HttpPost]
 		[ValidateAntiForgeryToken]
 		[System.Web.Mvc.Route("becomeProvider/payment", Name = "GetProvidership")]
@@ -88,7 +86,6 @@ namespace CRP.Areas.Customer.Controllers
 
 		// Return page for successful payment from nganluong
 		[System.Web.Mvc.Route("becomeProvider/success")]
-		[Authorize(Roles = "Customer")]
 		public async System.Threading.Tasks.Task<ActionResult> Success(string error_code, string token)
 		{
 			// Check the returned info + MD5 token

@@ -209,7 +209,7 @@ function renderSearcher(){
 			renderPriceSlider(data);
 		} else {
 			jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
-				No vehicle fits your parameters. Please try again.
+				Không có xe nào đáp ứng với các điều kiện tìm kiếm của bạn. Xin vui lòng thử lại.
 			</div>`);
 		}
 	})

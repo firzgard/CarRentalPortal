@@ -83,12 +83,12 @@ namespace CRP.Models.ViewModels
 				GarageEmail = br.GarageEmail;
 				VehicleID = br.VehicleID;
 				VehicleName = br.VehicleName;
-				Year = br.Year;
-				NumOfSeat = br.VehicleModel.NumOfSeat;
-				NumOfDoor = br.VehicleModel.NumOfDoor;
-				TransmissionType = Constants.TRANSMISSION_TYPE[br.TransmissionType];
+				Year = br.Vehicle.Year;
+				NumOfSeat = br.Vehicle.VehicleModel.NumOfSeat;
+				NumOfDoor = br.Vehicle.VehicleModel.NumOfDoor;
+				TransmissionType = Constants.TRANSMISSION_TYPE[br.Vehicle.TransmissionType];
 				TransmissionDetail = br.TransmissionDetail;
-				FuelType = br.FuelType == null ? null : Constants.FUEL_TYPE[br.FuelType.Value];
+				FuelType = br.Vehicle.FuelType == null ? null : Constants.FUEL_TYPE[br.Vehicle.FuelType.Value];
 				Engine = Engine;
 				Color = Constants.COLOR[br.Color];
 			}
@@ -151,7 +151,7 @@ namespace CRP.Models.ViewModels
 			}
 
 			IsCanceled = receipt.IsCanceled;
-			IsSelfBooking = receipt.ProviderID == receipt.CustomerID;
+			IsSelfBooking = receipt.Garage.OwnerID == receipt.CustomerID;
 		}
 	}
 

@@ -123,11 +123,15 @@ $(document).ready(function () {
             },
             {
                 targets: -2
-				, render: function (data, type, row) {
-				    if (data !== null) {
-				        return renderStarRating(data, '#4CAF50');
-				    }
-				    return '-';
+				, render: function(data, type, row) {
+					if (type === 'display') {
+						if (row[7] > 0) {
+							return renderStarRating(data);
+						}
+						
+						return '-';
+					}
+					return data;
 				}
             },
 			{

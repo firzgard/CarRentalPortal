@@ -33,7 +33,7 @@ namespace CRP.Models.Entities.Services
 		//gui mail thong bao ve Booking moi
 		public void SendBookingAlertEmailToProvider(BookingReceipt booking)
 		{
-			var mailMessage = new MailMessage("tamntse61384@fpt.edu.vn", booking.AspNetUser1.Email)
+			var mailMessage = new MailMessage("tamntse61384@fpt.edu.vn", booking.Garage.Email)
 			{
 				Subject = "Giao dịch đặt xe mới trên hệ thống CRP",
 				Body = "Xe " + booking.VehicleName + " của bạn vừa được đặt từ " + booking.StartTime.ToString(@"dd\/MM\/yyyy HH:mm") + " đến " + booking.EndTime.ToString(@"dd\/MM\/yyyy HH:mm") + " bởi khách hàng " + booking.AspNetUser.FullName + ".\n"

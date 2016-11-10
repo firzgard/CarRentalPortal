@@ -382,23 +382,18 @@ $(document).ready(function () {
 
 	// Cancel change. Reset all inputs
 	$('#cancelChangeBtn').click(function () {
-		$('.edit-control').css('display', 'none');
-		$('.display-control').css('display', 'inherit');
 
 		$('#vehicleNameInput').val($('#vehicleNameInput').data('default'));
 		$('#licenseNumberInput').val($('#licenseNumberInput').data('default'));
-		$('#engineInput').val($('#engineInput').data('default'));
-		$('#transmissionDetailInput').val($('#transmissionDetailInput').data('default'));
-		$('#yearInput').val($('#yearInput').data('default'));
-		$('#descriptionInput').val($('#descriptionInput').data('default'));
-
-		$('#modelIDInput').val($('#modelIDInput').data('default')).trigger("change");
 		$('#garageIDInput').val($('#garageIDInput').data('default')).trigger("change");
 		$('#vehicleGroupIDInput').val($('#vehicleGroupIDInput').data('default')).trigger("change");
-		$('#fuelTypeInput').val($('#fuelTypeInput').data('default')).trigger("change");
+		$('#engineInput').val($('#engineInput').data('default'));
+		$('#transmissionDetailInput').val($('#transmissionDetailInput').data('default'));
+		$('input[name="colorInput"][data-default="True"]').prop('checked', true);
+		$('#descriptionInput').val($('#descriptionInput').data('default'));
 
-		$('input[name="transmissionTypeInput"][data-default="True"]').parent().click();
-		$('input[name="colorInput"][data-default="True"]').prop('checked', true)
+		$('.edit-control').css('display', 'none');
+		$('.display-control').css('display', 'inherit');
 	});
 
 	$('#saveChangeBtn').click(() => {
@@ -413,11 +408,7 @@ $(document).ready(function () {
 			, LicenseNumber: $('#licenseNumberInput').val()
 			, GarageID: $('#garageIDInput').val()
 			, VehicleGroupID: $('#vehicleGroupIDInput').val()
-			, ModelID: $('#modelIDInput').val()
-			, Year: $('#yearInput').val()
 			, Engine: $('#engineInput').val()
-			, FuelType: $('#fuelTypeInput').val()
-			, TransmissionType: $('input[name="transmissionTypeInput"]:checked').val()
 			, TransmissionDetail: $('#transmissionDetailInput').val()
 			, Color: $('input[name="colorInput"]:checked').val()
 			, Description: $('#descriptionInput').val()
@@ -451,32 +442,8 @@ $(document).ready(function () {
 			toastr.warning('Biển số xe không được để trống.');
 	})
 
-	$('#yearInput').focusout(function(){
-		let value = Number.parseInt($(this).val());
-		// To ensure that it is integer
-		$(this).val(value);
-
-		if(!value) {
-			toastr.warning('Năm sản xuất của xe không được để trống.');
-		} else if(value > MAX_YEAR) {
-			$(this).val(MAX_YEAR);
-		} else if (value < MIN_YEAR) {
-			$(this).val(MIN_YEAR);
-		}
-	})
-
 	// =====================================
 	// Initiate select2
-	$('#modelIDInput').select2({
-		placeholder: "Vui lòng chọn dòng xe..."
-		, matcher: function(term, data) {
-			return data.id == '0' ? data : $.fn.select2.defaults.defaults.matcher.apply(this, arguments);
-		}
-		, width: '100%'
-	})
-	.on('select2:close', () => {
-		$('#modelIDInput')[0].checkValidity() || toastr.warning('Dòng xe không được để trống.');
-	})
 
 	$('#garageIDInput').select2({
 		placeholder: "Vui lòng chọn garage..." 
@@ -489,12 +456,6 @@ $(document).ready(function () {
 	$('#vehicleGroupIDInput').select2({
 		allowClear: true
 		, placeholder: "Vui lòng chọn nhóm xe..."
-		, width: '100%'
-	})
-
-	$('#fuelTypeInput').select2({
-		allowClear: true
-		, placeholder: "Vui lòng chọn loại nhiên liệu..."
 		, width: '100%'
 	})
 
