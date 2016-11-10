@@ -33,7 +33,7 @@
 					<div class="col-md-6">
 						<div class="row m-b">
 							<div class="col-md-4 text-right">
-								<label>Biển số xe <span style="color: red">*</span></label>
+								<label>Biển số xe </label>
 							</div>
 							<div class="col-md-8">
 								@Html.TextBoxFor(q => q.LicenseNumber, new { @class = "form-control", @id = "licenseNumberInput", @maxlength = "50", required = true, data_default = Model.LicenseNumber })
@@ -41,7 +41,7 @@
 						</div>
 						<div class="row m-b">
 							<div class="col-md-4 text-right">
-								<label>Garage <span style="color: red">*</span></label>
+								<label>Garage </label>
 							</div>
 							<div class="col-md-8">
 								@Html.DropDownListFor(q => q.GarageID, Model.listGarage, new { @class = "form-control", @id = "garageIDInput", data_default = Model.GarageID })
@@ -49,7 +49,7 @@
 						</div>
 						<div class="row m-b">
 							<div class="col-md-4 text-right">
-								<label>Nhóm xe <span style="color: red">*</span></label>
+								<label>Nhóm xe </label>
 							</div>
 							<div class="col-md-8">
 								<select id="vehicleGroupIDInput" class="form-control" data-default="@Model.VehicleGroupID" >
@@ -79,7 +79,7 @@
 						</div>
 						<div class="row m-b">
 							<div class="col-md-4 text-right">
-								<label>Màu xe <span style="color: red">*</span></label>
+								<label>Màu xe </label>
 							</div>
 							<div class="col-md-8">
 								@for (var i = 1; i < Constants.COLOR.Count(); i++)
