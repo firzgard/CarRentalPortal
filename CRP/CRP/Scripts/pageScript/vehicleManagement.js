@@ -82,7 +82,7 @@ $(document).ready(function () {
 				targets: 1
 				, render: function(data, type, row) {
 					if (type === 'display') {
-						return `<a target="_blank" href="/management/vehicleManagement/${row.ID}">${data}</a>`
+						return `<a target="_blank" onclick="event.stopPropagation();" href="/management/vehicleManagement/${row.ID}">${data}</a>`
 					}
 
 					return data;
