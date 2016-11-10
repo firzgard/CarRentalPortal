@@ -34,7 +34,7 @@ namespace CRP.Areas.Provider.Controllers
 
 			var garageService = this.Service<IGarageService>();
 			var providerID = User.Identity.GetUserId();
-			var listGarage = garageService.Get(q => q.OwnerID == providerID)
+			var listGarage = garageService.Get(q => q.OwnerID == providerID && !q.IsDeleted)
 				.Select(q => new SelectListItem()
 				{
 					Text = q.Name,
@@ -68,8 +68,7 @@ namespace CRP.Areas.Provider.Controllers
 			var service = this.Service<IGarageService>();
 			FilterByGarageView garageView = new FilterByGarageView();
 			var providerID = User.Identity.GetUserId();
-			garageView.listGarage = service.Get()
-				.Where(q => q.OwnerID == providerID && q.IsActive && q.ID != garageID)
+			garageView.listGarage = service.Get(q => q.OwnerID == providerID && q.IsActive && q.ID != garageID && !q.IsDeleted)
 				.Select(q => new SelectListItem()
 				{
 					Text = q.Name,
@@ -89,8 +88,7 @@ namespace CRP.Areas.Provider.Controllers
 			// just use it to return a list not for keeping data purpose
 			FilterByGarageView garageView = new FilterByGarageView();
 			var providerID = User.Identity.GetUserId();
-			garageView.listGarage = service.Get()
-				.Where(q => q.OwnerID == providerID)
+			garageView.listGarage = service.Get(q => q.OwnerID == providerID)
 				.Select(q => new SelectListItem()
 				{
 					Text = q.Name + " [" + (q.IsActive ? "đang hoạt động" : "ngưng hoạt động") + "]",
@@ -118,16 +116,14 @@ namespace CRP.Areas.Provider.Controllers
 
 			var viewModel = new VehicleDetailInfoViewModel(vehicle)
 			{
-				listGarage = garageService.Get()
-					.Where(q => q.OwnerID == providerID)
+				listGarage = garageService.Get(q => q.OwnerID == providerID && !q.IsDeleted)
 					.Select(q => new SelectListItem()
 					{
 						Text = q.Name,
 						Value = q.ID.ToString(),
 						Selected = true,
 					}),
-				listGroup = groupService.Get()
-					.Where(q => q.OwnerID == providerID)
+				listGroup = groupService.Get(q => q.OwnerID == providerID)
 					.Select(q => new SelectListItem()
 					{
 						Text = q.Name,
