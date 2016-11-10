@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CRP.Helpers;
 using CRP.Models;
 using CRP.Models.Entities;
 
@@ -95,58 +96,47 @@ namespace CRP.Models.ViewModels
 	}
 
 	// Model of JSON object of search result for searching vehicle to book
-	public class SearchResultItemJsonModel : VehicleRecordJsonModel
+	public class SearchResultItemJsonModel
 	{
+		public int ID { get; set; }
+		public string LicenseNumber { get; set; }
+		public string Name { get; set; }
+		public int? Year { get; set; }
 		public string Location { get; set; }
 		public string GarageName { get; set; }
 		public int GarageNumOfComment { get; set; }
 		public decimal GarageRating { get; set; }
 		public string TransmissionTypeName { get; set; }
 		public string FuelTypeName { get; set; }
-		public List<string> CategoryList { get; set; }
+		public int NumOfSeat { get; set; }
+		public int NumOfComment { get; set; }
+		public decimal? Star { get; set; }
 		public List<string> ImageList { get; set; }
 		// Shortest rental period of this vehicle that fit the filter
 		public string BestPossibleRentalPeriod { get; set; }
 		// Lowest price range of this vehicle that fit the filter
 		public double BestPossibleRentalPrice { get; set; }
 
-		public SearchResultItemJsonModel(Entities.Vehicle vehicle, int rentalTime) : base(vehicle)
+		public SearchResultItemJsonModel(VehicleFilterModel vehicle)
 		{
-			Location = vehicle.Garage.Location.Name;
-			GarageName = vehicle.Garage.Name;
-			GarageNumOfComment = vehicle.Garage.NumOfComment;
-			GarageRating = vehicle.Garage.Star;
+			ID = vehicle.ID;
+			LicenseNumber = vehicle.LicenseNumber;
+			Name = vehicle.Name;
+			Year = vehicle.Year;
+			Location = vehicle.Location;
+			GarageName = vehicle.GarageName;
+			GarageNumOfComment = vehicle.GarageNumOfComment;
+			GarageRating = vehicle.GarageRating;
 
-			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
+			TransmissionTypeName = vehicle.TransmissionTypeName;
+			FuelTypeName = vehicle.FuelTypeName;
+			NumOfSeat = vehicle.NumOfSeat;
+			NumOfComment = vehicle.NumOfComment;
+			Star = vehicle.Star;
+			ImageList = vehicle.ImageList;
 
-			string tmpString = null;
-			Constants.TRANSMISSION_TYPE.TryGetValue(vehicle.TransmissionType, out tmpString);
-			TransmissionTypeName = tmpString;
-
-			if (vehicle.FuelType != null)
-			{
-				tmpString = null;
-				Constants.FUEL_TYPE.TryGetValue((int)vehicle.FuelType, out tmpString);
-				FuelTypeName = tmpString;
-			}
-
-			// Find the best PriceGroupItem that match the search
-			var items = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.OrderBy(x => x.MaxTime);
-			foreach (var item in items)
-			{
-				if (item.MaxTime >= rentalTime)
-				{
-					BestPossibleRentalPeriod = item.MaxTime + "&nbsp;giờ";
-					BestPossibleRentalPrice = item.Price;
-					break;
-				}
-			}
-			// If not found, use the PerDayPrice
-			if (BestPossibleRentalPrice == 0.0d)
-			{
-				BestPossibleRentalPeriod = "ngày";
-				BestPossibleRentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice;
-			}
+			BestPossibleRentalPeriod = vehicle.BestPossibleRentalPeriod;
+			BestPossibleRentalPrice = vehicle.BestPossibleRentalPrice;
 		}
 	}
 }

@@ -79,9 +79,7 @@ $(document).ready(() => {
             Xác nhận thông tin
             </h2>
             </div>
-            <div class="modal-body">
-             Có phải bạn muốn bỏ chặn provider này?</b>. Bạn chắc chứ?
-            </div>
+            <div class="modal-body">Bạn có chắc chắn muốn bỏ chặn user này?</div>
             <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
             <button type="button" class ="btn btn-danger btn-yes">Đúng</button>
@@ -97,9 +95,7 @@ $(document).ready(() => {
             ${action === 'delete' ? 'Deletion' : (action === 'deactivate' ? 'Deactivation' : 'Activation')} Confirmation
             </h2>
             </div>
-            <div class="modal-body">
-             Có phải bạn muốn chặn provider này?</b>. Bạn chắc chứ?
-            </div>
+            <div class="modal-body">Bạn có chắc chắn muốn chặn user này?</div>
             <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Không</button>
             <button type="button" class ="btn btn-danger btn-yes">Đúng</button>

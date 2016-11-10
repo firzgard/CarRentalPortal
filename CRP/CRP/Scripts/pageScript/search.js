@@ -216,7 +216,7 @@ function renderSearcher(){
 	.fail(function(err, textStatus, errorThrown) {
 		console.log(err, textStatus, errorThrown);
 		jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
-			No vehicle fits your parameters. Please try again.
+			Hệ thống đang gặp phải một số sự cố ngoài ý muốn. Chân thành xin lỗi quý khách. Xin quý khác vui lòng thử lại sau.
 		</div>`);
 	})
 }

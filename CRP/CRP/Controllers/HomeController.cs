@@ -5,10 +5,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CRP.Helpers;
 using CRP.Models;
 using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
 using CRP.Models.ViewModels;
+using Microsoft.AspNet.Identity;
+using Constants = CRP.Models.Constants;
 
 namespace CRP.Controllers
 {
@@ -131,8 +134,11 @@ namespace CRP.Controllers
 			Response.StatusCode = 200;
 			Response.StatusDescription = "Queried successfully";
 
-			var service = this.Service<IVehicleService>();
-			var searchResult = service.SearchVehicle(searchConditions);
+			var userId = User.Identity.GetUserId();
+			var user = this.Service<IUserService>().Get(userId);
+			var searcher = new Searcher();
+			var searchResult = searcher.SearchVehicle(searchConditions, user);
+
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}
 		

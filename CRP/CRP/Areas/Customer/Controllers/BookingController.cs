@@ -412,15 +412,13 @@ namespace CRP.Areas.Customer.Controllers
 			booking.Comment = comment.Comment;
 			booking.Star = comment.Star;
 
-			// Update vehicle's rating if it still exist
-			if (booking.VehicleID.HasValue)
-				booking.Vehicle.Star = (booking.Vehicle.Star*booking.Vehicle.NumOfComment + comment.Star)
-										/ ++booking.Vehicle.NumOfComment;
+			// Update vehicle's rating and NumOfComment
+			booking.Vehicle.Star = (booking.Vehicle.Star*booking.Vehicle.NumOfComment + comment.Star)
+									/ ++booking.Vehicle.NumOfComment;
 
-			// Update garage's rating if it still exist
-			if (booking.GarageID.HasValue)
-				booking.Garage.Star = (booking.Garage.Star * booking.Garage.NumOfComment + comment.Star)
-										/ ++booking.Garage.NumOfComment;
+			// Update garage's rating and NumOfComment
+			booking.Garage.Star = (booking.Garage.Star * booking.Garage.NumOfComment + comment.Star)
+									/ ++booking.Garage.NumOfComment;
 
 			await service.UpdateAsync(booking);
 

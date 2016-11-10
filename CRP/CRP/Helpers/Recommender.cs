@@ -23,10 +23,11 @@ namespace CRP.Helpers
 
 			// Calc num of attribute
 			var numOfAttribute = Constants.TRANSMISSION_TYPE.Count
-								+ Constants.FUEL_TYPE.Count
-								+ Constants.COLOR.Count
-								+ brandList.Count()
-								+ categoryList.Count();
+			                     + Constants.FUEL_TYPE.Count
+			                     + Constants.COLOR.Count
+			                     + brandList.Count()
+			                     + categoryList.Count()
+			                     + 1; // This one is for similarUser attribute
 
 			// Get the list of userIds of users that has booked a same vehicle with this user.
 			// Exclude this user
@@ -56,7 +57,8 @@ namespace CRP.Helpers
 			var idfVector = new List<double>();
 			for (var i = 0; i < numOfAttribute; i++)
 			{
-				var df = itemList.Count(item => item.AttributeVectorList[i] != 0);
+				// Plus 1 for df to prevent dividedByZero
+				var df = itemList.Count(item => item.AttributeVectorList[i] != 0) + 1;
 				idfVector.Add(Math.Log10(itemList.Count/df));
 			}
 
@@ -95,7 +97,7 @@ namespace CRP.Helpers
 
 			// Generate user profile by calc each attribute vector based on his booking history
 			var userProfile = new List<double>();
-			for (int i = 0; i < numOfAttribute; i++)
+			for (var i = 0; i < numOfAttribute; i++)
 			{
 				var vector = 0.0;
 
@@ -104,7 +106,7 @@ namespace CRP.Helpers
 				// with user's rating for that booking
 				for (int j = 0, lim = bookingList.Count; j < lim; j++)
 				{
-					var userRating = user.BookingReceipts.ToList()[i].Star;
+					var userRating = user.BookingReceipts.ToList()[j].Star;
 					// Assume the rating for booking that has not been rated is 2.5
 					var star = userRating == null ? 2.5 : (double)userRating;
 
