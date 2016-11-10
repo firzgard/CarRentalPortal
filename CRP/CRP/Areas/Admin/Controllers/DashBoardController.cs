@@ -16,7 +16,6 @@ namespace CRP.Areas.Admin.Controllers
 	public class DashBoardController : BaseController
 	{
         // Route to admin dashboard
-        [Authorize(Roles = "Admin")]
         [Route("dashboard/admin", Name = "AdminDashboard")]
 		public ActionResult AdminDashboard()
 		{
@@ -45,7 +44,7 @@ namespace CRP.Areas.Admin.Controllers
 			var now = DateTime.Now;
 			var thisMonth = new DateTime(now.Year, now.Month, 1);
 
-			var receipts = bookingService.Get(r => !r.IsCanceled && !r.IsPending && r.CustomerID != r.ProviderID
+			var receipts = bookingService.Get(r => !r.IsCanceled && !r.IsPending && r.CustomerID != r.Garage.OwnerID
 										&& r.StartTime < now
 										&& r.StartTime.Month == thisMonth.Month
 										&& r.StartTime.Year == thisMonth.Year);
@@ -60,8 +59,8 @@ namespace CRP.Areas.Admin.Controllers
 			for (var i = 1; i < 7; i++)
 			{
 				var reportTime = thisMonth.AddMonths(-i);
-				receipts = bookingService.Get(r => !r.IsCanceled && !r.IsPending && r.CustomerID != r.ProviderID
-				                        && r.StartTime < now
+				receipts = bookingService.Get(r => !r.IsCanceled && !r.IsPending && r.CustomerID != r.Garage.OwnerID
+										&& r.StartTime < now
 				                        && r.StartTime.Month == reportTime.Month
 				                        && r.StartTime.Year == reportTime.Year);
 

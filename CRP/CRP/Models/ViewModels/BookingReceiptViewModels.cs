@@ -151,7 +151,7 @@ namespace CRP.Models.ViewModels
 			}
 
 			IsCanceled = receipt.IsCanceled;
-			IsSelfBooking = receipt.ProviderID == receipt.CustomerID;
+			IsSelfBooking = receipt.Garage.OwnerID == receipt.CustomerID;
 		}
 	}
 

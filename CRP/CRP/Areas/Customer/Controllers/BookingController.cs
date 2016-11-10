@@ -45,11 +45,12 @@ namespace CRP.Areas.Customer.Controllers
 
 			var vehicleService = this.Service<IVehicleService>();
 			var vehicle = vehicleService.Get(v => v.ID == model.VehicleID.Value
-																&& v.Garage.IsActive
-																&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
-																&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
-																&& v.VehicleGroup != null
-																&& v.VehicleGroup.IsActive
+												&& !v.IsDeleted
+												&& v.Garage.IsActive
+												&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
+												&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
+												&& v.VehicleGroup != null
+												&& v.VehicleGroup.IsActive
 				).FirstOrDefault();
 
 			// Check if vehicle exists
@@ -141,7 +142,7 @@ namespace CRP.Areas.Customer.Controllers
 			var newBooking = this.Mapper.Map<BookingReceipt>(vehicle);
 			newBooking.ID = 0;
 			newBooking.CustomerID = User.Identity.GetUserId();
-			newBooking.ProviderID = vehicle.Garage.AspNetUser.Id;
+			newBooking.Garage.OwnerID = vehicle.Garage.AspNetUser.Id;
 			newBooking.VehicleID = vehicle.ID;
 
 			newBooking.GaragePhone = vehicle.Garage.Phone1;

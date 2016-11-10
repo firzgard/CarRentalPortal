@@ -10,8 +10,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CRP.Models.ViewModels
 {
-	// Model for creating/editing vehicle
-	public class ManagingVehicleModel
+	// Model for creating vehicle
+	public class CreateVehicleModel
 	{
 		public string LicenseNumber { get; set; }
 		public string Name { get; set; }
@@ -22,6 +22,19 @@ namespace CRP.Models.ViewModels
 		public int TransmissionType { get; set; }
 		public string TransmissionDetail { get; set; }
 		public int? FuelType { get; set; }
+		public string Engine { get; set; }
+		public int Color { get; set; }
+		public string Description { get; set; }
+	}
+
+	// Model for editing vehicle
+	public class EditVehicleModel
+	{
+		public string LicenseNumber { get; set; }
+		public string Name { get; set; }
+		public int GarageID { get; set; }
+		public int? VehicleGroupID { get; set; }
+		public string TransmissionDetail { get; set; }
 		public string Engine { get; set; }
 		public int Color { get; set; }
 		public string Description { get; set; }

@@ -335,10 +335,8 @@
     <Compile Include="Areas\Customer\Controllers\BookingController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Provider\Controllers\BookingManagementController.cs" />
-    <Compile Include="Areas\Provider\Controllers\BrandController.cs" />
     <Compile Include="Areas\Provider\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Provider\Controllers\GarageManagementController.cs" />
-    <Compile Include="Areas\Provider\Controllers\ModelController.cs" />
     <Compile Include="Areas\Provider\Controllers\PriceGroupItemController.cs" />
     <Compile Include="Areas\Provider\Controllers\VehicleGroupManagementController.cs" />
     <Compile Include="Areas\Provider\Controllers\VehicleManagementController.cs" />

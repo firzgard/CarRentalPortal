@@ -380,7 +380,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
                                     toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
                                 }
                             },
-                            eror: function (data) {
+                            error: function (data) {
                                 toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                             }
                         });
@@ -400,7 +400,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
                                     toastr.error(data.message);
                                 }
                             },
-                            eror: function (e) {
+                            error: function (e) {
                                 toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                             }
                         });
@@ -427,7 +427,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
                                     toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
                                 }
                             },
-                            eror: function (e) {
+                            error: function (e) {
                                 toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                             }
                         });
@@ -447,7 +447,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
                                     toastr.error(data.message);
                                 }
                             },
-                            eror: function (data) {
+                            error: function (data) {
                                 toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                             }
                         });
@@ -480,7 +480,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
                                     toastr.error("Cập nhật không thành công. Xin vui lòng thử lại");
                                 }
                             },
-                            eror: function (data) {
+                            error: function (data) {
                                 toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                             }
                         });
@@ -505,7 +505,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
                                     toastr.error(data.message);
                                 }
                             },
-                            eror: function (data) {
+                            error: function (data) {
                                 toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                             }
                         });
@@ -523,7 +523,7 @@ function renderConfirmModal(table, type, action, modalNode, items){
                                 $('.modal').modal('hide');
                                 table.ajax.reload();
                             },
-                            eror: function (data) {
+                            error: function (data) {
                                 toastr.error("Đã có lỗi xảy ra. Xin vui lòng thử lại sau");
                             }
                         });

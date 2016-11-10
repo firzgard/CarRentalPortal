@@ -79,7 +79,7 @@ $(document).on('click', '#cancelChange', function () {
     $('#gPhone2').val(defaultData.Phone2);
     $('#gDescription').val(defaultData.Description);
     $('#gPolicy').val(defaultData.Policy);
-    renderActivation(star);
+    renderActivation();
     renderWorkingTime(garageID, true);
 });
 
@@ -92,7 +92,7 @@ $(document).ready(function () {
         $('.edit-control').css('display', 'inherit');
         $('.display-control').css('display', 'none');
     });
-    renderActivation(star);
+    renderActivation();
 
 	// ============================================
 	// Vehicle table
@@ -123,11 +123,15 @@ $(document).ready(function () {
             },
             {
                 targets: -2
-				, render: function (data, type, row) {
-				    if (data !== null) {
-				        return renderStarRating(data, '#4CAF50');
-				    }
-				    return '-';
+				, render: function(data, type, row) {
+					if (type === 'display') {
+						if (row[7] > 0) {
+							return renderStarRating(data);
+						}
+						
+						return '-';
+					}
+					return data;
 				}
             },
 			{
@@ -553,7 +557,7 @@ $(document).ready(function () {
 	});
 });
 
-function renderActivation(star) {
+function renderActivation() {
     let isActivateInput = ($('#isActive').val() === 'True');
     let btn = $('#activationBtn');
     let name = $('#displayGarageName');
@@ -565,7 +569,7 @@ function renderActivation(star) {
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
                     <label class ="label label-primary label-lg">đang hoạt động</label>
-                    <span style="font-size: 20px;">${renderStarRating(star, 'white')}</span>
+                    <span style="font-size: 20px;">${NUM_OF_COMMENT ? renderStarRating(STAR_RATING, 'white') : ''}</span>
                 </div>
                 
                 <div class ="col-md-2 pull-right m-t m-r-lg">
@@ -582,7 +586,7 @@ function renderActivation(star) {
                 <div class ="col-md-6 m-t m-l m-b" style="font-size: 25px;">
                     <span>${dName}</span>
                     <label class ="label label-danger label-lg">ngưng hoạt động</label>
-                    <span style="font-size: 20px;">${renderStarRating(star, 'white')}</span>
+                    <span style="font-size: 20px;">${NUM_OF_COMMENT ? renderStarRating(STAR_RATING, 'white') : ''}</span>
                 </div>
 
                 <div class ="col-md-2 pull-right m-t m-r-lg">

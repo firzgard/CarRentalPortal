@@ -48,11 +48,15 @@ $(document).ready(() => {
 			{
 			    // Render stars
 			    targets: -3,
-			    render: (data, type) => {
-			        if (data !== null) {
-			            return renderStarRating(data, '#4CAF50');
-			        }
-			        return '-';
+			    render: (data, type, row) => {
+                    if (type === 'display') {
+                        if (row[6] > 0) {
+                            return renderStarRating(data);
+                        }
+                        
+                        return '-';
+                    }
+                    return data;
 			    }
 			},
 			{
