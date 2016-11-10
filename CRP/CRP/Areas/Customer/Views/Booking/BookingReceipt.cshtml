@@ -25,13 +25,13 @@
 							<div class="row">
 								<div class="col-xs-5 col-xs-offset-1">
 									<p><b>Năm sản xuất: </b>@Model.Vehicle.Year</p>
-									<p><b>Số ghế: </b>@Model.VehicleModel.NumOfSeat</p>
-									<p><b>Số cửa: </b>@Model.VehicleModel.NumOfDoor</p>
+									<p><b>Số ghế: </b>@Model.Vehicle.VehicleModel.NumOfSeat</p>
+									<p><b>Số cửa: </b>@Model.Vehicle.VehicleModel.NumOfDoor</p>
 								</div>
 								<div class="col-xs-6">
-									@if (Model.FuelType != null)
-									{<p><b>Nhiên liệu: </b>@Constants.FUEL_TYPE[(int)Model.FuelType]</p>}
-									<p><b>Hộp số: </b>@Constants.TRANSMISSION_TYPE[Model.TransmissionType]</p>
+									@if (Model.Vehicle.FuelType != null)
+									{<p><b>Nhiên liệu: </b>@Constants.FUEL_TYPE[(int)Model.Vehicle.FuelType]</p>}
+									<p><b>Hộp số: </b>@Constants.TRANSMISSION_TYPE[Model.Vehicle.TransmissionType]</p>
 									@if (Model.TransmissionDetail != null)
 									{<p><b>Chi tiết hộp số: </b>@Model.TransmissionDetail</p>}
 									@if (Model.Engine != null)

@@ -48,7 +48,7 @@ namespace CRP.Areas.Provider.Controllers
                 model.NumOfVehicle += garage.Vehicles.Count;
             }
             model.NumOfBookingInThisMonth = receipts.Count;
-            model.NumOfBookingSuccessfulInThisMonth = receipts.Where(r => r.IsCanceled == false).Count();
+            model.NumOfBookingSuccessfulInThisMonth = receipts.Count(r => r.IsCanceled == false);
 
             if(receipts.Any()) {
                 model.Profit = receipts.Where(r => !r.IsCanceled).Sum(r => r.RentalPrice);
