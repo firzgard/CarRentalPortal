@@ -227,7 +227,7 @@ namespace CRP.Areas.Provider.Controllers
             priceGroupEntity.PriceGroupItems = model.PriceGroup.PriceGroupItems;
 
             var listItem = priceGroupItemService.Get(q => q.PriceGroupID == model.PriceGroup.ID);
-            if(listItem.Count() > 0)
+            if(listItem.Any())
             {
                 foreach (var item in listItem)
                 {
