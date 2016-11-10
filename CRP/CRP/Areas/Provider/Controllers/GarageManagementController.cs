@@ -61,7 +61,6 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API Route to get list of garage
-        [Authorize(Roles = "Provider")]
 		[Route("api/garages")]
 		[HttpGet]
 		public JsonResult GetGarageListAPI()
@@ -82,7 +81,6 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
         // update garage of a vehicle
-        [Authorize(Roles = "Provider")]
         [Route("api/garage/updateVehicle/{vehicleID:int}/{garageID:int}")]
         [HttpPatch]
         public async Task<JsonResult> UpdateVehicleInGarage(int vehicleID, int garageID)
@@ -104,7 +102,6 @@ namespace CRP.Areas.Provider.Controllers
 
         // API Route to create single new garage
         // garageViewModel
-        [Authorize(Roles = "Provider")]
         [Route("api/garages")]
 		[HttpPost]
 		public async Task<ActionResult> CreateGarageAPI(Garage model)
@@ -146,7 +143,7 @@ namespace CRP.Areas.Provider.Controllers
             entity.GarageWorkingTimes = model.GarageWorkingTimes;
 
             var workTime = WTService.Get(q => q.GarageID == model.ID);
-            if(workTime.Count() > 0)
+            if(workTime.Any())
             {
                 foreach(var w in workTime)
                 {
@@ -160,19 +157,19 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API Route to delete single garage
-		[Route("api/garages/{id:int}")]
-		[HttpDelete]
-		public async Task<ActionResult> DeleteGarageAPI(int id)
-		{
-			var service = this.Service<IGarageService>();
-			var entity = await service.GetAsync(id);
-			if (entity == null)
-				return HttpNotFound();
+		//[Route("api/garages/{id:int}")]
+		//[HttpDelete]
+		//public async Task<ActionResult> DeleteGarageAPI(int id)
+		//{
+		//	var service = this.Service<IGarageService>();
+		//	var entity = await service.GetAsync(id);
+		//	if (entity == null)
+		//		return HttpNotFound();
 
-			await service.DeleteAsync(entity);
+		//	await service.DeleteAsync(entity);
 			
-			return new HttpStatusCodeResult(200, "Deleted successfully.");
-		}
+		//	return new HttpStatusCodeResult(200, "Deleted successfully.");
+		//}
 
        
         //[HttpGet]
@@ -185,8 +182,7 @@ namespace CRP.Areas.Provider.Controllers
         //    createNewGarageViewModel viewModel = new createNewGarageViewModel();
         //    return View("~/Areas/Provider/Views/VehicleGroupManagement/CreatePopup.cshtml", viewModel);
         //}
-
-        [Authorize(Roles = "Provider")]
+		
         [Route("api/workingTime/{id:int}")]
         [HttpGet]
         public JsonResult WorkingTime(int id)
@@ -209,48 +205,40 @@ namespace CRP.Areas.Provider.Controllers
         {
             var service = this.Service<IGarageService>();
             var garageWTService = this.Service<IGarageWorkingTimeService>();
-            var bookingService = this.Service<IBookingReceiptService>();
 
             var garageEntity = await service.GetAsync(id);
             if(garageEntity != null)
             {
-                if (garageEntity.Vehicles.Count > 0)
+                if (garageEntity.Vehicles.Any(v => !v.IsDeleted))
                 {
-                    return Json(new { result = false, message = "Còn Xe trong garage, vui lòng, di chuyển xe qua garage khác trước khi xóa!" });
+                    return Json(new { result = false, message = "Vẫn còn xe trong garage, vui lòng, di chuyển tất cả xe qua garage khác trước khi xóa!" });
                 }
                 else
                 {
-                    var bookings = bookingService.Get(q => q.GarageID == id);
-                    var garageWTEntity = garageWTService.Get(q => q.GarageID == id);
-
-                    foreach(var item in bookings)
-                    {
-                        item.GarageID = null;
-                        bookingService.UpdateAsync(item);
-                    }
-
-                    foreach(var item in garageWTEntity)
+                    foreach(var item in garageEntity.GarageWorkingTimes)
                     {
                         garageWTService.DeleteAsync(item);
                     }
-                    await service.DeleteAsync(garageEntity);
+
+	                garageEntity.IsDeleted = true;
+					await service.UpdateAsync(garageEntity);
                     return Json(new { result = true, message = "Done!" });
                 }
             } else
             {
-                return Json(new { result = false, message = "Null" });
+                return Json(new { result = false, message = "Không tìm thấy garage." });
             }
             
         }
 
         // load vehicle in garage
-        [Authorize(Roles = "Provider")]
         [Route("api/vehicleInGarage/{id:int}")]
         [HttpGet]
         public JsonResult GetVehicleInGarage(int id)
         {
-            var service = this.Service<IVehicleService>();
-            var list = service.Get(q => q.GarageID == id).ToList();
+			var providerID = User.Identity.GetUserId();
+			var service = this.Service<IVehicleService>();
+            var list = service.Get(q => q.Garage.OwnerID == providerID && q.GarageID == id && !q.IsDeleted).ToList();
             var result = list.Select(q => new IConvertible[] {
                 q.ID,
                 q.Name,
@@ -259,13 +247,13 @@ namespace CRP.Areas.Provider.Controllers
                 q.Year,
                 q.VehicleModel.NumOfSeat,
                 //(from kvp in Models.Constants.COLOR where kvp.Key == q.Color select kvp.Value).ToList().FirstOrDefault(),
-                q.Star
-            });
+                q.Star,
+				q.NumOfComment
+			});
             return Json(new { data = result }, JsonRequestBehavior.AllowGet);
         }
 
         // load all vehicle in other garage
-        [Authorize(Roles = "Provider")]
         [Route("api/vehicleListGarage/{garageID:int}")]
         [HttpGet]
         public JsonResult VehiclesInOtherGarage(int garageID)
@@ -273,8 +261,7 @@ namespace CRP.Areas.Provider.Controllers
             var service = this.Service<IVehicleService>();
             var providerID = User.Identity.GetUserId();
 
-            var listVehicle = service.Get()
-                .Where(q => q.Garage.AspNetUser.Id == providerID && q.GarageID != garageID)
+            var listVehicle = service.Get(q => q.Garage.OwnerID == providerID && q.GarageID != garageID && !q.IsDeleted)
                 .Select(q => new SelectListItem()
                 {
                     Text = q.Name + " [Biển số: " + q.LicenseNumber + "]" + "[Garage: " + q.Garage.Name + "]",

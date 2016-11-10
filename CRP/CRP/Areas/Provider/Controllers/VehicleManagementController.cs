@@ -196,9 +196,13 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to create single new vehicles
 		[Route("api/vehicles")]
 		[HttpPost]
-		public async Task<ActionResult> CreateVehicleAPI(ManagingVehicleModel newVehicle)
+		public async Task<ActionResult> CreateVehicleAPI(CreateVehicleModel newVehicle)
 		{
-			var errorMessage = CheckVehicleValidity(newVehicle, false);
+			var modelService = this.Service<IModelService>();
+			var userId = this.User.Identity.GetUserId();
+			var currentUser = this.Service<IUserService>().Get(userId);
+
+			var errorMessage = ValidateVehicleCreating(newVehicle, currentUser, modelService);
 			if (errorMessage != null)
 			{
 				Response.StatusCode = 400;
@@ -259,9 +263,12 @@ namespace CRP.Areas.Provider.Controllers
 		// API Route to edit single vehicle
 		[Route("api/vehicles/{id:int}")]
 		[HttpPatch]
-		public async Task<ActionResult> EditVehicleAPI(int id, ManagingVehicleModel updateModel)
+		public async Task<ActionResult> EditVehicleAPI(int id, EditVehicleModel updateModel)
 		{
-			var errorMessage = CheckVehicleValidity(updateModel, true, id);
+			var userId = this.User.Identity.GetUserId();
+			var currentUser = this.Service<IUserService>().Get(userId);
+
+			var errorMessage = ValidateVehicleEditing(updateModel, currentUser);
 			if (errorMessage != null)
 			{
 				return Json(new { message = errorMessage });
@@ -275,7 +282,7 @@ namespace CRP.Areas.Provider.Controllers
 			if(vehicleEntity == null)
 				return new HttpStatusCodeResult(404, "Không tìm thấy xe.");
 
-			Mapper.Map<ManagingVehicleModel, Vehicle>(updateModel, vehicleEntity);
+			Mapper.Map<EditVehicleModel, Vehicle>(updateModel, vehicleEntity);
 			await vehicleService.UpdateAsync(vehicleEntity);
 
 			return new HttpStatusCodeResult(200, "Updated successfully.");
@@ -294,17 +301,6 @@ namespace CRP.Areas.Provider.Controllers
 			if (entity == null)
 				return new HttpStatusCodeResult(404, "Không tìm thấy xe.");
 
-			// Remove vehicle ref in booking receipt
-			var vehicleReceiptService = this.Service<IBookingReceiptService>();
-			var receiptEntities = vehicleReceiptService.Get(br => br.VehicleID == id);
-			if (receiptEntities.Any())
-			{
-				foreach (var item in receiptEntities)
-				{
-					item.VehicleID = null;
-				}
-			}
-
 			// Remove all vehicle's images
 			var vehicleImageService = this.Service<IVehicleImageService>();
 			var vehicleImageEntities = vehicleImageService.Get(q => q.VehicleID == id);
@@ -316,7 +312,9 @@ namespace CRP.Areas.Provider.Controllers
 				}
 			}
 
-			await service.DeleteAsync(entity);
+			entity.IsDeleted = true;
+
+			await service.UpdateAsync(entity);
 			return new HttpStatusCodeResult(200, "Deleted successfully.");
 		}
 
@@ -419,7 +417,6 @@ namespace CRP.Areas.Provider.Controllers
 			var newBooking = new BookingReceipt()
 			{
 				CustomerID = currentUserID,
-				ProviderID = currentUserID,
 				StartTime = startTime,
 				EndTime = endTime,
 				GarageID = vehicle.GarageID,
@@ -433,11 +430,7 @@ namespace CRP.Areas.Provider.Controllers
 				GarageEmail = vehicle.Garage.Email,
 				LicenseNumber = vehicle.LicenseNumber,
 				VehicleName = vehicle.Name,
-				ModelID = vehicle.ModelID,
-				Year = vehicle.Year,
-				TransmissionType = vehicle.TransmissionType,
 				TransmissionDetail = vehicle.TransmissionDetail,
-				FuelType = vehicle.FuelType,
 				Engine = vehicle.Engine,
 				Color = vehicle.Color
 			};
@@ -456,7 +449,7 @@ namespace CRP.Areas.Provider.Controllers
 			var currentUserID = User.Identity.GetUserId();
 			var bookingService = this.Service<IBookingReceiptService>();
 			var receipt = bookingService.Get(br => br.ID == receiptID
-											&& br.ProviderID == currentUserID
+											&& br.Garage.OwnerID == currentUserID
 											&& br.CustomerID == currentUserID)
 										.FirstOrDefault();
 			if(receipt == null)
@@ -515,11 +508,11 @@ namespace CRP.Areas.Provider.Controllers
 		[HttpDelete]
 		public ActionResult DeletePictureAPI(string imageID)
 		{
-			var currentUserID = User.Identity.GetUserId();
+			var currentUserId = User.Identity.GetUserId();
 
 			var vehicleImageService = this.Service<IVehicleImageService>();
 			var image = vehicleImageService.Get(img => img.ID == imageID
-															&& img.Vehicle.Garage.OwnerID == currentUserID)
+															&& img.Vehicle.Garage.OwnerID == currentUserId)
 												.FirstOrDefault();
 			if (image == null)
 				return HttpNotFound();
@@ -534,25 +527,9 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 
-		// Check entity on create/update
-		public string CheckVehicleValidity(ManagingVehicleModel vehicle, bool isEdit, int vehicleID = 0)
+		// Check entity on create
+		public string ValidateVehicleCreating(CreateVehicleModel vehicle, AspNetUser currentUser, IModelService modelService)
 		{
-			var modelService = this.Service<IModelService>();
-
-			var vehicleService = this.Service<IVehicleService>();
-			var userService = this.Service<IUserService>();
-			var userID = this.User.Identity.GetUserId();
-			var currentUser = userService.Get(userID);
-
-			//License number's uniquity
-			if (isEdit)
-			{
-				if (vehicleService.Get().Any(v => v.LicenseNumber == vehicle.LicenseNumber && v.ID != vehicleID))
-					return "Xe với biển số xe này đã tồn tại.";
-			} else if (vehicleService.Get().Any(v => v.LicenseNumber == vehicle.LicenseNumber))
-				return "Xe với biển số xe này đã tồn tại.";
-
-
 			if (vehicle.LicenseNumber.Length > 50)
 				return "Biển số xe phải dưới 50 ký tự.";
 
@@ -591,5 +568,36 @@ namespace CRP.Areas.Provider.Controllers
 
 			return null;
 		}
+
+		// Check entity on editing
+		public string ValidateVehicleEditing(EditVehicleModel vehicle, AspNetUser currentUser)
+		{
+			if (vehicle.LicenseNumber.Length > 50)
+				return "Biển số xe phải dưới 50 ký tự.";
+
+			if (vehicle.Name.Length > 100)
+				return "Tên xe phải dưới 100 ký tự.'";
+
+			if (currentUser.Garages.All(g => g.ID != vehicle.GarageID))
+				return "Garage không tồn tại.";
+
+			if (vehicle.VehicleGroupID.HasValue && currentUser.VehicleGroups.All(g => g.ID != vehicle.VehicleGroupID))
+				return "Nhóm xe không tồn tại.";
+
+			if (vehicle.TransmissionDetail != null && vehicle.TransmissionDetail.Length > 100)
+				return "Chi tiết hộp số phải dưới 100 ký tự.";
+
+			if (vehicle.Engine != null && vehicle.Engine.Length > 100)
+				return "Chi tiết động cơ phải dưới 100 ký tự.";
+
+			if (vehicle.Description != null && vehicle.Description.Length > 1000)
+				return "Mô tả xe phải dưới 1000 ký tự.";
+
+			if (!Models.Constants.COLOR.ContainsKey(vehicle.Color))
+				return "Mã màu không hợp lệ.";
+
+			return null;
+		}
+		
 	}
 }

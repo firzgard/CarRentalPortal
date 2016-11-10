@@ -95,9 +95,10 @@ $(document).ready(function () {
 						if (row.NumOfComment > 0) {
 							return renderStarRating(data);
 						}
-					}
 						
-					return '-';
+						return '-';
+					}
+					return data;
 				}
 			},
 			{

@@ -28,7 +28,6 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		//// Route to group's detailed info page
-        [Authorize(Roles = "Provider")]
 		[Route("management/vehicleGroupManagement/{id:int}")]
 		public ViewResult VehicleGroupDetail(int id)
 		{
@@ -43,7 +42,7 @@ namespace CRP.Areas.Provider.Controllers
             var providerID = User.Identity.GetUserId();
 
             viewModel.listVehicle = vehicleService.Get()
-                .Where(q => q.Garage.AspNetUser.Id == providerID && q.VehicleGroupID != id)
+                .Where(q => q.Garage.OwnerID == providerID && q.VehicleGroupID != id && !q.IsDeleted)
                 .Select(q => new SelectListItem()
                 {
                     Text = q.Name + " [Biển số: "+ q.LicenseNumber +"]" + "[Nhóm: "+ (q.VehicleGroupID != null ? q.VehicleGroup.Name : "-chưa có nhóm-" )+"]",
@@ -64,7 +63,6 @@ namespace CRP.Areas.Provider.Controllers
 		}
 
 		// API Route to get list of group
-        [Authorize(Roles = "Provider")]
 		[Route("api/vehicleGroups")]
 		[HttpGet]
 		public JsonResult GetVehicleGroupListAPI()
@@ -78,14 +76,13 @@ namespace CRP.Areas.Provider.Controllers
                 q.PriceGroup != null ? (q.PriceGroup.MaxRentalPeriod != null ? q.PriceGroup.MaxRentalPeriod : null) : null,
                 q.PriceGroup != null ? (q.PriceGroup.DepositPercentage * 100m).ToString("#") + "%" : null,
                 q.PriceGroup != null ? q.PriceGroup.PerDayPrice.ToString() : null,
-                q.Vehicles.Count,
+                q.Vehicles.Count(v => !v.IsDeleted),
                 q.IsActive
             });
             return Json(new { aaData = result }, JsonRequestBehavior.AllowGet);
 		}
 
         // Add vehicleGroup of a vehicle
-        [Authorize(Roles = "Provider")]
         [Route("api/vehicleGroup/updateVehicle/{vehicleID:int}/{groupID:int}")]
         [HttpPatch]
         public async Task<JsonResult> UpdateVehicleInGroup(int vehicleID, int groupID)
@@ -109,7 +106,6 @@ namespace CRP.Areas.Provider.Controllers
         }
 
         // Reload dropdownlist after update vehicle in group
-        [Authorize(Roles = "Provider")]
         [Route("api/vehicleList/{groupID:int}")]
         [HttpGet]
         public JsonResult VehiclesInGroup(int groupID)
@@ -118,7 +114,7 @@ namespace CRP.Areas.Provider.Controllers
             var providerID = User.Identity.GetUserId();
 
             var listVehicle = service.Get()
-                .Where(q => q.Garage.AspNetUser.Id == providerID && q.VehicleGroupID != groupID)
+                .Where(q => q.Garage.OwnerID == providerID && q.VehicleGroupID != groupID && !q.IsDeleted)
                 .Select(q => new SelectListItem()
                 {
                     Text = q.Name + " [Biển số: " + q.LicenseNumber + "]" + "[Nhóm: " + (q.VehicleGroupID != null ? q.VehicleGroup.Name : "-chưa có nhóm-") + "]",
@@ -129,13 +125,13 @@ namespace CRP.Areas.Provider.Controllers
         }
 
         // Get all car in this group
-        [Authorize(Roles = "Provider")]
         [Route("api/vehiclesInGroup/{id:int}")]
         [HttpGet]
         public JsonResult GetVehiclesInGroup(int id)
         {
-            var service = this.Service<IVehicleService>();
-            var list = service.Get(q => q.VehicleGroupID == id).ToList();
+			var providerID = User.Identity.GetUserId();
+			var service = this.Service<IVehicleService>();
+            var list = service.Get(q => q.Garage.OwnerID == providerID && q.VehicleGroupID == id && !q.IsDeleted).ToList();
             var result = list.Select(q => new IConvertible[] {
                 q.ID,
                 q.Name,
@@ -144,8 +140,9 @@ namespace CRP.Areas.Provider.Controllers
                 q.Year,
                 q.VehicleModel.NumOfSeat,
                 //(from kvp in Models.Constants.COLOR where kvp.Key == q.Color select kvp.Value).ToList().FirstOrDefault(),
-                q.Star
-            });
+                q.Star,
+				q.NumOfComment
+			});
             return Json(new { data = result }, JsonRequestBehavior.AllowGet);
         }
 
@@ -159,7 +156,6 @@ namespace CRP.Areas.Provider.Controllers
         }
 
 		// API Route to create single new group
-        [Authorize(Roles = "Provider")]
 		[Route("api/vehicleGroups")]
 		[HttpPost]
 		public async Task<JsonResult> CreateVehicleGroupAPI(VehicleGroup model)
@@ -255,7 +251,7 @@ namespace CRP.Areas.Provider.Controllers
             var priceGroupItemService = this.Service<IPriceGroupItemService>();
 
             var entity = await service.GetAsync(id);
-            if(entity.Vehicles.Count > 0)
+            if(entity.Vehicles.Any(v => !v.IsDeleted))
             {
                 return Json(new { result = false, message = "Chỉ có thể xóa khi không còn xe trong nhóm, thật xin lỗi!" });
             }

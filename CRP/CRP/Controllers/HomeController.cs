@@ -51,6 +51,9 @@ namespace CRP.Controllers
 				return newBrandList;
 			});
 
+			var modelService = this.Service<IModelService>();
+			var numOfSeatList = modelService.Get().Select(m => m.NumOfSeat).Distinct().Where(s => s != 0).ToList();
+
 			var categoryService = this.Service<ICategoryService>();
 			var categoryList = categoryService.Get().OrderBy(c => c.Name).ToList();
 
@@ -74,7 +77,7 @@ namespace CRP.Controllers
 			var maxYear = vehicles.Max(v => v.Year);
 			var minYear = vehicles.Min(v => v.Year);
 
-			return View(new SearchPageViewModel(brandList, categoryList, locationList, maxPrice, minPrice, maxYear, minYear));
+			return View(new SearchPageViewModel(brandList, numOfSeatList, categoryList, locationList, maxPrice, minPrice, maxYear, minYear));
 		}
 
 		// Route to vehicle's info
@@ -82,6 +85,7 @@ namespace CRP.Controllers
 		public ActionResult VehicleInfo(int id)
 		{
 			var vehicle = this.Service<IVehicleService>().Get(v => v.ID == id
+										&& !v.IsDeleted
 										&& v.Garage.IsActive
 										&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
 										&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
