@@ -73,12 +73,12 @@
           <Property Name="Comment" Type="nvarchar" MaxLength="200" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" Nullable="false" />
-          <Property Name="GarageID" Type="int" />
+          <Property Name="GarageID" Type="int" Nullable="false" />
           <Property Name="GarageName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="GarageAddress" Type="nvarchar" MaxLength="200" Nullable="false" />
           <Property Name="GaragePhone" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="GarageEmail" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="VehicleID" Type="int" />
+          <Property Name="VehicleID" Type="int" Nullable="false" />
           <Property Name="LicenseNumber" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="VehicleName" Type="nvarchar" MaxLength="100" Nullable="false" />
           <Property Name="TransmissionDetail" Type="nvarchar" MaxLength="200" />
@@ -236,7 +236,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BookingReceipt_Garage">
-          <End Role="Garage" Type="Self.Garage" Multiplicity="0..1" />
+          <End Role="Garage" Type="Self.Garage" Multiplicity="1" />
           <End Role="BookingReceipt" Type="Self.BookingReceipt" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Garage">
@@ -248,7 +248,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BookingReceipt_Vehicle">
-          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="0..1" />
+          <End Role="Vehicle" Type="Self.Vehicle" Multiplicity="1" />
           <End Role="BookingReceipt" Type="Self.BookingReceipt" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vehicle">
@@ -756,12 +756,12 @@
           <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="GarageID" Type="Int32" />
+          <Property Name="GarageID" Type="Int32" Nullable="false" />
           <Property Name="GarageName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="GarageAddress" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="GaragePhone" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="GarageEmail" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="VehicleID" Type="Int32" />
+          <Property Name="VehicleID" Type="Int32" Nullable="false" />
           <Property Name="LicenseNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="VehicleName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="TransmissionDetail" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
@@ -992,7 +992,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BookingReceipt_Garage">
-          <End Type="CRPDBModel.Garage" Role="Garage" Multiplicity="0..1" />
+          <End Type="CRPDBModel.Garage" Role="Garage" Multiplicity="1" />
           <End Type="CRPDBModel.BookingReceipt" Role="BookingReceipt" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Garage">
@@ -1004,7 +1004,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_BookingReceipt_Vehicle">
-          <End Type="CRPDBModel.Vehicle" Role="Vehicle" Multiplicity="0..1" />
+          <End Type="CRPDBModel.Vehicle" Role="Vehicle" Multiplicity="1" />
           <End Type="CRPDBModel.BookingReceipt" Role="BookingReceipt" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Vehicle">
