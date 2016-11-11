@@ -24,12 +24,12 @@ namespace CRP.Models.Entities
         public string Comment { get; set; }
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
-        public Nullable<int> GarageID { get; set; }
+        public int GarageID { get; set; }
         public string GarageName { get; set; }
         public string GarageAddress { get; set; }
         public string GaragePhone { get; set; }
         public string GarageEmail { get; set; }
-        public Nullable<int> VehicleID { get; set; }
+        public int VehicleID { get; set; }
         public string LicenseNumber { get; set; }
         public string VehicleName { get; set; }
         public string TransmissionDetail { get; set; }
