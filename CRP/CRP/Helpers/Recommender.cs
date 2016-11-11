@@ -111,14 +111,25 @@ namespace CRP.Helpers
 
 				// Each attribute vector of user profile equal the sum of product
 				// between each booking's attribute vector of the same type
-				// with user's rating for that booking
+				// with user's interest for that booking
 				for (int j = 0, lim = bookingList.Count; j < lim; j++)
 				{
 					var userRating = user.BookingReceipts.ToList()[j].Star;
-					// Assume the rating for booking that has not been rated is 2.5
-					var star = userRating == null ? 2.5 : (double)userRating;
 
-					vector += bookingList[j][i]*star;
+					// Interest point: 1 = like, -1 = dislike, 0 = neutral
+					int interestPoint;
+					if (userRating == null || userRating == 3)
+					{
+						interestPoint = 0; // star = null || 3
+					} else if (userRating > 3)
+					{
+						interestPoint = 1; // star > 3
+					} else
+					{
+						interestPoint = -1; // star < 3
+					}
+
+					vector += bookingList[j][i]*interestPoint;
 				}
 
 				userProfile.Add(vector);
