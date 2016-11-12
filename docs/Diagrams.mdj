@@ -50488,7 +50488,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50516,7 +50516,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+LicenseNumber",
+											"text": "-LicenseNumber",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50544,7 +50544,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Name",
+											"text": "-Name",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50572,7 +50572,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ModelID",
+											"text": "-ModelID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50600,7 +50600,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Year",
+											"text": "-Year",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50628,7 +50628,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+GarageID",
+											"text": "-GarageID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50656,7 +50656,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+VehicleGroupID",
+											"text": "-VehicleGroupID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50684,7 +50684,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+TransmissionType",
+											"text": "-TransmissionType",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50712,7 +50712,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+TransmissionDetail",
+											"text": "-TransmissionDetail",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50740,7 +50740,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+FuelType",
+											"text": "-FuelType",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50768,7 +50768,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Engine",
+											"text": "-Engine",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50796,7 +50796,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Color",
+											"text": "-Color",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50824,7 +50824,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Description",
+											"text": "-Description",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50852,7 +50852,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+NumOfComment",
+											"text": "-NumOfComment",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50880,7 +50880,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Star",
+											"text": "-Star",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -50908,7 +50908,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+IsDelete",
+											"text": "-IsDelete",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -51280,7 +51280,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51308,7 +51308,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+VehicleID",
+											"text": "-VehicleID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51336,7 +51336,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+URL",
+											"text": "-URL",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -51708,7 +51708,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51736,7 +51736,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+CustomerID",
+											"text": "-CustomerID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51764,7 +51764,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+RentalPrice",
+											"text": "-RentalPrice",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51792,7 +51792,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Deposit",
+											"text": "-Deposit",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51820,7 +51820,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+BookingFee",
+											"text": "-BookingFee",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51848,7 +51848,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Distance",
+											"text": "-Distance",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51876,7 +51876,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Star",
+											"text": "-Star",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51904,7 +51904,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Comment",
+											"text": "-Comment",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51932,7 +51932,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+StartTime",
+											"text": "-StartTime",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51960,7 +51960,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+EndTime",
+											"text": "-EndTime",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -51988,7 +51988,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+GarageID",
+											"text": "-GarageID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52016,7 +52016,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+GarageName",
+											"text": "-GarageName",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52044,7 +52044,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+GarageAddress",
+											"text": "-GarageAddress",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52072,7 +52072,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+GaragePhone",
+											"text": "-GaragePhone",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52100,7 +52100,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+GarageEmail",
+											"text": "-GarageEmail",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52128,7 +52128,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+VehicleID",
+											"text": "-VehicleID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52156,7 +52156,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+LicenseNumber",
+											"text": "-LicenseNumber",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52184,7 +52184,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+VehicleName",
+											"text": "-VehicleName",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52212,7 +52212,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+TranmissionDetail",
+											"text": "-TranmissionDetail",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52240,7 +52240,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Engine",
+											"text": "-Engine",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52268,7 +52268,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Color",
+											"text": "-Color",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52296,7 +52296,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+IsCanceled",
+											"text": "-IsCanceled",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52324,7 +52324,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+IsPending",
+											"text": "-IsPending",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -52696,7 +52696,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52724,7 +52724,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Name",
+											"text": "-Name",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52752,7 +52752,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+BrandID",
+											"text": "-BrandID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52780,7 +52780,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+NumOfDoor",
+											"text": "-NumOfDoor",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -52808,7 +52808,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+NumOfSeat",
+											"text": "-NumOfSeat",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -53180,7 +53180,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -53208,7 +53208,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Name",
+											"text": "-Name",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -53580,7 +53580,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -53608,7 +53608,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Name",
+											"text": "-Name",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -53980,7 +53980,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54008,7 +54008,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+OwnerID",
+											"text": "-OwnerID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54036,7 +54036,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Name",
+											"text": "-Name",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54064,7 +54064,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+LocationID",
+											"text": "-LocationID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54092,7 +54092,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Address",
+											"text": "-Address",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54120,7 +54120,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Email",
+											"text": "-Email",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54148,7 +54148,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Phone1",
+											"text": "-Phone1",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54176,7 +54176,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Phone2",
+											"text": "-Phone2",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54204,7 +54204,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+NumOfComment",
+											"text": "-NumOfComment",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54232,7 +54232,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Star",
+											"text": "-Star",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54260,7 +54260,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Description",
+											"text": "-Description",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54288,7 +54288,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Policy",
+											"text": "-Policy",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54316,7 +54316,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+IsActive",
+											"text": "-IsActive",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54344,7 +54344,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+IsDeleted",
+											"text": "-IsDeleted",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -54716,7 +54716,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54744,7 +54744,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Name",
+											"text": "-Name",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -54772,7 +54772,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+NationID",
+											"text": "-NationID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -55144,7 +55144,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -55172,7 +55172,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Name",
+											"text": "-Name",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -55544,7 +55544,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+GarageID",
+											"text": "-GarageID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -55572,7 +55572,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+DayOfWeek",
+											"text": "-DayOfWeek",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -55600,7 +55600,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+OpenTimeInMinute",
+											"text": "-OpenTimeInMinute",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -55628,7 +55628,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+CloseTimeInMinute",
+											"text": "-CloseTimeInMinute",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -56000,7 +56000,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56028,7 +56028,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+DepositPercentage",
+											"text": "-DepositPercentage",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56056,7 +56056,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+PerDayPrice",
+											"text": "-PerDayPrice",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56084,7 +56084,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+MaxRentalPeriod",
+											"text": "-MaxRentalPeriod",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56112,7 +56112,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+MaxDistancePerDay",
+											"text": "-MaxDistancePerDay",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56140,7 +56140,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ExtraChargePerKm",
+											"text": "-ExtraChargePerKm",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -56512,7 +56512,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ID",
+											"text": "-ID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56540,7 +56540,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+OwnerID",
+											"text": "-OwnerID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56568,7 +56568,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Name",
+											"text": "-Name",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56596,7 +56596,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+IsActive",
+											"text": "-IsActive",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56624,7 +56624,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+WithDriverPriceGroupID",
+											"text": "-WithDriverPriceGroupID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -56938,7 +56938,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+PriceGroupID",
+											"text": "-PriceGroupID",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56966,7 +56966,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+MaxTime",
+											"text": "-MaxTime",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -56994,7 +56994,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Price",
+											"text": "-Price",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57022,7 +57022,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+MaxDistance",
+											"text": "-MaxDistance",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -57394,7 +57394,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Id",
+											"text": "-Id",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57422,7 +57422,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Email",
+											"text": "-Email",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57450,7 +57450,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+EmailConfirmed",
+											"text": "-EmailConfirmed",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57478,7 +57478,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+PasswordHash",
+											"text": "-PasswordHash",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57506,7 +57506,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+SecurityStamp",
+											"text": "-SecurityStamp",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57534,7 +57534,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+PhoneNumber",
+											"text": "-PhoneNumber",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57562,7 +57562,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+PhoneNumberConfirmed",
+											"text": "-PhoneNumberConfirmed",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57590,7 +57590,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+TwoFactorEnable",
+											"text": "-TwoFactorEnable",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57618,7 +57618,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+LockoutEndDateUtc",
+											"text": "-LockoutEndDateUtc",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57646,7 +57646,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+LockoutEnabled",
+											"text": "-LockoutEnabled",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57674,7 +57674,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+AccessFailCount",
+											"text": "-AccessFailCount",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57702,7 +57702,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Username",
+											"text": "-Username",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57730,7 +57730,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+FullName",
+											"text": "-FullName",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57758,7 +57758,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+IsProviderUtil",
+											"text": "-IsProviderUtil",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -57786,7 +57786,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+AvatarURL",
+											"text": "-AvatarURL",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -58158,7 +58158,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Id",
+											"text": "-Id",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -58186,7 +58186,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Name",
+											"text": "-Name",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -58558,7 +58558,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+Id",
+											"text": "-Id",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -58586,35 +58586,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+UserId",
-											"horizontalAlignment": 0,
-											"verticalAlignment": 5
-										},
-										{
-											"_type": "UMLAttributeView",
-											"_id": "AAAAAAFYUnt8OJl9NJ8=",
-											"_parent": {
-												"$ref": "AAAAAAFYUnm9C5lHxp4="
-											},
-											"model": {
-												"$ref": "AAAAAAFYUnt8AJl6J7Q="
-											},
-											"visible": true,
-											"enabled": true,
-											"lineColor": "#000000",
-											"fillColor": "#ffffff",
-											"fontColor": "#000000",
-											"font": "Arial;13;0",
-											"showShadow": true,
-											"containerChangeable": false,
-											"containerExtending": false,
-											"left": 45,
-											"top": 452,
-											"width": 117.04443359375,
-											"height": 13,
-											"autoResize": false,
-											"underline": false,
-											"text": "+ClaimType",
+											"text": "-UserId",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -58637,12 +58609,40 @@
 											"containerChangeable": false,
 											"containerExtending": false,
 											"left": 45,
+											"top": 452,
+											"width": 117.04443359375,
+											"height": 13,
+											"autoResize": false,
+											"underline": false,
+											"text": "-ClaimValue",
+											"horizontalAlignment": 0,
+											"verticalAlignment": 5
+										},
+										{
+											"_type": "UMLAttributeView",
+											"_id": "AAAAAAFYUnt8OJl9NJ8=",
+											"_parent": {
+												"$ref": "AAAAAAFYUnm9C5lHxp4="
+											},
+											"model": {
+												"$ref": "AAAAAAFYUnt8AJl6J7Q="
+											},
+											"visible": true,
+											"enabled": true,
+											"lineColor": "#000000",
+											"fillColor": "#ffffff",
+											"fontColor": "#000000",
+											"font": "Arial;13;0",
+											"showShadow": true,
+											"containerChangeable": false,
+											"containerExtending": false,
+											"left": 45,
 											"top": 467,
 											"width": 117.04443359375,
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ClaimValue",
+											"text": "-ClaimType",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -59014,7 +59014,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+LoginProvider",
+											"text": "-LoginProvider",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -59042,7 +59042,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+ProviderKey",
+											"text": "-ProviderKey",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										},
@@ -59070,7 +59070,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "+UserId",
+											"text": "-UserId",
 											"horizontalAlignment": 0,
 											"verticalAlignment": 5
 										}
@@ -59455,9 +59455,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 173,
+									"left": 175,
 									"top": 487,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -59555,9 +59555,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 250,
+									"left": 251,
 									"top": 507,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -59869,9 +59869,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 181,
+									"left": 183,
 									"top": 638,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -59969,9 +59969,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 262,
+									"left": 263,
 									"top": 594,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -60283,9 +60283,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 285,
+									"left": 287,
 									"top": 352,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -60383,9 +60383,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 252,
+									"left": 254,
 									"top": 277,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -60697,9 +60697,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 843,
+									"left": 845,
 									"top": 459,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -60797,9 +60797,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 734,
+									"left": 735,
 									"top": 506,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -61111,9 +61111,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 853,
+									"left": 855,
 									"top": 387,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -61211,9 +61211,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 769,
+									"left": 771,
 									"top": 349,
-									"width": 24,
+									"width": 21.68359375,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -61525,9 +61525,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 620,
+									"left": 622,
 									"top": 129,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -61625,9 +61625,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 527,
+									"left": 528,
 									"top": 144,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -61939,9 +61939,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 279,
+									"left": 281,
 									"top": 808,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -62039,9 +62039,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 237,
+									"left": 238,
 									"top": 805,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -62353,9 +62353,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 880,
+									"left": 882,
 									"top": 611,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -62453,9 +62453,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 851,
+									"left": 852,
 									"top": 769,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -62767,9 +62767,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 905,
+									"left": 907,
 									"top": 795,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -62867,9 +62867,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 939,
+									"left": 941,
 									"top": 760,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 1.1584672923832016,
@@ -63181,9 +63181,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 822,
+									"left": 824,
 									"top": 961,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -63281,9 +63281,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 829,
+									"left": 830,
 									"top": 1011,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -63595,9 +63595,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 453,
+									"left": 455,
 									"top": 908,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -63695,9 +63695,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 602,
+									"left": 603,
 									"top": 671,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -64009,9 +64009,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 571,
+									"left": 573,
 									"top": 607,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -64109,9 +64109,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 406,
+									"left": 407,
 									"top": 761,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -64423,9 +64423,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 461,
+									"left": 462,
 									"top": 470,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -64523,9 +64523,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 576,
+									"left": 578,
 									"top": 390,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -64837,9 +64837,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 457,
+									"left": 458,
 									"top": 546,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -64937,9 +64937,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 573,
+									"left": 575,
 									"top": 555,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -65251,9 +65251,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 912,
+									"left": 914,
 									"top": 190,
-									"width": 32,
+									"width": 28.91357421875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -1.1676806382165559,
@@ -65351,9 +65351,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 930,
+									"left": 931,
 									"top": 258,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -65665,9 +65665,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 519,
+									"left": 520,
 									"top": 235,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -65765,9 +65765,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 570,
+									"left": 571,
 									"top": 266,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -66079,9 +66079,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 671,
+									"left": 673,
 									"top": 795,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -66179,9 +66179,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 677,
+									"left": 678,
 									"top": 712,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -66493,9 +66493,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 574,
+									"left": 576,
 									"top": 911,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5150548499200291,
@@ -66593,9 +66593,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 459,
+									"left": 460,
 									"top": 665,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": 0.5235987755982988,
@@ -66907,9 +66907,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 747,
+									"left": 749,
 									"top": 874,
-									"width": 22,
+									"width": 19.5126953125,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.5235987755982988,
@@ -67007,9 +67007,9 @@
 									"showShadow": true,
 									"containerChangeable": false,
 									"containerExtending": false,
-									"left": 847,
+									"left": 848,
 									"top": 602,
-									"width": 8,
+									"width": 7.22998046875,
 									"height": 13,
 									"autoResize": false,
 									"alpha": -0.4365118733865532,
@@ -67336,7 +67336,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67354,7 +67354,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "LicenseNumber",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67372,7 +67372,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "Name",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67390,7 +67390,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "ModelID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67408,7 +67408,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "Year",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67426,7 +67426,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "GarageID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67444,7 +67444,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "VehicleGroupID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67462,7 +67462,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "TransmissionType",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67480,7 +67480,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "TransmissionDetail",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67498,7 +67498,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "FuelType",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67516,7 +67516,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "Engine",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67534,7 +67534,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "Color",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67552,7 +67552,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "Description",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67570,7 +67570,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "NumOfComment",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67588,7 +67588,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "Star",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67606,7 +67606,7 @@
 								"$ref": "AAAAAAFYUiutF5HvPns="
 							},
 							"name": "IsDelete",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67763,7 +67763,7 @@
 								"$ref": "AAAAAAFYUjohzpKaF5E="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67781,7 +67781,7 @@
 								"$ref": "AAAAAAFYUjohzpKaF5E="
 							},
 							"name": "VehicleID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -67799,7 +67799,7 @@
 								"$ref": "AAAAAAFYUjohzpKaF5E="
 							},
 							"name": "URL",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68095,7 +68095,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68113,7 +68113,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "CustomerID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68131,7 +68131,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "RentalPrice",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68149,7 +68149,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "Deposit",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68167,7 +68167,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "BookingFee",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68185,7 +68185,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "Distance",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68203,7 +68203,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "Star",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68221,7 +68221,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "Comment",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68239,7 +68239,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "StartTime",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68257,7 +68257,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "EndTime",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68275,7 +68275,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "GarageID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68293,7 +68293,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "GarageName",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68311,7 +68311,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "GarageAddress",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68329,7 +68329,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "GaragePhone",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68347,7 +68347,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "GarageEmail",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68365,7 +68365,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "VehicleID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68383,7 +68383,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "LicenseNumber",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68401,7 +68401,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "VehicleName",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68419,7 +68419,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "TranmissionDetail",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68437,7 +68437,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "Engine",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68455,7 +68455,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "Color",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68473,7 +68473,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "IsCanceled",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68491,7 +68491,7 @@
 								"$ref": "AAAAAAFYUkkia5LnprA="
 							},
 							"name": "IsPending",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68650,7 +68650,7 @@
 								"$ref": "AAAAAAFYUk6UFZPKWcQ="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68668,7 +68668,7 @@
 								"$ref": "AAAAAAFYUk6UFZPKWcQ="
 							},
 							"name": "Name",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68686,7 +68686,7 @@
 								"$ref": "AAAAAAFYUk6UFZPKWcQ="
 							},
 							"name": "BrandID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68704,7 +68704,7 @@
 								"$ref": "AAAAAAFYUk6UFZPKWcQ="
 							},
 							"name": "NumOfDoor",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68722,7 +68722,7 @@
 								"$ref": "AAAAAAFYUk6UFZPKWcQ="
 							},
 							"name": "NumOfSeat",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68785,7 +68785,7 @@
 								"$ref": "AAAAAAFYUlBez5QoTZA="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68803,7 +68803,7 @@
 								"$ref": "AAAAAAFYUlBez5QoTZA="
 							},
 							"name": "Name",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68866,7 +68866,7 @@
 								"$ref": "AAAAAAFYUlFI+JR3pnM="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -68884,7 +68884,7 @@
 								"$ref": "AAAAAAFYUlFI+JR3pnM="
 							},
 							"name": "Name",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69043,7 +69043,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69061,7 +69061,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "OwnerID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69079,7 +69079,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "Name",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69097,7 +69097,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "LocationID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69115,7 +69115,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "Address",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69133,7 +69133,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "Email",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69151,7 +69151,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "Phone1",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69169,7 +69169,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "Phone2",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69187,7 +69187,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "NumOfComment",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69205,7 +69205,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "Star",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69223,7 +69223,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "Description",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69241,7 +69241,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "Policy",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69259,7 +69259,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "IsActive",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69277,7 +69277,7 @@
 								"$ref": "AAAAAAFYUlNGepUDSB0="
 							},
 							"name": "IsDeleted",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69389,7 +69389,7 @@
 								"$ref": "AAAAAAFYUlXg/JWd9VA="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69407,7 +69407,7 @@
 								"$ref": "AAAAAAFYUlXg/JWd9VA="
 							},
 							"name": "Name",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69425,7 +69425,7 @@
 								"$ref": "AAAAAAFYUlXg/JWd9VA="
 							},
 							"name": "NationID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69488,7 +69488,7 @@
 								"$ref": "AAAAAAFYUl4nxZaKiRI="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69506,7 +69506,7 @@
 								"$ref": "AAAAAAFYUl4nxZaKiRI="
 							},
 							"name": "Name",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69618,7 +69618,7 @@
 								"$ref": "AAAAAAFYUl8aaZbQuic="
 							},
 							"name": "GarageID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69636,7 +69636,7 @@
 								"$ref": "AAAAAAFYUl8aaZbQuic="
 							},
 							"name": "DayOfWeek",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69654,7 +69654,7 @@
 								"$ref": "AAAAAAFYUl8aaZbQuic="
 							},
 							"name": "OpenTimeInMinute",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69672,7 +69672,7 @@
 								"$ref": "AAAAAAFYUl8aaZbQuic="
 							},
 							"name": "CloseTimeInMinute",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69831,7 +69831,7 @@
 								"$ref": "AAAAAAFYUmDF9JckpRw="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69849,7 +69849,7 @@
 								"$ref": "AAAAAAFYUmDF9JckpRw="
 							},
 							"name": "DepositPercentage",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69867,7 +69867,7 @@
 								"$ref": "AAAAAAFYUmDF9JckpRw="
 							},
 							"name": "PerDayPrice",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69885,7 +69885,7 @@
 								"$ref": "AAAAAAFYUmDF9JckpRw="
 							},
 							"name": "MaxRentalPeriod",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69903,7 +69903,7 @@
 								"$ref": "AAAAAAFYUmDF9JckpRw="
 							},
 							"name": "MaxDistancePerDay",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69921,7 +69921,7 @@
 								"$ref": "AAAAAAFYUmDF9JckpRw="
 							},
 							"name": "ExtraChargePerKm",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -69984,7 +69984,7 @@
 								"$ref": "AAAAAAFYUmK+zZeJ2Jo="
 							},
 							"name": "ID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70002,7 +70002,7 @@
 								"$ref": "AAAAAAFYUmK+zZeJ2Jo="
 							},
 							"name": "OwnerID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70020,7 +70020,7 @@
 								"$ref": "AAAAAAFYUmK+zZeJ2Jo="
 							},
 							"name": "Name",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70038,7 +70038,7 @@
 								"$ref": "AAAAAAFYUmK+zZeJ2Jo="
 							},
 							"name": "IsActive",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70056,7 +70056,7 @@
 								"$ref": "AAAAAAFYUmK+zZeJ2Jo="
 							},
 							"name": "WithDriverPriceGroupID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70138,7 +70138,7 @@
 								"$ref": "AAAAAAFYUmToVZfbR1g="
 							},
 							"name": "PriceGroupID",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70156,7 +70156,7 @@
 								"$ref": "AAAAAAFYUmToVZfbR1g="
 							},
 							"name": "MaxTime",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70174,7 +70174,7 @@
 								"$ref": "AAAAAAFYUmToVZfbR1g="
 							},
 							"name": "Price",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70192,7 +70192,7 @@
 								"$ref": "AAAAAAFYUmToVZfbR1g="
 							},
 							"name": "MaxDistance",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70445,7 +70445,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "Id",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70463,7 +70463,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "Email",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70481,7 +70481,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "EmailConfirmed",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70499,7 +70499,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "PasswordHash",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70517,7 +70517,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "SecurityStamp",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70535,7 +70535,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "PhoneNumber",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70553,7 +70553,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "PhoneNumberConfirmed",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70571,7 +70571,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "TwoFactorEnable",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70589,7 +70589,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "LockoutEndDateUtc",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70607,7 +70607,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "LockoutEnabled",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70625,7 +70625,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "AccessFailCount",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70643,7 +70643,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "Username",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70661,7 +70661,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "FullName",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70679,7 +70679,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "IsProviderUtil",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70697,7 +70697,7 @@
 								"$ref": "AAAAAAFYUm/EXJhRxhA="
 							},
 							"name": "AvatarURL",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70760,7 +70760,7 @@
 								"$ref": "AAAAAAFYUnegRJj4Jhg="
 							},
 							"name": "Id",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70778,7 +70778,7 @@
 								"$ref": "AAAAAAFYUnegRJj4Jhg="
 							},
 							"name": "Name",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70890,7 +70890,7 @@
 								"$ref": "AAAAAAFYUnm8+5k/f1M="
 							},
 							"name": "Id",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70908,25 +70908,7 @@
 								"$ref": "AAAAAAFYUnm8+5k/f1M="
 							},
 							"name": "UserId",
-							"visibility": "public",
-							"isStatic": false,
-							"isLeaf": false,
-							"type": "",
-							"isReadOnly": false,
-							"isOrdered": false,
-							"isUnique": false,
-							"isDerived": false,
-							"aggregation": "none",
-							"isID": false
-						},
-						{
-							"_type": "UMLAttribute",
-							"_id": "AAAAAAFYUnt8AJl6J7Q=",
-							"_parent": {
-								"$ref": "AAAAAAFYUnm8+5k/f1M="
-							},
-							"name": "ClaimType",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -70944,7 +70926,25 @@
 								"$ref": "AAAAAAFYUnm8+5k/f1M="
 							},
 							"name": "ClaimValue",
-							"visibility": "public",
+							"visibility": "private",
+							"isStatic": false,
+							"isLeaf": false,
+							"type": "",
+							"isReadOnly": false,
+							"isOrdered": false,
+							"isUnique": false,
+							"isDerived": false,
+							"aggregation": "none",
+							"isID": false
+						},
+						{
+							"_type": "UMLAttribute",
+							"_id": "AAAAAAFYUnt8AJl6J7Q=",
+							"_parent": {
+								"$ref": "AAAAAAFYUnm8+5k/f1M="
+							},
+							"name": "ClaimType",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -71056,7 +71056,7 @@
 								"$ref": "AAAAAAFYUnyzppmWxT4="
 							},
 							"name": "LoginProvider",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -71074,7 +71074,7 @@
 								"$ref": "AAAAAAFYUnyzppmWxT4="
 							},
 							"name": "ProviderKey",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
@@ -71092,7 +71092,7 @@
 								"$ref": "AAAAAAFYUnyzppmWxT4="
 							},
 							"name": "UserId",
-							"visibility": "public",
+							"visibility": "private",
 							"isStatic": false,
 							"isLeaf": false,
 							"type": "",
