@@ -73,7 +73,7 @@ namespace CRP.Models
 		
 		[Display(Name = "Tên đầy đủ")]
 		[Required(ErrorMessage = "Tên đầy đủ không được để trống", AllowEmptyStrings = false)]
-		[StringLength(50, ErrorMessage = "Tên đầy đủ phải có từ 10 đến 50 kí tự.", MinimumLength = 10)]
+		[StringLength(50, ErrorMessage = "Tên đầy đủ không vượt quá 50 kí tự.")]
 		public string Fullname { get; set; }
 
 		[Required(ErrorMessage = "Email không được để trống", AllowEmptyStrings = false)]

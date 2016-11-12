@@ -16,7 +16,6 @@ namespace CRP.Models.Entities
     {
         public int ID { get; set; }
         public string CustomerID { get; set; }
-        public string ProviderID { get; set; }
         public double RentalPrice { get; set; }
         public double Deposit { get; set; }
         public double BookingFee { get; set; }
@@ -25,28 +24,22 @@ namespace CRP.Models.Entities
         public string Comment { get; set; }
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
-        public Nullable<int> GarageID { get; set; }
+        public int GarageID { get; set; }
         public string GarageName { get; set; }
         public string GarageAddress { get; set; }
         public string GaragePhone { get; set; }
         public string GarageEmail { get; set; }
-        public Nullable<int> VehicleID { get; set; }
+        public int VehicleID { get; set; }
         public string LicenseNumber { get; set; }
         public string VehicleName { get; set; }
-        public int ModelID { get; set; }
-        public int Year { get; set; }
-        public int TransmissionType { get; set; }
         public string TransmissionDetail { get; set; }
-        public Nullable<int> FuelType { get; set; }
         public string Engine { get; set; }
         public int Color { get; set; }
         public bool IsCanceled { get; set; }
         public bool IsPending { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual AspNetUser AspNetUser1 { get; set; }
         public virtual Garage Garage { get; set; }
-        public virtual VehicleModel VehicleModel { get; set; }
         public virtual Vehicle Vehicle { get; set; }
     }
 }

@@ -45,11 +45,12 @@ namespace CRP.Areas.Customer.Controllers
 
 			var vehicleService = this.Service<IVehicleService>();
 			var vehicle = vehicleService.Get(v => v.ID == model.VehicleID.Value
-																&& v.Garage.IsActive
-																&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
-																&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
-																&& v.VehicleGroup != null
-																&& v.VehicleGroup.IsActive
+												&& !v.IsDeleted
+												&& v.Garage.IsActive
+												&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
+												&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
+												&& v.VehicleGroup != null
+												&& v.VehicleGroup.IsActive
 				).FirstOrDefault();
 
 			// Check if vehicle exists
@@ -141,7 +142,7 @@ namespace CRP.Areas.Customer.Controllers
 			var newBooking = this.Mapper.Map<BookingReceipt>(vehicle);
 			newBooking.ID = 0;
 			newBooking.CustomerID = User.Identity.GetUserId();
-			newBooking.ProviderID = vehicle.Garage.AspNetUser.Id;
+			newBooking.Garage.OwnerID = vehicle.Garage.AspNetUser.Id;
 			newBooking.VehicleID = vehicle.ID;
 
 			newBooking.GaragePhone = vehicle.Garage.Phone1;
@@ -411,15 +412,13 @@ namespace CRP.Areas.Customer.Controllers
 			booking.Comment = comment.Comment;
 			booking.Star = comment.Star;
 
-			// Update vehicle's rating if it still exist
-			if (booking.VehicleID.HasValue)
-				booking.Vehicle.Star = (booking.Vehicle.Star*booking.Vehicle.NumOfComment + comment.Star)
-										/ ++booking.Vehicle.NumOfComment;
+			// Update vehicle's rating and NumOfComment
+			booking.Vehicle.Star = (booking.Vehicle.Star*booking.Vehicle.NumOfComment + comment.Star)
+									/ ++booking.Vehicle.NumOfComment;
 
-			// Update garage's rating if it still exist
-			if (booking.GarageID.HasValue)
-				booking.Garage.Star = (booking.Garage.Star * booking.Garage.NumOfComment + comment.Star)
-										/ ++booking.Garage.NumOfComment;
+			// Update garage's rating and NumOfComment
+			booking.Garage.Star = (booking.Garage.Star * booking.Garage.NumOfComment + comment.Star)
+									/ ++booking.Garage.NumOfComment;
 
 			await service.UpdateAsync(booking);
 

@@ -34,7 +34,7 @@ namespace CRP.Areas.Admin.Controllers
         // API Route to get list of garage
         [Route("api/UserManagement")]
         [HttpGet]
-        public JsonResult GetGarageListAPI()
+        public JsonResult GetUserListAPI()
         {
             List<UserViewModel> lstUser = new List<UserViewModel>();
             var service = this.Service<IUserService>();
@@ -70,7 +70,11 @@ namespace CRP.Areas.Admin.Controllers
                 {
                     viewModel.status = true;
                 }
-                lstUser.Add(viewModel);
+
+                if(viewModel.role != "Admin")
+                {
+                    lstUser.Add(viewModel);
+                }
             }
             return Json(new { aaData = lstUser }, JsonRequestBehavior.AllowGet);
         }

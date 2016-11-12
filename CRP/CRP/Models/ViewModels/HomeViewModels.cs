@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using CRP.Helpers;
 using CRP.Models;
 using CRP.Models.Entities;
 
@@ -11,23 +12,15 @@ namespace CRP.Models.ViewModels
 	public class SearchPageViewModel
 	{
 		public List<VehicleBrand> BrandList { get; set; }
+		public List<int> NumOfSeatList { get; set; }
 		public List<Category> CategoryList { get; set; }
 		public List<Location> LocationList { get; set; }
 		public double MaxPrice { get; set; }
+		public string MaxPriceUnit { get; set; }
 		public double MinPrice { get; set; }
+		public string MinPriceUnit { get; set; }
 		public int MaxYear { get; set; }
 		public int MinYear { get; set; }
-
-		public SearchPageViewModel(List<VehicleBrand> brandList, List<Category> categoryList, List<Location> locationList, double maxPrice, double minPrice, int maxYear, int minYear)
-		{
-			BrandList = brandList;
-			CategoryList = categoryList;
-			LocationList = locationList;
-			MaxPrice = maxPrice;
-			MinPrice = minPrice;
-			MaxYear = maxYear;
-			MinYear = minYear;
-		}
 	}
 
 	//// Model to populate the vehicle info page
@@ -79,8 +72,9 @@ namespace CRP.Models.ViewModels
 		public int TotalResult { get; set; }
 		public int TotalPage { get; set; }
 		public double? AveragePrice { get; set; }
+		public double? AveragePeriod { get; set; }
 
-		public SearchResultJsonModel(List<SearchResultItemJsonModel> searchResultList, double? averagePrice, int totalResult, int currentPage)
+		public SearchResultJsonModel(List<SearchResultItemJsonModel> searchResultList, double? averagePrice, double? averagePeriod, int totalResult, int currentPage)
 		{
 			if (!searchResultList.Any()) return;
 
@@ -89,61 +83,52 @@ namespace CRP.Models.ViewModels
 			TotalResult = totalResult;
 			TotalPage = (int)Math.Ceiling((float)totalResult / Constants.NUM_OF_SEARCH_RESULT_PER_PAGE);
 			AveragePrice = averagePrice;
+			AveragePeriod = averagePeriod;
 		}
 	}
 
 	// Model of JSON object of search result for searching vehicle to book
-	public class SearchResultItemJsonModel : VehicleRecordJsonModel
+	public class SearchResultItemJsonModel
 	{
+		public int ID { get; set; }
+		public string LicenseNumber { get; set; }
+		public string Name { get; set; }
+		public int? Year { get; set; }
 		public string Location { get; set; }
 		public string GarageName { get; set; }
 		public int GarageNumOfComment { get; set; }
 		public decimal GarageRating { get; set; }
 		public string TransmissionTypeName { get; set; }
 		public string FuelTypeName { get; set; }
-		public List<string> CategoryList { get; set; }
+		public int NumOfSeat { get; set; }
+		public int NumOfComment { get; set; }
+		public decimal? Star { get; set; }
 		public List<string> ImageList { get; set; }
 		// Shortest rental period of this vehicle that fit the filter
-		public string BestPossibleRentalPeriod { get; set; }
+		public int BestPossibleRentalPeriod { get; set; }
 		// Lowest price range of this vehicle that fit the filter
 		public double BestPossibleRentalPrice { get; set; }
 
-		public SearchResultItemJsonModel(Entities.Vehicle vehicle, int rentalTime) : base(vehicle)
+		public SearchResultItemJsonModel(VehicleFilterModel vehicle)
 		{
-			Location = vehicle.Garage.Location.Name;
-			GarageName = vehicle.Garage.Name;
-			GarageNumOfComment = vehicle.Garage.NumOfComment;
-			GarageRating = vehicle.Garage.Star;
-			ImageList = vehicle.VehicleImages.Select(i => i.URL).ToList();
+			ID = vehicle.ID;
+			LicenseNumber = vehicle.LicenseNumber;
+			Name = vehicle.Name;
+			Year = vehicle.Year;
+			Location = vehicle.Location;
+			GarageName = vehicle.GarageName;
+			GarageNumOfComment = vehicle.GarageNumOfComment;
+			GarageRating = vehicle.GarageRating;
 
-			string tmpString = null;
-			Constants.TRANSMISSION_TYPE.TryGetValue(vehicle.TransmissionType, out tmpString);
-			TransmissionTypeName = tmpString;
+			TransmissionTypeName = vehicle.TransmissionTypeName;
+			FuelTypeName = vehicle.FuelTypeName;
+			NumOfSeat = vehicle.NumOfSeat;
+			NumOfComment = vehicle.NumOfComment;
+			Star = vehicle.Star;
+			ImageList = vehicle.ImageList;
 
-			if (vehicle.FuelType != null)
-			{
-				tmpString = null;
-				Constants.FUEL_TYPE.TryGetValue((int)vehicle.FuelType, out tmpString);
-				FuelTypeName = tmpString;
-			}
-
-			// Find the best PriceGroupItem that match the search
-			var items = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.OrderBy(x => x.MaxTime);
-			foreach (var item in items)
-			{
-				if (item.MaxTime >= rentalTime)
-				{
-					BestPossibleRentalPeriod = item.MaxTime + "&nbsp;giờ";
-					BestPossibleRentalPrice = item.Price;
-					break;
-				}
-			}
-			// If not found, use the PerDayPrice
-			if (BestPossibleRentalPrice == 0.0d)
-			{
-				BestPossibleRentalPeriod = "ngày";
-				BestPossibleRentalPrice = vehicle.VehicleGroup.PriceGroup.PerDayPrice;
-			}
+			BestPossibleRentalPeriod = vehicle.BestPossibleRentalPeriod;
+			BestPossibleRentalPrice = vehicle.BestPossibleRentalPrice;
 		}
 	}
 }

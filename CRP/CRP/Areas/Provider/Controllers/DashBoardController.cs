@@ -18,7 +18,6 @@ namespace CRP.Areas.Provider.Controllers
     public class DashboardController : BaseController
     {
         // GET: Provider/DashBoard
-        [Authorize(Roles = "Provider")]
         [Route("dashboard/provider")]
         public ActionResult Dashboard()
         {
@@ -36,7 +35,7 @@ namespace CRP.Areas.Provider.Controllers
             var now = DateTime.Now;
             var thisMonth = new DateTime(now.Year, now.Month, 1);
 
-            var receipts = bookingService.Get(r => r.ProviderID == providerID && !r.IsPending && r.CustomerID != r.ProviderID
+            var receipts = bookingService.Get(r => r.Garage.OwnerID == providerID && !r.IsPending && r.CustomerID != r.Garage.OwnerID
                                         && r.StartTime < now
                                         && r.StartTime.Month == thisMonth.Month
                                         && r.StartTime.Year == thisMonth.Year).ToList();
@@ -49,7 +48,7 @@ namespace CRP.Areas.Provider.Controllers
                 model.NumOfVehicle += garage.Vehicles.Count;
             }
             model.NumOfBookingInThisMonth = receipts.Count;
-            model.NumOfBookingSuccessfulInThisMonth = receipts.Where(r => r.IsCanceled == false).Count();
+            model.NumOfBookingSuccessfulInThisMonth = receipts.Count(r => r.IsCanceled == false);
 
             if(receipts.Any()) {
                 model.Profit = receipts.Where(r => !r.IsCanceled).Sum(r => r.RentalPrice);
@@ -58,7 +57,7 @@ namespace CRP.Areas.Provider.Controllers
 
             model.ProviderUtil = userService.Get(providerID).IsProviderUntil;
 
-            var receiptDes = bookingService.Get(r => r.ProviderID == providerID && !r.IsPending && r.CustomerID != r.ProviderID && !r.IsCanceled).OrderByDescending(r => r.StartTime).ToList();
+            var receiptDes = bookingService.Get(r => r.Garage.OwnerID == providerID && !r.IsPending && r.CustomerID != r.Garage.OwnerID && !r.IsCanceled).OrderByDescending(r => r.StartTime).ToList();
 
             // last 10 comment
             for(int i = 0; i < receiptDes.Count; i++)
@@ -74,7 +73,7 @@ namespace CRP.Areas.Provider.Controllers
             for (var i = 1; i < 7; i++)
             {
                 var reportTime = thisMonth.AddMonths(-i);
-                receipts = bookingService.Get(r => r.ProviderID == providerID && r.StartTime < now
+                receipts = bookingService.Get(r => r.Garage.OwnerID == providerID && r.StartTime < now
                                         && r.StartTime.Month == reportTime.Month
                                         && r.StartTime.Year == reportTime.Year).ToList();
 

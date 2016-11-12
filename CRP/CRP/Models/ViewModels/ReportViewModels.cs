@@ -53,7 +53,7 @@ namespace CRP.Models.ViewModels
             public int? VehicleID { get; set; }
             public string VehicleName { get; set; }
             public string UserName { get; set; }
-            public string Comment { get; set; }
+            public string UserAvatarUrl { get; set; }
             public int? Star { get; set; }
         }
 
@@ -74,8 +74,8 @@ namespace CRP.Models.ViewModels
                     VehicleID = booking.VehicleID,
                     VehicleName = booking.VehicleName,
                     UserName = booking.AspNetUser.UserName,
-                    Comment = booking.Comment != null ? Regex.Replace(booking.Comment, @"\r\n?|\n", "<br>"): null,
-                    Star = booking.Star
+					UserAvatarUrl = booking.AspNetUser.AvatarURL,
+					Star = booking.Star
                 };
                 Comment.Add(data);
             }
@@ -87,11 +87,11 @@ namespace CRP.Models.ViewModels
             {
                 Time = time,
                 NumOfSuccessBooking = bookings.Count(b => b.IsCanceled == false
-                    && b.IsPending == false && b.CustomerID != b.ProviderID),
-                NumOfBooking = bookings.Count(b => b.IsPending == false && b.CustomerID != b.ProviderID),
-                Profit = (bookings.Any(b => !b.IsCanceled && !b.IsPending && b.CustomerID != b.ProviderID)
+                    && b.IsPending == false && b.CustomerID != b.Garage.OwnerID),
+                NumOfBooking = bookings.Count(b => b.IsPending == false && b.CustomerID != b.Garage.OwnerID),
+                Profit = (bookings.Any(b => !b.IsCanceled && !b.IsPending && b.CustomerID != b.Garage.OwnerID)
                     ? bookings.Sum(r => r.RentalPrice) : 0.0)
-                    + (bookings.Any(b => b.IsCanceled && !b.IsPending && b.CustomerID != b.ProviderID)
+                    + (bookings.Any(b => b.IsCanceled && !b.IsPending && b.CustomerID != b.Garage.OwnerID)
                     ? bookings.Sum(r => r.Deposit) : 0.0)
             };
             ReportData.Add(month);

@@ -477,6 +477,8 @@
 @section Scripts {
     <script type="text/javascript">
         const queryBookingApiUrl = '@Url.RouteUrl("GetBookingListAPI", new { controller = "BookingManagement" })'
+            , STAR_RATING = @Model.Star
+            , NUM_OF_COMMENT = @Model.NumOfComment;
     </script>
     @Scripts.Render("~/Scripts/Garage")
 }

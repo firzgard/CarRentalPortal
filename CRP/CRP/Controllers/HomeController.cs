@@ -5,10 +5,13 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using CRP.Helpers;
 using CRP.Models;
 using CRP.Models.Entities;
 using CRP.Models.Entities.Services;
 using CRP.Models.ViewModels;
+using Microsoft.AspNet.Identity;
+using Constants = CRP.Models.Constants;
 
 namespace CRP.Controllers
 {
@@ -26,14 +29,15 @@ namespace CRP.Controllers
 		[Route("search", Name = "SearchPage")]
 		public ActionResult Search()
 		{
-			var brandService = this.Service<IBrandService>();
-			var brandList = brandService.Get(
+			var viewModel = new SearchPageViewModel();
+
+			viewModel.BrandList = this.Service<IBrandService>().Get(
 				b => b.ID != 1 // Exclude unlisted brand
 			).OrderBy(b => b.Name).ToList();
 
 			// Reorder each brand's models by name
 			// Only get brand w/ model w/ registered vehicles
-			brandList = brandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
+			viewModel.BrandList = viewModel.BrandList.Aggregate(new List<VehicleBrand>(), (newBrandList, b) =>
 			{
 				b.VehicleModels = b.VehicleModels.Aggregate(new List<VehicleModel>(), (newModelList, m) =>
 				{
@@ -50,31 +54,57 @@ namespace CRP.Controllers
 
 				return newBrandList;
 			});
+			
+			viewModel.NumOfSeatList = this.Service<IModelService>()
+					.Get().Select(m => m.NumOfSeat).Distinct().Where(s => s != 0).ToList();
 
-			var categoryService = this.Service<ICategoryService>();
-			var categoryList = categoryService.Get().OrderBy(c => c.Name).ToList();
-
-			var locationService = this.Service<ILocationService>();
+			viewModel.CategoryList = this.Service<ICategoryService>().Get().OrderBy(c => c.Name).ToList();
+			
 			// Only get location w/ garage
-			var locationList = locationService.Get(l => l.Garages.Count > 0).OrderBy(l => l.Name).ToList();
+			viewModel.LocationList = this.Service<ILocationService>()
+						.Get(l => l.Garages.Any(g => g.IsActive
+												&& !g.IsDeleted
+												&& g.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
+												&& (g.AspNetUser.LockoutEndDateUtc == null || g.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow))
+						).OrderBy(l => l.Name).ToList();
 
 			var priceGroupService = this.Service<IPriceGroupService>();
-			var maxPerDayPrice = priceGroupService.Get().Max(pg => pg.PerDayPrice);
-			var minPerDayPrice = priceGroupService.Get().Min(pg => pg.PerDayPrice);
+			var maxPerDayPriceGroup = priceGroupService.Get().OrderByDescending(pg => pg.PerDayPrice).FirstOrDefault();
+			var minPerDayPriceGroup = priceGroupService.Get().OrderBy(pg => pg.PerDayPrice).FirstOrDefault();
 
 			var priceGroupItemService = this.Service<IPriceGroupItemService>();
-			var maxPriceGroupItemPrice = priceGroupItemService.Get().Max(pgi => pgi.Price);
-			var minPriceGroupItemPrice = priceGroupItemService.Get().Min(pgi => pgi.Price);
+			var maxPriceGroupItem = priceGroupItemService.Get().OrderByDescending(pgi => pgi.Price).FirstOrDefault();
+			var minPriceGroupItem = priceGroupItemService.Get().OrderBy(pgi => pgi.Price).FirstOrDefault();
 
-			var maxPrice = maxPerDayPrice > maxPriceGroupItemPrice ? maxPerDayPrice : maxPriceGroupItemPrice;
-			var minPrice = minPerDayPrice < minPriceGroupItemPrice ? minPerDayPrice : minPriceGroupItemPrice;
+			if (maxPerDayPriceGroup != null &&
+				(maxPriceGroupItem == null || maxPerDayPriceGroup.PerDayPrice > maxPriceGroupItem.Price))
+			{
+				viewModel.MaxPrice = maxPerDayPriceGroup.PerDayPrice;
+				viewModel.MaxPriceUnit = "ngày";
+			}
+			else if (maxPriceGroupItem != null)
+			{
+				viewModel.MaxPrice = maxPriceGroupItem.Price;
+				viewModel.MaxPriceUnit = maxPriceGroupItem.MaxTime + " giờ";
+			}
 
-			var vehicleService = this.Service<IVehicleService>();
-			var vehicles = vehicleService.Get();
-			var maxYear = vehicles.Max(v => v.Year);
-			var minYear = vehicles.Min(v => v.Year);
+			if (minPerDayPriceGroup != null &&
+				(minPriceGroupItem == null || minPerDayPriceGroup.PerDayPrice < minPriceGroupItem.Price))
+			{
+				viewModel.MinPrice = minPerDayPriceGroup.PerDayPrice;
+				viewModel.MinPriceUnit = "ngày";
+			}
+			else if (minPriceGroupItem != null)
+			{
+				viewModel.MinPrice = minPriceGroupItem.Price;
+				viewModel.MinPriceUnit = minPriceGroupItem.MaxTime + " giờ";
+			}
+			
+			var vehicles = this.Service<IVehicleService>().Get();
+			viewModel.MaxYear = vehicles.Max(v => v.Year);
+			viewModel.MinYear = vehicles.Min(v => v.Year);
 
-			return View(new SearchPageViewModel(brandList, categoryList, locationList, maxPrice, minPrice, maxYear, minYear));
+			return View(viewModel);
 		}
 
 		// Route to vehicle's info
@@ -82,6 +112,7 @@ namespace CRP.Controllers
 		public ActionResult VehicleInfo(int id)
 		{
 			var vehicle = this.Service<IVehicleService>().Get(v => v.ID == id
+										&& !v.IsDeleted
 										&& v.Garage.IsActive
 										&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
 										&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
@@ -123,8 +154,11 @@ namespace CRP.Controllers
 			Response.StatusCode = 200;
 			Response.StatusDescription = "Queried successfully";
 
-			var service = this.Service<IVehicleService>();
-			var searchResult = service.SearchVehicle(searchConditions);
+			var userId = User.Identity.GetUserId();
+			var user = this.Service<IUserService>().Get(userId);
+			var searcher = new Searcher();
+			var searchResult = searcher.SearchVehicle(searchConditions, user);
+
 			return Json(searchResult, JsonRequestBehavior.AllowGet);
 		}
 		
