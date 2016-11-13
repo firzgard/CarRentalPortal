@@ -9,7 +9,7 @@
 		<ul class="nav metismenu" id="side-menu">
 			<li class="nav-header">
 				<div class="dropdown profile-element text-center">
-					@if (avatar != null)
+					@if (avatar != "")
 					{
 						<a href="@Url.Action("Index", "Manage")"><h1><img height="128" width="128" class="img-circle" src="@avatar" style="margin-top: -40px;" /></h1></a>
 					}

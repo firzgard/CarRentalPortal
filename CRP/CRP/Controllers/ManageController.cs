@@ -125,7 +125,7 @@ namespace CRP.Controllers
 
 							userEntity.AvatarURL = uploadResult.Uri.ToString();
 
-							Session["avatar"] = userEntity.AvatarURL;
+							user.AvatarURL = userEntity.AvatarURL;
 							await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 						}
 						catch (Exception ex)
@@ -159,7 +159,7 @@ namespace CRP.Controllers
 				if (user != null)
 				{
 					var userService = this.Service<IUserService>();
-					Session["avatar"] = userService.Get(user.Id).AvatarURL;
+					user.AvatarURL = userService.Get(user.Id).AvatarURL;
 					await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 				}
 				message = ManageMessageId.RemoveLoginSuccess;
@@ -213,7 +213,7 @@ namespace CRP.Controllers
 			if (user != null)
 			{
 				var userService = this.Service<IUserService>();
-				Session["avatar"] = userService.Get(user.Id).AvatarURL;
+				user.AvatarURL = userService.Get(user.Id).AvatarURL;
 				await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 			}
 			return RedirectToAction("Index", "Manage");
@@ -230,7 +230,7 @@ namespace CRP.Controllers
 			if (user != null)
 			{
 				var userService = this.Service<IUserService>();
-				Session["avatar"] = userService.Get(user.Id).AvatarURL;
+                user.AvatarURL = userService.Get(user.Id).AvatarURL;
 				await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 			}
 			return RedirectToAction("Index", "Manage");
@@ -262,7 +262,7 @@ namespace CRP.Controllers
 				if (user != null)
 				{
 					var userService = this.Service<IUserService>();
-					Session["avatar"] = userService.Get(user.Id).AvatarURL;
+                    user.AvatarURL = userService.Get(user.Id).AvatarURL;
 					await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 				}
 				return RedirectToAction("Index", new { Message = ManageMessageId.AddPhoneSuccess });
@@ -287,7 +287,7 @@ namespace CRP.Controllers
 			if (user != null)
 			{
 				var userService = this.Service<IUserService>();
-				Session["avatar"] = userService.Get(user.Id).AvatarURL;
+                user.AvatarURL = userService.Get(user.Id).AvatarURL;
 				await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 			}
 			return RedirectToAction("Index", new { Message = ManageMessageId.RemovePhoneSuccess });
@@ -317,7 +317,7 @@ namespace CRP.Controllers
 				if (user != null)
 				{
 					var userService = this.Service<IUserService>();
-					Session["avatar"] = userService.Get(user.Id).AvatarURL;
+                    user.AvatarURL = userService.Get(user.Id).AvatarURL;
 					await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 				}
 
@@ -349,7 +349,7 @@ namespace CRP.Controllers
 					if (user != null)
 					{
 						var userService = this.Service<IUserService>();
-						Session["avatar"] = userService.Get(user.Id).AvatarURL;
+                        user.AvatarURL = userService.Get(user.Id).AvatarURL;
 						await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 					}
 					return RedirectToAction("Index", new { Message = ManageMessageId.SetPasswordSuccess });
