@@ -69,6 +69,8 @@ namespace CRP.Helpers
 			return vehicleList;
 		}
 
+		#region SupportMethods
+
 		private static List<double> BuildUserProfile(AspNetUser user,
 											IReadOnlyCollection<VehicleBrand> brandList,
 											IReadOnlyCollection<Category> categoryList,
@@ -87,7 +89,7 @@ namespace CRP.Helpers
 																	categoryList,
 																	numOfAttribute))
 				.ToList();
-			
+
 			// Build user profile by calc each attribute vector
 			var userProfile = new List<double>();
 			for (var i = 0; i < numOfAttribute; i++)
@@ -113,7 +115,7 @@ namespace CRP.Helpers
 		}
 
 		// Calc the attribute vectors of an user's booking
-		private static List<double> GenerateAttributeVectorsOfBooking (BookingReceipt booking,
+		private static List<double> GenerateAttributeVectorsOfBooking(BookingReceipt booking,
 															IEnumerable<string> neighborIdList,
 															IEnumerable<int> numOfSeatList,
 															IEnumerable<int> numOfDoorList,
@@ -170,7 +172,7 @@ namespace CRP.Helpers
 			return vectorList;
 		}
 
-		private static List<VehicleFilterModel> BuildVehicleVectorList(List<VehicleFilterModel>  vehicleList,
+		private static List<VehicleFilterModel> BuildVehicleVectorList(List<VehicleFilterModel> vehicleList,
 															IReadOnlyCollection<VehicleBrand> brandList,
 															IReadOnlyCollection<Category> categoryList,
 															IReadOnlyCollection<int> numOfSeatList,
@@ -236,9 +238,12 @@ namespace CRP.Helpers
 
 			// Similar user attributes.
 			vectorList.AddRange(neighborIdList.Select(neighborId => vehicle.CustomerIdList.Any(id => id == neighborId) ? 1.0 : 0));
-			
+
 			return vectorList;
 		}
+
+		#endregion
+
 	}
 
 	// Model to filter the vehicle in search
