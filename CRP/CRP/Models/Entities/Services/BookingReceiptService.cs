@@ -28,7 +28,10 @@ namespace CRP.Models.Entities.Services
 		// Get the booking history of a customer
 		public BookingHistoryDataTablesModel GetBookingHistory(string customerID, int page, int recordPerPage, int draw)
 		{
-			var receiptList = repository.Get(br => br.CustomerID == customerID && br.CustomerID != br.Garage.OwnerID);
+			var receiptList = repository.Get(br => br.CustomerID == customerID
+												&& br.CustomerID != br.Garage.OwnerID // Not self-booking
+												&& !br.IsPending // Not pending
+												);
 
 			var total = receiptList.Count();
 

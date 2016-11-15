@@ -75,37 +75,41 @@
 						<span class="label label-success pull-right">Mới nhất</span>
 					</div>
 				</div>
-				<div class="ibox-content" style="max-height: 50em;overflow-y: auto;">
+				<div class="ibox-content" style="height: 50em;overflow-y: auto;">
 					<div class="feed-activity-list">
-						@foreach (var item in Model.Comment)
-						{
-							<div class="feed-element" style="border-bottom: 1px solid #CCC; display: flex;">
-								<div style="width: 40px;margin: 0 1em;">
-									@if(@item.UserAvatarUrl == null){
-										<i class="fa fa-user-circle" style="font-size: 38px;" ></i>
-									} else {
-										<img src="@item.UserAvatarUrl" alt="Error" class="img-circle">
-									}
-								</div>
-								<div>
-									<strong>@item.UserName</strong>
-									@if(item.VehicleID != null)
-									{
-										<span>đã đánh giá xe <a href="/management/VehicleManagement/@item.VehicleID">@item.VehicleName</a></span>
-									}
-									<br>
-									<div>
-										<small class="text-navy">
-											@{ for (int i = 0; i < item.Star; i++)
-												{
-													<i class="fa fa-star"></i>
-												}
-											}
-										</small>
+						@if(Model.Comment.Any()){
+							foreach (var item in Model.Comment)
+							{
+								<div class="feed-element" style="border-bottom: 1px solid #CCC; display: flex;">
+									<div style="width: 40px;margin: 0 1em;">
+										@if(@item.UserAvatarUrl == null){
+											<i class="fa fa-user-circle" style="font-size: 38px;" ></i>
+										} else {
+											<img src="@item.UserAvatarUrl" alt="Error" class="img-circle">
+										}
 									</div>
+									<div>
+										<strong>@item.UserName</strong>
+										@if(item.VehicleID != null)
+										{
+											<span>đã đánh giá xe <a href="/management/VehicleManagement/@item.VehicleID">@item.VehicleName</a></span>
+										}
+										<br>
+										<div>
+											<small class="text-navy">
+												@{ for (int i = 0; i < item.Star; i++)
+													{
+														<i class="fa fa-star"></i>
+													}
+												}
+											</small>
+										</div>
 
+									</div>
 								</div>
-							</div>
+							}
+						} else {
+							<div style="text-align: center;font-size: 1.5em;font-weight: bold;">Bạn hiện tại chưa có nhận xét nào.</div>
 						}
 					</div>
 				</div>
