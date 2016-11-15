@@ -134,7 +134,7 @@ namespace CRP.Areas.Customer.Controllers
 
 					// Send alert email
 					var sysService = new SystemService();
-					sysService.SendBecomeProviderAlertEmail(user.Email, user);
+					await sysService.SendBecomeProviderAlertEmail(user.Email, user);
 
 					return View("~/Areas/Customer/Views/BecomeProvider/Success.cshtml", user);
 				}

@@ -280,7 +280,7 @@ namespace CRP.Areas.Customer.Controllers
 
 		//Route to bookingReceipt page(Redirect from NganLuong/BaoKim after customer has payed)
 		[System.Web.Mvc.Route("bookingReceipt", Name = "BookingReceipt")]
-		public System.Web.Mvc.ActionResult BookingReceipt(string error_code, string token, int? canceledBookingID = null)
+		public async Task<System.Web.Mvc.ActionResult> BookingReceipt(string error_code, string token, int? canceledBookingID = null)
 		{
 			var userID = User.Identity.GetUserId();
 			var bookingService = this.Service<IBookingReceiptService>();
@@ -323,8 +323,8 @@ namespace CRP.Areas.Customer.Controllers
 
 					// Send alert email
 					SystemService sysService = new SystemService();
-					sysService.SendBookingAlertEmailToCustomer(bookingReceipt);
-					sysService.SendBookingAlertEmailToProvider(bookingReceipt);
+					await sysService.SendBookingAlertEmailToCustomer(bookingReceipt);
+					await sysService.SendBookingAlertEmailToProvider(bookingReceipt);
 
 					return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", bookingReceipt);
 				}
@@ -379,8 +379,8 @@ namespace CRP.Areas.Customer.Controllers
 			
 			// Send alert emails
 			var systemService = new SystemService();
-			systemService.SendBookingCanceledAlertEmailToCustomer(booking);
-			systemService.SendBookingCanceledAlertEmailToProvider(booking);
+			await systemService.SendBookingCanceledAlertEmailToCustomer(booking);
+			await systemService.SendBookingCanceledAlertEmailToProvider(booking);
 
 			booking.IsCanceled = true;
 			await bookingService.UpdateAsync(booking);
