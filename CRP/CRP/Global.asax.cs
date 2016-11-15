@@ -1,16 +1,21 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using AutoMapper;
+using CRP.Controllers;
 using CRP.Models;
 using CRP.Models.AutofacModules;
 using CRP.Models.Entities;
+using CRP.Models.Entities.Repositories;
+using CRP.Models.Entities.Services;
 using CRP.Models.ViewModels;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using System.Threading;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
@@ -31,8 +36,36 @@ namespace CRP
 
             Database.SetInitializer<ApplicationDbContext>(null);
             this.InitializeAutofac();
+            SetUpTimer(new TimeSpan(23, 50, 00));
+        }
+        private Timer timer;
+        private void SetUpTimer(TimeSpan alertTime)
+        {
+            DateTime current = DateTime.Now;
+            TimeSpan timeToGo = alertTime - current.TimeOfDay;
+            if (timeToGo < TimeSpan.Zero)
+            {
+                return;//time already passed
+            }
+            timer = new Timer(x =>
+            {
+                CheckProviderEndDate();
+            }, null, timeToGo, Timeout.InfiniteTimeSpan);
         }
 
+        private void CheckProviderEndDate()
+        {
+            var dbContext = new CRPEntities();
+            DateTime current = DateTime.Now;
+            var userService = new UserService(new UnitOfWork(dbContext), new UserRepository(dbContext));
+            var listUser = userService.Get(q => q.AspNetRoles.Any(r => r.Name == "Provider") && q.IsProviderUntil < current);
+            foreach (var user in listUser)
+            {
+                var userRole = user.AspNetRoles.Where(q => q.Name == "Provider").FirstOrDefault();
+                user.AspNetRoles.Remove(userRole);
+            }
+            dbContext.SaveChanges();
+        }
         private void InitializeAutofac()
         {
             var assembly = Assembly.GetExecutingAssembly();
