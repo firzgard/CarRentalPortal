@@ -365,8 +365,8 @@ namespace CRP.Areas.Customer.Controllers
 		[System.Web.Mvc.HttpDelete]
 		public async Task<System.Web.Mvc.ActionResult> CancelBookingAPI(int id)
 		{
-			var service = this.Service<IBookingReceiptService>();
-			var booking = await service.GetAsync(id);
+			var bookingService = this.Service<IBookingReceiptService>();
+			var booking = await bookingService.GetAsync(id);
 
 			if (booking == null)
 				return new HttpStatusCodeResult(400, "Invalid request");
@@ -376,9 +376,14 @@ namespace CRP.Areas.Customer.Controllers
 
 			if(booking.IsCanceled)
 				return new HttpStatusCodeResult(400, "Invalid request");
+			
+			// Send alert emails
+			var systemService = new SystemService();
+			systemService.SendBookingCanceledAlertEmailToCustomer(booking);
+			systemService.SendBookingCanceledAlertEmailToProvider(booking);
 
 			booking.IsCanceled = true;
-			await service.UpdateAsync(booking);
+			await bookingService.UpdateAsync(booking);
 
 			return new HttpStatusCodeResult(200, "OK");
 		}

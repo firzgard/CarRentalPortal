@@ -52,6 +52,48 @@ namespace CRP.Models.Entities.Services
 			smtpClient.Send(mailMessage);
 		}
 
+		// Mail on canceling booking to customer
+		public void SendBookingCanceledAlertEmailToCustomer(BookingReceipt booking)
+		{
+			var mailMessage = new MailMessage("tamntse61384@fpt.edu.vn", booking.AspNetUser.Email)
+			{
+				Subject = "Hủy đặt xe trên hệ thống CRP",
+				Body = "Bạn vừa tiến hành hủy đặt xe " + booking.VehicleName + " thành công trên hệ thống của chúng tôi.\n Xin cảm ơn."
+			};
+
+			var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+			{
+				Credentials = new System.Net.NetworkCredential()
+				{
+					UserName = "tamntse61384@fpt.edu.vn",
+					Password = "0975420837"
+				},
+				EnableSsl = true
+			};
+			smtpClient.Send(mailMessage);
+		}
+
+		// Mail on canceling booking to provider
+		public void SendBookingCanceledAlertEmailToProvider(BookingReceipt booking)
+		{
+			var mailMessage = new MailMessage("tamntse61384@fpt.edu.vn", booking.Garage.Email)
+			{
+				Subject = "Giao dịch đặt xe mới trên hệ thống CRP",
+				Body = "Lịch đặt xe từ " + booking.StartTime.ToString(@"dd\/MM\/yyyy HH:mm") + " đến " + booking.EndTime.ToString(@"dd\/MM\/yyyy HH:mm") + " bởi khách hàng " + booking.AspNetUser.FullName + " cho xe " + booking.VehicleName + " của bạn vừa được hủy."
+			};
+
+			var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+			{
+				Credentials = new System.Net.NetworkCredential()
+				{
+					UserName = "tamntse61384@fpt.edu.vn",
+					Password = "0975420837"
+				},
+				EnableSsl = true
+			};
+			smtpClient.Send(mailMessage);
+		}
+
 		//gui mail thong bao provider
 		public void SendBecomeProviderAlertEmail(string toEmail, AspNetUser user)
 		{
