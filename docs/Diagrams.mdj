@@ -30180,7 +30180,7 @@
 											"height": 13,
 											"autoResize": false,
 											"underline": false,
-											"text": "Cancel vehicle's booking",
+											"text": "Cancel self booking",
 											"horizontalAlignment": 2,
 											"verticalAlignment": 5,
 											"wordWrap": false
@@ -30248,7 +30248,7 @@
 									"containerExtending": false,
 									"left": 2258.5,
 									"top": 2852.5,
-									"width": 164.806640625,
+									"width": 164,
 									"height": 25,
 									"autoResize": false,
 									"stereotypeLabel": {
@@ -44773,7 +44773,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFXCFAslDzT8mA="
 					},
-					"name": "Cancel vehicle's booking",
+					"name": "Cancel self booking",
 					"ownedElements": [
 						{
 							"_type": "UMLGeneralization",
