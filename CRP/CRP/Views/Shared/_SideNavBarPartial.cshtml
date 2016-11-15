@@ -49,7 +49,7 @@
 			</li>
 			}
 			@if (User.IsInRole("Provider"))
-			{
+            {
 			<li>
 				<a href="@Url.Action("GarageManagement", "GarageManagement")">
 					<i class="fa fa-th-large"></i>
@@ -74,7 +74,7 @@
 					<span class="nav-label">Quản lý nhóm giá</span>
 				</a>
 			</li>
-			}
+            }
 			@if (User.IsInRole("Customer"))
 			{
 			<li>
@@ -83,14 +83,16 @@
 					<span class="nav-label">Lịch sử đặt xe</span>
 				</a>
 			</li>
-				if (!User.IsInRole("Provider")) {
 				<li>
 					<a href="@Url.RouteUrl("BecomeProvider")">
 						<i class="fa fa-th-large"></i>
-						<span class="nav-label">Trở thành nhà cung cấp</span>
+                        @if (!User.IsInRole("Provider")) {
+						    <span class="nav-label">Trở thành nhà cung cấp</span>
+                        } else {
+                            <span class="nav-label">Gia hạn quyền cung cấp</span>
+                        }
 					</a>
 				</li>
-				}
 			}
 		</ul>
 	</div>
