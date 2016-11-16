@@ -44,10 +44,10 @@ namespace CRP.Areas.Admin.Controllers
 			var now = DateTime.Now;
 			var thisMonth = new DateTime(now.Year, now.Month, 1);
 
-			var receipts = bookingService.Get(r => !r.IsCanceled && !r.IsPending && r.CustomerID != r.Garage.OwnerID
-										&& r.StartTime < now
-										&& r.StartTime.Month == thisMonth.Month
-										&& r.StartTime.Year == thisMonth.Year);
+			var receipts = bookingService.Get(r => !r.IsPending && r.CustomerID != r.Garage.OwnerID
+										&& r.BookingTime < now
+										&& r.BookingTime.Month == thisMonth.Month
+										&& r.BookingTime.Year == thisMonth.Year);
 
 			viewModel.ThisMonthNumOfSuccessfulBooking = receipts.Count();
 			if(receipts.Any())
@@ -59,10 +59,10 @@ namespace CRP.Areas.Admin.Controllers
 			for (var i = 1; i < 7; i++)
 			{
 				var reportTime = thisMonth.AddMonths(-i);
-				receipts = bookingService.Get(r => !r.IsCanceled && !r.IsPending && r.CustomerID != r.Garage.OwnerID
-										&& r.StartTime < now
-										&& r.StartTime.Month == reportTime.Month
-										&& r.StartTime.Year == reportTime.Year);
+				receipts = bookingService.Get(r => !r.IsPending && r.CustomerID != r.Garage.OwnerID
+										&& r.BookingTime < now
+										&& r.BookingTime.Month == reportTime.Month
+										&& r.BookingTime.Year == reportTime.Year);
 
 				viewModel.AddMonthlyReport(receipts.ToList(), reportTime);
 			}
