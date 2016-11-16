@@ -15,8 +15,8 @@ namespace CRP.Areas.Admin.Controllers
 	[Authorize(Roles = "Admin")]
 	public class DashBoardController : BaseController
 	{
-        // Route to admin dashboard
-        [Route("dashboard/admin", Name = "AdminDashboard")]
+		// Route to admin dashboard
+		[Route("dashboard/admin", Name = "AdminDashboard")]
 		public ActionResult AdminDashboard()
 		{
 			var viewModel = new AdminReportViewModel();
@@ -26,7 +26,7 @@ namespace CRP.Areas.Admin.Controllers
 			var garageService = this.Service<IGarageService>();
 
 			var utcNow = DateTime.UtcNow;
-			var activeUsers = userService.Get(u => !(u.LockoutEnabled));
+			var activeUsers = userService.Get(u => !u.LockoutEnabled || u.LockoutEndDateUtc < utcNow);
 			viewModel.NumOfActiveUser = activeUsers.Count();
 
 			var activeProviders = activeUsers.Where(u => u.AspNetRoles.Any(r => r.Name == "Provider"));
@@ -50,10 +50,10 @@ namespace CRP.Areas.Admin.Controllers
 										&& r.StartTime.Year == thisMonth.Year);
 
 			viewModel.ThisMonthNumOfSuccessfulBooking = receipts.Count();
-            if(receipts.Count() > 0)
-            {
-                viewModel.ThisMonthNumOfProfit = receipts.Sum(r => r.BookingFee);
-            }
+			if(receipts.Any())
+			{
+				viewModel.ThisMonthNumOfProfit = receipts.Sum(r => r.BookingFee);
+			}
 
 			// Calculate monthly reports for last half year
 			for (var i = 1; i < 7; i++)
@@ -61,8 +61,8 @@ namespace CRP.Areas.Admin.Controllers
 				var reportTime = thisMonth.AddMonths(-i);
 				receipts = bookingService.Get(r => !r.IsCanceled && !r.IsPending && r.CustomerID != r.Garage.OwnerID
 										&& r.StartTime < now
-				                        && r.StartTime.Month == reportTime.Month
-				                        && r.StartTime.Year == reportTime.Year);
+										&& r.StartTime.Month == reportTime.Month
+										&& r.StartTime.Year == reportTime.Year);
 
 				viewModel.AddMonthlyReport(receipts.ToList(), reportTime);
 			}

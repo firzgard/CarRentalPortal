@@ -22,6 +22,7 @@ namespace CRP.Models.Entities
         public Nullable<int> Distance { get; set; }
         public Nullable<int> Star { get; set; }
         public string Comment { get; set; }
+        public System.DateTime BookingTime { get; set; }
         public System.DateTime StartTime { get; set; }
         public System.DateTime EndTime { get; set; }
         public int GarageID { get; set; }
