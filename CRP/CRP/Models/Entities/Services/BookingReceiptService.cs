@@ -12,8 +12,8 @@ namespace CRP.Models.Entities.Services
 	public interface IBookingReceiptService : IService<BookingReceipt>
 	{
 		BookingHistoryDataTablesModel GetBookingHistory(string customerID, int page, int recordPerPage, int draw);
-        BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions);
-    }
+		BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions);
+	}
 	public class BookingReceiptService : BaseService<BookingReceipt>, IBookingReceiptService
 	{
 		public BookingReceiptService(IUnitOfWork unitOfWork, IBookingReceiptRepository repository) : base(unitOfWork, repository)
@@ -21,9 +21,9 @@ namespace CRP.Models.Entities.Services
 
 		}
 
-        public BookingReceiptService()
-        {
-        }
+		public BookingReceiptService()
+		{
+		}
 
 		// Get the booking history of a customer
 		public BookingHistoryDataTablesModel GetBookingHistory(string customerID, int page, int recordPerPage, int draw)
@@ -44,11 +44,11 @@ namespace CRP.Models.Entities.Services
 			return new BookingHistoryDataTablesModel(receiptList.ToList(), draw, total);
 		}
 
-        public BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions)
-        {
-            // Get all available booking receipt
-            var bookings = repository.Get(b => b.Garage.OwnerID == conditions.providerID
-                && b.IsPending == false);
+		public BookingsDataTablesJsonModel FilterBookings(BookingsFilterConditions conditions)
+		{
+			// Get all available booking receipt
+			var bookings = repository.Get(b => b.Garage.OwnerID == conditions.providerID
+				&& b.IsPending == false);
 
 			if (conditions.vehicleID != null)
 			{
@@ -56,80 +56,80 @@ namespace CRP.Models.Entities.Services
 			}
 
 			if (conditions.garageID != null)
-            {
-                bookings = bookings.Where(b => b.GarageID == conditions.garageID);
-            }
+			{
+				bookings = bookings.Where(b => b.GarageID == conditions.garageID);
+			}
 
-            // Exclude canceled receipt while IsCanceled is not checked
-            if(!conditions.IsCanceled)
-            {
-                bookings = bookings.Where(b => b.IsCanceled == false);
-            }
+			// Exclude canceled receipt while IsCanceled is not checked
+			if(!conditions.IsCanceled)
+			{
+				bookings = bookings.Where(b => b.IsCanceled == false);
+			}
 
-            // Exclude canceled receipt while IsSelfBooking is not checked
-            if (!conditions.IsSelfBooking)
-            {
-                bookings = bookings.Where(b => b.CustomerID != b.Garage.OwnerID);
-            }
+			// Exclude canceled receipt while IsSelfBooking is not checked
+			if (!conditions.IsSelfBooking)
+			{
+				bookings = bookings.Where(b => b.CustomerID != b.Garage.OwnerID);
+			}
 
-            if(conditions.IsInThePast != null)
-            {
-                DateTime now = DateTime.Now;
-                // while only IsInThePast is checked
-                if(conditions.IsInThePast == true)
-                {
-                    bookings = bookings.Where(b => b.StartTime < now);
-                }
-                // while only IsInFuture is checked
-                else
-                {
-                    bookings = bookings.Where(b => b.StartTime >= now);
-                }
-            }
+			if(conditions.IsInThePast != null)
+			{
+				DateTime now = DateTime.Now;
+				// while only IsInThePast is checked
+				if(conditions.IsInThePast == true)
+				{
+					bookings = bookings.Where(b => b.StartTime < now);
+				}
+				// while only IsInFuture is checked
+				else
+				{
+					bookings = bookings.Where(b => b.StartTime >= now);
+				}
+			}
 
-            var recordsTotal = bookings.Count();
+			var recordsTotal = bookings.Count();
 
-            // Search, if Search param exists
-            if (conditions.Search != null)
-                bookings = bookings.Where(b => b.AspNetUser.FullName.Contains(conditions.Search)
-                            || b.VehicleName.Contains(conditions.Search) || b.LicenseNumber.Contains(conditions.Search));
+			// Search, if Search param exists
+			if (conditions.Search != null)
+				bookings = bookings.Where(b => b.AspNetUser.FullName.Contains(conditions.Search)
+							|| b.VehicleName.Contains(conditions.Search) || b.LicenseNumber.Contains(conditions.Search));
 
-            var result = bookings.ToList().Select(b => new BookingsRecordJsonModel(b));
+			var result = bookings.ToList().Select(b => new BookingsRecordJsonModel(b));
 
-            // Sort
-            // Default sort
-            if(conditions.OrderBy == null || nameof(BookingsRecordJsonModel.ID) == conditions.OrderBy)
-            {
-                result = result.OrderBy(r => r.CustomerName);
-            }
-            else
-            {
-                if(nameof(BookingsRecordJsonModel.CustomerName) == conditions.OrderBy)
-                {
-                    result = conditions.IsDescendingOrder ? result.OrderByDescending(r => r.CustomerName)
-                        : result.OrderBy(r => r.CustomerName);
-                }
-                else
-                {
-                    var sortingProp = typeof(BookingsRecordJsonModel).GetProperty(conditions.OrderBy);
-                    result = conditions.IsDescendingOrder
-                        ? result.OrderByDescending(r => sortingProp.GetValue(r))
-                        : result.OrderBy(r => sortingProp.GetValue(r));
-                }
-            }
+			// Sort
+			// Default sort
+			if(conditions.OrderBy == null || nameof(BookingsRecordJsonModel.ID) == conditions.OrderBy)
+			{
+				result = result.OrderBy(r => r.CustomerName);
+			}
+			else
+			{
+				if(nameof(BookingsRecordJsonModel.CustomerName) == conditions.OrderBy)
+				{
+					result = conditions.IsDescendingOrder ? result.OrderByDescending(r => r.CustomerName)
+						: result.OrderBy(r => r.CustomerName);
+				}
+				else
+				{
+					var sortingProp = typeof(BookingsRecordJsonModel).GetProperty(conditions.OrderBy);
+					result = conditions.IsDescendingOrder
+						? result.OrderByDescending(r => sortingProp.GetValue(r))
+						: result.OrderBy(r => sortingProp.GetValue(r));
+				}
+			}
 
-            // Paginate
-            var filteredRecords = result.Count();
-            if ((conditions.Page - 1) * conditions.RecordPerPage > filteredRecords)
-            {
-                conditions.Page = 1;
-            }
+			// Paginate
+			var filteredRecords = result.Count();
+			if ((conditions.Page - 1) * conditions.RecordPerPage > filteredRecords)
+			{
+				conditions.Page = 1;
+			}
 
-            result = result.Skip((conditions.Page - 1) * conditions.RecordPerPage)
-                    .Take(conditions.RecordPerPage);
+			result = result.Skip((conditions.Page - 1) * conditions.RecordPerPage)
+					.Take(conditions.RecordPerPage);
 
-            return new BookingsDataTablesJsonModel(result.ToList(), conditions.Draw, recordsTotal, filteredRecords);
-        }
+			return new BookingsDataTablesJsonModel(result.ToList(), conditions.Draw, recordsTotal, filteredRecords);
+		}
 
-    }
+	}
 }

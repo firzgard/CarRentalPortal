@@ -82,7 +82,7 @@ $(document).ready(() => {
 					    <ul class ="dropdown-menu">
 						<li><a href="/management/garageManagement/${row[0]}">Thông tin chi tiết</a></li>
 
-                        ${row[6] === true ?
+                        ${row[7] === true?
                         `<li><a data-toggle="modal" data-target="#mdModal" data-action="deactivate" data-id="${row[0]}" data-name="${row[1]}" >Đóng cửa garage</a></li>` :
                         `<li><a data-toggle="modal" data-target="#mdModal" data-action="activate" data-id="${row[0]}" data-name="${row[1]}" >Mở cửa garage</a></li>`}
                         <li><a href="#" data-toggle="modal" data-target="#mdModal" data-action="delete" data-id="${row[0]}" data-name="${row[1]}" >Xóa</a></li>
