@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net.Mail;
 using System.Reflection;
 using System.Security.Principal;
 using System.Threading;
@@ -65,7 +66,42 @@ namespace CRP
                 user.AspNetRoles.Remove(userRole);
             }
             dbContext.SaveChanges();
+            //AlertToNextProvider();
+            var next3Days = new DateTime(current.Year, current.Month, current.Day + 3, current.Hour, current.Minute, current.Second);
+            var next2Days = new DateTime(current.Year, current.Month, current.Day + 2, current.Hour, current.Minute, current.Second);
+            var userEndInNext3Days = userService.Get(q => q.AspNetRoles.Any(r => r.Name == "Provider") && q.IsProviderUntil < next3Days && q.IsProviderUntil > next2Days);
+            foreach (var user in userEndInNext3Days)
+            {
+                SendExpiredAlertEmailToProvider(user);
+            }
         }
+
+        private void SendExpiredAlertEmailToProvider(AspNetUser user)
+        {
+            var mailMessage = new MailMessage("crpservices1@gmail.com", user.Email)
+            {
+                Subject = "CRP - Thông tin gia hạn tài khoản",
+                Body = "Xin chào, " + user.FullName + "\n"
+                + "Chúng tôi gởi mail này để thông báo rằng quyền cung cấp của bạn sẽ hết hạn vào ngày "
+                + user.IsProviderUntil.Value.Day+"/"+user.IsProviderUntil.Value.Month+"/"+user.IsProviderUntil.Value.Year+ ". Hãy gia hạn để có thể tiếp tục sử dụng dịch vụ của chúng tôi.\n"
+                + "Xin chân thành cảm ơn vì đã tin dùng dịch vụ của chúng tôi.\n"
+                + "Mọi chi tiết xin vui lòng liên hệ:\n"
+                + "Email liên hệ: mailto:crpservices1@gmail.com"
+                + "\nSố điện thoại: +841687548624"
+            };
+
+            var smtpClient = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new System.Net.NetworkCredential()
+                {
+                    UserName = "crpservices1@gmail.com",
+                    Password = "A123456z"
+                },
+                EnableSsl = true,
+            };
+            smtpClient.Send(mailMessage);
+        }
+
         private void InitializeAutofac()
         {
             var assembly = Assembly.GetExecutingAssembly();
