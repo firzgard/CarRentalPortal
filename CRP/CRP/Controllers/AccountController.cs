@@ -169,22 +169,21 @@ namespace CRP.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				var systemS = new SystemService();
 				var user = new ApplicationUser { UserName = model.Username, Email = model.Email, FullName = model.Fullname.Trim(), PhoneNumber = model.PhoneNumber};
 				var result = await UserManager.CreateAsync(user, model.Password);
 				if (result.Succeeded)
 				{
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    var userSer = this.Service<IUserService>();
-                    AspNetUser entity = await userSer.GetAsync(user.Id);
-                    entity.LockoutEnabled = false;
-                    await userSer.UpdateAsync(entity);
+					// For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+					// Send an email with this link
+					var userSer = this.Service<IUserService>();
+					var entity = await userSer.GetAsync(user.Id);
+					entity.LockoutEnabled = false;
+					await userSer.UpdateAsync(entity);
 					var token = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
 					var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, token = token }, protocol: Request.Url.Scheme);
 					//send mail de confirm email
 					var systenService = new SystemService();
-					systenService.SendRegistrationConfirmEmail(user.Email, callbackUrl);
+					await systenService.SendRegistrationConfirmEmail(user.Email, callbackUrl);
 					
 					await SignInManager.SignInAsync(UserManager.FindById(user.Id), isPersistent: false, rememberBrowser: false);
 
@@ -250,8 +249,8 @@ namespace CRP.Controllers
 				 var token = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
 				 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, token = token }, protocol: Request.Url.Scheme);		
 				 //await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-				SystemService systemS = new SystemService();
-				systemS.SendRecoverPasswordEmail(model.Email, callbackUrl);
+				var systemService = new SystemService();
+				await systemService.SendRecoverPasswordEmail(model.Email, callbackUrl);
 				return RedirectToAction("ForgotPasswordConfirmation", "Account");
 			}
 
