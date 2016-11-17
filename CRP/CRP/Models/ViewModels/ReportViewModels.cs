@@ -86,12 +86,11 @@ namespace CRP.Models.ViewModels
             var month = new MonthlySaleReport
             {
                 Time = time,
-                NumOfSuccessBooking = bookings.Count(b => b.IsCanceled == false
-                    && b.IsPending == false && b.CustomerID != b.Garage.OwnerID),
-                NumOfBooking = bookings.Count(b => b.IsPending == false && b.CustomerID != b.Garage.OwnerID),
-                Profit = (bookings.Any(b => !b.IsCanceled && !b.IsPending && b.CustomerID != b.Garage.OwnerID)
+                NumOfSuccessBooking = bookings.Count(b => !b.IsCanceled),
+                NumOfBooking = bookings.Count(),
+                Profit = (bookings.Any(b => !b.IsCanceled)
                     ? bookings.Sum(r => r.RentalPrice) : 0.0)
-                    + (bookings.Any(b => b.IsCanceled && !b.IsPending && b.CustomerID != b.Garage.OwnerID)
+                    + (bookings.Any(b => b.IsCanceled)
                     ? bookings.Sum(r => r.Deposit) : 0.0)
             };
             ReportData.Add(month);
