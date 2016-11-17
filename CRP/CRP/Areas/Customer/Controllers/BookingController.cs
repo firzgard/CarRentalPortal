@@ -152,6 +152,7 @@ namespace CRP.Areas.Customer.Controllers
 
 			newBooking.StartTime = model.StartTime;
 			newBooking.EndTime = endTime;
+			newBooking.BookingTime = DateTime.Now;
 
 			newBooking.IsPending = true;
 
@@ -174,8 +175,10 @@ namespace CRP.Areas.Customer.Controllers
 			bookingService.Create(newBooking);
 
 			// Set timer to delete the booking if it is still pending after x-milisec
-			System.Timers.Timer checkPendingBookingTimer = new System.Timers.Timer(Models.Constants.BOOKING_PENDING_PERIOD_IN_MINUTES * 60 * 1000 );
-			checkPendingBookingTimer.AutoReset = false;
+			var checkPendingBookingTimer = new System.Timers.Timer(Models.Constants.BOOKING_PENDING_PERIOD_IN_MINUTES*60*1000)
+			{
+				AutoReset = false
+			};
 
 			// Add callback
 			checkPendingBookingTimer.Elapsed += delegate { CheckPendingBooking(newBooking.ID); };
