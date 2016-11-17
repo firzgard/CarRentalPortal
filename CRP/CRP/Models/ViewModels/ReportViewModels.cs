@@ -30,7 +30,7 @@ namespace CRP.Models.ViewModels
 			{
 				Time = time,
 				NumOfSuccessfulBooking = bookingReceipts.Count(),
-				Profit = bookingReceipts.Count() > 0 ? bookingReceipts.Sum(r => r.BookingFee) : 0.0
+				Profit = bookingReceipts.Any() ? bookingReceipts.Sum(r => r.BookingFee) : 0.0
 			};
 
 			LastHalfYearSaleReportList.Add(report);
