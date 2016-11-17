@@ -36,9 +36,9 @@ namespace CRP.Areas.Provider.Controllers
             var thisMonth = new DateTime(now.Year, now.Month, 1);
 
             var receipts = bookingService.Get(r => r.Garage.OwnerID == providerID && !r.IsPending && r.CustomerID != r.Garage.OwnerID
-                                        && r.StartTime < now
-                                        && r.StartTime.Month == thisMonth.Month
-                                        && r.StartTime.Year == thisMonth.Year).ToList();
+                                        && r.EndTime < now
+                                        && r.EndTime.Month == thisMonth.Month
+                                        && r.EndTime.Year == thisMonth.Year).ToList();
 
             ProviderReportViewModel model = new ProviderReportViewModel();
             model.NumOfGarage = listGarage.Count;
@@ -48,7 +48,7 @@ namespace CRP.Areas.Provider.Controllers
                 model.NumOfVehicle += garage.Vehicles.Count;
             }
             model.NumOfBookingInThisMonth = receipts.Count;
-            model.NumOfBookingSuccessfulInThisMonth = receipts.Count(r => r.IsCanceled == false);
+            model.NumOfBookingSuccessfulInThisMonth = receipts.Count(r => !r.IsCanceled);
 
             if(receipts.Any()) {
                 model.Profit = receipts.Where(r => !r.IsCanceled).Sum(r => r.RentalPrice);
@@ -73,9 +73,12 @@ namespace CRP.Areas.Provider.Controllers
             for (var i = 1; i < 7; i++)
             {
                 var reportTime = thisMonth.AddMonths(-i);
-                receipts = bookingService.Get(r => r.Garage.OwnerID == providerID && r.StartTime < now
-                                        && r.StartTime.Month == reportTime.Month
-                                        && r.StartTime.Year == reportTime.Year).ToList();
+                receipts = bookingService.Get(r => r.Garage.OwnerID == providerID
+                                        && !r.IsPending
+                                        && r.CustomerID != r.Garage.OwnerID
+                                        && r.EndTime < now
+                                        && r.EndTime.Month == reportTime.Month
+                                        && r.EndTime.Year == reportTime.Year).ToList();
 
                 model.GetDataForReport(receipts, reportTime);
             }

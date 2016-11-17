@@ -97,7 +97,8 @@ $(document).ready(() => {
 			{ name: 'Address', title: 'Địa chỉ', width: '25%' },
 			{ name: 'Location', title: 'Vị trí', width: '10%' },
             { name: 'NumOfVehicle', title: 'Số lượng xe', width: '10%' },
-			{ name: 'Stars', title: 'Xếp Hạng',  width: '15%' },
+			{ name: 'Stars', title: 'Xếp Hạng', width: '15%' },
+            { name: 'NumOfComment', visible: false },
 			{ name: 'Status', title: 'Trạng thái', width: '15%' },
 			{
 			    title: 'Action',
