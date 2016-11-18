@@ -78,12 +78,21 @@ namespace CRP.Helpers
 										|| v.VehicleGroup.PriceGroup.MaxRentalPeriod * 24 > rentalTime);
 
 			// get only vehicles that are free in the booking period condition
+			// also add in-between-booking's rest time to filter's time
+			filterConditions.StartTime = filterConditions.StartTime.Value
+					.AddHours(-Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR);
+			filterConditions.EndTime = filterConditions.EndTime.Value
+					.AddHours(Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR);
+
 			vehicles = vehicles.Where(v =>
 				!(v.BookingReceipts.Any(br => !br.IsCanceled
 					&& (
-						   (filterConditions.StartTime > br.StartTime && filterConditions.StartTime < br.EndTime)
-						|| (filterConditions.EndTime > br.StartTime && filterConditions.EndTime < br.EndTime)
-						|| (filterConditions.StartTime <= br.StartTime && filterConditions.EndTime >= br.EndTime)
+						   (filterConditions.StartTime > br.StartTime
+							&& filterConditions.StartTime < br.EndTime)
+						|| (filterConditions.EndTime > br.StartTime
+							&& filterConditions.EndTime < br.EndTime)
+						|| (filterConditions.StartTime <= br.StartTime
+							&& filterConditions.EndTime >= br.EndTime)
 					)))
 			);
 
