@@ -71,6 +71,7 @@
           <Property Name="Distance" Type="int" />
           <Property Name="Star" Type="int" />
           <Property Name="Comment" Type="nvarchar" MaxLength="200" />
+          <Property Name="BookingTime" Type="datetime" Nullable="false" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" Nullable="false" />
           <Property Name="GarageID" Type="int" Nullable="false" />
@@ -754,6 +755,7 @@
           <Property Name="Distance" Type="Int32" />
           <Property Name="Star" Type="Int32" />
           <Property Name="Comment" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BookingTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="GarageID" Type="Int32" Nullable="false" />
@@ -1215,6 +1217,7 @@
                 <ScalarProperty Name="GarageID" ColumnName="GarageID" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="BookingTime" ColumnName="BookingTime" />
                 <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="Star" ColumnName="Star" />
                 <ScalarProperty Name="Distance" ColumnName="Distance" />
