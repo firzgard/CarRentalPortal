@@ -658,19 +658,19 @@ function workDay(workArray, isEditable) {
 
     let textDOW = '';
     if (workArray[0] === 0) {
-        textDOW = 'Thứ hai';
-    } else if (workArray[0] === 1) {
-        textDOW = 'Thứ ba';
-    } else if (workArray[0] === 2) {
-        textDOW = 'Thứ tư';
-    } else if (workArray[0] === 3) {
-        textDOW = 'Thứ năm';
-    } else if (workArray[0] === 4) {
-        textDOW = 'Thứ sáu';
-    } else if (workArray[0] === 5) {
-        textDOW = 'Thứ bảy';
-    } else if (workArray[0] === 6) {
         textDOW = 'Chủ nhật';
+    } else if (workArray[0] === 1) {
+        textDOW = 'Thứ hai';
+    } else if (workArray[0] === 2) {
+        textDOW = 'Thứ ba';
+    } else if (workArray[0] === 3) {
+        textDOW = 'Thứ tư';
+    } else if (workArray[0] === 4) {
+        textDOW = 'Thứ năm';
+    } else if (workArray[0] === 5) {
+        textDOW = 'Thứ sáu';
+    } else if (workArray[0] === 6) {
+        textDOW = 'Thứ bảy';
     }
     if (workArray[1] !== '' && workArray[2] !== '') {
         var startTime = "";

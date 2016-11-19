@@ -398,10 +398,15 @@ namespace CRP.Areas.Provider.Controllers
 				}, JsonRequestBehavior.AllowGet);
 
 			// Check if this vehicle has any other bookings in the timespan of this booking
+			var needCheckingStartTime = startTime.AddHours(-Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR);
+			var needCheckingEndTime = endTime.AddHours(Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR);
 			if (vehicle.BookingReceipts.Any(br => !br.IsCanceled && (
-								 (startTime > br.StartTime && startTime < br.EndTime)
-							  || (endTime > br.StartTime && endTime < br.EndTime)
-							  || (startTime <= br.StartTime && endTime >= br.EndTime)
+								 (needCheckingStartTime > br.StartTime
+									&& needCheckingStartTime < br.EndTime)
+							  || (needCheckingEndTime > br.StartTime
+									&& needCheckingEndTime < br.EndTime)
+							  || (needCheckingStartTime <= br.StartTime
+									&& needCheckingEndTime >= br.EndTime)
 						 )))
 				return Json(new
 				{

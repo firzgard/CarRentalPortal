@@ -35,12 +35,12 @@ namespace CRP.Models.Entities
         public virtual DbSet<GarageWorkingTime> GarageWorkingTimes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Nation> Nations { get; set; }
-        public virtual DbSet<PriceGroup> PriceGroups { get; set; }
         public virtual DbSet<PriceGroupItem> PriceGroupItems { get; set; }
-        public virtual DbSet<Vehicle> Vehicles { get; set; }
+        public virtual DbSet<PriceGroup> PriceGroups { get; set; }
         public virtual DbSet<VehicleBrand> VehicleBrands { get; set; }
         public virtual DbSet<VehicleGroup> VehicleGroups { get; set; }
         public virtual DbSet<VehicleImage> VehicleImages { get; set; }
         public virtual DbSet<VehicleModel> VehicleModels { get; set; }
+        public virtual DbSet<Vehicle> Vehicles { get; set; }
     }
 }
