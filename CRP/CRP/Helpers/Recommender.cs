@@ -13,6 +13,9 @@ namespace CRP.Helpers
 	{
 		public List<VehicleFilterModel> CalculateRecommendScoreForSearchResults(List<VehicleFilterModel> vehicleList, AspNetUser user)
 		{
+			// Remove self-booking from bookinghistory
+			user.BookingReceipts = user.BookingReceipts.Where(br => br.CustomerID != br.Garage.OwnerID).ToList();
+
 			// If there is no booking, go no further
 			if (!user.BookingReceipts.Any())
 				return vehicleList;
@@ -24,12 +27,13 @@ namespace CRP.Helpers
 			var numOfDoorList = modelService.Get().Select(m => m.NumOfDoor).Distinct().Where(s => s != 0).ToList();
 
 			// Get the list of userIds of users that has booked a same vehicle with this user.
+			// Do not count self-booking
 			// Exclude this user
 			var neighborIdList = user.BookingReceipts
 					.SelectMany(b => b.Vehicle.BookingReceipts
-												.Where(br => br.CustomerID != br.Garage.OwnerID)
-												.Select(br => br.CustomerID))
-					.Where(id => id != user.Id)
+										.Where(br => br.CustomerID != user.Id
+													&& br.CustomerID != br.Garage.OwnerID)
+										.Select(br => br.CustomerID))
 					.Distinct()
 					.ToList();
 
@@ -296,7 +300,12 @@ namespace CRP.Helpers
 			FuelTypeName = vehicle.FuelType == null ? null : Constants.FUEL_TYPE[vehicle.FuelType.Value];
 
 			// Get the list of userid of users that has booked this vehicle
-			CustomerIdList = vehicle.BookingReceipts.Select(b => b.CustomerID).Distinct().ToList();
+			// Exclude the owner
+			CustomerIdList = vehicle.BookingReceipts
+					.Where(b => b.CustomerID != vehicle.Garage.OwnerID)
+					.Select(b => b.CustomerID)
+					.Distinct()
+					.ToList();
 
 			// Find the best PriceGroupItem that match the search
 			var items = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.OrderBy(x => x.MaxTime);
