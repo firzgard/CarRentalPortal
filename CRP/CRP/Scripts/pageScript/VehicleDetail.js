@@ -122,7 +122,7 @@ $(document).ready(function () {
 						<p class ="label label-lg label-info">Tự đặt</p>
 					</div>`;
 					}
-					if(!row.IsCanceled && !row.IsSelfBooking)
+					if(!row.IsCanceled && !row.IsSelfBooking && row.IsInThePast)
 					{
 						status = `<div class="status-label" >
 						<p class ="label label-lg label-primary">Thành công</p>
