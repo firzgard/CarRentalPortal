@@ -27,9 +27,9 @@ namespace CRP.Models.Entities
         public int NumOfDoor { get; set; }
         public int NumOfSeat { get; set; }
     
+        public virtual VehicleBrand VehicleBrand { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Vehicle> Vehicles { get; set; }
-        public virtual VehicleBrand VehicleBrand { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Category> Categories { get; set; }
     }
