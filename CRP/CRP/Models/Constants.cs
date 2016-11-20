@@ -32,6 +32,7 @@ namespace CRP.Models
 		public const int LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY = 30;
 		public static int MIN_YEAR = 1908;
 		public static int MAX_YEAR = DateTime.Now.Year;
+		public static int IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR = 1;
 		public static readonly List<int> PROVIDER_PLAN = new List<int>() { 1, 3, 6 };
 
 		public class SortingOption
