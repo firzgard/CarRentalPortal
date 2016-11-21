@@ -411,13 +411,14 @@ namespace CRP.Areas.Provider.Controllers
 				return Json(new
 				{
 					isSuccess = false,
-					errorMessage = "Xe đã có đặt xe trong thời gian bạn đã chọn."
+					errorMessage = "Xe đã được đặt trong khoảng thời gian này."
 				}, JsonRequestBehavior.AllowGet);
 
 			// Checked OK. Create new booking.
 			var newBooking = new BookingReceipt()
 			{
 				CustomerID = currentUserID,
+                BookingTime = DateTime.Now,
 				StartTime = startTime,
 				EndTime = endTime,
 				GarageID = vehicle.GarageID,
@@ -577,7 +578,7 @@ namespace CRP.Areas.Provider.Controllers
 				return "Biển số xe phải dưới 50 ký tự.";
 
 			if (vehicle.Name.Length > 100)
-				return "Tên xe phải dưới 100 ký tự.'";
+				return "Tên xe phải dưới 100 ký tự.";
 
 			if (currentUser.Garages.All(g => g.ID != vehicle.GarageID))
 				return "Garage không tồn tại.";
