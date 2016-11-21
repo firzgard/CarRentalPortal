@@ -46,3 +46,23 @@ function renderComma(str) {
     }
     return str.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
 }
+
+function renderBlackLoadingScreen(){
+	if(!$('#loadingScreen').length)
+		$('body').append(`<div id="loadingScreen" style="z-index: 99999;background-color: hsla(0,0%,0%,.7);width: 100vw;height: 100vh;position: fixed;top: 0;display: flex;align-items: center;">
+			<div class="sk-spinner sk-spinner-three-bounce">
+				<div class="sk-bounce1"></div>
+				<div class="sk-bounce2"></div>
+				<div class="sk-bounce3"></div>
+			</div>
+		</div>`);
+	else
+		$('#loadingScreen').show();
+
+	$('body').addClass('modal-open')
+}
+
+function removeBlackLoadingScreen(){
+	$('#loadingScreen').fadeOut();
+	$('body').removeClass('modal-open')
+}

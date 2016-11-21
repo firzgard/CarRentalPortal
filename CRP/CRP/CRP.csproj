@@ -17,7 +17,7 @@
     <AssemblyName>CRP</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -1801,6 +1801,7 @@
     <Content Include="Areas\Provider\Views\DashBoard\Index.cshtml" />
     <Content Include="Areas\Provider\Views\DashBoard\TestDropzone.cshtml" />
     <Content Include="Areas\Provider\Views\VehicleManagement\VehicleDetail.cshtml" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
     <Content Include="Scripts\jquery-3.1.1.min.js" />
@@ -2018,7 +2019,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>65358</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/CRP</IISUrl>
+          <IISUrl>http://localhost:65358</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
