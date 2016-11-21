@@ -181,8 +181,10 @@ namespace CRP.Controllers
 					.Where(br => !br.IsCanceled && br.EndTime >= DateTime.Now)
 					.Select(br => new
 						{
-							start = br.StartTime.ToUniversalTime().ToString("o")
-							, end = br.EndTime.ToUniversalTime().ToString("o")
+							start = br.StartTime.AddHours(-Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR)
+												.ToUniversalTime().ToString("o")
+							, end = br.EndTime.AddHours(Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR)
+												.ToUniversalTime().ToString("o")
 						});
 
 			return Json(bookings, JsonRequestBehavior.AllowGet);

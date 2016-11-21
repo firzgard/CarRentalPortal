@@ -126,15 +126,20 @@ namespace CRP.Areas.Customer.Controllers
 				}, JsonRequestBehavior.AllowGet);
 
 			// Check if this vehicle has any other bookings in the timespan of this booking
-			if(vehicle.BookingReceipts.Any(br => !br.IsCanceled && (
-								(model.StartTime > br.StartTime && model.StartTime < br.EndTime)
-							 || (endTime > br.StartTime && endTime < br.EndTime)
-							 || (model.StartTime <= br.StartTime && endTime >= br.EndTime)
+			var needCheckingStartTime = model.StartTime.AddHours(-Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR);
+			var needCheckingEndTime = endTime.AddHours(Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR);
+			if (vehicle.BookingReceipts.Any(br => !br.IsCanceled && (
+								(needCheckingStartTime > br.StartTime
+									&& needCheckingStartTime < br.EndTime)
+							 || (needCheckingEndTime > br.StartTime
+									&& needCheckingEndTime < br.EndTime)
+							 || (needCheckingStartTime <= br.StartTime
+									&& needCheckingEndTime >= br.EndTime)
 						)))
 				return Json(new
 				{
 					errorCode = 403,
-					message = "Đã có người đặt xe này trong thời gian bạn đã chọn."
+					message = "Xe đã được đặt trong thời gian bạn đã chọn."
 				}, JsonRequestBehavior.AllowGet);
 
 			// All validation passed. Create new receipt with isPending = true

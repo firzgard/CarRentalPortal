@@ -293,6 +293,8 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 					evt.preventDefault();
 					evt.stopPropagation();
 
+					let files = this.getQueuedFiles();
+
 					// Validation
 					if (!$("#Name")[0].checkValidity()) // Check Name : required
 						toastr.warning('Tên xe không được để trống.');
@@ -315,13 +317,12 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 					if ($('input[name="Color"]:checked').length == 0) // Check Color: required
 						toastr.warning('Vui lòng chọn màu xe.');
 
-					if (this.getQueuedFiles().length < 4) // Check num of image: required, min 4
+					if (files.length < 4) // Check num of image: required, min 4
 						toastr.warning('Bạn phải upload ít nhất 4 hình.');
-
-					if (this.getQueuedFiles().length > 10) // Check num of image: required, max 10
+					else if (files.length > 10) // Check num of image: required, max 10
 						toastr.warning('Bạn chỉ được upload nhiều nhất 10 hình.');
 
-					if ($("#newVehicleForm")[0].checkValidity()) // Valid? Up u go
+					if ($("#newVehicleForm")[0].checkValidity() && files.length <= 10 && files.length >= 4) // Valid? Up u go
 						this.processQueue();
 				});
 			}

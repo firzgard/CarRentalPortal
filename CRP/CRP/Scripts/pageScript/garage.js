@@ -220,6 +220,7 @@ $(document).ready(function () {
                 targets: -2
 				, render: function (data, type, row) {
 				    var timeReceipt = "";
+				    var canceled = "";
 				    var status = "";
 				    if (row.IsInThePast) {
 				        timeReceipt = `<div class="status-label" >
@@ -231,21 +232,22 @@ $(document).ready(function () {
 						</div>`;
 				    }
 				    if (row.IsCanceled) {
-				        status = `<div class="status-label" >
+				        canceled = `<div class="status-label" >
 							<p class ="label label-lg label-danger">Đã hủy</p>
 						</div>`;
-				    } else {
-				        if (row.IsSelfBooking) {
-				            status = `<div class="status-label" >
-							<p class ="label label-lg label-info">Tự đặt</p>
-						</div>`;
-				        } else {
-				            status = `<div class="status-label" >
-							<p class ="label label-lg label-primary">Thành công</p>
-						</div>`;
-				        }
 				    }
-				    return timeReceipt +" "+ status;
+
+				    if (row.IsSelfBooking) {
+				        status = `<div class="status-label" >
+						<p class ="label label-lg label-info">Tự đặt</p>
+					</div>`;
+				    }
+				    if (!row.IsCanceled && !row.IsSelfBooking && row.IsInThePast) {
+				        status = `<div class="status-label" >
+						<p class ="label label-lg label-primary">Thành công</p>
+					</div>`;
+				    }
+				    return timeReceipt + " " + status + " " + canceled;
 				}
             },
 			{
@@ -658,19 +660,19 @@ function workDay(workArray, isEditable) {
 
     let textDOW = '';
     if (workArray[0] === 0) {
-        textDOW = 'Thứ hai';
-    } else if (workArray[0] === 1) {
-        textDOW = 'Thứ ba';
-    } else if (workArray[0] === 2) {
-        textDOW = 'Thứ tư';
-    } else if (workArray[0] === 3) {
-        textDOW = 'Thứ năm';
-    } else if (workArray[0] === 4) {
-        textDOW = 'Thứ sáu';
-    } else if (workArray[0] === 5) {
-        textDOW = 'Thứ bảy';
-    } else if (workArray[0] === 6) {
         textDOW = 'Chủ nhật';
+    } else if (workArray[0] === 1) {
+        textDOW = 'Thứ hai';
+    } else if (workArray[0] === 2) {
+        textDOW = 'Thứ ba';
+    } else if (workArray[0] === 3) {
+        textDOW = 'Thứ tư';
+    } else if (workArray[0] === 4) {
+        textDOW = 'Thứ năm';
+    } else if (workArray[0] === 5) {
+        textDOW = 'Thứ sáu';
+    } else if (workArray[0] === 6) {
+        textDOW = 'Thứ bảy';
     }
     if (workArray[1] !== '' && workArray[2] !== '') {
         var startTime = "";
