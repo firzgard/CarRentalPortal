@@ -73,9 +73,6 @@ $(document).ready(function(){
 			'bottom': 'auto',
 			'left': `${$(this).offset().left}px`
 		});
-	})
-	.on('dp.error', (data)=>{
-		toastr.error("Có lỗi xảy ra. Phiền bạn reload trang web.")
 	});
 
 	// In case the section is scrolled, reupdate datetimepicker's position
@@ -197,113 +194,116 @@ $(document).ready(function(){
 	// =============================================
 	// Calendar
 
-	// events for soonestPossibleBookingStartTimeFromNow and latestPossibleBookingStartTimeFromNow
-	let allowedPeriod = {
-		events: [
-			{
-				id: 3
-				, title: 'Giờ có thể đặt'
-				, start: soonestPossibleBookingStartTimeFromNow.clone()
-				, end: latestPossibleBookingStartTimeFromNow.clone()
-			},
-			{
-				id: 4
-				, allDay: true
-				, title: 'Giờ có thể đặt'
-				, start: soonestPossibleBookingStartTimeFromNow.clone().set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
-				, end: latestPossibleBookingStartTimeFromNow.clone().set({ hour: 24, minute: 0, second: 0, millisecond: 0 })
-			}
-		]
-		, backgroundColor: '#FE4C4C'
-		, overlap: true
-		, rendering: "inverse-background"
-	};
-
-	// events generated using garage's open/close time
-	let workingEvents = {
-		events: []
-		, backgroundColor: '#CCCCCC'
-		, overlap: true
-		, rendering: "inverse-background"
-	};
-
-	for (time of WORK_TIMES) {
-		let weekDay = moment().day(time.DayOfWeek).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }),
-			openTime = weekDay.clone().add(time.OpenTimeInMinute, 'minutes'),
-			closeTime = weekDay.clone().add(time.CloseTimeInMinute, 'minutes');
-
-		do {
-			if (closeTime.isAfter(soonestPossibleBookingStartTimeFromNow)) {
-				workingEvents.events.push({
-					id: 1
-					, title: 'Giờ làm việc'
-					, start: openTime.isAfter(soonestPossibleBookingStartTimeFromNow)
-							? openTime.clone()
-							: soonestPossibleBookingStartTimeFromNow.clone()
-					, end: closeTime.isBefore(latestPossibleBookingStartTimeFromNow)
-							? closeTime.clone()
-							: latestPossibleBookingStartTimeFromNow.clone()
-				});
-				workingEvents.events.push({
-					id: 2
-					, title: 'Giờ làm việc'
+	function loadCalendar(){
+		// events for soonestPossibleBookingStartTimeFromNow and latestPossibleBookingStartTimeFromNow
+		let allowedPeriod = {
+			events: [
+				{
+					id: 3
+					, title: 'Giờ có thể đặt'
+					, start: soonestPossibleBookingStartTimeFromNow.clone()
+					, end: latestPossibleBookingStartTimeFromNow.clone()
+				},
+				{
+					id: 4
 					, allDay: true
-					, start: openTime.isAfter(soonestPossibleBookingStartTimeFromNow)
-							? openTime.clone()
-							: soonestPossibleBookingStartTimeFromNow.clone()
-					, end: closeTime.isBefore(latestPossibleBookingStartTimeFromNow)
-							? closeTime.clone()
-							: latestPossibleBookingStartTimeFromNow.clone()
-				});
-			}
+					, title: 'Giờ có thể đặt'
+					, start: soonestPossibleBookingStartTimeFromNow.clone().set({ hour: 0, minute: 0, second: 0, millisecond: 0 })
+					, end: latestPossibleBookingStartTimeFromNow.clone().set({ hour: 24, minute: 0, second: 0, millisecond: 0 })
+				}
+			]
+			, backgroundColor: '#FE4C4C'
+			, overlap: true
+			, rendering: "inverse-background"
+		};
 
-			openTime.add(1, 'weeks');
-			closeTime.add(1, 'weeks');
-		} while(openTime.isBefore(latestPossibleBookingStartTimeFromNow))
-	}
+		// events generated using garage's open/close time
+		let workingEvents = {
+			events: []
+			, backgroundColor: '#CCCCCC'
+			, overlap: true
+			, rendering: "inverse-background"
+		};
 
-	// Events from other bookings
-	let bookingEvents = {
-		backgroundColor: '#4CAF50'
-		, overlap: true
-		, rendering: "background"
-	};
+		for (time of WORK_TIMES) {
+			let weekDay = moment().day(time.DayOfWeek).set({ hour: 0, minute: 0, second: 0, millisecond: 0 }),
+				openTime = weekDay.clone().add(time.OpenTimeInMinute, 'minutes'),
+				closeTime = weekDay.clone().add(time.CloseTimeInMinute, 'minutes');
 
-	$.ajax({
-		url: CALENDAR_FETCHING_URL,
-		dataType: 'json'
-	})
-	.done((data) => {
-		// Trim the events' start/end time to be between soonestPossibleBookingStartTimeFromNow and latestPossibleBookingStartTimeFromNow
-		bookingEvents.events = data.reduce((eventList, val) => {
-			if(moment(val.start).isBefore(soonestPossibleBookingStartTimeFromNow))
-				val.start = soonestPossibleBookingStartTimeFromNow.clone();
+			do {
+				if (closeTime.isAfter(soonestPossibleBookingStartTimeFromNow)) {
+					workingEvents.events.push({
+						id: 1
+						, title: 'Giờ làm việc'
+						, start: openTime.isAfter(soonestPossibleBookingStartTimeFromNow)
+								? openTime.clone()
+								: soonestPossibleBookingStartTimeFromNow.clone()
+						, end: closeTime.isBefore(latestPossibleBookingStartTimeFromNow)
+								? closeTime.clone()
+								: latestPossibleBookingStartTimeFromNow.clone()
+					});
+					workingEvents.events.push({
+						id: 2
+						, title: 'Giờ làm việc'
+						, allDay: true
+						, start: openTime.isAfter(soonestPossibleBookingStartTimeFromNow)
+								? openTime.clone()
+								: soonestPossibleBookingStartTimeFromNow.clone()
+						, end: closeTime.isBefore(latestPossibleBookingStartTimeFromNow)
+								? closeTime.clone()
+								: latestPossibleBookingStartTimeFromNow.clone()
+					});
+				}
 
-			if(moment(val.end).isAfter(latestPossibleBookingStartTimeFromNow))
-				val.end = latestPossibleBookingStartTimeFromNow.clone();
+				openTime.add(1, 'weeks');
+				closeTime.add(1, 'weeks');
+			} while(openTime.isBefore(latestPossibleBookingStartTimeFromNow))
+		}
 
-			eventList.push({ id: 7, title: "Đặt trước", start: val.start, end: val.end });
-			eventList.push({ id: 8, title: "Đặt trước", start: val.start, end: val.end, allDay: true });
+		// Events from other bookings
+		let bookingEvents = {
+			backgroundColor: '#4CAF50'
+			, overlap: true
+			, rendering: "background"
+		};
 
-			return eventList;
-		}, []);
-
-		$('#calendar').fullCalendar({
-			eventSources: [ bookingEvents, workingEvents, allowedPeriod ]
-			, allDaySlot: false
-			, defaultView: 'month'
-			, header: { center: 'month,agendaWeek' }
-			, slotLabelFormat: 'HH:mm'
-			, timezone: 'local'
-			, views: {
-				agendaWeek: {}
-				, month: {}
-			}
+		$.ajax({
+			url: CALENDAR_FETCHING_URL,
+			dataType: 'json'
 		})
-	})
-	.fail(() => {
-		toastr.error("Có lỗi xảy ra. Phiền bạn reload trang web.")
-	})
+		.done((data) => {
+			// Trim the events' start/end time to be between soonestPossibleBookingStartTimeFromNow and latestPossibleBookingStartTimeFromNow
+			bookingEvents.events = data.reduce((eventList, val) => {
+				if(moment(val.start).isBefore(soonestPossibleBookingStartTimeFromNow))
+					val.start = soonestPossibleBookingStartTimeFromNow.clone();
+
+				if(moment(val.end).isAfter(latestPossibleBookingStartTimeFromNow))
+					val.end = latestPossibleBookingStartTimeFromNow.clone();
+
+				eventList.push({ id: 7, title: "Đặt trước", start: val.start, end: val.end });
+				eventList.push({ id: 8, title: "Đặt trước", start: val.start, end: val.end, allDay: true });
+
+				return eventList;
+			}, []);
+
+			$('#calendar').fullCalendar({
+				eventSources: [ bookingEvents, workingEvents, allowedPeriod ]
+				, allDaySlot: false
+				, defaultView: 'month'
+				, header: { center: 'month,agendaWeek' }
+				, slotLabelFormat: 'HH:mm'
+				, timezone: 'local'
+				, views: {
+					agendaWeek: {}
+					, month: {}
+				}
+			})
+		})
+		.fail(() => {
+			toastr.error("Có lỗi xảy ra. Phiền bạn reload trang web.")
+		})
+	}
+	loadCalendar();
 
 	// ==============================================
 	// Render the booking section info
@@ -392,6 +392,8 @@ $(document).ready(function(){
 
 	// Booking button
 	$('#bookingBtn').click(() => {
+		renderBlackLoadingScreen();
+
 		let bookingData = {
 			VehicleID: VEHICLE_ID
 			, StartTime: $startTimePicker.data("DateTimePicker").date().toJSON()
@@ -407,11 +409,15 @@ $(document).ready(function(){
 			data: bookingData
 		})
 		.done(function(data) {
-			if (data.errorCode)
+			if (data.errorCode){
 				toastr.error(data.message);
+				loadCalendar();
+			}
+			removeBlackLoadingScreen();
 		})
 		.fail(function(err, textStatus, errorThrown) {
 			toastr.error("Đã có lỗi xảy ra. Phiền bạn thử lại sau");
+			removeBlackLoadingScreen();
 			console.log(err);
 		})
 		
