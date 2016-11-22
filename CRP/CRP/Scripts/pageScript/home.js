@@ -19,7 +19,7 @@ $(document).ready(function(){
 		ignoreReadonly: true,
 	})
 	.on('dp.hide', (data)=>{
-		if(data.date.isAfter($(endTimeFilter).data('DateTimePicker').date())){
+		if(data.date.isAfter($(endTimeFilter).data('DateTimePicker').date().clone().subtract(1, 'hours'))){
 			let newEndTime = data.date.clone().add(1, 'hours')
 			$(endTimeFilter).data('DateTimePicker').date(newEndTime);
 		}
@@ -34,7 +34,7 @@ $(document).ready(function(){
 		ignoreReadonly: true,
 	})
 	.on('dp.hide', (data)=>{
-		if(data.date.isBefore($(startTimeFilter).data('DateTimePicker').date())){
+		if(data.date.isBefore($(startTimeFilter).data('DateTimePicker').date().clone().add(1, 'hours'))){
 			let newStartTime = data.date.clone().subtract(1, 'hours')
 			$(startTimeFilter).data('DateTimePicker').date(newStartTime);
 		}
