@@ -61,12 +61,12 @@ namespace CRP.Models
 	public class ChangePasswordViewModel
 	{
 		[Required(ErrorMessage = "Mật khẩu cũ không được để trống", AllowEmptyStrings = false)]
-		[DataType(DataType.Password)]
+		[DataType(DataType.Password, ErrorMessage = "Mật khẩu phải có ít nhất 1 ký tự hoa, ký tự thường và số.")]
 		[Display(Name = "Mật khẩu cũ")]
 		public string OldPassword { get; set; }
 
 		[Required(ErrorMessage = "Mật khẩu mới không được để trống", AllowEmptyStrings = false)]
-		[StringLength(100, ErrorMessage = "Mật khẩu phải có ít nhất 6 ký tự.", MinimumLength = 6)]
+		[StringLength(100, ErrorMessage = "Mật khẩu phải có ít nhất 6 kí tự và ít hơn 100 kí tự.", MinimumLength = 6)]
 		[DataType(DataType.Password, ErrorMessage = "Mật khẩu phải có ít nhất 1 ký tự hoa, ký tự thường và số.")]
 		[Display(Name = "Mật khẩu")]
 		public string NewPassword { get; set; }
