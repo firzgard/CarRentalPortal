@@ -184,14 +184,8 @@ function renderSearcher(){
 	//console.log(searchConditions);
 	jQueryNodes.searchResultGrid.addClass('hidden');
 	jQueryNodes.paginator.addClass('hidden');
-	jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
-		<div class="sk-spinner sk-spinner-three-bounce">
-			<div class="sk-bounce1"></div>
-			<div class="sk-bounce2"></div>
-			<div class="sk-bounce3"></div>
-		</div>
-	</div>`);
-
+	jQueryNodes.recordInfo.html('Loading...');
+	renderBlackLoadingScreen();
 	$.ajax({
 		url: QUERY_API_URL,
 		type: 'GET',
@@ -211,12 +205,14 @@ function renderSearcher(){
 				Không có xe nào đáp ứng với các điều kiện tìm kiếm của bạn. Xin vui lòng thử lại.
 			</div>`);
 		}
+		removeBlackLoadingScreen();
 	})
 	.fail(function(err, textStatus, errorThrown) {
 		console.log(err, textStatus, errorThrown);
 		jQueryNodes.recordInfo.html(`<div style="font-size:1.5em; text-align:center; padding: 3em 0">
 			Hệ thống đang gặp phải một số sự cố ngoài ý muốn. Chân thành xin lỗi quý khách. Xin quý khác vui lòng thử lại sau.
 		</div>`);
+		removeBlackLoadingScreen();
 	})
 }
 //==================================
