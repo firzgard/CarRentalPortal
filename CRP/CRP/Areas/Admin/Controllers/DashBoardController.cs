@@ -27,7 +27,7 @@ namespace CRP.Areas.Admin.Controllers
 
 			var utcNow = DateTime.UtcNow;
 			var activeUsers = userService.Get(u => !u.LockoutEnabled || u.LockoutEndDateUtc < utcNow);
-			viewModel.NumOfActiveUser = activeUsers.Count();
+			viewModel.NumOfActiveUser = activeUsers.Count(u => u.AspNetRoles.Any(r => r.Name != "Admin"));
 
 			var activeProviders = activeUsers.Where(u => u.AspNetRoles.Any(r => r.Name == "Provider"));
 			viewModel.NumOfActiveProvider = activeProviders.Count();
