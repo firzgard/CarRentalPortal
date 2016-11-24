@@ -153,10 +153,11 @@ $(document).ready(() => {
                             type: "PATCH",
                             success: function (data) {
                                 $('.modal').modal('hide');
+                                toastr.error(data.message);
                                 table.ajax.reload();
                             },
                             eror: function (data) {
-                                alert(data.message);
+                                toastr.error(data.message);
                                 alert("fail");
                             }
                         });
