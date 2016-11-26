@@ -18,8 +18,9 @@ namespace CRP.Models
 
 		public const double BOOKING_FEE_PERCENTAGE = 0.01;
 
-		// 10 mins
-		public const int BOOKING_PENDING_PERIOD_IN_MINUTES = 10;
+		// 5 + 5 mins
+		public const int BOOKING_CONFIRM_TIMEOUT_IN_MINUTES = 5;
+		public const int BOOKING_PAYMENT_TIMEOUT_IN_MINUTES = 10;
 
 		// Search vehicle page
 		public const int NUM_OF_SEARCH_RESULT_PER_PAGE = 10;

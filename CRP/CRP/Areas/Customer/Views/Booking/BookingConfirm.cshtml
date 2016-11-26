@@ -106,7 +106,7 @@
 						<div class="col-md-5 text-right">@(((int)Model.Receipt.Deposit + Model.Receipt.BookingFee).ToString("#,##0"))₫</div>
 					</div>
 					<hr>
-					<small>* Hệ thống sẽ xóa đơn đặt xe này trong vòng @Constants.BOOKING_PENDING_PERIOD_IN_MINUTES phút. Bạn vui lòng thanh toán trong thời gian trên.</small>
+					<small>* Hệ thống sẽ xóa đơn đặt xe này trong vòng @Constants.BOOKING_CONFIRM_TIMEOUT_IN_MINUTES phút. Bạn vui lòng thanh toán trong thời gian trên.</small>
 				</div>
 			</div>
 		</div>
@@ -135,7 +135,7 @@
 }
 @section Scripts {
 	<script>
-		const BOOKING_PENDING_PERIOD_IN_MINUTES = @Constants.BOOKING_PENDING_PERIOD_IN_MINUTES;
+		const BOOKING_PENDING_PERIOD_IN_MINUTES = @Constants.BOOKING_CONFIRM_TIMEOUT_IN_MINUTES;
 		const vehicleID = @Model.Receipt.VehicleID;
 	</script>
 	@Scripts.Render("~/Scripts/BookingConfirm")
