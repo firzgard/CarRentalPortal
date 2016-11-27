@@ -158,7 +158,7 @@ function renderPriceSlider(data){
 			values: [ Number.parseInt(data.AveragePrice) ],
 			density: Infinity,
 			format: {
-				to: value => `Trung&nbsp;bình:&nbsp;${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫/<small>${data.AveragePeriod < 24 ? `${data.AveragePeriod} giờ` : 'ngày'}</small>`
+				to: value => `Trung&nbsp;bình:&nbsp;${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫/<small>${data.AveragePeriod < 24 ? `${data.AveragePeriod.toFixed(0)} giờ` : 'ngày'}</small>`
 			}
 		},
 		start: [searchConditions.MinPrice || PRICE_SLIDER_MIN || 0, searchConditions.MaxPrice || PRICE_SLIDER_MAX || 100000],
@@ -184,7 +184,7 @@ function renderSearcher(){
 	//console.log(searchConditions);
 	jQueryNodes.searchResultGrid.addClass('hidden');
 	jQueryNodes.paginator.addClass('hidden');
-	jQueryNodes.recordInfo.html('Loading...');
+	jQueryNodes.recordInfo.html('<div class="text-center m-t">Loading...</div>');
 	renderBlackLoadingScreen();
 	$.ajax({
 		url: QUERY_API_URL,
