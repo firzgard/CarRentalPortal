@@ -175,12 +175,12 @@ namespace CRP.Areas.Customer.Controllers
 			}
 
 			newBooking.Deposit = newBooking.RentalPrice * (double)vehicle.VehicleGroup.PriceGroup.DepositPercentage;
-			newBooking.BookingFee = newBooking.RentalPrice * Models.Constants.BOOKING_FEE_PERCENTAGE;
+			newBooking.BookingFee = newBooking.RentalPrice * Constants.BOOKING_FEE_PERCENTAGE;
 
 			bookingService.Create(newBooking);
 
 			// Set timer to delete the booking if it is still pending after x-milisec
-			var checkPendingBookingTimer = new System.Timers.Timer(Models.Constants.BOOKING_PENDING_PERIOD_IN_MINUTES*60*1000)
+			var checkPendingBookingTimer = new System.Timers.Timer((Constants.BOOKING_CONFIRM_TIMEOUT_IN_MINUTES + Constants.BOOKING_PAYMENT_TIMEOUT_IN_MINUTES) * 60*1000)
 			{
 				AutoReset = false
 			};
@@ -210,8 +210,13 @@ namespace CRP.Areas.Customer.Controllers
 		public System.Web.Mvc.ActionResult BookingConfirm(int bookingID)
 		{
 			var userID = User.Identity.GetUserId();
+			var fiveMinuteAgo = DateTime.Now.AddMinutes(-Constants.BOOKING_CONFIRM_TIMEOUT_IN_MINUTES);
 			var bookingReceipt = this.Service<IBookingReceiptService>()
-					.Get(br => br.IsPending == true && br.CustomerID == userID && br.ID == bookingID).FirstOrDefault();
+					.Get(br => br.IsPending == true
+							&& br.CustomerID == userID
+							&& br.ID == bookingID
+							&& br.BookingTime > fiveMinuteAgo
+					).FirstOrDefault();
 
 			if (bookingReceipt == null)
 				return new HttpStatusCodeResult(403, "Access denied.");
@@ -272,7 +277,8 @@ namespace CRP.Areas.Customer.Controllers
 				cancel_url = "http://localhost:65358/bookingReceipt?canceledBookingID=" + bookingModel.Receipt.ID,
 				Buyer_fullname = user.FullName,
 				Buyer_email = user.Email,
-				Buyer_mobile = user.PhoneNumber
+				Buyer_mobile = user.PhoneNumber,
+				time_limit = Constants.BOOKING_CONFIRM_TIMEOUT_IN_MINUTES.ToString()
 			};
 			
 			var objNLCheckout = new APICheckoutV3();
