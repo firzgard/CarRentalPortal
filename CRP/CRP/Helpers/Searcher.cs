@@ -121,13 +121,6 @@ namespace CRP.Helpers
 			// Parse into models suitable to run recommendation algor
 			var vehicleList2 = vehicles.ToList().Select(vehicle => new VehicleFilterModel(vehicle, rentalTime));
 
-			double? averagePrice = null, averagePeriod = null;
-			if (vehicleList2.Any())
-			{
-				averagePrice = vehicleList2.Average(r => r.BestPossibleRentalPrice);
-				averagePeriod = vehicleList2.Average(r => r.BestPossibleRentalPeriod);
-			}
-
 			// Max/Min Price conditions
 			// Do not validate MaxPrice > MinPrice here. Do it before this in the controller
 			if (filterConditions.MaxPrice != null
@@ -139,8 +132,16 @@ namespace CRP.Helpers
 				);
 			}
 
+			// All normal filterings passed
+			// Calc the average rental price and rental period
+			double? averagePrice = null, averagePeriod = null;
+			if (vehicleList2.Any())
+			{
+				averagePrice = vehicleList2.Average(r => r.BestPossibleRentalPrice);
+				averagePeriod = vehicleList2.Average(r => r.BestPossibleRentalPeriod);
+			}
 
-			// All normal filterings passed, recommender's job coming
+			// recommender's job coming
 			// =============================================================================================
 			if (user != null)
 			{
