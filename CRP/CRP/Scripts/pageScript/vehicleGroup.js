@@ -68,7 +68,8 @@ $(document).ready(function () {
             {
                 title: 'Số Km tối đa (Km)',
                 width: '30%',
-                data: "2"
+                data: "2",
+                defaultContent: 'Không giới hạn'
             }
         ]
     });
@@ -101,13 +102,19 @@ $(document).ready(function () {
             {
                 targets: 2,
                 render: (data, type, row) => {
-                    return `<input type="number" class="price form-control" value="${row[1]}" />`;
+                    return `<input type="number" class="price form-control" value="${row[1]}" style="width: 120px;" />`;
                 }
             },
             {
                 targets: 3,
                 render: (data, type, row) => {
                     return `<input type="number" min="1" max="2400" class="max-distance form-control" value="${row[2]}" />`;
+                }
+            },
+            {
+                targets: 4,
+                render: (data, type, row) => {
+                    return `<input type="checkbox" class="unlimit-km" />`;
                 }
             }
         ],
@@ -118,7 +125,7 @@ $(document).ready(function () {
             },
             {
                 title: 'Thời gian (giờ)',
-                width: '30%',
+                width: '15%',
                 data: "0"
             },
             {
@@ -128,8 +135,12 @@ $(document).ready(function () {
             },
             {
                 title: 'Số Km tối đa (Km)',
-                width: '30%',
+                width: '20%',
                 data: "2"
+            },
+            {
+                title: 'Không giới hạn số Km tối đa',
+                width: '25%',
             }
         ],
         initComplete: function (settings, json) {
@@ -138,10 +149,17 @@ $(document).ready(function () {
                 table1 = null;
                 $('#priceGroupItem').empty();
             }
+            initCheckboxDatatables();
         }
     });
 
-	renderActivation();
+    renderActivation();
+    initCheckbox();
+
+    // listen event change to allow input extra charge
+    $('#max-distance-day').on('change', function () {
+        allowExtraCharge();
+    });
 
 	// ============================================
 	// Load vehicles belonging to this group
@@ -364,13 +382,19 @@ $(document).on('click', '#cancelChange', function () {
             {
                 targets: 2,
                 render: (data, type, row) => {
-                    return `<input type="number" class="price form-control" value="${row[1]}" />`;
+                    return `<input type="number" class="price form-control" value="${row[1]}" style="width: 120px;" />`;
                 }
             },
             {
                 targets: 3,
                 render: (data, type, row) => {
                     return `<input type="number" min="1" max="2400" class="max-distance form-control" value="${row[2]}" />`;
+                }
+            },
+            {
+                targets: 4,
+                render: (data, type, row) => {
+                    return `<input type="checkbox" class="unlimit-km" />`;
                 }
             }
         ],
@@ -381,7 +405,7 @@ $(document).on('click', '#cancelChange', function () {
             },
             {
                 title: 'Thời gian (giờ)',
-                width: '30%',
+                width: '15%',
                 data: "0"
             },
             {
@@ -391,8 +415,12 @@ $(document).on('click', '#cancelChange', function () {
             },
             {
                 title: 'Số Km tối đa (Km)',
-                width: '30%',
+                width: '20%',
                 data: "2"
+            },
+            {
+                title: 'Không giới hạn số Km tối đa',
+                width: '25%',
             }
         ],
         initComplete: function (settings, json) {
@@ -401,10 +429,12 @@ $(document).on('click', '#cancelChange', function () {
                 table1 = null;
                 $('#priceGroupItem').empty();
             }
+            initCheckboxDatatables();
         }
     });
 
     renderActivation();
+    initCheckbox();
 });
 
 $(document).on('click','.plus-btn', function () {
@@ -432,7 +462,7 @@ $(document).on('click','.plus-btn', function () {
                 },
                 {
                     title: 'Thời gian (giờ)',
-                    width: '30%',
+                    width: '15%',
                     data: "MaxTime"
                 },
                 {
@@ -442,8 +472,13 @@ $(document).on('click','.plus-btn', function () {
                 },
                 {
                     title: 'Số Km tối đa (Km)',
-                    width: '30%',
+                    width: '20%',
                     data: "MaxDistance"
+                },
+                {
+                    title: 'Không giới hạn số Km tối đa',
+                    width: '25%',
+                    data: "Unlimit"
                 }
             ]
         });
@@ -452,8 +487,9 @@ $(document).on('click','.plus-btn', function () {
     if ($('.max-time').length < 23) {
         table1.row.add({
             "MaxTime": `<input type="number" min="1" max="23" class="max-time form-control" value="" />`,
-            "Price": `<input type="number" class="price form-control" value="" />`,
-            "MaxDistance": `<input type="number" min="1" max="2400" class="max-distance form-control" value="" />`,
+            "Price": `<input type="number" class="price form-control" value="" style="width: 120px;" />`,
+            "MaxDistance": `<input type="number" min="1" max="2400" class="max-distance form-control" disabled />`,
+            "Unlimit": `<input type="checkbox" class="unlimit-km" checked>`,
         }).draw();
     }
 });
@@ -637,5 +673,75 @@ function renderActivation() {
         btn.html('Tái kích hoạt');
         btn.removeClass('btn-warning');
         btn.addClass('btn-success');
+    }
+}
+
+//
+function initCheckbox() {
+    if (!$('#max-rent').val()) {
+        $('#max-rent').prop('disabled', true);
+        $('#unlimitPeriod').prop('checked', true);
+    }
+    if (!$('#max-distance-day').val()) {
+        $('#max-distance-day').prop('disabled', true);
+        $('#unlimitKm').prop('checked', true);
+    }
+
+    $('#unlimitPeriod').change(function () {
+        if ($('#unlimitPeriod').is(':checked')) {
+            $('#max-rent').val('');
+            $('#max-rent').prop('disabled', true);
+        } else {
+            $('#max-rent').prop('disabled', false);
+        }
+    });
+    $('#unlimitKm').change(function () {
+        if ($('#unlimitKm').is(':checked')) {
+            $('#max-distance-day').val('');
+            $('#max-distance-day').prop('disabled', true);
+        } else {
+            $('#max-distance-day').prop('disabled', false);
+        }
+        allowExtraCharge();
+    });
+}
+
+function initCheckboxDatatables() {
+    for (var i = 0; i < $('.max-distance').length; i++) {
+        if (!$(`.max-distance:eq(${i})`).val()) {
+            $(`.max-distance:eq(${i})`).prop('disabled', true);
+            $(`.unlimit-km:eq(${i})`).prop('checked', true);
+        }
+    }
+    $('.unlimit-km').change(function () {
+        var index = $('.unlimit-km').index(this);
+        if ($(`.unlimit-km:eq(${index})`).is(':checked')) {
+            $(`.max-distance:eq(${index})`).val('');
+            $(`.max-distance:eq(${index})`).prop('disabled', true);
+        } else {
+            $(`.max-distance:eq(${index})`).prop('disabled', false);
+        }
+        allowExtraCharge();
+    });
+    $('.max-distance').on('change', function () {
+        allowExtraCharge();
+    });
+}
+
+function allowExtraCharge() {
+    var allowExtraCost = false;
+    for (var i = 0; i < $('.unlimit-km').length; i++) {
+        if ($(`.max-distance:eq(${i})`).val()) {
+            allowExtraCost = true;
+        }
+    }
+    if ($('#max-distance-day').val()) {
+        allowExtraCost = true;
+    }
+
+    if (allowExtraCost) {
+        $('#extra-charge-day').prop('disabled', false);
+    } else {
+        $('#extra-charge-day').prop('disabled', true);
     }
 }
