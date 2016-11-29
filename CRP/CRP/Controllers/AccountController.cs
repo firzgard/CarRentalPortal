@@ -204,12 +204,15 @@ namespace CRP.Controllers
 			{
 				return View("Error");
 			}
-			await UserManager.AddToRoleAsync(userId, "Customer");
+
 			var result = await UserManager.ConfirmEmailAsync(userId, token);
 			if (result.Succeeded)
 			{
+				// Give him customer role
+				await UserManager.AddToRoleAsync(userId, "Customer");
+
 				// Log the user out if he is logged in
-				if(Request.IsAuthenticated)
+				if (Request.IsAuthenticated)
 					AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 				
 				// Then relog him in

@@ -97,7 +97,6 @@ $(document).ready(() =>{
 			}
 	});
     
-
     $('#btnAddVehiclePopup').on('click', function () {
         $.ajax({
             type: "GET",
@@ -113,6 +112,17 @@ $(document).ready(() =>{
                             table1.destroy();
                             $('#groupPop').empty();
                             table1 = null;
+                        }
+                    });
+                }
+                function bindLimitKm() {
+                    $('.unlimit-km').unbind('change').change(function () {
+                        var index = $('.unlimit-km').index(this);
+                        if ($(`.unlimit-km:eq(${index})`).is(':checked')) {
+                            $(`.max-distance:eq(${index})`).val('');
+                            $(`.max-distance:eq(${index})`).prop('disabled', true);
+                        } else {
+                            $(`.max-distance:eq(${index})`).prop('disabled', false);
                         }
                     });
                 }
@@ -145,7 +155,7 @@ $(document).ready(() =>{
                                     },
                                     {
                                         title: 'Thời gian (giờ)',
-                                        width: '30%',
+                                        width: '15%',
                                         data: "MaxTime"
                                     },
                                     {
@@ -155,8 +165,13 @@ $(document).ready(() =>{
                                     },
                                     {
                                         title: 'Số Km tối đa (Km)',
-                                        width: '30%',
+                                        width: '20%',
                                         data: "MaxDistance"
+                                    },
+                                    {
+                                        title: 'Không giới hạn số km tối đa',
+                                        width: '25%',
+                                        data: "Unlimit"
                                     }
                                 ]
                             });
@@ -166,9 +181,12 @@ $(document).ready(() =>{
                             table1.row.add({
                                 "MaxTime": `<input type="number" min="1" max="23" class="max-time form-control" value="" />`,
                                 "Price": `<input type="number" class="price form-control" value="" />`,
-                                "MaxDistance": `<input type="number" class="max-distance form-control" value="" />`,
+                                "MaxDistance": `<input type="number" class="max-distance form-control" disabled />`,
+                                "Unlimit": `<input type="checkbox" class="unlimit-km" checked>`,
                             }).draw();
                             bindMinusBtn();
+                            bindLimitKm();
+                            allowExtraCharge();
                         }
                     });
                 })();
@@ -179,6 +197,39 @@ $(document).ready(() =>{
             }
         });
     });
+});
+
+$(document).on('change', '#max-distance-day', function () {
+    allowExtraCharge();
+});
+
+$(document).on('change', '.unlimit-km', function () {
+    allowExtraCharge();
+});
+
+$(document).on('change', '.max-distance', function () {
+    allowExtraCharge();
+});
+
+// unlimit max rental period
+$(document).on('change', '#unlimitPeriod', function () {
+    if ($('#unlimitPeriod').is(':checked')) {
+        $('#max-rent').val('');
+        $('#max-rent').prop('disabled', true);
+    } else {
+        $('#max-rent').prop('disabled', false);
+    }
+});
+
+// unlimit max distance per day
+$(document).on('change', '#unlimitKm', function () {
+    if ($('#unlimitKm').is(':checked')) {
+        $('#max-distance-day').val('');
+        $('#max-distance-day').prop('disabled', true);
+    } else {
+        $('#max-distance-day').prop('disabled', false);
+    }
+    allowExtraCharge();
 });
 
 $(document).on('focusout', '#depositDisplay', function () {
@@ -323,3 +374,21 @@ $(document).on('click', "#btnCreate", function () {
         }
     });
 });
+
+function allowExtraCharge() {
+    var allowExtraCost = false;
+    for (var i = 0; i < $('.unlimit-km').length; i++) {
+        if ($(`.max-distance:eq(${i})`).val()) {
+            allowExtraCost = true;
+        }
+    }
+    if ($('#max-distance-day').val()) {
+        allowExtraCost = true;
+    }
+
+    if (allowExtraCost) {
+        $('#extra-charge-day').prop('disabled', false);
+    } else {
+        $('#extra-charge-day').prop('disabled', true);
+    }
+}

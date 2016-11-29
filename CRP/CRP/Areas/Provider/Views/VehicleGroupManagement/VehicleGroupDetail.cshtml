@@ -47,14 +47,34 @@
                         </div>
                         <div class="form-group">
                             <label>Kỳ hạn thuê tối đa</label>
-                            <div class="input-group m-b boxForm text-center">
-                                @Html.TextBoxFor(q => q.PriceGroup.MaxRentalPeriod, new { @id= "max-rent", @type = "number", @class = "form-control", required = true }) <span class="input-group-addon">ngày</span>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="input-group m-b boxForm text-center">
+                                        @Html.TextBoxFor(q => q.PriceGroup.MaxRentalPeriod, new { @id = "max-rent", @type = "number", @class = "form-control", required = true }) <span class="input-group-addon">ngày</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <input type="checkbox" id="unlimitPeriod">
+                                        <label for="unlimitPeriod"> Không giới hạn</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>Số Km tối đa một ngày</label>
-                            <div class="input-group m-b boxForm text-center">
-                                @Html.TextBoxFor(q => q.PriceGroup.MaxDistancePerDay, new { @id = "max-distance-day", @type = "number", @class = "form-control" }) <span class="input-group-addon">Km</span>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="input-group m-b boxForm text-center">
+                                        @Html.TextBoxFor(q => q.PriceGroup.MaxDistancePerDay, new { @id = "max-distance-day", @type = "number", @class = "form-control" }) <span class="input-group-addon">Km</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="checkbox">
+                                        <input type="checkbox" id="unlimitKm">
+                                        <label for="unlimitKm"> Không giới hạn</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -110,7 +130,7 @@
                                 }
                                 else
                                 {
-                                    <text>chưa có thông tin</text>
+                                    <text>Không giới hạn</text>
                                 }
                                     
                             </div>
@@ -127,7 +147,7 @@
                                 }
                                 else
                                 {
-                                    <text>chưa có thông tin</text>
+                                    <text>Không giới hạn</text>
                                 }
                             </div>
                         </div>
