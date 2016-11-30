@@ -1,4 +1,38 @@
-delete vehicle
-delete garage
-delete vehicle group
-sign up
+﻿search: 19 => Recom
+register providership:
+	change seq => alt
+	
+Tâm:
+- search:
++ Chuyển 19 từ searcher => recommender
+- recover password:
++ Bỏ mũi tên sendmail sang user
++ thêm validate change password ở server
+
+Khoa:
+- comment and rate booking:
++ thêm validate
+- edit vehicle:
++ thêm validate cho add/delete image và trước updateVehicle
+- book vehicle:
++ đổi 2 cái sendmail tới character thành self message và delete provider
+- register/extend providership:
++ bỏ mũi tên sendmail
++ đổi seq Action => alt Action
+- cancel booking:
++ Đổi 2 mũi tên sendmail sang characters thành self message
+- create vehicle:
++ server validate
+- edit vehiclegroup:
++ server validate
+- edit garage:
++ server validate
+
+Thành:
+- check providership expiration:
++ bỏ provider
++ bỏ mũi tên send mail sang provider
+- create vehiclegroup:
++ server validate
+- create garage:
++ server validate
