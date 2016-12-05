@@ -149,7 +149,7 @@ function renderPriceSlider(data){
 		behaviour: 'drag-tap',
 		connect: true,
 		format: {
-			to: value => `${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫/<small>${value == PRICE_SLIDER_MAX ? PRICE_SLIDER_MAX_UNIT: PRICE_SLIDER_MIN_UNIT}</small>`,
+			to: value => `${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`,
 			from: value => Number.parseInt(value.replace('₫/', '').replace(',', ''))
 		},
 		margin: 100000,
@@ -556,7 +556,7 @@ $(document).ready(() => {
 		behaviour: 'drag-tap',
 		connect: true,
 		format: {
-			to: value => `${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫/<small>${value == PRICE_SLIDER_MAX ? PRICE_SLIDER_MAX_UNIT: PRICE_SLIDER_MIN_UNIT}</small>`,
+			to: value => `${Number.parseInt(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}₫`,
 			from: value => Number.parseInt(value.replace('₫/', '').replace(',', ''))
 		},
 		margin: 100000,

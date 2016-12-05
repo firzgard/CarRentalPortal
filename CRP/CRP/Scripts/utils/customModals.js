@@ -130,7 +130,7 @@ function renderCreateVehicleModal(modalNode, table, vehicleID){
 											<input name="TransmissionType" type="radio" required value="1" autocomplete="off" ${(data.TransmissionType && (data.TransmissionType == 1) && 'checked') || ''} >Số tự động
 										</label>
 										<label class="btn btn-primary ${(data.TransmissionType && (data.TransmissionType == 2) && 'active') || ''}">
-											<input name="TransmissionType" type="radio" value="2" autocomplete="off" ${(data.TransmissionType && (data.TransmissionType == 2) && 'checked') || ''} >Số sàng
+											<input name="TransmissionType" type="radio" value="2" autocomplete="off" ${(data.TransmissionType && (data.TransmissionType == 2) && 'checked') || ''} >Số sàn
 										</label>
 									</div>
 								</div>
