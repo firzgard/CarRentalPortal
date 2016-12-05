@@ -51,7 +51,7 @@ namespace CRP.Models
 		{
 			new SortingOption(nameof(SearchResultItemJsonModel.BestPossibleRentalPeriod), "Gói thời gian thuê xe phù hợp nhất", false),
 			new SortingOption(nameof(SearchResultItemJsonModel.Star), "Xe có điểm đánh giá tốt nhất", true),
-			new SortingOption(nameof(SearchResultItemJsonModel.NumOfComment), "Garage có điểm đánh giá tốt nhất", true),
+			new SortingOption(nameof(SearchResultItemJsonModel.GarageRating), "Garage có điểm đánh giá tốt nhất", true),
 			new SortingOption(nameof(SearchResultItemJsonModel.BestPossibleRentalPrice), "Giá từ thấp đến cao", false),
 			new SortingOption(nameof(SearchResultItemJsonModel.BestPossibleRentalPrice), "Giá từ cao đến thấp", true),
 			new SortingOption(nameof(SearchResultItemJsonModel.Year), "Xe từ mới đến cũ", true),
