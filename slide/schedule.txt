@@ -1,0 +1,46 @@
+Current Situation:								Duc
+
+Proposed Solution: 								Thanh
+
+Feature Functions:								
+- List all functions:								Tam
++ Search: Search vehicle for booking
++ Booking: Create/cancel booking
++ Feedback: Send rating and comment about rental service
++ Manage vehicle: Create/update/delete vehicle
++ Manage garage:
+	> Create/update/delete garage
+	> Add/remove vehicle from garage
+	> Close/reopen garage
++ Manage pricing by group:
+	> Create/update/delete pricing group
+	> Add/remove vehicle from group
+	> Deactivate/reactivate group
++ Manage booking:
+	> Track bookings of each garage/vehicle
+	> Create/cancel self-booking
+
+- Senario 1: booking < customer1						Thanh
++ search
++ book
++ view booking history
++ cancle booking
++ feedback
+
+- Senario 2: become provider and bring vehicle into system			Khoa
++ become provider
++ Create new garage
++ Create new vehicle
++ Duplicate several vehicles
++ Create new vehicle group
++ Add vehicle to group
+
+- Senario 3: create new subsidiary garage					Khoa
++ Create new garage
++ Move old vehicle to new garage
++ Disable vehicle by removing from vehicle group
++ Disable vehicle by placing self-booking
+
+Agorithm									Duc
+
+Future plan									Tam
