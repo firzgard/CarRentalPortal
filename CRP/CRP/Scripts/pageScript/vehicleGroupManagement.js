@@ -263,6 +263,12 @@ $(document).on('click', "#btnCreate", function () {
                 return false;
             }
         }
+        if ($(`.max-distance:eq(${i})`).val()) {
+            if ($(`.max-distance:eq(${i})`).val() != parseInt($(`.max-distance:eq(${i})`).val())) {
+                toastr.error("Số km tối đa phải là số nguyên dương");
+                return false;
+            }
+        }
         
         if ($(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
             var item = {};
