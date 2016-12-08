@@ -519,13 +519,15 @@ $(document).on('click', '#saveChange', function () {
             toastr.error("Vui lòng nhập giờ và giá tiền");
             return false;
         }
-        if ($(`.max-time:eq(${i})`).val() != parseInt($(`.max-time:eq(${i})`).val())) {
-            toastr.error("Thời gian phải là số nguyên dương");
-            return false;
-        }
-        if ($(`.price:eq(${i})`).val() != parseInt($(`.price:eq(${i})`).val())) {
-            toastr.error("Giá tiền phải là số nguyên dương");
-            return false;
+        if ($(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
+            if ($(`.max-time:eq(${i})`).val() != parseInt($(`.max-time:eq(${i})`).val())) {
+                toastr.error("Thời gian phải là số nguyên dương");
+                return false;
+            }
+            if ($(`.price:eq(${i})`).val() != parseInt($(`.price:eq(${i})`).val())) {
+                toastr.error("Giá tiền phải là số nguyên dương");
+                return false;
+            }
         }
         if ($(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
             var item = {};
