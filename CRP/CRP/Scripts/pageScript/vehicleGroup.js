@@ -463,34 +463,34 @@ $(document).on('click','.plus-btn', function () {
                 {
                     title: 'Thời gian (giờ)',
                     width: '15%',
-                    data: "MaxTime"
+                    data: "0"
                 },
                 {
                     title: 'Giá tiền (VNĐ)',
                     width: '30%',
-                    data: "Price"
+                    data: "1"
                 },
                 {
                     title: 'Số Km tối đa (Km)',
                     width: '20%',
-                    data: "MaxDistance"
+                    data: "2"
                 },
                 {
                     title: 'Không giới hạn số Km tối đa',
                     width: '25%',
-                    data: "Unlimit"
                 }
             ]
         });
     }
     // limit 23 row
     if ($('.max-time').length < 23) {
-        table1.row.add({
-            "MaxTime": `<input type="number" min="1" max="23" class="max-time form-control" value="" />`,
-            "Price": `<input type="number" class="price form-control" value="" style="width: 120px;" />`,
-            "MaxDistance": `<input type="number" min="1" max="2400" class="max-distance form-control" disabled />`,
-            "Unlimit": `<input type="checkbox" class="unlimit-km" checked>`,
-        }).draw();
+        table1.row.add([
+            ``,
+            ``,
+            ``,
+            ``,
+        ]).draw();
+        initCheckboxDatatables();
     }
 });
 
