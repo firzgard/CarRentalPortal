@@ -588,7 +588,7 @@ $(document).on('click', '#saveChange', function () {
         toastr.error("Vui lòng nhập giá trị đặt cọc");
         return false;
     } else if (parseInt(parseFloat($('#deposit').val()) * 100) !== (parseFloat($('#deposit').val()) * 100)) {
-        toastr.error("Xin lỗi. Giá trị đặt cọ phải là số nguyên");
+        toastr.error("Xin lỗi. Giá trị đặt cọc phải là số nguyên");
         return false;
     } else if (parseFloat($('#deposit').val()) < 0 || parseFloat($('#deposit').val()) > 1) {
         toastr.error("Xin lỗi. giá trị đặt cọc phải từ 0% đến 100%");
