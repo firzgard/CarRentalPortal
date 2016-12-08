@@ -519,6 +519,14 @@ $(document).on('click', '#saveChange', function () {
             toastr.error("Vui lòng nhập giờ và giá tiền");
             return false;
         }
+        if ($(`.max-time:eq(${i})`).val() !== parseInt($(`.max-time:eq(${i})`).val())) {
+            toastr.error("Thời gian phải là số nguyên dương");
+            return false;
+        }
+        if ($(`.price:eq(${i})`).val() !== parseInt($(`.price:eq(${i})`).val())) {
+            toastr.error("Giá tiền phải là số nguyên dương");
+            return false;
+        }
         if ($(`.max-time:eq(${i})`).val() && $(`.price:eq(${i})`).val()) {
             var item = {};
             item.MaxTime = parseInt($(`.max-time:eq(${i})`).val());
@@ -579,6 +587,9 @@ $(document).on('click', '#saveChange', function () {
     if (!$('#deposit').val()) {
         toastr.error("Vui lòng nhập giá trị đặt cọc");
         return false;
+    } else if (parseInt(parseFloat($('#deposit').val()) * 100) !== (parseFloat($('#deposit').val()) * 100)) {
+        toastr.error("Xin lỗi. Giá trị đặt cọ phải là số nguyên");
+        return false;
     } else if (parseFloat($('#deposit').val()) < 0 || parseFloat($('#deposit').val()) > 1) {
         toastr.error("Xin lỗi. giá trị đặt cọc phải từ 0% đến 100%");
         return false;
@@ -592,6 +603,9 @@ $(document).on('click', '#saveChange', function () {
     } else if (parseInt($('#per-day-price').val()) < 0) {
         toastr.error("Xin lỗi. Số tiền không được âm");
         return false;
+    } else if ($('#per-day-price').val() !== parseInt($('#per-day-price').val())) {
+        toastr.error("Xin lỗi. Số tiền phải là số nguyên dương");
+        return false;
     } else {
         model.PriceGroup.PerDayPrice = parseInt($('#per-day-price').val());
     }
@@ -602,6 +616,10 @@ $(document).on('click', '#saveChange', function () {
             toastr.error("Xin lỗi. Kì hạn thuê tối đa không được âm");
             return false;
         }
+        if (model.PriceGroup.MaxRentalPeriod !== $('#max-rent').val()) {
+            toastr.error("Xin lỗi. Kì hạn thuê tối đa phải là số nguyên dương");
+            return false;
+        }
     }
     if ($('#max-distance-day').val()) {
         model.PriceGroup.MaxDistancePerDay = parseInt($('#max-distance-day').val());
@@ -609,11 +627,19 @@ $(document).on('click', '#saveChange', function () {
             toastr.error("Xin lỗi số km tối đa không được âm");
             return false;
         }
+        if (model.PriceGroup.MaxDistancePerDay !== $('#max-distance-day').val()) {
+            toastr.error("Xin lỗi số km tối đa phải là số nguyên");
+            return false;
+        }
     }
     if ($('#extra-charge-day').val()) {
         model.PriceGroup.ExtraChargePerKm = parseInt($('#extra-charge-day').val());
         if (model.PriceGroup.ExtraChargePerKm < 0) {
             toastr.error("Xin lỗi. Số tiền không được âm");
+            return false;
+        }
+        if (model.PriceGroup.ExtraChargePerKm !== $('#extra-charge-day').val()) {
+            toastr.error("Xin lỗi. Số tiền phải là số nguyên");
             return false;
         }
     }
