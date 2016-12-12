@@ -78,7 +78,7 @@ namespace CRP
 
         private void SendExpiredAlertEmailToProvider(AspNetUser user)
         {
-            var mailMessage = new MailMessage("crpservices1@gmail.com", user.Email)
+            var mailMessage = new MailMessage("crpservices2@gmail.com", user.Email)
             {
                 Subject = "CRP - Thông tin gia hạn tài khoản",
                 Body = "Xin chào, " + user.FullName + "\n"
@@ -86,7 +86,7 @@ namespace CRP
                 + user.IsProviderUntil.Value.Day+"/"+user.IsProviderUntil.Value.Month+"/"+user.IsProviderUntil.Value.Year+ ". Hãy gia hạn để có thể tiếp tục sử dụng dịch vụ của chúng tôi.\n"
                 + "Xin chân thành cảm ơn vì đã tin dùng dịch vụ của chúng tôi.\n"
                 + "Mọi chi tiết xin vui lòng liên hệ:\n"
-                + "Email liên hệ: mailto:crpservices1@gmail.com"
+                + "Email liên hệ: mailto:crpservices2@gmail.com"
                 + "\nSố điện thoại: +841687548624"
             };
 
@@ -94,7 +94,7 @@ namespace CRP
             {
                 Credentials = new System.Net.NetworkCredential()
                 {
-                    UserName = "crpservices1@gmail.com",
+                    UserName = "crpservices2@gmail.com",
                     Password = "A123456z"
                 },
                 EnableSsl = true,
