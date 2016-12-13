@@ -17,8 +17,8 @@ using Constants = CRP.Models.Constants;
 
 namespace CRP.Areas.Customer.Controllers
 {
-    [Authorize(Roles = "Customer")]
-    public class BecomeProviderController : BaseController
+	[Authorize(Roles = "Customer")]
+	public class BecomeProviderController : BaseController
 	{
 		// BecomeProvider page
 		[System.Web.Mvc.Route("becomeProvider", Name = "BecomeProvider")]
@@ -38,8 +38,8 @@ namespace CRP.Areas.Customer.Controllers
 			// Check if the request contains all valid params
 			int plan;
 			if (nganLuongPayment?.OrderCode == null
-					|| !int.TryParse(nganLuongPayment.OrderCode, out plan)
-					|| !Constants.PROVIDER_PLAN.Contains(plan))
+			    || !int.TryParse(nganLuongPayment.OrderCode, out plan)
+			    || !Constants.PROVIDER_PLAN.Contains(plan))
 				return new HttpStatusCodeResult(400, "Invalid request");
 
 			// Get current user
@@ -57,7 +57,7 @@ namespace CRP.Areas.Customer.Controllers
 			}
 			else
 			{
-				newIsProviderUntil = user.IsProviderUntil.Value.AddDays(30 * plan);
+				newIsProviderUntil = user.IsProviderUntil.Value.AddDays(30*plan);
 			}
 
 			//  validate nganluong params before redirect to nganluong
@@ -99,9 +99,9 @@ namespace CRP.Areas.Customer.Controllers
 				try
 				{
 					// Separate the userID and IsProviderUntil Datetime from order_code
-					var words = result.order_code.Split(new[] { " - " }, StringSplitOptions.None);
+					var words = result.order_code.Split(new[] {" - "}, StringSplitOptions.None);
 
-					if(words.Length != 2)
+					if (words.Length != 2)
 						return new HttpStatusCodeResult(400, "Invalid request");
 
 					var userID = words[0];
@@ -118,8 +118,8 @@ namespace CRP.Areas.Customer.Controllers
 					// Validate the new datetime
 					if (isProviderUntil < DateTime.Now)
 						return new HttpStatusCodeResult(400, "Invalid request");
-					
-					
+
+
 
 					user.IsProviderUntil = isProviderUntil;
 
@@ -134,7 +134,13 @@ namespace CRP.Areas.Customer.Controllers
 
 					// Send alert email
 					var sysService = new SystemService();
-					await sysService.SendBecomeProviderAlertEmail(user.Email, user);
+					try
+					{
+						await sysService.SendBecomeProviderAlertEmail(user.Email, user);
+					}
+					catch (Exception ex)
+					{
+					}
 
 					return View("~/Areas/Customer/Views/BecomeProvider/Success.cshtml", user);
 				}

@@ -40,18 +40,20 @@ namespace CRP.Areas.Customer.Controllers
 
 			// Check if startTime was specified and is valid
 			if (model.StartTime < DateTime.Now.AddHours(Models.Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR)
-					|| model.StartTime > DateTime.Now.AddDays(Models.Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY))
+			    || model.StartTime > DateTime.Now.AddDays(Models.Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY))
 				return new HttpStatusCodeResult(400, "No valid rental period specified.");
 
 			var vehicleService = this.Service<IVehicleService>();
 			var vehicle = vehicleService.Get(v => v.ID == model.VehicleID.Value
-												&& !v.IsDeleted
-												&& v.Garage.IsActive
-												&& v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
-												&& (v.Garage.AspNetUser.LockoutEndDateUtc == null || v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
-												&& v.VehicleGroup != null
-												&& v.VehicleGroup.IsActive
-				).FirstOrDefault();
+			                                      && !v.IsDeleted
+			                                      && v.Garage.IsActive
+			                                      && v.Garage.AspNetUser.AspNetRoles.Any(r => r.Name == "Provider")
+			                                      &&
+			                                      (v.Garage.AspNetUser.LockoutEndDateUtc == null ||
+			                                       v.Garage.AspNetUser.LockoutEndDateUtc < DateTime.UtcNow)
+			                                      && v.VehicleGroup != null
+			                                      && v.VehicleGroup.IsActive
+			).FirstOrDefault();
 
 			// Check if vehicle exists
 			if (vehicle == null)
@@ -71,7 +73,8 @@ namespace CRP.Areas.Customer.Controllers
 			else
 			{
 				// Check if priceGroupItem exists
-				priceGroupItem = vehicle.VehicleGroup.PriceGroup.PriceGroupItems.FirstOrDefault(r => r.MaxTime == model.RentalType.Value);
+				priceGroupItem =
+					vehicle.VehicleGroup.PriceGroup.PriceGroupItems.FirstOrDefault(r => r.MaxTime == model.RentalType.Value);
 				if (priceGroupItem == null)
 					return new HttpStatusCodeResult(400, "No valid rental period specified.");
 
@@ -84,7 +87,7 @@ namespace CRP.Areas.Customer.Controllers
 				{
 					errorCode = 403,
 					message = "Thời gian nhận xe phải sau thời gian hiện tại ít nhất "
-					+ Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR + " tiếng."
+					          + Constants.SOONEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_HOUR + " tiếng."
 				}, JsonRequestBehavior.AllowGet);
 
 			// Check if startTime is before LatestPossibleBookingStartTimeFromNow
@@ -93,20 +96,20 @@ namespace CRP.Areas.Customer.Controllers
 				{
 					errorCode = 403,
 					message = "Dịch vụ của chúng tôi hiện tại chỉ nhận đặt xe trong vòng "
-						+ Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY
-						+ " ngày kể từ thời gian hiện tại."
+					          + Constants.LATEST_POSSIBLE_BOOKING_START_TIME_FROM_NOW_IN_DAY
+					          + " ngày kể từ thời gian hiện tại."
 				}, JsonRequestBehavior.AllowGet);
-			
+
 			// Check StartTime/EndTime to be within garage's OpenTime ~ CloseTime
 			// Compare by convert time to the number of minute from 00:00
 			// Max margin of error: 60 secs vs CloseTime (Because we do not validate to second)
 
 			// Booking StartTime
-			var startTimeDoW = (int)model.StartTime.DayOfWeek;
-			var startTimeInMinute = model.StartTime.Minute + model.StartTime.Hour * 60;
+			var startTimeDoW = (int) model.StartTime.DayOfWeek;
+			var startTimeInMinute = model.StartTime.Minute + model.StartTime.Hour*60;
 			if (!vehicle.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == startTimeDoW
-														&& startTimeInMinute >= gwt.OpenTimeInMinute
-														&& startTimeInMinute <= gwt.CloseTimeInMinute))
+			                                                  && startTimeInMinute >= gwt.OpenTimeInMinute
+			                                                  && startTimeInMinute <= gwt.CloseTimeInMinute))
 				return Json(new
 				{
 					errorCode = 403,
@@ -114,11 +117,11 @@ namespace CRP.Areas.Customer.Controllers
 				}, JsonRequestBehavior.AllowGet);
 
 			// Booking EndTime
-			var endTimeDoW = (int)endTime.DayOfWeek;
-			var endTimeInMunute = endTime.Minute + endTime.Hour * 60;
-			if(!vehicle.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == endTimeDoW
-												&& endTimeInMunute >= gwt.OpenTimeInMinute
-												&& endTimeInMunute <= gwt.CloseTimeInMinute))
+			var endTimeDoW = (int) endTime.DayOfWeek;
+			var endTimeInMunute = endTime.Minute + endTime.Hour*60;
+			if (!vehicle.Garage.GarageWorkingTimes.Any(gwt => gwt.DayOfWeek == endTimeDoW
+			                                                  && endTimeInMunute >= gwt.OpenTimeInMinute
+			                                                  && endTimeInMunute <= gwt.CloseTimeInMinute))
 				return Json(new
 				{
 					errorCode = 403,
@@ -129,13 +132,13 @@ namespace CRP.Areas.Customer.Controllers
 			var needCheckingStartTime = model.StartTime.AddHours(-Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR);
 			var needCheckingEndTime = endTime.AddHours(Constants.IN_BETWEEN_BOOKING_REST_TIME_IN_HOUR);
 			if (vehicle.BookingReceipts.Any(br => !br.IsCanceled && (
-								(needCheckingStartTime > br.StartTime
-									&& needCheckingStartTime < br.EndTime)
-							 || (needCheckingEndTime > br.StartTime
-									&& needCheckingEndTime < br.EndTime)
-							 || (needCheckingStartTime <= br.StartTime
-									&& needCheckingEndTime >= br.EndTime)
-						)))
+				                                      (needCheckingStartTime > br.StartTime
+				                                       && needCheckingStartTime < br.EndTime)
+				                                      || (needCheckingEndTime > br.StartTime
+				                                          && needCheckingEndTime < br.EndTime)
+				                                      || (needCheckingStartTime <= br.StartTime
+				                                          && needCheckingEndTime >= br.EndTime)
+			                                      )))
 				return Json(new
 				{
 					errorCode = 403,
@@ -174,21 +177,23 @@ namespace CRP.Areas.Customer.Controllers
 				newBooking.Distance = priceGroupItem.MaxDistance;
 			}
 
-			newBooking.Deposit = newBooking.RentalPrice * (double)vehicle.VehicleGroup.PriceGroup.DepositPercentage;
-			newBooking.BookingFee = newBooking.RentalPrice * Constants.BOOKING_FEE_PERCENTAGE;
+			newBooking.Deposit = newBooking.RentalPrice*(double) vehicle.VehicleGroup.PriceGroup.DepositPercentage;
+			newBooking.BookingFee = newBooking.RentalPrice*Constants.BOOKING_FEE_PERCENTAGE;
 
 			bookingService.Create(newBooking);
 
 			// Set timer to delete the booking if it is still pending after x-milisec
-			var checkPendingBookingTimer = new System.Timers.Timer((Constants.BOOKING_CONFIRM_TIMEOUT_IN_MINUTES + Constants.BOOKING_PAYMENT_TIMEOUT_IN_MINUTES) * 60*1000)
-			{
-				AutoReset = false
-			};
+			var checkPendingBookingTimer =
+				new System.Timers.Timer((Constants.BOOKING_CONFIRM_TIMEOUT_IN_MINUTES + Constants.BOOKING_PAYMENT_TIMEOUT_IN_MINUTES)*
+				                        60*1000)
+				{
+					AutoReset = false
+				};
 
 			// Add callback
 			checkPendingBookingTimer.Elapsed += delegate { CheckPendingBooking(newBooking.ID); };
 			checkPendingBookingTimer.Start();
-			
+
 			return JavaScript("window.location = '/bookingConfirm/" + newBooking.ID + "'");
 		}
 
@@ -200,7 +205,7 @@ namespace CRP.Areas.Customer.Controllers
 			var bookingService = new BookingReceiptService(new UnitOfWork(dbContext), new BookingReceiptRepository(dbContext));
 			var bookingReceipt = bookingService.Get(bookingID);
 
-			if(bookingReceipt != null && bookingReceipt.IsPending)
+			if (bookingReceipt != null && bookingReceipt.IsPending)
 				bookingService.Delete(bookingReceipt);
 		}
 
@@ -212,16 +217,20 @@ namespace CRP.Areas.Customer.Controllers
 			var userID = User.Identity.GetUserId();
 			var fiveMinuteAgo = DateTime.Now.AddMinutes(-Constants.BOOKING_CONFIRM_TIMEOUT_IN_MINUTES);
 			var bookingReceipt = this.Service<IBookingReceiptService>()
-					.Get(br => br.IsPending == true
-							&& br.CustomerID == userID
-							&& br.ID == bookingID
-							&& br.BookingTime > fiveMinuteAgo
-					).FirstOrDefault();
+				.Get(br => br.IsPending == true
+				           && br.CustomerID == userID
+				           && br.ID == bookingID
+				           && br.BookingTime > fiveMinuteAgo
+				).FirstOrDefault();
 
 			if (bookingReceipt == null)
 				return new HttpStatusCodeResult(403, "Access denied.");
 
-			var bookingConfirmViewModel = new BookingConfirmViewModel {Receipt = bookingReceipt, NganLuong = new NganLuongPaymentModel()};
+			var bookingConfirmViewModel = new BookingConfirmViewModel
+			{
+				Receipt = bookingReceipt,
+				NganLuong = new NganLuongPaymentModel()
+			};
 			bookingConfirmViewModel.NganLuong.OrderCode = bookingReceipt.ID.ToString();
 
 			return View("~/Areas/Customer/Views/Booking/BookingConfirm.cshtml", bookingConfirmViewModel);
@@ -231,11 +240,12 @@ namespace CRP.Areas.Customer.Controllers
 		[System.Web.Http.HttpPost]
 		[ValidateAntiForgeryToken]
 		[System.Web.Mvc.Route("bookingConfirm", Name = "BookVehicle")]
-		public System.Web.Mvc.ActionResult BookVehicle(BookingConfirmViewModel bookingModel, NganLuongPaymentModel nganLuongPayment)
+		public System.Web.Mvc.ActionResult BookVehicle(BookingConfirmViewModel bookingModel,
+			NganLuongPaymentModel nganLuongPayment)
 		{
 			var user = HttpContext.GetOwinContext()
-					.GetUserManager<ApplicationUserManager>()
-					.FindById(HttpContext.User.Identity.GetUserId());
+				.GetUserManager<ApplicationUserManager>()
+				.FindById(HttpContext.User.Identity.GetUserId());
 
 			// Check if the request contains all valid params
 			if (bookingModel?.Action == null || bookingModel.Receipt?.ID == null || nganLuongPayment == null)
@@ -243,8 +253,8 @@ namespace CRP.Areas.Customer.Controllers
 
 			var bookingService = this.Service<IBookingReceiptService>();
 			var bookingReceipt = bookingService.Get(br => br.ID == bookingModel.Receipt.ID
-														&& br.CustomerID == user.Id
-														&& br.IsPending).FirstOrDefault();
+			                                              && br.CustomerID == user.Id
+			                                              && br.IsPending).FirstOrDefault();
 
 			if (bookingReceipt == null)
 				return new HttpStatusCodeResult(400, "Invalid request");
@@ -280,7 +290,7 @@ namespace CRP.Areas.Customer.Controllers
 				Buyer_mobile = user.PhoneNumber,
 				time_limit = Constants.BOOKING_CONFIRM_TIMEOUT_IN_MINUTES.ToString()
 			};
-			
+
 			var objNLCheckout = new APICheckoutV3();
 			var result = objNLCheckout.GetUrlCheckout(info, nganLuongPayment.PaymentMethod);
 
@@ -294,17 +304,18 @@ namespace CRP.Areas.Customer.Controllers
 
 		//Route to bookingReceipt page(Redirect from NganLuong/BaoKim after customer has payed)
 		[System.Web.Mvc.Route("bookingReceipt", Name = "BookingReceipt")]
-		public async Task<System.Web.Mvc.ActionResult> BookingReceipt(string error_code, string token, int? canceledBookingID = null)
+		public async Task<System.Web.Mvc.ActionResult> BookingReceipt(string error_code, string token,
+			int? canceledBookingID = null)
 		{
 			var userID = User.Identity.GetUserId();
 			var bookingService = this.Service<IBookingReceiptService>();
-			
+
 			// If the customer cancel the booking, delete it and redirect him to homepage
 			if (canceledBookingID != null)
 			{
 				var bookingReceipt = bookingService.Get(br => br.CustomerID == userID
-													&& br.ID == canceledBookingID
-													&& br.IsPending == true).FirstOrDefault();
+				                                              && br.ID == canceledBookingID
+				                                              && br.IsPending == true).FirstOrDefault();
 
 				if (bookingReceipt == null)
 					return new HttpStatusCodeResult(400, "Invalid request");
@@ -312,7 +323,7 @@ namespace CRP.Areas.Customer.Controllers
 				bookingService.Delete(bookingReceipt);
 				return RedirectToAction("Index", "Home");
 			}
-			
+
 			// If the transaction went smoothy, check the returned info + MD5 token
 			var info = new RequestCheckOrderTestTemplate {Token = token};
 			var objNLCheckout = new APICheckoutV3();
@@ -326,19 +337,26 @@ namespace CRP.Areas.Customer.Controllers
 					var bookingID = int.Parse(result.order_code);
 
 					var bookingReceipt = bookingService.Get(br => br.CustomerID == userID
-													&& br.ID == bookingID
-													&& br.IsPending == true).FirstOrDefault();
+					                                              && br.ID == bookingID
+					                                              && br.IsPending == true).FirstOrDefault();
 
 					if (bookingReceipt == null)
 						return new HttpStatusCodeResult(400, "Invalid request");
-					
+
 					bookingReceipt.IsPending = false;
 					bookingService.Update(bookingReceipt);
 
 					// Send alert email
 					SystemService sysService = new SystemService();
-					await sysService.SendBookingAlertEmailToCustomer(bookingReceipt);
-					await sysService.SendBookingAlertEmailToProvider(bookingReceipt);
+
+					try
+					{
+						await sysService.SendBookingAlertEmailToCustomer(bookingReceipt);
+						await sysService.SendBookingAlertEmailToProvider(bookingReceipt);
+					}
+					catch (Exception ex)
+					{
+					}
 
 					return View("~/Areas/Customer/Views/Booking/BookingReceipt.cshtml", bookingReceipt);
 				}
